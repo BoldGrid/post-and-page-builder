@@ -70,7 +70,7 @@
 	},
 	"dependencies": {
 		"@boldgrid/components": "^2.12.1",
-		"@boldgrid/controls": "^0.12.2",
+		"@boldgrid/controls": "^0.13.0",
 		"animate.css": "^3.5.2",
 		"babel-eslint": "^8.0.2",
 		"babel-loader": "^7.1.2",
