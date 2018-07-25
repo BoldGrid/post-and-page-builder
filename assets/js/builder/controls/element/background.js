@@ -43,15 +43,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			options: [
 				{
 					name: 'Section',
-					class: 'action font-awesome fa-cog section-background'
+					class: 'action section-background'
 				},
 				{
 					name: 'Row',
-					class: 'action font-awesome fa-cog row-background'
+					class: 'action row-background'
 				},
 				{
 					name: 'Column',
-					class: 'action font-awesome fa-cog column-background'
+					class: 'action column-background'
 				}
 			]
 		},

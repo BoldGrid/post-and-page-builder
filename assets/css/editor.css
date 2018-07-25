@@ -1760,6 +1760,21 @@
 #boldgrid-instance-menu .bg-editor-menu-dropdown li.add-row:hover::before {
   background-image: url("../image/icons/add-row-hover.png"); }
 
+#boldgrid-instance-menu .bg-editor-menu-dropdown li.column-background::before {
+  content: "";
+  background-image: url("../image/icons/grid/column.svg");
+  background-position: 3px 3px; }
+
+#boldgrid-instance-menu .bg-editor-menu-dropdown li.section-background::before {
+  content: "";
+  background-image: url("../image/icons/grid/section.svg");
+  background-position: 3px 3px; }
+
+#boldgrid-instance-menu .bg-editor-menu-dropdown li.row-background::before {
+  content: "";
+  background-image: url("../image/icons/grid/row.svg");
+  background-position: 3px 3px; }
+
 #boldgrid-instance-menu .bg-editor-menu-dropdown li.font-awesome::before {
   font: normal normal normal 14px/1 FontAwesome;
   text-align: center;

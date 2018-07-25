@@ -17,16 +17,16 @@
 			<li>
 				<ul class="help-text">
 					<span class="genericon genericon-picture menu-dropdown-icon"></span>
-					<li class="control-name">Section Background</li>
-					<li class="description">Assign a background to an entire section. This option is available after clicking into a section.
-					Sections are indentified by the black drag handles.</li>
+					<li class="control-name">Background</li>
+					<li class="description">Assign a background to an entire columns rows or sections.
+						This option is available after clicking into a any most elements.</li>
 				</ul>
 			</li>
 			<li>
 				<ul class="help-text">
 					<span class="genericon genericon-gallery"></span>
-					<li class="control-name">Column Background</li>
-					<li class="description">Assign a background to a column. This option is available after clicking into a column.
+					<li class="control-name">Column Shape</li>
+					<li class="description">Assign a shape to a column. This option is available after clicking into a column.
 					Columns are indentified by the blue drag handles.</li>
 				</ul>
 			</li>
