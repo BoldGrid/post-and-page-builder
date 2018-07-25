@@ -28,7 +28,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * Tracking of clicked elements.
 		 * @type {Object}
 		 */
-		layerEvent: { latestTime: 0, events: [] },
+		layerEvent: { latestTime: 0, targets: [] },
 
 		elementType: '',
 
@@ -91,6 +91,20 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * When the user clicks on a menu item, update the available options.
+		 *
+		 * @since 1.8.0
+		 */
+		onMenuClick: function() {
+			let availableOptions = [];
+			for ( let target of self.layerEvent.targets ) {
+				availableOptions.push( self.checkElementType( $( target ) ) );
+			}
+
+			$( this ).attr( 'data-available-options', availableOptions.join( ',' ) );
+		},
+
+		/**
 		 * When the user clicks Add Image open the media library.
 		 *
 		 * @since 1.2.7
@@ -144,7 +158,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param  {string} selector Selector.
 		 */
 		open( selector ) {
-			for ( let target of self.layerEvent.events ) {
+			for ( let target of self.layerEvent.targets ) {
 				let $target = $( target );
 				if ( $target.is( selector ) ) {
 					self.openPanel( $target );
@@ -162,10 +176,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		elementClick( event ) {
 			if ( self.layerEvent.latestTime !== event.timeStamp ) {
 				self.layerEvent.latestTime = event.timeStamp;
-				self.layerEvent.events = [];
+				self.layerEvent.targets = [];
 			}
 
-			self.layerEvent.events.push( event.currentTarget );
+			self.layerEvent.targets.push( event.currentTarget );
 		},
 
 		/**
@@ -1000,15 +1014,29 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.8.0
 		 */
 		setElementType: function() {
-			if ( self.$target.hasClass( 'boldgrid-section' ) ) {
-				self.elementType = 'section';
-			} else if ( self.$target.hasClass( 'row' ) ) {
-				self.elementType = 'row';
+			self.elementType = this.checkElementType( self.$target );
+			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
+		},
+
+		/**
+		 * Determine the element type supported by this control.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param  {jQuery} $element Jquery Element.
+		 * @return {string}          Element.
+		 */
+		checkElementType: function( $element ) {
+			let type = '';
+			if ( $element.hasClass( 'boldgrid-section' ) ) {
+				type = 'section';
+			} else if ( $element.hasClass( 'row' ) ) {
+				type = 'row';
 			} else {
-				self.elementType = 'column';
+				type = 'column';
 			}
 
-			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
+			return type;
 		},
 
 		/**
