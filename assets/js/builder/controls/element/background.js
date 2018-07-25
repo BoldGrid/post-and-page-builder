@@ -30,6 +30,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		layerEvent: { latestTime: 0, events: [] },
 
+		elementType: '',
+
 		iconClasses: 'genericon genericon-picture',
 
 		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]' ],
@@ -78,6 +80,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			sizeOffset: -230
 		},
 
+		/**
+		 * Get the current target.
+		 *
+		 * @since 1.8.0
+		 * @return {jQuery} Element.
+		 */
 		getTarget: function() {
 			return self.$target;
 		},
@@ -987,6 +995,23 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Find out what type of element we're controlling the background of.
+		 *
+		 * @since 1.8.0
+		 */
+		setElementType: function() {
+			if ( self.$target.hasClass( 'boldgrid-section' ) ) {
+				self.elementType = 'section';
+			} else if ( self.$target.hasClass( 'row' ) ) {
+				self.elementType = 'row';
+			} else {
+				self.elementType = 'column';
+			}
+
+			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
+		},
+
+		/**
 		 * Open Panel.
 		 *
 		 * @since 1.2.7
@@ -1014,6 +1039,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self.preselectBackground();
 			self.setDefaultBackgroundColors();
+			self.setElementType();
 
 			// Open Panel.
 			panel.open( self );

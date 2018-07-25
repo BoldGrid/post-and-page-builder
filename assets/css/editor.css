@@ -1434,6 +1434,9 @@
 .customize [data-control-name] {
   display: none; }
 
+.editor-panel[data-type="background"] .customize-navigation[data-element-type="column"] .item[data-control-name="blockAlignment"],
+.editor-panel[data-type="background"] .customize-navigation[data-element-type="column"] .item[data-control-name="width"],
+.editor-panel[data-type="background"] .customize-navigation[data-element-type="column"] .item[data-control-name="margin"],
 .editor-panel[data-type="Advanced"] .customize-navigation[data-element-type="column"] .item[data-control-name="blockAlignment"],
 .editor-panel[data-type="Advanced"] .customize-navigation[data-element-type="column"] .item[data-control-name="width"],
 .editor-panel[data-type="Advanced"] .customize-navigation[data-element-type="column"] .item[data-control-name="margin"] {
