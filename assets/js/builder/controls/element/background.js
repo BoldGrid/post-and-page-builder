@@ -59,7 +59,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		panel: {
-			title: 'Section Background',
+			title: 'Background',
 			height: '625px',
 			width: '325px',
 			scrollTarget: '.presets',
@@ -136,13 +136,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param  {string} selector Selector.
 		 */
 		open( selector ) {
-			self.$target = null;
-
 			for ( let target of self.layerEvent.events ) {
 				let $target = $( target );
 				if ( $target.is( selector ) ) {
-					self.$target = $target;
-					self.openPanel();
+					self.openPanel( $target );
 				}
 			}
 		},
@@ -993,10 +990,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * Open Panel.
 		 *
 		 * @since 1.2.7
+		 *
+		 * @param $target Current Target.
 		 */
-		openPanel: function() {
+		openPanel: function( $target ) {
 			var panel = BG.Panel,
 				template = wp.template( 'boldgrid-editor-background' );
+
+			self.$target = $target;
 
 			BoldgridEditor.sample_backgrounds.color = BG.CONTROLS.Color.getPaletteBackgroundColors();
 

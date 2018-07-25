@@ -530,14 +530,14 @@ iframe[src^="https://maps.google.com"] {
 }
 
 .popover-imhwpb .popover-menu-imhwpb li[data-action="Box"]::before,
-.popover-imhwpb .popover-menu-imhwpb li[data-action="background"]::before {
+.popover-imhwpb .popover-menu-imhwpb li[data-action="Background"]::before {
 	font-family: Genericons;
     content: "\f103";
     padding-top: 5px;
     font-size: 18px;
 }
 
-.popover-imhwpb .popover-menu-imhwpb li[data-action="background"]::before {
+.popover-imhwpb .popover-menu-imhwpb li[data-action="Background"]::before {
     padding-top: 9px;
     content: "\f473";
 }

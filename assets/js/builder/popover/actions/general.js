@@ -21,6 +21,7 @@ export class GeneralActions {
 		popover.$element.find( 'li[data-action]' ).on( 'click', menuActions.trigger_action_click );
 		popover.$element.find( 'li[data-action="add-media"]' ).on( 'click', menuActions.add_media );
 		popover.$element.find( 'li[data-action="align-top"]' ).on( 'click', menuActions.alignTop );
+		popover.$element.find( 'li[data-action="Background"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="Box"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="Advanced"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="Font"]' ).on( 'click', ( e ) => this.generalMacro( e ) );

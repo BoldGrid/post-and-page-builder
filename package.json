@@ -5,6 +5,7 @@
 	"main": "gulpfile.js",
 	"scripts": {
 		"start": "npm-run-all -p start-js start-css karmadev",
+		"dev": "npm run start",
 		"start-js": "webpack-dev-server --colors",
 		"karmadev": "karma start karma.config.js",
 		"start-css": "gulp watch",

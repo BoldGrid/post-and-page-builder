@@ -37,7 +37,6 @@ export class Section extends Base {
 		this.$element.find( '[data-action="section-width"]' ).on( 'click', e => this.sectionWidth( e ) );
 		this.$element.find( '[data-action="move-up"]' ).on( 'click', () => this.moveUp() );
 		this.$element.find( '[data-action="move-down"]' ).on( 'click', () => this.moveDown() );
-		this.$element.find( '[data-action="background"]' ).on( 'click', () => this.background() );
 		this.$element.find( '[data-action="save-gridblock"]' ).on( 'click', e => this._saveGridblock( e ) );
 		this.$element.find( '[data-action="add-new"]' ).on( 'click', () => this.addNewSection() );
 		this.$element.find( '.context-menu-imhwpb' ).on( 'click', e => this.menuDirection( e ) );
@@ -160,16 +159,6 @@ export class Section extends Base {
 		}
 
 		BG.Controls.$container.trigger( BG.Controls.$container.delete_event );
-	}
-
-	/**
-	 * Open the background controls.
-	 *
-	 * @since 1.6
-	 */
-	background() {
-		this.$target.click();
-		BOLDGRID.EDITOR.CONTROLS.Background.openPanel();
 	}
 
 	/**
