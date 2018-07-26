@@ -433,7 +433,7 @@ class Boldgrid_Editor_Builder {
 		global $boldgrid_theme_framework;
 		global $post;
 
-		$container = 'container-fluid';
+		$container = 'container';
 
 		if ( $boldgrid_theme_framework && ! empty( $post->ID ) ) {
 
