@@ -96,12 +96,31 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.8.0
 		 */
 		onMenuClick: function() {
+			self.updateMenuOptions();
+		},
+
+		/**
+		 * Update the avilable options in the background drop down.
+		 *
+		 * @since 1.8.0
+		 */
+		updateMenuOptions: function() {
 			let availableOptions = [];
 			for ( let target of self.layerEvent.targets ) {
 				availableOptions.push( self.checkElementType( $( target ) ) );
 			}
 
-			$( this ).attr( 'data-available-options', availableOptions.join( ',' ) );
+			self.$menuItem.attr( 'data-available-options', availableOptions.join( ',' ) );
+		},
+
+		/**
+		 * When a menu item is reopened because a user clicked on another similar element
+		 * Update the available options.
+		 *
+		 * @since 1.8.0
+		 */
+		_setupMenuReactivate: function() {
+			self.$menuItem.on( 'reactivate', self.updateMenuOptions );
 		},
 
 		/**
@@ -201,6 +220,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.2.7
 		 */
 		setup: function() {
+			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-background"]' );
+
+			self._setupMenuReactivate();
 			self._setupMenuClick();
 			self._setupBackgroundClick();
 			self._setupFilterClick();

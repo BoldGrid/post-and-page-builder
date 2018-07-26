@@ -183,9 +183,11 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 */
 		reactivateMenu: function() {
 			var $panel = BOLDGRID.EDITOR.Panel.$element;
+
 			if ( this.$activeElement && $panel.is( ':visible' ) ) {
 				this.$element
 					.find( '[data-action="menu-' + $panel.attr( 'data-type' ) + '"]' )
+					.trigger( 'reactivate' )
 					.addClass( 'active' );
 			}
 		}

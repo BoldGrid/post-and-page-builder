@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.8.0 =
+
+Release Date: TBD
+
+* New Feature: Column and Row backgrounds are now supported.
+
 = 1.7.5 =
 
 Release Date: TBD
