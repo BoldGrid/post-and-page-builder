@@ -41,7 +41,7 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 				return false;
 			}
 
-			panel.$element.on( 'change', '.section [name="font-color"]', function() {
+			panel.$element.on( 'change', '.color-preview ~ [name="font-color"]', function() {
 				var $this = $( this ),
 					$target = BG.Menu.getCurrentTarget(),
 					value = $this.val(),

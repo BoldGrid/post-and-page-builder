@@ -1,38 +1,18 @@
 /*************** Text Settings Panel ********************/
-.editor-panel[data-type='font'] {
-	.panel-title {
-		margin-bottom: 0;
+.boldgrid-control.typography-control {
+	padding-bottom: 15px;
+
+	.bg-control-switch label,
+	.font-color-control .control-name,
+	> h5 {
+		font-weight: 500;
 	}
 
-	select.google-fonts {
-		width: 185px;
+	> h3 {
+		display: none;
 	}
 
-	.family .color-preview {
-		position: absolute;
-		top: 23px;
-		right: 20px;
-	}
-
-	.section.effects .panel-selection {
-		height: 35px;
-		width: 35px;
-		padding: 8px;
-		color: #868686;
-		font-size: 37px;
-		line-height: 33px;
-		margin: 1px;
-	}
-
-	.section.effects .panel-selection.selected {
-		color: white;
-	}
-
-	.section.effects .fa-ban {
-		color: #b50000;
-	}
-
-	.section.effects .panel-selection.selected .fa-ban {
-		color: white;
+	.font-color-control .bg-color-picker-control {
+		display: none !important;
 	}
 }

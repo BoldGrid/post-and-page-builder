@@ -1100,34 +1100,19 @@
   width: 100% !important; }
 
 /*************** Text Settings Panel ********************/
-.editor-panel[data-type='font'] .panel-title {
-  margin-bottom: 0; }
+.boldgrid-control.typography-control {
+  padding-bottom: 15px; }
 
-.editor-panel[data-type='font'] select.google-fonts {
-  width: 185px; }
+.boldgrid-control.typography-control .bg-control-switch label,
+.boldgrid-control.typography-control .font-color-control .control-name,
+.boldgrid-control.typography-control > h5 {
+  font-weight: 500; }
 
-.editor-panel[data-type='font'] .family .color-preview {
-  position: absolute;
-  top: 23px;
-  right: 20px; }
+.boldgrid-control.typography-control > h3 {
+  display: none; }
 
-.editor-panel[data-type='font'] .section.effects .panel-selection {
-  height: 35px;
-  width: 35px;
-  padding: 8px;
-  color: #868686;
-  font-size: 37px;
-  line-height: 33px;
-  margin: 1px; }
-
-.editor-panel[data-type='font'] .section.effects .panel-selection.selected {
-  color: white; }
-
-.editor-panel[data-type='font'] .section.effects .fa-ban {
-  color: #b50000; }
-
-.editor-panel[data-type='font'] .section.effects .panel-selection.selected .fa-ban {
-  color: white; }
+.boldgrid-control.typography-control .font-color-control .bg-color-picker-control {
+  display: none !important; }
 
 /*************** Image Panel ********************/
 .editor-panel[data-type='image-filter'] {
