@@ -276,6 +276,10 @@
 	}
 }
 
+.select2-container .select2-dropdown {
+	z-index: 9999999;
+}
+
 /*************** Panel Body ********************/
 
 .panel-body {

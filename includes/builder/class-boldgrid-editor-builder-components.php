@@ -123,7 +123,11 @@ class Boldgrid_Editor_Builder_Components {
 		$fonts = array();
 
 		foreach ( $xpath->query( '//*[@data-font-family]' ) as $node ) {
-			$fonts[] = $node->getAttribute( 'data-font-family' );
+			$fonts[] = [
+				'family' => $node->getAttribute( 'data-font-family' ),
+				'weight' => $node->getAttribute( 'data-font-weight' ),
+				'variant' => $node->getAttribute( 'data-font-style' )
+			];
 		}
 
 		$fonts = array_unique( $fonts );

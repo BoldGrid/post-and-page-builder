@@ -4,8 +4,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 import { Typography } from '@boldgrid/controls';
 
-console.log( Typography );
-
 ( function( $ ) {
 	'use strict';
 

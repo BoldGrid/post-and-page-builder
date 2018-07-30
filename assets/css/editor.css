@@ -614,6 +614,9 @@
   width: 100%;
   resize: vertical; }
 
+.select2-container .select2-dropdown {
+  z-index: 9999999; }
+
 /*************** Panel Body ********************/
 .panel-body {
   overflow-y: scroll;
@@ -2226,128 +2229,97 @@ body.boldgrid-editor-fullscreen {
 /*--------------------------------------------------------------
 # General Edit Controls
 --------------------------------------------------------------*/
-.section .selectize-dropdown-content {
-  height: 30px; }
+.boldgrid-control.font-family-control .select2-selection__rendered,
+.select2-results__option[aria-label="Google Fonts"] .select2-results__option {
+  background-image: url(../image/web-fonts.png); }
 
-.select2-container {
-  z-index: 999999; }
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
+  line-height: 35px;
+  color: transparent; }
 
-.editor-panel .font-family-select .ui-selectmenu-button {
-  padding: 6px 11px 8px;
-  position: absolute;
-  left: 38px;
-  width: 187px !important;
-  height: 20px;
-  border-radius: 7px;
-  background-image: url(../image/web-fonts.png);
-  background-color: #f3f3f3;
-  background-repeat: no-repeat;
-  color: transparent;
-  margin-left: -24px;
-  cursor: pointer;
-  border: none; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option,
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
+  font-size: 17px; }
 
-.editor-panel .font-family-select .ui-selectmenu-button .ui-icon {
-  position: absolute;
-  right: -23px;
-  top: 8px;
-  width: 17px; }
-
-.editor-panel .font-family-select .ui-selectmenu-button .ui-selectmenu-text {
-  display: none; }
-
-.editor-panel .font-family-select .ui-selectmenu-button:hover {
-  background-color: #eaeaea; }
-
-.editor-panel .font-family-select .ui-selectmenu-button[data-value="serif"], .editor-panel .font-family-select .ui-selectmenu-button[data-value="sans-serif"], .editor-panel .font-family-select .ui-selectmenu-button[data-value="monospace"], .editor-panel .font-family-select .ui-selectmenu-button[data-value="Default"] {
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Default"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Arial"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Arial Black"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Comic Sans"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Impact"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Lucida Console"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Lucida Sans Unicode"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Palatino Linotype"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Tahoma"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Times New Roman"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Trebuchet MS"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Verdana"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Default"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial Black"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Comic Sans"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Impact"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Console"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Sans Unicode"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Palatino Linotype"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Tahoma"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Times New Roman"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Trebuchet MS"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Verdana"] {
+  color: black;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
   background-image: none; }
 
-.editor-panel .font-family-select .ui-selectmenu-button[data-value="serif"]:after, .editor-panel .font-family-select .ui-selectmenu-button[data-value="sans-serif"]:after, .editor-panel .font-family-select .ui-selectmenu-button[data-value="monospace"]:after, .editor-panel .font-family-select .ui-selectmenu-button[data-value="Default"]:after {
-  content: "Default";
-  display: block;
-  color: black;
-  font-size: 20px; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Arial"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Arial"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Arial"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial"] {
+  font-family: Arial, Helvetica, sans-serif; }
 
-.editor-panel .font-family-select .ui-selectmenu-button[data-value="serif"]:after {
-  content: "serif"; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Arial Black"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Arial Black"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Arial Black"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial Black"] {
+  font-family: Arial Black, Gadget, sans-serif; }
 
-.editor-panel .font-family-select .ui-selectmenu-button[data-value="sans-serif"]:after {
-  content: "sans-serif"; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Comic Sans"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Comic Sans"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Comic Sans"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Comic Sans"] {
+  font-family: Comic Sans MS, Textile, cursive; }
 
-.editor-panel .font-family-select .ui-selectmenu-button[data-value="monospace"]:after {
-  content: "monospace"; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Courier"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Courier"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Courier"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Courier"] {
+  font-family: 'Courier New', Courier, monospace; }
 
-.ui-selectmenu-menu.font-family-dropdown {
-  display: none;
-  width: 0 !important; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Imapct"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Imapct"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Imapct"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Imapct"] {
+  font-family: Impact, Charcoal, sans-serif; }
 
-.ui-selectmenu-menu.font-family-dropdown.ui-front {
-  z-index: 100102; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Lucida Console"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Lucida Console"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Lucida Console"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Console"] {
+  font-family: 'Lucida Console', Monaco, monospace; }
 
-.ui-selectmenu-menu.font-family-dropdown ul {
-  z-index: 100102;
-  position: relative;
-  max-height: 500px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  width: 290px; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Lucida Sans Unicode"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Lucida Sans Unicode"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Lucida Sans Unicode"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Sans Unicode"] {
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; }
 
-.ui-selectmenu-menu.font-family-dropdown li[data-value="serif"],
-.ui-selectmenu-menu.font-family-dropdown li[data-value="serif"]:hover,
-.ui-selectmenu-menu.font-family-dropdown li[data-value="sans-serif"],
-.ui-selectmenu-menu.font-family-dropdown li[data-value="sans-serif"]:hover,
-.ui-selectmenu-menu.font-family-dropdown li[data-value="monospace"],
-.ui-selectmenu-menu.font-family-dropdown li[data-value="monospace"]:hover,
-.ui-selectmenu-menu.font-family-dropdown li[data-value="Default"],
-.ui-selectmenu-menu.font-family-dropdown li[data-value="Default"]:hover {
-  background-image: none;
-  color: black;
-  padding-left: 10px;
-  font-size: 20px; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Palatino Linotype"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Palatino Linotype"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Palatino Linotype"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Palatino Linotype"] {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; }
 
-.ui-selectmenu-menu.font-family-dropdown li,
-.ui-selectmenu-menu.font-family-dropdown li:hover {
-  color: transparent;
-  background-image: url(../image/web-fonts.png);
-  background-color: white;
-  background-repeat: no-repeat;
-  height: 25px;
-  margin: 4px 0;
-  border: none;
-  padding: 3px;
-  background-color: transparent;
-  cursor: default !important; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Tahoma"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Tahoma"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Tahoma"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Tahoma"] {
+  font-family: Tahoma, Geneva, sans-serif; }
 
-.ui-selectmenu-menu.font-family-dropdown li:hover {
-  background-color: #eaeaea; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Times New Roman"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Times New Roman"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Times New Roman"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Times New Roman"] {
+  font-family: 'Times New Roman', Times, serif; }
 
-.ui-selectmenu-menu.font-family-dropdown .seperator,
-.ui-selectmenu-menu.font-family-dropdown .seperator:hover {
-  font-weight: lighter;
-  padding: 7px 11px;
-  background-color: #32373c;
-  color: white;
-  font-size: 15px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Trebuchet MS"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Trebuchet MS"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Trebuchet MS"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Trebuchet MS"] {
+  font-family: 'Trebuchet MS', Helvetica, sans-serif; }
 
-.ui-selectmenu-menu.font-family-dropdown .seperator:first-of-type,
-.ui-selectmenu-menu.font-family-dropdown .seperator:hover:first-of-type {
-  margin-top: -2px; }
-
-.panel-body .font-family-select [data-value="serif"],
-.ui-selectmenu-menu.font-family-dropdown [data-value="serif"] {
-  font-family: serif !important; }
-
-.panel-body .font-family-select [data-value="monospace"],
-.ui-selectmenu-menu.font-family-dropdown [data-value="monospace"] {
-  font-family: monospace !important; }
-
-.panel-body .font-family-select [data-value="sans-serif"],
-.ui-selectmenu-menu.font-family-dropdown [data-value="sans-serif"] {
-  font-family: sans-serif !important; }
-
-.ui-selectmenu-menu.font-family-dropdown.ui-selectmenu-open {
-  display: block; }
+.select2-results__option[aria-label="System Fonts"] .select2-results__option[id$="Verdana"], .select2-results__option[aria-label="System Fonts"] .select2-results__option[title="Verdana"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Verdana"],
+.panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Verdana"] {
+  font-family: Verdana, Geneva, sans-serif; }
 
 /*--------------------------------------------------------------
 # Setup the view for sections.

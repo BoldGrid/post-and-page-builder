@@ -111,7 +111,7 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#ce85ab248e9471bb84590fe64a62fc9c33c478cb"
+  resolved "https://github.com/BoldGrid/controls#f251523f23725b485fe1b0c8952c02268255c19f"
   dependencies:
     "@boldgrid/components" "^2.12.1"
     "@material/switch" "^0.34.0"
