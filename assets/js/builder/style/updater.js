@@ -1,6 +1,7 @@
 var $ = jQuery;
 
 import { StyleUpdater } from '@boldgrid/controls';
+import { WebFont } from '@boldgrid/controls';
 
 export class Updater extends StyleUpdater {
 	init() {
@@ -9,12 +10,22 @@ export class Updater extends StyleUpdater {
 		this.loadSavedConfig( BoldgridEditor.control_styles.configuration || [] );
 		this.setup();
 		this.updateInput();
+		this.updateFontsUrl();
 
 		// Override inline styles functions from controls lib.
 		window.BOLDGRID.CONTROLS.addStyles = BOLDGRID.EDITOR.Controls.addStyles;
 		window.BOLDGRID.CONTROLS.addStyle = BOLDGRID.EDITOR.Controls.addStyle;
 
 		return this;
+	}
+
+	/**
+	 * Update the fonts URL.
+	 *
+	 * @since 1.8.0
+	 */
+	updateFontsUrl() {
+		new WebFont( { $scope: BOLDGRID.EDITOR.Controls.$container } ).updateFontLink();
 	}
 
 	/**

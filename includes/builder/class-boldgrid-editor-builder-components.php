@@ -57,7 +57,7 @@ class Boldgrid_Editor_Builder_Components {
 			$components[ $label ] = $this->find_component_classes( $xpath, $component_ns );
 		}
 
-		$components['font'] = $this->find_fonts( $xpath );
+		$components['font'] = array_keys( $this->find_fonts( $xpath ) );
 
 		return $components;
 	}

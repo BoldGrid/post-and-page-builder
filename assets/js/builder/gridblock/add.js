@@ -115,7 +115,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 				}
 
 				// Update editor fonts.
-				BG.FontRender.updateFontLink( BG.Controls.$container );
+				BG.Service.styleUpdater.updateFontsUrl();
 
 				draggable.validate_markup();
 

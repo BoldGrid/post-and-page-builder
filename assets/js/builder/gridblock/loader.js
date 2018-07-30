@@ -4,6 +4,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 
 import { Save } from './save';
 import { Preview } from './preview';
+import { WebFont } from '@boldgrid/controls';
 
 ( function( $ ) {
 	'use strict';
@@ -157,7 +158,7 @@ import { Preview } from './preview';
 					$contents.find( '.content-placeholder' ).replaceWith( gridblock.$previewHtml );
 
 					// Update google fonts link in iframe.
-					BG.FontRender.updateFontLink( $contents );
+					new WebFont( { $scope: $contents } ).updateFontLink();
 
 					if ( BGGB.Category.canDisplayGridblock( gridblock ) ) {
 						$gridblock.css( 'display', '' );
