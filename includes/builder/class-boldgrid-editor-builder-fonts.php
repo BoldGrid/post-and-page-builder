@@ -46,15 +46,26 @@ class Boldgrid_Editor_Builder_Fonts {
 	 *
 	 * @return string Font Url.
 	 */
-	public function create_font_url( $fonts ) {
+	public function create_font_url( $families ) {
 
-		if ( empty( $fonts ) ) {
+		if ( empty( $families ) ) {
 			return;
 		}
 
+		$familyParam = array();
+		foreach ( $families as $familyName => $config ) {
+			$param = $familyName;
+			if ( $config['weights'] ) {
+				$param = $familyName . ':' . implode( ',', array_unique( $config['weights'] ) );
+			}
+
+			$familyParam[]= $param;
+		}
+
 		$base_url = 'https://fonts.googleapis.com/css?';
-		$href = implode( '|', $fonts );
+		$href = implode( '|', $familyParam );
 		$href = $base_url . http_build_query( array( 'family' => $href ) );
+
 		return $href;
 	}
 

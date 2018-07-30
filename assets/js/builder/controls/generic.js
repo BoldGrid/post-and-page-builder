@@ -67,7 +67,7 @@ import { Border } from './generic/border';
 				} );
 
 			bgControl.applyCssRules = property => {
-				BG.Controls.addStyle( bgControl.$target, property );
+				BOLDGRID.EDITOR.Controls.addStyles( bgControl.$target, property );
 				BG.Panel.$element.trigger( BG.Panel.currentControl.name + '-css-change' );
 			};
 

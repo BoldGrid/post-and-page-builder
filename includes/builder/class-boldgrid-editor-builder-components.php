@@ -120,18 +120,30 @@ class Boldgrid_Editor_Builder_Components {
 	 * @return array $styles.
 	 */
 	public static function find_fonts( $xpath ) {
-		$fonts = array();
+		$families = array();
 
 		foreach ( $xpath->query( '//*[@data-font-family]' ) as $node ) {
-			$fonts[] = [
-				'family' => $node->getAttribute( 'data-font-family' ),
-				'weight' => $node->getAttribute( 'data-font-weight' ),
-				'variant' => $node->getAttribute( 'data-font-style' )
-			];
+			$family = $node->getAttribute( 'data-font-family' );
+			$weight = $node->getAttribute( 'data-font-weight' );
+			$variant = $node->getAttribute( 'data-font-style' );
+
+			// Combine font famillies.
+			if ( $family ) {
+				$families[ $family ] = ! empty( $families[ $family ] ) ? $families[ $family ] : array();
+
+				if ( $weight ) {
+					$families[ $family ]['weights'] = ! empty( $families[ $family ]['weights'] ) ?
+						$families[ $family ]['weights'] : array();
+
+					if ( 'italic' === $variant ) {
+						$weight = $weight + 'i';
+					}
+
+					$families[$family]['weights'][] = $weight;
+				}
+			}
 		}
 
-		$fonts = array_unique( $fonts );
-
-		return $fonts;
+		return $families;
 	}
 }

@@ -10,6 +10,10 @@ export class Updater extends StyleUpdater {
 		this.setup();
 		this.updateInput();
 
+		// Override inline styles functions from controls lib.
+		window.BOLDGRID.CONTROLS.addStyles = BOLDGRID.EDITOR.Controls.addStyles;
+		window.BOLDGRID.CONTROLS.addStyle = BOLDGRID.EDITOR.Controls.addStyle;
+
 		return this;
 	}
 

@@ -106,8 +106,23 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 * @param string value.
 		 */
 		addStyle: function( element, property, value ) {
-			element.css( property, value );
+
+			// element.css( property, value );
 			BOLDGRID.EDITOR.mce.dom.setStyle( element, property, value );
+		},
+
+		/**
+		 * Add inline style to a element in the tinymce DOM. Needs to wrap dom.Style to work in tinymce.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param jQuery element.
+		 * @param object values.
+		 */
+		addStyles: function( element, values ) {
+
+			// element.css( values );
+			BOLDGRID.EDITOR.mce.dom.setStyles( element, values );
 		},
 
 		/**
