@@ -139,6 +139,7 @@ WordPress Editor.
 Release Date: TBD
 
 * New Feature: Column and Row backgrounds are now supported.
+* New Feature: Upgraded typography controls.
 * Update: After first time setup page template will update for current page.
 
 = 1.7.5 =

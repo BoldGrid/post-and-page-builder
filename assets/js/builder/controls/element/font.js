@@ -26,13 +26,6 @@ import { Typography } from '@boldgrid/controls';
 
 		templateMarkup: null,
 
-		fontClasses: [
-			'bg-font-family-alt',
-			'bg-font-family-body',
-			'bg-font-family-heading',
-			'bg-font-family-menu'
-		],
-
 		disabledTextContrast: true,
 
 		init: function() {
@@ -67,53 +60,84 @@ import { Typography } from '@boldgrid/controls';
 		 * @since 1.2.7
 		 */
 		setup: function() {
-			this.mergeFontClasses();
-			self.bindFontCollpase();
-
 			BG.CONTROLS.GENERIC.Fontcolor.bind();
-		},
-
-		/**
-		 * Merge predefined font families with font families provided by the theme.
-		 *
-		 * @since 1.7.5
-		 */
-		mergeFontClasses() {
-			self.fontClasses = self.fontClasses.concat(
-				Object.keys( BoldgridEditor.builder_config.theme_fonts )
-			);
-			self.fontClasses = _.unique( self.fontClasses );
-		},
-
-		/**
-		 * When scrolling on window with font family open, collapse font family.
-		 *
-		 * @since 1.3
-		 */
-		bindFontCollpase: function() {
-			var hideFamilySelect = _.debounce( function() {
-				var $fontFamily = $( '.font-family-dropdown' );
-				if ( $fontFamily.hasClass( 'ui-selectmenu-open' ) ) {
-					$fontFamily.removeClass( 'ui-selectmenu-open' );
-				}
-			}, 50 );
-
-			$( window ).on( 'scroll', hideFamilySelect );
 		},
 
 		/**
 		 * Get the fonts used by the theme.
 		 *
-		 * @since 1.2.7
+		 * @since 1.8.0
 		 */
-		getThemeFonts: function() {
-			var themeFonts = [];
+		getThemeFontsConfig: function() {
+			var themeFonts = false;
 
-			if ( -1 !== BoldgridEditor.builder_config.theme_features.indexOf( 'theme-fonts-classes' ) ) {
-				themeFonts = BoldgridEditor.builder_config.theme_fonts;
+			if (
+				-1 !== BoldgridEditor.builder_config.theme_features.indexOf( 'theme-fonts-classes' ) &&
+				0 !== BoldgridEditor.builder_config.theme_fonts.length
+			) {
+				themeFonts = {
+					sectionName: 'Theme Fonts',
+					type: 'class',
+					options: {}
+				};
+
+				_.each( BoldgridEditor.builder_config.theme_fonts, ( name, className ) => {
+					themeFonts.options[name] = {
+						class: className
+					};
+				} );
 			}
 
 			return themeFonts;
+		},
+
+		/**
+		 * Get the configuration of used fonts.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @return {Object} Configuration of fonts.
+		 */
+		getUsedFontsConfig() {
+			let usedFontConfig = false,
+				usedFonts = BoldgridEditor.builder_config.components_used.font || [];
+
+			if ( usedFonts.length ) {
+				usedFontConfig = {
+					sectionName: 'Used Fonts',
+					type: 'inline',
+					options: {}
+				};
+
+				_.each( usedFonts, name => {
+					usedFontConfig.options[name] = {};
+				} );
+			}
+
+			return usedFontConfig;
+		},
+
+		/**
+		 * Create a configuration of fonts to be added tp the control config.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @return {array} Font Configurations.
+		 */
+		createFontConfig: function() {
+			let fonts = [],
+				themeFonts = self.getThemeFontsConfig(),
+				usedFonts = self.getUsedFontsConfig();
+
+			if ( themeFonts ) {
+				fonts.push( themeFonts );
+			}
+
+			if ( usedFonts ) {
+				fonts.push( usedFonts );
+			}
+
+			return fonts;
 		},
 
 		/**
@@ -172,7 +196,10 @@ import { Typography } from '@boldgrid/controls';
 			var panel = BG.Panel,
 				$target = BG.Menu.getTarget( self );
 
-			let typography = new Typography( { target: $target } );
+			let typography = new Typography( {
+				target: $target,
+				fonts: self.createFontConfig()
+			} );
 
 			// Remove all content from the panel.
 			panel.clear();

@@ -1,4 +1,6 @@
 .boldgrid-control.font-family-control .select2-selection__rendered,
+.select2-results__option[aria-label="Used Fonts"] .select2-results__option,
+.select2-results__option[aria-label="Theme Fonts"] .select2-results__option,
 .select2-results__option[aria-label="Google Fonts"] .select2-results__option {
 	background-image: url(../image/web-fonts.png);
 }
@@ -9,7 +11,7 @@
 	color: transparent;
 }
 
-.select2-results__option[aria-label="System Fonts"] .select2-results__option,
+.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option,
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
 	font-size: 17px;
 
@@ -33,60 +35,72 @@
 	&[id$="Arial"],
 	&[title="Arial"] {
 		font-family: Arial, Helvetica, sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Arial Black"],
 	&[title="Arial Black"] {
 		font-family: Arial Black, Gadget, sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Comic Sans"],
 	&[title="Comic Sans"] {
 		font-family: Comic Sans MS, Textile, cursive;
+		background-image: none;
 	}
 
 	&[id$="Courier"],
 	&[title="Courier"] {
 		font-family: 'Courier New', Courier, monospace;
+		background-image: none;
 	}
 
 	&[id$="Imapct"],
 	&[title="Imapct"] {
 		font-family: Impact, Charcoal, sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Lucida Console"],
 	&[title="Lucida Console"] {
 		font-family: 'Lucida Console', Monaco, monospace;
+		background-image: none;
 	}
 
 	&[id$="Lucida Sans Unicode"],
 	&[title="Lucida Sans Unicode"] {
 		font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Palatino Linotype"],
 	&[title="Palatino Linotype"] {
 		font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+		background-image: none;
 	}
 
 	&[id$="Tahoma"],
 	&[title="Tahoma"] {
 		font-family: Tahoma, Geneva, sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Times New Roman"],
 	&[title="Times New Roman"] {
 		font-family: 'Times New Roman', Times, serif;
+		background-image: none;
 	}
 
 	&[id$="Trebuchet MS"],
 	&[title="Trebuchet MS"] {
 		font-family: 'Trebuchet MS', Helvetica, sans-serif;
+		background-image: none;
 	}
 
 	&[id$="Verdana"],
 	&[title="Verdana"] {
 		font-family: Verdana, Geneva, sans-serif;
+		background-image: none;
 	}
 }

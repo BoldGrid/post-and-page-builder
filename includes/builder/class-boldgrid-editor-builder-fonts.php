@@ -55,11 +55,11 @@ class Boldgrid_Editor_Builder_Fonts {
 		$familyParam = array();
 		foreach ( $families as $familyName => $config ) {
 			$param = $familyName;
-			if ( $config['weights'] ) {
+			if ( ! empty( $config['weights'] ) ) {
 				$param = $familyName . ':' . implode( ',', array_unique( $config['weights'] ) );
 			}
 
-			$familyParam[]= $param;
+			$familyParam[] = $param;
 		}
 
 		$base_url = 'https://fonts.googleapis.com/css?';
