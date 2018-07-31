@@ -60,6 +60,18 @@ class Boldgrid_Editor {
 		);
 		$this->set_path_configs( $path_configs );
 
+		/**
+		 * [bg-categories]
+		 * [bg-recent-posts]
+		 * [bg-tag-cloud]
+		 * [bg-menu]
+		 */
+
+
+		add_shortcode( 'bg_categories', function ( $attrs, $content = null ) {
+			return '<div>categories</div>';
+		} );
+
 		Boldgrid_Editor_Service::register( 'config', $config->get_configs() );
 	}
 

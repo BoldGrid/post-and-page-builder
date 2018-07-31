@@ -1,0 +1,29 @@
+<div class="bg-component">
+	<div class="component-category component-layouts">
+		<h3>Layout & Formatting</h3>
+		<hr>
+		<div class="bg-component-list">
+			<% _.each( components, function ( component ) { %>
+				<%=printComponent( 'structure', component ) %>
+			<% } ); %>
+		</div>
+	</div>
+	<div class="component-category component-design">
+		<h3>Design</h3>
+		<hr>
+		<div class="bg-component-list">
+			<% _.each( components, function ( component ) { %>
+				<%=printComponent( 'design', component ) %>
+			<% } ); %>
+		</div>
+	</div>
+	<div class="component-category component-widgets">
+		<h3>Widgets</h3>
+		<hr>
+		<div class="bg-component-list">
+			<% _.each( components, function ( component ) { %>
+				<%=printComponent( 'widget', component ) %>
+			<% } ); %>
+		</div>
+	</div>
+</div>

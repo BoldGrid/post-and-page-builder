@@ -11,7 +11,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 	BG.CONTROLS.Add = {
 		$element: null,
 
-		name: 'add',
+		name: 'adds',
 
 		tooltip: 'Add New Item',
 
@@ -21,7 +21,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		selectors: [ 'html' ],
 
-		menuDropDown: {
+		/*menuDropDown: {
 			title: 'Add New',
 			options: [
 				{
@@ -45,10 +45,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					class: 'action add-row'
 				}
 			]
-		},
+		},*/
 
 		init: function() {
-			BOLDGRID.EDITOR.Controls.registerControl( this );
+
+			// BOLDGRID.EDITOR.Controls.registerControl( this );
 		},
 
 		/**
