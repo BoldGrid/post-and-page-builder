@@ -21,6 +21,7 @@ return array (
 	'templates' => array(
 		'default_content_width' => 1140,
 	),
+	'component_controls' => include __DIR__ . './config.components.php',
 	'urls' => array(
 		'premium_key' => 'https://www.boldgrid.com/connect-keys'
 	),

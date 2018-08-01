@@ -1,14 +1,16 @@
 .editor-panel[data-type='add'] {
 	h3 {
 		margin-left: 10px;
-		margin-bottom: 5px;
+		margin-bottom: 10px;
+		color: #7b7b7b;
+		font-weight: normal;
 	}
 
 	hr {
 		width: 50%;
 		margin-left: 10px;
 		height: 2px;
-		background: #33373c;
+		background: #eeeeee;
 		color: transparent;
 		border: 0;
 	}
@@ -20,10 +22,25 @@
 		align-items: center;
 	}
 
+	.component-icon,
+	.component-icon .dashicons,
+	.component-icon svg {
+		width: 55px;
+		height: 55px;
+	}
+
+	.component-icon {
+		.dashicons,
+		svg {
+			fill: #333333;
+			margin-top: 2px;
+		}
+	}
+
 	label {
 		margin: 10px;
 		padding: 10px;
-		width: 74px;
+		width: 117px;
 		height: 74px;
 		box-shadow: 0 0 1px 1px #dddddd;
 		text-align: center;
@@ -31,28 +48,40 @@
 		flex-direction: column;
 		align-items: center;
 		transition: box-shadow 0.5s;
+		background-color: #fcfcfc;
+		border-radius: 2px;
 
 		&:hover {
 			box-shadow: 0 0 10px 1px #dddddd;
+
+			.component-icon,
+			.component-icon svg,
+			.component-icon path {
+				color: #f95b26;
+				fill: #f95b26;
+			}
 		}
 
 		.component-name {
-			margin: -12px auto 0;
+			margin-top: -5px;
 			vertical-align: middle;
 		}
-	}
 
-	.component-icon .dashicons,
-	.component-icon svg {
-		width: 55px;
-		height: 55px;
-		fill: #333333;
-		margin-top: 2px;
+		.component-icon {
+			margin-top: 2px;
+		}
 	}
 
 	.component-icon .dashicons {
 		font-size: 36px;
-		position: relative;
-		top: 0;
+		transform: translateY(2px);
+	}
+
+	[data-name='block'] .component-icon svg {
+		transform: scale(1.4);
+	}
+
+	[data-name='button'] .component-icon svg {
+		transform: scale(0.8);
 	}
 }

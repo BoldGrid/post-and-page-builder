@@ -2,10 +2,13 @@ import panelTemplate from './add.html';
 import './add.scss';
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
-let BG = BOLDGRID.EDITOR;
+let $ = jQuery,
+	BG = BOLDGRID.EDITOR;
 
 export class Add {
 	constructor() {
+
+		// Menu Configurations.
 		this.name = 'add';
 		this.$element = null;
 		this.tooltip = 'Add Block Component';
@@ -13,9 +16,10 @@ export class Add {
 		this.iconClasses = 'genericon genericon-plus add-element-trigger';
 		this.selectors = [ 'html' ];
 
+		// Panel Configurations.
 		this.panel = {
 			title: 'Block Components',
-			height: '575px',
+			height: '640px',
 			width: '500px'
 		};
 
@@ -46,7 +50,7 @@ export class Add {
 				name: 'button',
 				title: 'Button',
 				type: 'design',
-				icon: require( './icons/button.svg' )
+				icon: require( './icons/buttons.svg' )
 			},
 			{
 				name: 'list',
@@ -62,9 +66,15 @@ export class Add {
 			},
 			{
 				name: 'hr',
-				title: 'Horizontal Rule',
+				title: 'Divider',
 				type: 'design',
-				icon: require( './icons/hr.svg' )
+				icon: require( './icons/divider.svg' )
+			},
+			{
+				name: 'custom-html',
+				title: 'HTML',
+				type: 'design',
+				icon: '<span class="dashicons dashicons-media-code"></span>'
 			},
 
 			// Media.
@@ -81,118 +91,92 @@ export class Add {
 				icon: '<span class="dashicons dashicons-format-audio"></span>'
 			},
 			{
-				name: 'map',
-				title: 'Map',
-				type: 'media',
-				icon: '<span class="dashicons dashicons-location-alt"></span>'
-			},
-			{
 				name: 'video',
 				title: 'Video',
 				type: 'media',
 				icon: '<span class="dashicons dashicons-format-video"></span>'
 			},
-
-			// From widgets.
 			{
-				name: 'archives',
-				title: 'Archives',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-archive"></span>'
-			},
-			{
-				name: 'calander',
-				title: 'Calander',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-calendar-alt"></span>'
-			},
-			{
-				name: 'categories',
-				title: 'Categories',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-category"></span>'
-			},
-			{
-				name: 'custom-html',
-				title: 'Custom HTML',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-media-code"></span>'
-			},
-			{
-				name: 'menu',
-				title: 'Menu',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-menu"></span>'
-			},
-			{
-				name: 'meta',
-				title: 'Meta',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-wordpress"></span>'
-			},
-			{
-				name: 'pages',
-				title: 'Pages',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-admin-page"></span>'
-			},
-			{
-				name: 'posts',
-				title: 'Recent Posts',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-admin-post"></span>'
-			},
-			{
-				name: 'comments',
-				title: 'Recent Comments',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-admin-comments"></span>'
-			},
-			{
-				name: 'search',
-				title: 'Search',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-search"></span>'
-			},
-			{
-				name: 'rss',
-				title: 'Rss',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-rss"></span>'
-			},
-			{
-				name: 'tags',
-				title: 'Tag Cloud',
-				type: 'widget',
-				icon: '<span class="dashicons dashicons-tagcloud"></span>'
+				name: 'map',
+				title: 'Map',
+				type: 'media',
+				icon: '<span class="dashicons dashicons-location-alt"></span>'
 			}
 		];
 	}
 
+	/**
+	 * Instantiate this service.
+	 *
+	 * @return {Add} Class instance.
+	 */
 	init() {
 		BOLDGRID.EDITOR.Controls.registerControl( this );
 
 		return this;
 	}
 
-	onMenuClick() {
-		let $control = $(
+	/**
+	 * Add a new component to the list.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {object} config List of control.s
+	 */
+	register( config ) {
+		this.components.push( config );
+	}
+
+	/**
+	 * Create the option UI.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return {jQuery} jQuery Control object.
+	 */
+	createUI() {
+		return $(
 			_.template( panelTemplate )( {
 				components: this.components,
 				printComponent: function( type, component ) {
 					if ( type === component.type ) {
 						return `
-					<label data-name="${component.name}">
-						<span class="component-icon">${component.icon}</span>
-						<span class="component-name">${component.title}</span>
-					</label>`;
+						<label data-name="${component.name}">
+							<span class="component-icon">${component.icon}</span>
+							<span class="component-name">${component.title}</span>
+						</label>`;
 					}
 				}
 			} )
 		);
+	}
+
+	/**
+	 * Setup the handlers for all components.
+	 *
+	 * @since 1.8.0
+	 */
+	_bindHandlers() {
+		let $context = BG.Panel.$element.find( '.bg-component' );
+		for ( let component of this.components ) {
+			$context.find( `[data-name="${component.name}"]` ).on( 'click', () => {
+				component.callback();
+			} );
+		}
+	}
+
+	/**
+	 * When the user clicks on the menu, open the panel.
+	 *
+	 * @since 1.8.0
+	 */
+	onMenuClick() {
+		let $control = this.createUI();
 
 		BG.Panel.clear();
 		BG.Panel.$element.find( '.panel-body' ).html( $control );
 		BG.Panel.open( this );
+
+		this._bindHandlers();
 	}
 }

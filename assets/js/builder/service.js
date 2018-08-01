@@ -49,6 +49,7 @@ export class Service {
 	 */
 	_onEditorLoad() {
 		BOLDGRID.EDITOR.$window.on( 'boldgrid_editor_loaded', () => {
+			console.log( 'editot loaded' );
 			this.styleUpdater = new StyleUpdater( BOLDGRID.EDITOR.Controls.$container ).init();
 
 			this.popover = {};
@@ -82,7 +83,7 @@ export class Service {
 			new LibrarySave().init();
 			new GridblockLead().init();
 			new Advanced().init();
-			this.addComponent = new AddComponent().init();
+			this.component = new AddComponent().init();
 
 			BG.Service.customize = BG.Service.customize || {};
 			BG.Service.customize.navigation = new CustomizeNavigation().init();

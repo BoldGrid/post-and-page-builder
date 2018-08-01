@@ -17,6 +17,15 @@
 			<% } ); %>
 		</div>
 	</div>
+	<div class="component-category component-media">
+		<h3>Media</h3>
+		<hr>
+		<div class="bg-component-list">
+			<% _.each( components, function ( component ) { %>
+				<%=printComponent( 'media', component ) %>
+			<% } ); %>
+		</div>
+	</div>
 	<div class="component-category component-widgets">
 		<h3>Widgets</h3>
 		<hr>

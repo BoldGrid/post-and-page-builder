@@ -60,18 +60,6 @@ class Boldgrid_Editor {
 		);
 		$this->set_path_configs( $path_configs );
 
-		/**
-		 * [bg-categories]
-		 * [bg-recent-posts]
-		 * [bg-tag-cloud]
-		 * [bg-menu]
-		 */
-
-
-		add_shortcode( 'bg_categories', function ( $attrs, $content = null ) {
-			return '<div>categories</div>';
-		} );
-
 		Boldgrid_Editor_Service::register( 'config', $config->get_configs() );
 	}
 
@@ -116,6 +104,7 @@ class Boldgrid_Editor {
 
 		Boldgrid_Editor_Service::register( 'file_system', new Boldgrid_Editor_Fs() );
 
+		$this->setup_components();
 		$this->setup_page_title();
 
 		if ( is_admin() && current_user_can( 'edit_pages' ) ) {
@@ -126,6 +115,11 @@ class Boldgrid_Editor {
 			$this->front_end_hooks();
 		}
 
+	}
+
+	public function setup_components() {
+		$shortcode = new Boldgrid_Components_Shortcode();
+		$shortcode->init();
 	}
 
 	/**
