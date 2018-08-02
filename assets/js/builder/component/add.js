@@ -23,86 +23,7 @@ export class Add {
 			width: '500px'
 		};
 
-		this.components = [
-
-			// Structure & Layout.
-			{
-				name: 'block',
-				title: 'Block',
-				type: 'structure',
-				icon: require( './icons/block.svg' )
-			},
-			{
-				name: 'layout',
-				title: 'Layout',
-				type: 'structure',
-				icon: '<span class="dashicons dashicons-layout"></span>'
-			},
-			{
-				name: 'spacer',
-				title: 'Spacer',
-				type: 'structure',
-				icon: require( './icons/space.svg' )
-			},
-
-			// Design.
-			{
-				name: 'button',
-				title: 'Button',
-				type: 'design',
-				icon: require( './icons/buttons.svg' )
-			},
-			{
-				name: 'list',
-				title: 'List',
-				type: 'design',
-				icon: require( './icons/list.svg' )
-			},
-			{
-				name: 'blockquote',
-				title: 'Blockquote',
-				type: 'design',
-				icon: '<span class="dashicons dashicons-editor-quote"></span>'
-			},
-			{
-				name: 'hr',
-				title: 'Divider',
-				type: 'design',
-				icon: require( './icons/divider.svg' )
-			},
-			{
-				name: 'custom-html',
-				title: 'HTML',
-				type: 'design',
-				icon: '<span class="dashicons dashicons-media-code"></span>'
-			},
-
-			// Media.
-			{
-				name: 'image',
-				title: 'Image',
-				type: 'media',
-				icon: '<span class="dashicons dashicons-format-image"></span>'
-			},
-			{
-				name: 'audio',
-				title: 'Audio',
-				type: 'media',
-				icon: '<span class="dashicons dashicons-format-audio"></span>'
-			},
-			{
-				name: 'video',
-				title: 'Video',
-				type: 'media',
-				icon: '<span class="dashicons dashicons-format-video"></span>'
-			},
-			{
-				name: 'map',
-				title: 'Map',
-				type: 'media',
-				icon: '<span class="dashicons dashicons-location-alt"></span>'
-			}
-		];
+		this.components = [];
 	}
 
 	/**
@@ -160,6 +81,7 @@ export class Add {
 		let $context = BG.Panel.$element.find( '.bg-component' );
 		for ( let component of this.components ) {
 			$context.find( `[data-name="${component.name}"]` ).on( 'click', () => {
+				BG.Panel.closePanel();
 				component.callback();
 			} );
 		}

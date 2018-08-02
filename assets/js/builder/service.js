@@ -49,7 +49,6 @@ export class Service {
 	 */
 	_onEditorLoad() {
 		BOLDGRID.EDITOR.$window.on( 'boldgrid_editor_loaded', () => {
-			console.log( 'editot loaded' );
 			this.styleUpdater = new StyleUpdater( BOLDGRID.EDITOR.Controls.$container ).init();
 
 			this.popover = {};

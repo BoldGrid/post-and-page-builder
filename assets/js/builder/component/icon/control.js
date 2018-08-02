@@ -61,6 +61,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			self._setupClosePanel();
 			self._setupCustomizeLeave();
+			self.registerComponent();
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.8.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'icon',
+				title: 'Icon',
+				type: 'design',
+				icon: '<span class="dashicons dashicons-star-filled"></span>',
+				callback: () => self.insertNew()
+			};
+
+			BG.Service.component.register( config );
 		},
 
 		/**

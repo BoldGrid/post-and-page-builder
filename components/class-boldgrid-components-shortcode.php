@@ -144,8 +144,10 @@ class Boldgrid_Components_Shortcode {
 	 * @param  $component Component Configuration.
 	 */
 	public function ajax_content( $component ) {
+		$attrs = ! empty( $_POST['attrs'] ) ? $_POST['attrs'] : array();
+
 		wp_send_json( array(
-			'content' => $this->get_content( $component )
+			'content' => $this->get_content( $component, $attrs )
 		) );
 	}
 
@@ -158,36 +160,69 @@ class Boldgrid_Components_Shortcode {
 	 */
 	public function register( $component ) {
 		add_shortcode( $component['shortcode'], function ( $attrs, $content = null ) use ( $component ) {
-			return $this->get_content( $component );
+			return $this->get_content( $component, $attrs );
 		} );
 	}
 
 	/**
-	 * Get the content of teh shortcode.
+	 * Widgets are encoded in one attributes named attr. Pull that data into an array.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  array $component Component Configuration.
+	 * @param  array $attrs     Attributes.
+	 * @return array            Attributes.
+	 */
+	public function parse_attrs( $component, $attrs ) {
+		if ( ! empty( $component['widget'] ) ) {
+			$attrs = ! empty( $attrs['attr'] ) ? $attrs['attr'] : '';
+			parse_str( html_entity_decode( $attrs ), $results );
+
+			$attrs = array();
+			$widget_props = reset( $results );
+
+			$widget_props = is_array( $widget_props ) ? $widget_props : array();
+			foreach( $widget_props as $widget_prop ) {
+				$attrs = array_merge( $attrs, $widget_prop );
+			}
+		}
+
+		return $attrs;
+	}
+
+	/**
+	 * Get the content of the shortcode.
 	 *
 	 * @since 1.8.0
 	 *
 	 * @param  $component Component Configuration.
+	 * @param  $attrs     Attributes for shortcode.
 	 * @return string     Content.
 	 */
-	public function get_content( $component ) {
+	public function get_content( $component, $attrs = array() ) {
 		$args = ! empty( $component['args'] ) ? $component['args'] : array();
+
+		$attrs = $this->parse_attrs( $component, $attrs );
 
 		if ( ! empty( $component['widget'] ) ) {
 			$widget = new $component['widget'];
 			$classname = ! empty( $widget->widget_options['classname'] ) ?
 				$widget->widget_options['classname'] : '';
 
-			ob_start();
-			$widget->widget( array_merge( $args, array(
+			$widget_config = array_merge( $args, array(
 				'before_title' => '<h2 class="widget-title">',
 				'after_title' => '</h2>',
 				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
 				'after_widget' => '</div>',
-			) ), array() );
-			return ob_get_clean();
+			) );
+
+			ob_start();
+			$widget->widget( $widget_config, $attrs );
+			$markup = ob_get_clean();
+
+			return $markup;
 		} else {
-			return $component['method']( $args );
+			return $component['method']( $args, $attrs );
 		}
 	}
 

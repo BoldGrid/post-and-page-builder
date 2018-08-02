@@ -35,6 +35,27 @@ BOLDGRID.EDITOR.CONTROLS.MEDIA = BOLDGRID.EDITOR.CONTROLS.MEDIA || {};
 			self.setContent();
 		},
 
+		setup() {
+			this.registerComponent();
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.8.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'map',
+				title: 'Map',
+				type: 'media',
+				icon: '<span class="dashicons dashicons-location-alt"></span>',
+				callback: self.openModal
+			};
+
+			BG.Service.component.register( config );
+		},
+
 		/**
 		 * Set the tinymce content variable to make sure, when replacing the map works.
 		 *

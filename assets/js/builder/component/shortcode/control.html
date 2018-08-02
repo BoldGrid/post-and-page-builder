@@ -1,9 +1,10 @@
 <div class="customize">
 	<div data-control-name="design">
-		<h4><%=component.js_control.title %></h4>
+		<h3><%=component.js_control.title %></h3>
 		<p><%=component.js_control.description %></p>
-		<div class="widget-form">
-			<%=component.js_control.form %>
-		</div>
+		<form class="widget-form">
+			<div class="widget-inputs"><%=component.js_control.form %></div>
+			<button class="button-primary">Update</button>
+		</form>
 	</div>
 </div>

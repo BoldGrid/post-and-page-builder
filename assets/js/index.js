@@ -18,6 +18,7 @@ import '../css/font-family-controls.min.css';
 // Import Libs.
 import './builder/tinymce/wp-mce-draggable';
 import './builder/util';
+import './builder/controls';
 
 // Require all Builder files.
 function requireAll( r ) {
