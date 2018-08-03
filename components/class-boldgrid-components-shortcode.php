@@ -51,7 +51,6 @@ class Boldgrid_Components_Shortcode {
 			$config['js_control'] = array(
 				'name' =>  'wp_' . $widget->id_base,
 				'title' =>  $widget->name,
-				'form' => $this->get_form( $classname ),
 				'description' => ! empty( $widget->widget_options['description'] ) ?
 					$widget->widget_options['description'] : '',
 				'type' =>  'widget',
@@ -69,13 +68,19 @@ class Boldgrid_Components_Shortcode {
 	 * @since 1.8.0
 	 *
 	 * @param  string $classname Class of widget.
+	 * @param  string $attrs     Attributes.
 	 * @return string            HTML.
 	 */
-	public function get_form( $classname ) {
-		$widget = new $classname();
-		ob_start();
-		$widget->form( array() );
-		return ob_get_clean();
+	public function get_form( $component, $attrs = array() ) {
+		$form = false;
+		if ( class_exists( $component['widget'] ) ) {
+			$widget = new $component['widget']();
+			ob_start();
+			$widget->form( $attrs );
+			$form = ob_get_clean();
+		}
+
+		return $form;
 	}
 
 	/**
@@ -130,10 +135,31 @@ class Boldgrid_Components_Shortcode {
 		foreach ( $this->config['components'] as $component ) {
 			$this->register( $component );
 
-			add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
-				$this->ajax_content( $component );
-			} );
+			if ( current_user_can( 'edit_pages' ) ) {
+				add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
+					$this->ajax_content( $component );
+				} );
+				add_action( 'wp_ajax_boldgrid_component_' . $component['name'] . '_form', function () use ( $component ) {
+					$this->ajax_form( $component );
+				} );
+			}
 		}
+	}
+
+	/**
+	 * Get the form for a widget.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param $component Component Configuration.
+	 */
+	public function ajax_form( $component ) {
+		$attrs = ! empty( $_POST['attrs'] ) ? $_POST['attrs'] : array();
+		$attrs = $this->parse_attrs( $component, $attrs );
+
+		wp_send_json( array(
+			'content' => $this->get_form( $component, $attrs )
+		) );
 	}
 
 	/**
@@ -141,7 +167,7 @@ class Boldgrid_Components_Shortcode {
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param  $component Component Configuration.
+	 * @param $component Component Configuration.
 	 */
 	public function ajax_content( $component ) {
 		$attrs = ! empty( $_POST['attrs'] ) ? $_POST['attrs'] : array();

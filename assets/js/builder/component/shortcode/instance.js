@@ -61,7 +61,7 @@ export class Instance {
 			 */
 			initialize: function() {
 				self
-					.getContent( this.shortcode.attrs.named )
+					.getWidgetData( 'content', this.shortcode.attrs.named )
 					.done( response => {
 						if ( response && response.content ) {
 							this.render( response.content );
@@ -73,7 +73,7 @@ export class Instance {
 			},
 
 			edit: function( text, update ) {
-				self.openPanel( update );
+				self.openPanel( this, update );
 			},
 
 			bindNode: function( editor, node ) {
@@ -117,9 +117,15 @@ export class Instance {
 	 *
 	 * @since 1.8.0
 	 *
+	 * @param  {string} type      Type of widget data.
 	 * @param  {object} component Component configuration.
 	 */
-	getContent( attrs ) {
+	getWidgetData( type, attrs ) {
+		let action = 'boldgrid_component_' + this.component.name;
+		if ( 'form' === type ) {
+			action = action + '_widget';
+		}
+
 		return $.ajax( {
 			type: 'post',
 			url: ajaxurl,
@@ -127,7 +133,7 @@ export class Instance {
 			timeout: 10000,
 			data: {
 				/*eslint-disable */
-				action: 'boldgrid_component_' + this.component.name,
+				action: action,
 				boldgrid_editor_gridblock_save: BoldgridEditor.nonce_gridblock_save,
 				attrs: attrs
 				/*eslint-enable */
@@ -144,6 +150,7 @@ export class Instance {
 	 * @param  {function} update Update the shortcode method.
 	 */
 	_bindFormInputs( update ) {
+		return;
 		BG.Panel.$element.find( '[data-control-name="design"] form' ).submit( e => {
 			e.preventDefault();
 
@@ -157,22 +164,23 @@ export class Instance {
 	 *
 	 * @since 1.8.0
 	 *
+	 * @param  {object} shortcode Shortcode objects.
 	 * @param  {object} component Component Configuration.
 	 * @param  {function} update Update the shortcode method.
 	 */
-	openPanel( update ) {
+	openPanel( shortcode, update ) {
 		let $template = $(
 			this.controlTemplate( {
 				component: this.component
 			} )
 		);
 
+		// AJAX the form. This will preset values.
+		this.loadForm( $template, shortcode, update );
+
 		BG.Panel.clear();
 		BG.Panel.$element.find( '.panel-body' ).html( $template );
 		BG.Menu.$element.targetData[this.component.name] = this.findTarget();
-
-		// @todo move this into an ajax call.
-		this._bindFormInputs( update );
 
 		let panelConfig = _.extend( this.panelConfig, {
 			title: `Customize ${this.component.js_control.title}`
@@ -185,6 +193,29 @@ export class Instance {
 
 		BG.Panel.enterCustomization();
 		BG.Panel.customizeOpenEvent();
+	}
+
+	/**
+	 * Load the customization form into the template
+	 *
+	 * @since 1.8.0
+	 */
+	loadForm( $template, shortcode, update ) {
+		let fail = () => {
+			$widgetsInput.html( '<p>Unable to Load Form. Please refresh and try again.</p>' );
+		};
+
+		let $widgetsInput = $template.on( '.widget-inputs' );
+		this.getWidgetData( 'form', shortcode.attrs.named )
+			.done( response => {
+				if ( response && response.content ) {
+					$widgetsInput.html( response.content );
+					this._bindFormInputs( update );
+				} else {
+					fail();
+				}
+			} )
+			.fail( () => fail() );
 	}
 
 	/**
