@@ -160,7 +160,7 @@ class Boldgrid_Components_Shortcode {
 					$this->ajax_widget( $component, 'content' );
 				} );
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'] . '_form', function () use ( $component ) {
-					// $this->ajax_widget( $component, 'form' );
+					$this->ajax_widget( $component, 'form' );
 				} );
 			}
 		}
