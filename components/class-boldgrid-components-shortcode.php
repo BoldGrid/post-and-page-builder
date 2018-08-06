@@ -30,6 +30,56 @@ class Boldgrid_Components_Shortcode {
 	}
 
 	/**
+	 * Initialize the shortcode component.
+	 *
+	 * @since 1.8.0
+	 */
+	public function init() {
+		add_action( 'wp_loaded', function() {
+			$this->add_widget_configs();
+			$config = Boldgrid_Editor_Service::get( 'config' );
+			$config['component_controls'] = $this->config;
+			Boldgrid_Editor_Service::register( 'config', $config );
+
+			$this->register_components();
+		}, 20 );
+	}
+
+	/**
+	 * Get the content of the shortcode.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  $component Component Configuration.
+	 * @param  $attrs     Attributes for shortcode.
+	 * @return string     Content.
+	 */
+	public function get_content( $component, $attrs = array() ) {
+		$args = ! empty( $component['args'] ) ? $component['args'] : array();
+
+		if ( ! empty( $component['widget'] ) ) {
+			$widget = new $component['widget'];
+			$classname = ! empty( $widget->widget_options['classname'] ) ?
+				$widget->widget_options['classname'] : '';
+
+			$widget_config = array_merge( $args, array(
+				'before_title' => '<h2 class="widget-title">',
+				'after_title' => '</h2>',
+				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
+				'after_widget' => '</div>',
+			) );
+
+			ob_start();
+			$widget->widget( $widget_config, $attrs );
+			$markup = ob_get_clean();
+
+			return $markup;
+		} else {
+			return $component['method']( $args, $attrs );
+		}
+	}
+
+	/**
 	 * Given a widget configuration.
 	 *
 	 * @since 1.8.0
@@ -63,32 +113,11 @@ class Boldgrid_Components_Shortcode {
 	}
 
 	/**
-	 * Get a Widget form.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param  string $classname Class of widget.
-	 * @param  string $attrs     Attributes.
-	 * @return string            HTML.
-	 */
-	public function get_form( $component, $attrs = array() ) {
-		$form = false;
-		if ( class_exists( $component['widget'] ) ) {
-			$widget = new $component['widget']();
-			ob_start();
-			$widget->form( $attrs );
-			$form = ob_get_clean();
-		}
-
-		return $form;
-	}
-
-	/**
 	 * Add all widgets to the list of components.
 	 *
 	 * @since 1.8.0
 	 */
-	public function add_widget_configs() {
+	protected function add_widget_configs() {
 		if ( ! empty( $GLOBALS['wp_widget_factory']->widgets ) ) {
 			$widgets = $GLOBALS['wp_widget_factory']->widgets;
 
@@ -111,39 +140,52 @@ class Boldgrid_Components_Shortcode {
 	}
 
 	/**
-	 * Initialize the shortcode component.
-	 *
-	 * @since 1.8.0
-	 */
-	public function init() {
-		add_action( 'wp_loaded', function() {
-			$this->add_widget_configs();
-			$config = Boldgrid_Editor_Service::get( 'config' );
-			$config['component_controls'] = $this->config;
-			Boldgrid_Editor_Service::register( 'config', $config );
-
-			$this->register_components();
-		}, 20 );
-	}
-
-	/**
 	 * Based on our configuration. Setup our config.
 	 *
 	 * @since 1.8.0
 	 */
-	public function register_components() {
-		foreach ( $this->config['components'] as $component ) {
-			$this->register( $component );
+	protected function register_components() {
 
+		// Add a single configurable shortcode.
+		add_shortcode( 'boldgrid_component', function ( $attrs, $content = null ) {
+			if ( ! empty( $component = $this->config['components'][ $attrs['type'] ] ) ) {
+				$attrs = $this->get_shortcode_options( $attrs );
+				return $this->get_content( $component, $attrs );
+			}
+		} );
+
+		foreach ( $this->config['components'] as $component ) {
 			if ( current_user_can( 'edit_pages' ) ) {
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
-					$this->ajax_content( $component );
+					$this->ajax_widget( $component, 'content' );
 				} );
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'] . '_form', function () use ( $component ) {
-					$this->ajax_form( $component );
+					// $this->ajax_widget( $component, 'form' );
 				} );
 			}
 		}
+	}
+
+	/**
+	 * Given a component and some attributes, return the options for shortcode.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  array $attrs     Attributes from the shortcode.
+	 * @return string           Shortcode output.
+	 */
+	public function get_shortcode_options( $attrs ) {
+		$attrs = ! empty( $attrs['opts'] ) ? $attrs['opts'] : array();
+		$attrs = json_decode( urldecode( $attrs ), true );
+
+		$output = array();
+		foreach( $attrs as $name => $val ) {
+			$results = array();
+			parse_str( $name . '=' . $val, $results );
+			$output[ key( $results ) ][] = reset( $results )[0];
+		}
+
+		return $this->parse_attrs( $output );
 	}
 
 	/**
@@ -153,41 +195,34 @@ class Boldgrid_Components_Shortcode {
 	 *
 	 * @param $component Component Configuration.
 	 */
-	public function ajax_form( $component ) {
-		$attrs = ! empty( $_POST['attrs'] ) ? $_POST['attrs'] : array();
-		$attrs = $this->parse_attrs( $component, $attrs );
+	protected function ajax_widget( $component, $type ) {
+		$attrs = $this->parse_attrs( $_POST );
+		$method = 'get_' . $type;
 
 		wp_send_json( array(
-			'content' => $this->get_form( $component, $attrs )
+			'content' => $this->$method( $component, $attrs )
 		) );
 	}
 
 	/**
-	 * Return the content of a shortcode.
+	 * Get a Widget form.
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param $component Component Configuration.
+	 * @param  string $classname Class of widget.
+	 * @param  string $attrs     Attributes.
+	 * @return string            HTML.
 	 */
-	public function ajax_content( $component ) {
-		$attrs = ! empty( $_POST['attrs'] ) ? $_POST['attrs'] : array();
+	protected function get_form( $component, $attrs = array() ) {
+		$form = false;
+		if ( class_exists( $component['widget'] ) ) {
+			$widget = new $component['widget']();
+			ob_start();
+			$widget->form( $attrs );
+			$form = ob_get_clean();
+		}
 
-		wp_send_json( array(
-			'content' => $this->get_content( $component, $attrs )
-		) );
-	}
-
-	/**
-	 * Register the shortcode.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param  $component Component Configuration.
-	 */
-	public function register( $component ) {
-		add_shortcode( $component['shortcode'], function ( $attrs, $content = null ) use ( $component ) {
-			return $this->get_content( $component, $attrs );
-		} );
+		return $form;
 	}
 
 	/**
@@ -199,57 +234,15 @@ class Boldgrid_Components_Shortcode {
 	 * @param  array $attrs     Attributes.
 	 * @return array            Attributes.
 	 */
-	public function parse_attrs( $component, $attrs ) {
-		if ( ! empty( $component['widget'] ) ) {
-			$attrs = ! empty( $attrs['attr'] ) ? $attrs['attr'] : '';
-			parse_str( html_entity_decode( $attrs ), $results );
-
-			$attrs = array();
-			$widget_props = reset( $results );
-
-			$widget_props = is_array( $widget_props ) ? $widget_props : array();
-			foreach( $widget_props as $widget_prop ) {
-				$attrs = array_merge( $attrs, $widget_prop );
-			}
+	protected function parse_attrs( $params ) {
+		$widget_props = reset( $params );
+		$attrs = array();
+		$widget_props = is_array( $widget_props ) ? $widget_props : array();
+		foreach( $widget_props as $widget_prop ) {
+			$attrs = array_merge( $attrs, $widget_prop );
 		}
 
 		return $attrs;
-	}
-
-	/**
-	 * Get the content of the shortcode.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param  $component Component Configuration.
-	 * @param  $attrs     Attributes for shortcode.
-	 * @return string     Content.
-	 */
-	public function get_content( $component, $attrs = array() ) {
-		$args = ! empty( $component['args'] ) ? $component['args'] : array();
-
-		$attrs = $this->parse_attrs( $component, $attrs );
-
-		if ( ! empty( $component['widget'] ) ) {
-			$widget = new $component['widget'];
-			$classname = ! empty( $widget->widget_options['classname'] ) ?
-				$widget->widget_options['classname'] : '';
-
-			$widget_config = array_merge( $args, array(
-				'before_title' => '<h2 class="widget-title">',
-				'after_title' => '</h2>',
-				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
-				'after_widget' => '</div>',
-			) );
-
-			ob_start();
-			$widget->widget( $widget_config, $attrs );
-			$markup = ob_get_clean();
-
-			return $markup;
-		} else {
-			return $component['method']( $args, $attrs );
-		}
 	}
 
 }

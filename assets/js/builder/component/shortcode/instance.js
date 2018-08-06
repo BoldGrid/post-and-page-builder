@@ -1,14 +1,12 @@
 var BG = BOLDGRID.EDITOR,
 	$ = jQuery;
 
-import errorTemplate from './error.html';
 import controlTemplate from './control.html';
 
 export class Instance {
 	constructor( component ) {
 		this.component = component;
 		this.insertedNode = false;
-		this.errorTemplate = _.template( errorTemplate );
 		this.controlTemplate = _.template( controlTemplate );
 
 		this.panelConfig = {
@@ -29,6 +27,11 @@ export class Instance {
 		};
 	}
 
+	/**
+	 * Setup a single shortcode component.
+	 *
+	 * @since 1.8.0
+	 */
 	setup() {
 		this.component.js_control.callback = () => {
 			this.insertedNode = true;
@@ -39,67 +42,6 @@ export class Instance {
 	}
 
 	/**
-	 * Register a shortcode with MCE views.
-	 *
-	 * @since 1.8.0
-	 */
-	register() {
-		let self = this;
-
-		let fail = mce => {
-			mce.render(
-				this.errorTemplate( {
-					name: this.component.js_control.title
-				} )
-			);
-		};
-
-		wp.mce.views.register( this.component.shortcode, {
-
-			/*
-			 * Make an API call to get the widget.
-			 */
-			initialize: function() {
-				self
-					.getWidgetData( 'content', this.shortcode.attrs.named )
-					.done( response => {
-						if ( response && response.content ) {
-							this.render( response.content );
-						} else {
-							fail( this );
-						}
-					} )
-					.fail( () => fail( this ) );
-			},
-
-			edit: function( text, update ) {
-				self.openPanel( this, update );
-			},
-
-			bindNode: function( editor, node ) {
-				if ( self.insertedNode ) {
-					wp.mce.views.edit( editor, node );
-					self.insertedNode = false;
-				}
-			},
-
-			remove: function( editor, node ) {
-
-				// @TODO thi isnt firing figure out why.
-
-				let $node = $( node ),
-					$draggable = $node.parent( '[data-imhwpb-draggable="true"]' );
-
-				this.remove( editor, node );
-
-				if ( $draggable.length ) {
-					$draggable.remove();
-				}
-			}
-		} );
-	}
-
-	/**
 	 * Get a sample shortcode.
 	 *
 	 * @since 1.8.0
@@ -107,9 +49,9 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
-		return `<div class="boldgrid-shortcode" data-imhwpb-draggable="true">[${
-			this.component.shortcode
-		}]</div>`;
+		return `<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
+			[boldgrid_component type="${this.component.name}"]
+		</div>`;
 	}
 
 	/**
@@ -120,43 +62,44 @@ export class Instance {
 	 * @param  {string} type      Type of widget data.
 	 * @param  {object} component Component configuration.
 	 */
-	getWidgetData( type, attrs ) {
+	getShortcodeData( type, attrs ) {
 		let action = 'boldgrid_component_' + this.component.name;
 		if ( 'form' === type ) {
-			action = action + '_widget';
+			action = action + '_form';
 		}
+
+		let data = attrs ? JSON.parse( decodeURIComponent( attrs ) ) : {};
+
+		/*eslint-disable */
+		data.action = action;
+		data.boldgrid_editor_gridblock_save = BoldgridEditor.nonce_gridblock_save;
+		/*eslint-enable */
 
 		return $.ajax( {
 			type: 'post',
 			url: ajaxurl,
 			dataType: 'json',
 			timeout: 10000,
-			data: {
-				/*eslint-disable */
-				action: action,
-				boldgrid_editor_gridblock_save: BoldgridEditor.nonce_gridblock_save,
-				attrs: attrs
-				/*eslint-enable */
-			}
+			data: data
 		} );
 	}
 
 	/**
-	 * When the form is submitted uodate the shortcode.
+	 * Update target.
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param  {object} component Component Configuration.
-	 * @param  {function} update Update the shortcode method.
+	 * @return {jQuery} Editting target
 	 */
-	_bindFormInputs( update ) {
-		return;
-		BG.Panel.$element.find( '[data-control-name="design"] form' ).submit( e => {
-			e.preventDefault();
+	findTarget() {
+		let $wpView = $( BG.mce.selection.getNode() ),
+			$dragWrap = $wpView.parent( '[data-imhwpb-draggable="true"]' );
 
-			let $values = BG.Panel.$element.find( '[data-control-name="design"] form' ).serialize();
-			update( `[${this.component.shortcode} attr="${$values}"]` );
-		} );
+		if ( ! $dragWrap.length ) {
+			$dragWrap = $wpView.wrap( '<div class="boldgrid-shortcode" data-imhwpb-draggable="true">' );
+		}
+
+		return $dragWrap;
 	}
 
 	/**
@@ -164,11 +107,11 @@ export class Instance {
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param  {object} shortcode Shortcode objects.
+	 * @param  {object} viewInstance MCE view object.
 	 * @param  {object} component Component Configuration.
 	 * @param  {function} update Update the shortcode method.
 	 */
-	openPanel( shortcode, update ) {
+	openPanel( viewInstance, update ) {
 		let $template = $(
 			this.controlTemplate( {
 				component: this.component
@@ -176,7 +119,7 @@ export class Instance {
 		);
 
 		// AJAX the form. This will preset values.
-		this.loadForm( $template, shortcode, update );
+		this._loadForm( $template, viewInstance, update );
 
 		BG.Panel.clear();
 		BG.Panel.$element.find( '.panel-body' ).html( $template );
@@ -199,14 +142,19 @@ export class Instance {
 	 * Load the customization form into the template
 	 *
 	 * @since 1.8.0
+	 *
+	 * @param {object} viewInstance MCE view object.
 	 */
-	loadForm( $template, shortcode, update ) {
+	_loadForm( $template, viewInstance, update ) {
 		let fail = () => {
-			$widgetsInput.html( '<p>Unable to Load Form. Please refresh and try again.</p>' );
+			$template
+				.find( 'form' )
+				.replaceWith( '<p style="color:red">Unable to Load Form. Please refresh and try again.</p>' );
 		};
 
-		let $widgetsInput = $template.on( '.widget-inputs' );
-		this.getWidgetData( 'form', shortcode.attrs.named )
+		let $widgetsInput = $template.find( '.widget-inputs' );
+
+		this.getShortcodeData( 'form', viewInstance.shortcode.attrs.named.opts )
 			.done( response => {
 				if ( response && response.content ) {
 					$widgetsInput.html( response.content );
@@ -219,20 +167,29 @@ export class Instance {
 	}
 
 	/**
-	 * Update target.
+	 * When the form is submitted uodate the shortcode.
 	 *
 	 * @since 1.8.0
 	 *
-	 * @return {jQuery} Editting target
+	 * @param  {object} component Component Configuration.
+	 * @param  {function} update Update the shortcode method.
 	 */
-	findTarget() {
-		let $wpView = $( BG.mce.selection.getNode() ),
-			$dragWrap = $wpView.parent( '[data-imhwpb-draggable="true"]' );
+	_bindFormInputs( update ) {
+		BG.Panel.$element.find( '[data-control-name="design"] form' ).submit( e => {
+			e.preventDefault();
+			let data = {},
+				$form = $( e.target );
 
-		if ( ! $dragWrap.length ) {
-			$dragWrap = $wpView.wrap( '<div class="boldgrid-shortcode" data-imhwpb-draggable="true">' );
-		}
+			_.each( $form.serializeArray(), val => {
+				data[val.name] = val.value;
+			} );
 
-		return $dragWrap;
+			$form.find( 'input:checkbox' ).each( ( index, el ) => {
+				data[el.name] = el.checked ? 1 : 0;
+			} );
+
+			let values = encodeURIComponent( JSON.stringify( data ) );
+			update( `[boldgrid_component type="${this.component.name}" opts="${values}"]` );
+		} );
 	}
 }
