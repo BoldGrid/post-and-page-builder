@@ -6,6 +6,12 @@
 		'media_image',
 		'text',
 	),
+	'types' => array(
+		array( 'name' => 'structure', 'title' => 'Layout & Formatting' ),
+		array( 'name' => 'design', 'title' => 'Design' ),
+		array( 'name' => 'media', 'title' => 'Media' ),
+		array( 'name' => 'widget', 'title' => 'Widgets' ),
+	),
 	'components' => array(
 		'wp_archives' => array(
 			'js_control' => array(

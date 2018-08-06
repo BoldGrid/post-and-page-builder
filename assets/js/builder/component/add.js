@@ -23,13 +23,6 @@ export class Add {
 			width: '500px'
 		};
 
-		this.sections = [
-			{ name: 'structure', title: 'Layout & Formatting' },
-			{ name: 'design', title: 'Design' },
-			{ name: 'media', title: 'Media' },
-			{ name: 'widget', title: 'Widgets' }
-		];
-
 		this.components = [];
 	}
 
@@ -67,9 +60,12 @@ export class Add {
 			return this.$ui;
 		}
 
+		// Alphabetical order.
+		this.components = _.sortBy( this.components, val => val.title );
+
 		this.$ui = $(
 			_.template( panelTemplate )( {
-				sections: this.sections,
+				sections: BoldgridEditor.plugin_configs.component_controls.types,
 				components: this.components,
 				printComponent: function( type, component ) {
 					if ( type === component.type ) {
