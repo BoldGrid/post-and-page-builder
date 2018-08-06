@@ -157,10 +157,10 @@ class Boldgrid_Components_Shortcode {
 		foreach ( $this->config['components'] as $component ) {
 			if ( current_user_can( 'edit_pages' ) ) {
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
-					$this->ajax_widget( $component, 'content' );
+					$this->ajax_shortcode( $component, 'content' );
 				} );
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'] . '_form', function () use ( $component ) {
-					$this->ajax_widget( $component, 'form' );
+					$this->ajax_shortcode( $component, 'form' );
 				} );
 			}
 		}
@@ -195,7 +195,9 @@ class Boldgrid_Components_Shortcode {
 	 *
 	 * @param $component Component Configuration.
 	 */
-	protected function ajax_widget( $component, $type ) {
+	protected function ajax_shortcode( $component, $type ) {
+		Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
+
 		$attrs = $this->parse_attrs( $_POST );
 		$method = 'get_' . $type;
 
