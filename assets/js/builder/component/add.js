@@ -63,7 +63,11 @@ export class Add {
 	 * @return {jQuery} jQuery Control object.
 	 */
 	createUI() {
-		return $(
+		if ( this.$ui ) {
+			return this.$ui;
+		}
+
+		this.$ui = $(
 			_.template( panelTemplate )( {
 				sections: this.sections,
 				components: this.components,
@@ -78,6 +82,8 @@ export class Add {
 				}
 			} )
 		);
+
+		return this.$ui;
 	}
 
 	/**
