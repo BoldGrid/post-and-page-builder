@@ -1,18 +1,36 @@
 .editor-panel[data-type='add'] {
-	h3 {
-		margin-left: 10px;
-		margin-bottom: 10px;
+	.component-heading {
+		position: relative;
+		margin-bottom: 5px;
+		padding: 10px 0;
+		box-shadow: 0 5px 10px -7px #b7b7b7;
 		color: #7b7b7b;
-		font-weight: normal;
-	}
+		cursor: pointer;
+		margin-right: 15px;
+		margin-left: 5px;
+		transition: all 0.25s;
 
-	hr {
-		width: 50%;
-		margin-left: 10px;
-		height: 2px;
-		background: #eeeeee;
-		color: transparent;
-		border: 0;
+		&:hover {
+			background-color: #f8f8f8;
+			box-shadow: 0 7px 10px -7px #b7b7b7;
+		}
+
+		h3 {
+			display: inline;
+			margin-left: 10px;
+			margin-bottom: 10px;
+			font-weight: normal;
+		}
+
+		.dashicons {
+			position: absolute;
+			right: 13px;
+			transition: transform 0.25s;
+		}
+
+		&.collapsed .dashicons {
+			transform: rotate(180deg);
+		}
 	}
 
 	.bg-component-list {

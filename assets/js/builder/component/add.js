@@ -23,6 +23,13 @@ export class Add {
 			width: '500px'
 		};
 
+		this.sections = [
+			{ name: 'structure', title: 'Layout & Formatting' },
+			{ name: 'design', title: 'Design' },
+			{ name: 'media', title: 'Media' },
+			{ name: 'widget', title: 'Widgets' }
+		];
+
 		this.components = [];
 	}
 
@@ -58,6 +65,7 @@ export class Add {
 	createUI() {
 		return $(
 			_.template( panelTemplate )( {
+				sections: this.sections,
 				components: this.components,
 				printComponent: function( type, component ) {
 					if ( type === component.type ) {
@@ -85,6 +93,27 @@ export class Add {
 				component.callback();
 			} );
 		}
+
+		this.setupAccordion( $context );
+	}
+
+	/**
+	 * Bind the click event for the accordion headings.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {jQuery} $context Element.
+	 */
+	setupAccordion( $context ) {
+		$context.find( '.component-heading' ).on( 'click', e => {
+			let $target = $( e.currentTarget );
+			$target
+				.next( '.bg-component-list' )
+				.stop()
+				.slideToggle( 'fast', () => {
+					$target.toggleClass( 'collapsed', ! $target.next( '.bg-component-list' ).is( ':visible' ) );
+				} );
+		} );
 	}
 
 	/**

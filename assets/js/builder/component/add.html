@@ -1,38 +1,15 @@
 <div class="bg-component">
-	<div class="component-category component-layouts">
-		<h3>Layout & Formatting</h3>
-		<hr>
+	<% _.each( sections, function ( section ) { %>
+	<div class="component-category component-<%=section.name%>">
+		<div class="component-heading">
+			<h3><%=section.title%></h3>
+			<span class="dashicons dashicons-arrow-down-alt2"></span>
+		</div>
 		<div class="bg-component-list">
 			<% _.each( components, function ( component ) { %>
-				<%=printComponent( 'structure', component ) %>
+				<%=printComponent( section.name, component ) %>
 			<% } ); %>
 		</div>
 	</div>
-	<div class="component-category component-design">
-		<h3>Design</h3>
-		<hr>
-		<div class="bg-component-list">
-			<% _.each( components, function ( component ) { %>
-				<%=printComponent( 'design', component ) %>
-			<% } ); %>
-		</div>
-	</div>
-	<div class="component-category component-media">
-		<h3>Media</h3>
-		<hr>
-		<div class="bg-component-list">
-			<% _.each( components, function ( component ) { %>
-				<%=printComponent( 'media', component ) %>
-			<% } ); %>
-		</div>
-	</div>
-	<div class="component-category component-widgets">
-		<h3>Widgets</h3>
-		<hr>
-		<div class="bg-component-list">
-			<% _.each( components, function ( component ) { %>
-				<%=printComponent( 'widget', component ) %>
-			<% } ); %>
-		</div>
-	</div>
+	<% } ); %>
 </div>
