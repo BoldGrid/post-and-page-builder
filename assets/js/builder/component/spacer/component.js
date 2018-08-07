@@ -27,7 +27,12 @@ export class Component {
 	 * @since 1.8.0
 	 */
 	callback() {
-		alert( 'test' );
+		var $container = BG.Controls.$container,
+			$newSection = $( wp.template( 'boldgrid-editor-empty-section' )() );
+		$container.$body.prepend( $newSection );
+
+		BG.Service.component.scrollToElement( $newSection, 200 );
+		BG.Service.popover.section.transistionSection( $newSection );
 	}
 }
 new Component().init();

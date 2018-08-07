@@ -100,6 +100,20 @@ export class Add {
 	}
 
 	/**
+	 * Scroll to an element on the iFrame.
+	 *
+	 * @since 1.2.7
+	 */
+	scrollToElement( $newSection, duration ) {
+		$( 'html, body' ).animate(
+			{
+				scrollTop: $newSection.offset().top
+			},
+			duration
+		);
+	}
+
+	/**
 	 * Bind the click event for the accordion headings.
 	 *
 	 * @since 1.8.0
@@ -124,6 +138,15 @@ export class Add {
 	 * @since 1.8.0
 	 */
 	onMenuClick() {
+		this.openPanel();
+	}
+
+	/**
+	 * Open Panel.
+	 *
+	 * @since 1.8.0
+	 */
+	openPanel() {
 		let $control = this.createUI();
 
 		BG.Panel.clear();

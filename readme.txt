@@ -1,9 +1,9 @@
 === Post and Page Builder by BoldGrid - Visual Drag and Drop Editor ===
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
-Requires at least: 4.4
-Tested up to: 4.9.6
-Requires PHP: 5.3
+Requires at least: 4.7
+Tested up to: 4.9.8
+Requires PHP: 5.4
 Stable tag: 1.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -141,6 +141,7 @@ Release Date: TBD
 * New Feature: Column and Row backgrounds are now supported.
 * New Feature: Add Components and Widgets.
 * New Feature: Upgraded typography controls.
+* New Feature: Layout component.
 * Update: After first time setup page template will update for current page.
 
 = 1.7.5 =

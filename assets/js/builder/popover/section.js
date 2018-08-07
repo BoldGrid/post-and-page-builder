@@ -86,21 +86,25 @@ export class Section extends Base {
 	 * @since 1.2.7
 	 * @param jQuery $newSection.
 	 */
-	transistionSection( $newSection ) {
+	transistionSection( $newSection, color ) {
 		IMHWPB['tinymce_undo_disabled'] = true;
 
-		$newSection.animate(
-			{
-				'background-color': 'transparent'
-			},
-			500,
-			'swing',
-			function() {
-				BG.Controls.addStyle( $newSection, 'background-color', '' );
-				IMHWPB['tinymce_undo_disabled'] = false;
-				BOLDGRID.EDITOR.mce.undoManager.add();
-			}
-		);
+		color = color || 'transparent';
+
+		$newSection.css( {
+			transition: 'background-color 0.25s',
+			'background-color': color
+		} );
+
+		setTimeout( () => {
+			BG.Controls.addStyle( $newSection, 'background-color', '' );
+		}, 250 );
+
+		setTimeout( () => {
+			BG.Controls.addStyle( $newSection, 'transition', '' );
+			IMHWPB['tinymce_undo_disabled'] = false;
+			BOLDGRID.EDITOR.mce.undoManager.add();
+		}, 500 );
 	}
 
 	/**

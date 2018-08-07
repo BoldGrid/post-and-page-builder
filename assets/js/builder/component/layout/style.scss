@@ -1,0 +1,32 @@
+.editor-panel .bg-layouts-component {
+	.bg-layouts {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 10px 5px;
+	}
+
+	.back {
+		margin-left: 20px;
+	}
+
+	.bg-layout {
+		width: 25%;
+		padding: 17px;
+		margin: 10px auto;
+		box-shadow: 0 1px 3px 0 rgba(221, 221, 221, 0.47);
+		transition: background 0.25s;
+		cursor: pointer;
+		text-align: center;
+
+		svg {
+			width: 50px;
+			fill: #32373c;
+			vertical-align: sub;
+		}
+
+		&:hover {
+			background: #f2f2f2;
+			border-radius: 4px;
+		}
+	}
+}

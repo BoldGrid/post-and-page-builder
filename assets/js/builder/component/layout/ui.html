@@ -1,15 +1,12 @@
-<div class="bg-layouts">
-	<iframe>
-		<html>
-		<head>
-		</head>
-		<body>
-		</body>
-		</html>
-	</iframe>
-	<% _.each( layouts, function ( layout ) { %>
-	<div class="layout">
-		<%=layout.html %>
+<div class="bg-layouts-component" data-tooltip-id='layouts'>
+	<div class='back'>
+		<a class='panel-button' href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i> Add Block Components</a>
 	</div>
-	<% } ); %>
+	<div class="bg-layouts">
+		<% _.each( layouts, function ( layout ) { %>
+			<div class="bg-layout" data-layout="<%= layout.name %>">
+				<%=layout.icon %>
+			</div>
+		<% } ); %>
+	</div>
 </div>
