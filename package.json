@@ -54,7 +54,7 @@
 		"gutil": "^1.6.4",
 		"husky": "^0.14.3",
 		"jasmine-core": "^3.0.0",
-		"karma": "^2.0.0",
+		"karma": "^3.0.0",
 		"karma-chrome-launcher": "^2.2.0",
 		"karma-jasmine": "^1.1.0",
 		"karma-phantomjs-launcher": "^1.0.4",
