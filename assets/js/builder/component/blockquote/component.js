@@ -8,7 +8,7 @@ export class Component {
 			title: 'Blockquote',
 			type: 'design',
 			icon: '<span class="dashicons dashicons-editor-quote"></span>',
-			callback: () => alert( 'fff' )
+			callback: () => send_to_editor( this.getTemplate() )
 		};
 	}
 
@@ -19,6 +19,22 @@ export class Component {
 	 */
 	init() {
 		BG.$window.on( 'boldgrid_editor_loaded', () => BG.Service.component.register( this.config ) );
+	}
+
+	/**
+	 * Insert a Blockquote.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return {string} Sample Blockqoute.
+	 */
+	getTemplate() {
+		return `
+			<blockquote>
+				Targeting best in class and possibly build ROI. Funneling user
+				stories so that as an end result, we create a better customer experience.
+			</blockquote>
+		`;
 	}
 }
 new Component().init();
