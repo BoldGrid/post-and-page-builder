@@ -76,10 +76,24 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 				title: 'Divider',
 				type: 'design',
 				icon: require( './icon.svg' ),
-				callback: () => alert( 'fdfdf' )
+				onInsert: html => {
+					BG.Controls.$container
+						.find( '[class*="col-md-"]' )
+						.first()
+						.prepend( html );
+				},
+				getDragElement: () => $( this.getTemplate() )
 			};
 
 			BG.Service.component.register( config );
+		},
+
+		getTemplate() {
+			return `<div class="row bg-editor-hr-wrap">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<p><hr class="bg-hr bg-hr-16"></p>
+						</div>
+					</div>`;
 		},
 
 		/**

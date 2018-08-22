@@ -49,6 +49,7 @@ BOLDGRID.EDITOR.CONTROLS.MEDIA = BOLDGRID.EDITOR.CONTROLS.MEDIA || {};
 				name: 'map',
 				title: 'Map',
 				type: 'media',
+				insertType: 'popup',
 				icon: '<span class="dashicons dashicons-location-alt"></span>',
 				callback: self.openModal
 			};

@@ -7,6 +7,7 @@ export class Component {
 			name: 'block',
 			title: 'Block',
 			type: 'structure',
+			insertType: 'popup',
 			icon: require( './icon.svg' ),
 			callback: () => BG.CONTROLS.Section.enableSectionDrag()
 		};

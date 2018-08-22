@@ -23,6 +23,13 @@ export class Add {
 			width: '500px'
 		};
 
+		this.defaults = {
+			type: 'design',
+			insertType: 'drag',
+			onClick: component => this.sendToEditor( component ),
+			onDragDrop: ( component, $el ) => this.openCustomization( component, $el )
+		};
+
 		this.components = [];
 	}
 
@@ -45,7 +52,7 @@ export class Add {
 	 * @param  {object} config List of control.s
 	 */
 	register( config ) {
-		this.components.push( config );
+		this.components.push( { ...this.defaults, ...config } );
 	}
 
 	/**
@@ -70,7 +77,10 @@ export class Add {
 				printComponent: function( type, component ) {
 					if ( type === component.type ) {
 						return `
-						<label data-name="${component.name}">
+						<label ${'drag' === component.insertType ? 'draggable="true"' : ''} data-name="${component.name}"
+							data-insert-type="${component.insertType}">
+							<span class="dashicons dashicons-external component-popup"></span>
+							<span class="dashicons dashicons-plus-alt insert-component"></span>
 							<span class="component-icon">${component.icon}</span>
 							<span class="component-name">${component.title}</span>
 						</label>`;
@@ -90,13 +100,72 @@ export class Add {
 	_bindHandlers() {
 		let $context = BG.Panel.$element.find( '.bg-component' );
 		for ( let component of this.components ) {
-			$context.find( `[data-name="${component.name}"]` ).on( 'click', () => {
+			$context.find( `[data-name="${component.name}"] .insert-component` ).on( 'click', e => {
 				BG.Panel.closePanel();
-				component.callback();
+				component.onClick( component );
+			} );
+
+			// Drag and drop.
+			$context.find( `[data-name="${component.name}"]` ).on( 'dragstart', event => {
+				BG.Service.popover.selection = {
+					name: 'content',
+					component: component,
+					$target: component.getDragElement()
+				};
+
+				BG.Controls.$container.drag_handlers.start( event );
 			} );
 		}
 
+		// When the elemnt is inserted.
+		BG.Controls.$container.on( 'drop', event => {
+			let component = BG.Service.popover.selection.component;
+			if ( component ) {
+				BG.Panel.closePanel();
+				component.onDragDrop( component, BG.Service.popover.selection.$target );
+			}
+		} );
+
 		this.setupAccordion( $context );
+	}
+
+	/**
+	 * Default process to occur when a component is clicked.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {object} component Component Configs.
+	 */
+	sendToEditor( component ) {
+		let $inserted,
+			$html = component.getDragElement();
+
+		$html.addClass( 'bg-inserted-component' );
+
+		if ( component.onInsert ) {
+			component.onInsert( $html[0].outerHTML );
+		} else {
+			send_to_editor( $html[0].outerHTML );
+		}
+
+		$inserted = BG.Controls.$container.find( '.bg-inserted-component' ).last();
+		$inserted.removeClass( 'bg-inserted-component' );
+
+		this.openCustomization( component, $inserted );
+	}
+
+	/**
+	 * Open the customization panel for a component.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {object} component Component Configs.
+	 * @param  {jQuery} $inserted Element to focus.
+	 */
+	openCustomization( component, $inserted ) {
+		BG.Controls.$menu.targetData[component.name] = $inserted;
+		$inserted.click();
+		BG.Controls.get( component.name ).onMenuClick();
 	}
 
 	/**

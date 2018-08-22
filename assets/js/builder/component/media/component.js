@@ -10,6 +10,7 @@ export class Component {
 				name: 'image',
 				title: 'Image',
 				type: 'media',
+				insertType: 'popup',
 				frameState: 'insert',
 				icon: '<span class="dashicons dashicons-format-image"></span>'
 			},
@@ -17,6 +18,7 @@ export class Component {
 				name: 'gallery',
 				title: 'Gallery',
 				type: 'media',
+				insertType: 'popup',
 				frameState: 'gallery',
 				icon: '<span class="dashicons dashicons-format-gallery"></span>'
 			},
@@ -24,6 +26,7 @@ export class Component {
 				name: 'video',
 				title: 'Video',
 				type: 'media',
+				insertType: 'popup',
 				frameState: 'video-playlist',
 				icon: '<span class="dashicons dashicons-format-video"></span>'
 			},
@@ -31,6 +34,7 @@ export class Component {
 				name: 'audio',
 				title: 'Audio',
 				type: 'media',
+				insertType: 'popup',
 				frameState: 'playlist',
 				icon: '<span class="dashicons dashicons-format-audio"></span>'
 			},
@@ -38,6 +42,7 @@ export class Component {
 				name: 'embed',
 				title: 'Embed',
 				type: 'media',
+				insertType: 'popup',
 				frameState: 'embed',
 				icon: '<span class="dashicons dashicons-admin-media"></span>'
 			}
