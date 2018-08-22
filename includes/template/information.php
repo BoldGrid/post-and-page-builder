@@ -1,6 +1,6 @@
 <script type="text/html" id="tmpl-boldgrid-editor-information">
 	<p class="intro">
-		The following options are displayed within the BoldGrid DropTab after clicking on elements in the Page &amp; Post editor.
+		The following options are displayed within the BoldGrid DropTab after clicking on elements in the Post &amp; Page Builder.
 		The options available change depending on the element you click. To use any of these controls: click on the element you
 		want to customize, and then choose the corresponding customization option.
 	</p>
