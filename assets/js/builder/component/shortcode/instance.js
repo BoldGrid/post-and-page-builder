@@ -2,6 +2,7 @@ var BG = BOLDGRID.EDITOR,
 	$ = jQuery;
 
 import controlTemplate from './control.html';
+import { Placeholder } from '../../drag/placeholder.js';
 
 export class Instance {
 	constructor( component ) {
@@ -33,9 +34,35 @@ export class Instance {
 	 * @since 1.8.0
 	 */
 	setup() {
-		this.component.js_control.callback = () => {
+		this.component.js_control.onClick = () => {
 			this.insertedNode = true;
 			send_to_editor( this.getShortcode() );
+
+			/*
+			let $testElement = $( '<p></p>' );
+
+			BG.Controls.$container
+				.find( '[class*="col-md-"]' )
+				.first()
+				.prepend( $testElement );
+
+			BOLDGRID.EDITOR.mce.selection.select( $testElement[0] );
+			// BOLDGRID.EDITOR.mce.selection.setContent( );
+
+			// BG.Service.component.scrollToElement( $html, 200 );
+			//BG.Service.popover.section.transistionSection( $html, '#eeeeee' );
+			*/
+		};
+		this.component.js_control.getDragElement = () => {
+			let $placeholder = $( new Placeholder().getPlaceholderHtml() );
+			$placeholder.attr( 'data-imhwpb-draggable', true );
+			$placeholder.css( { padding: '30px' } );
+			return $placeholder;
+		};
+		this.component.js_control.onDragDrop = ( component, $target ) => {
+			this.insertedNode = true;
+			BOLDGRID.EDITOR.mce.selection.select( $target[0] );
+			BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
 		};
 
 		BG.Service.component.register( this.component.js_control );
@@ -49,9 +76,11 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
-		return `<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
-			[boldgrid_component type="${this.component.name}"]
-		</div>`;
+		return `
+			<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+		`;
 	}
 
 	/**
@@ -70,10 +99,10 @@ export class Instance {
 
 		let data = attrs ? JSON.parse( decodeURIComponent( attrs ) ) : {};
 
-		/*eslint-disable */
+		/* eslint-disable */
 		data.action = action;
 		data.boldgrid_editor_gridblock_save = BoldgridEditor.nonce_gridblock_save;
-		/*eslint-enable */
+		/* eslint-enable */
 
 		return $.ajax( {
 			type: 'post',

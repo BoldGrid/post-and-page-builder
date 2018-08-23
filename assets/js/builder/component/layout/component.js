@@ -10,8 +10,9 @@ export class Component {
 			name: 'layout',
 			title: 'Layout',
 			type: 'structure',
+			insertType: 'popup',
 			icon: '<span class="dashicons dashicons-layout"></span>',
-			callback: () => this.openPanel()
+			onClick: () => this.openPanel()
 		};
 
 		this.uiTemplate = _.template( uiTemplate );

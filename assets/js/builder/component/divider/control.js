@@ -76,12 +76,7 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 				title: 'Divider',
 				type: 'design',
 				icon: require( './icon.svg' ),
-				onInsert: html => {
-					BG.Controls.$container
-						.find( '[class*="col-md-"]' )
-						.first()
-						.prepend( html );
-				},
+				onInsert: 'prependColumn',
 				getDragElement: () => $( this.getTemplate() )
 			};
 

@@ -9,7 +9,7 @@ export class Component {
 			type: 'structure',
 			insertType: 'popup',
 			icon: require( './icon.svg' ),
-			callback: () => BG.CONTROLS.Section.enableSectionDrag()
+			onClick: () => BG.CONTROLS.Section.enableSectionDrag()
 		};
 	}
 

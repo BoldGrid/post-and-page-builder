@@ -65,12 +65,15 @@
 		box-shadow: 0 0 1px 1px #dddddd;
 		text-align: center;
 		display: flex;
-		cursor: move;
 		flex-direction: column;
 		align-items: center;
 		transition: box-shadow 0.5s;
 		background-color: #fcfcfc;
 		border-radius: 2px;
+
+		&[draggable='true'] {
+			cursor: move;
+		}
 
 		&:hover {
 			box-shadow: 0 0 10px 1px #dddddd;
@@ -142,5 +145,9 @@
 		&:hover .component-popup {
 			opacity: 1;
 		}
+	}
+
+	label[data-insert-type='insert'] {
+		cursor: default;
 	}
 }

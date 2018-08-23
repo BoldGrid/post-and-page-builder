@@ -57,7 +57,8 @@ export class Component {
 	init() {
 		BG.$window.on( 'boldgrid_editor_loaded', () => {
 			_.each( this.config, component => {
-				component.callback = () => {
+				component.onClick = () => {
+					BG.Panel.closePanel();
 					wp.media.editor.open();
 					wp.media.frame.setState( component.frameState );
 				};

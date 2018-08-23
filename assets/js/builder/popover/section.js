@@ -92,7 +92,7 @@ export class Section extends Base {
 		color = color || 'transparent';
 
 		$newSection.css( {
-			transition: 'background-color 0.25s',
+			transition: 'background-color 0.50s',
 			'background-color': color
 		} );
 

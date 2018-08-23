@@ -51,7 +51,10 @@ BOLDGRID.EDITOR.CONTROLS.MEDIA = BOLDGRID.EDITOR.CONTROLS.MEDIA || {};
 				type: 'media',
 				insertType: 'popup',
 				icon: '<span class="dashicons dashicons-location-alt"></span>',
-				callback: self.openModal
+				onClick: () => {
+					BG.Panel.closePanel();
+					self.openModal();
+				}
 			};
 
 			BG.Service.component.register( config );

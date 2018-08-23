@@ -8,7 +8,8 @@ export class Component {
 			title: 'List',
 			type: 'design',
 			icon: require( './icon.svg' ),
-			callback: () => send_to_editor( this.getTemplate() )
+			onInsert: 'prependColumn',
+			getDragElement: () => $( this.getTemplate() )
 		};
 	}
 

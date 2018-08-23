@@ -7,8 +7,9 @@ export class Component {
 			name: 'blockquote',
 			title: 'Blockquote',
 			type: 'design',
+			onInsert: 'prependColumn',
 			icon: '<span class="dashicons dashicons-editor-quote"></span>',
-			callback: () => send_to_editor( this.getTemplate() )
+			getDragElement: () => $( this.getTemplate() )
 		};
 	}
 

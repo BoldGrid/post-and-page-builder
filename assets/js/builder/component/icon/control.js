@@ -75,7 +75,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				title: 'Icon',
 				type: 'design',
 				icon: '<span class="dashicons dashicons-star-filled"></span>',
-				callback: () => self.insertNew()
+				getDragElement: () => $( self.getSample() )
 			};
 
 			BG.Service.component.register( config );
@@ -126,20 +126,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Insert a new icon.
+		 * Get a sample icon.
 		 *
-		 * @since 1.2.7
+		 * @since 1.8.0
+		 *
+		 * @return {string} HTML for icon.
 		 */
-		insertNew: function() {
-			var $insertedIcon;
-
-			send_to_editor(
-				'<i class="fa fa-cog bg-inserted-icon" aria-hidden="true"><span style="display:none;">&nbsp;</span></i>'
-			);
-			$insertedIcon = BG.Controls.$container.find( '.bg-inserted-icon' ).last();
-			BG.Controls.$container.find( '.bg-inserted-icon' ).removeClass( 'bg-inserted-icon' );
-			BG.Controls.$menu.targetData[self.name] = $insertedIcon;
-			$insertedIcon.click();
+		getSample() {
+			return `
+				<i class="fa fa-cog bg-inserted-icon" aria-hidden="true"><span style="display:none;">&nbsp;</span></i>
+			`;
 		},
 
 		/**
@@ -151,7 +147,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var controls = BOLDGRID.EDITOR.Controls,
 				panel = BOLDGRID.EDITOR.Panel;
 
-			panel.$element.on( 'click', '.icon-controls .panel-selection', function() {
+			panel.$element.find( '.icon-controls .panel-selection' ).on( 'click', function() {
 				var $menu = controls.$menu,
 					$target = $menu.targetData[self.name],
 					$this = $( this ),
@@ -199,15 +195,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self.highlightElement();
 
-			// Bind Panel Click.
-			self.setupPanelClick();
-
 			// Create Markup.
 			$panel.find( '.panel-body' ).html(
 				self.template( {
 					presets: BoldgridEditor.icons
 				} )
 			);
+
+			// Bind Panel Click.
+			self.setupPanelClick();
 
 			// Remove Selections.
 			$panel.find( '.selected' ).removeClass( 'selected' );

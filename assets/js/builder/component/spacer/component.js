@@ -3,12 +3,16 @@ let $ = jQuery,
 
 export class Component {
 	constructor() {
+		this.sampleTemplate = wp.template( 'boldgrid-editor-empty-section' );
+
 		this.config = {
 			name: 'spacer',
-			title: 'Spacer',
+			title: 'New Block',
 			type: 'structure',
 			icon: require( './icon.svg' ),
-			callback: this.callback
+			insertType: 'insert',
+			onClick: () => this.onClick(),
+			getDragElement: () => $( this.sampleTemplate() )
 		};
 	}
 
@@ -26,9 +30,9 @@ export class Component {
 	 *
 	 * @since 1.8.0
 	 */
-	callback() {
+	onClick() {
 		var $container = BG.Controls.$container,
-			$newSection = $( wp.template( 'boldgrid-editor-empty-section' )() );
+			$newSection = this.config.getDragElement();
 		$container.$body.prepend( $newSection );
 
 		BG.Service.component.scrollToElement( $newSection, 200 );

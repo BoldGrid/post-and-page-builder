@@ -1,5 +1,7 @@
 import panelTemplate from './add.html';
 import './add.scss';
+import { Drag } from './drag.js';
+
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 let $ = jQuery,
@@ -31,6 +33,8 @@ export class Add {
 		};
 
 		this.components = [];
+
+		this.dragHandler = new Drag();
 	}
 
 	/**
@@ -40,6 +44,8 @@ export class Add {
 	 */
 	init() {
 		BOLDGRID.EDITOR.Controls.registerControl( this );
+
+		this.dragHandler.bindBaseEvents();
 
 		return this;
 	}
@@ -100,31 +106,18 @@ export class Add {
 	_bindHandlers() {
 		let $context = BG.Panel.$element.find( '.bg-component' );
 		for ( let component of this.components ) {
-			$context.find( `[data-name="${component.name}"] .insert-component` ).on( 'click', e => {
-				BG.Panel.closePanel();
+			let selector = `
+					[data-name="${component.name}"] .insert-component,
+					[data-name="${component.name}"][data-insert-type="popup"]
+				`;
+
+			$context.find( selector ).on( 'click', e => {
+				BG.Service.component.validateEditor();
 				component.onClick( component );
 			} );
 
-			// Drag and drop.
-			$context.find( `[data-name="${component.name}"]` ).on( 'dragstart', event => {
-				BG.Service.popover.selection = {
-					name: 'content',
-					component: component,
-					$target: component.getDragElement()
-				};
-
-				BG.Controls.$container.drag_handlers.start( event );
-			} );
+			this.dragHandler.bindStart( component );
 		}
-
-		// When the elemnt is inserted.
-		BG.Controls.$container.on( 'drop', event => {
-			let component = BG.Service.popover.selection.component;
-			if ( component ) {
-				BG.Panel.closePanel();
-				component.onDragDrop( component, BG.Service.popover.selection.$target );
-			}
-		} );
 
 		this.setupAccordion( $context );
 	}
@@ -142,8 +135,18 @@ export class Add {
 
 		$html.addClass( 'bg-inserted-component' );
 
-		if ( component.onInsert ) {
-			component.onInsert( $html[0].outerHTML );
+		// Prepend the first column on the page with the new component.
+		if ( 'prependColumn' === component.onInsert ) {
+			this.prependContent( $html );
+
+			BG.Service.component.scrollToElement( $html, 200 );
+			BG.Service.popover.section.transistionSection( $html, '#eeeeee' );
+
+			// Call the function.
+		} else if ( component.onInsert ) {
+			component.onInsert( $html );
+
+			// Insert the HTML.
 		} else {
 			send_to_editor( $html[0].outerHTML );
 		}
@@ -155,6 +158,20 @@ export class Add {
 	}
 
 	/**
+	 * Add a jQuery element to the first column on the page.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {jQuery} $html Element.
+	 */
+	prependContent( $html ) {
+		BG.Controls.$container.$body
+			.find( '[class*="col-md-"]' )
+			.first()
+			.prepend( $html );
+	}
+
+	/**
 	 * Open the customization panel for a component.
 	 *
 	 * @since 1.8.0
@@ -163,9 +180,13 @@ export class Add {
 	 * @param  {jQuery} $inserted Element to focus.
 	 */
 	openCustomization( component, $inserted ) {
-		BG.Controls.$menu.targetData[component.name] = $inserted;
-		$inserted.click();
-		BG.Controls.get( component.name ).onMenuClick();
+		let control = BG.Controls.get( component.name );
+
+		if ( control ) {
+			BG.Controls.$menu.targetData[component.name] = $inserted;
+			$inserted.click();
+			control.onMenuClick();
+		}
 	}
 
 	/**
@@ -180,6 +201,19 @@ export class Add {
 			},
 			duration
 		);
+	}
+
+	/**
+	 * Make sure that the editor is not in a state where we cannot add new elements.
+	 *
+	 * @since 1.8.0
+	 */
+	validateEditor() {
+		if ( ! BG.Controls.$container.$body.html() ) {
+			BG.Controls.$container.$body.prepend( '<p></p>' );
+		}
+
+		BG.Controls.$container.validate_markup();
 	}
 
 	/**
