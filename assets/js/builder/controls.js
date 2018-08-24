@@ -339,6 +339,14 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 					}
 				}
 
+				// If the user clicks on a nested font element stop propagation.
+				if ( 'font' === control.name ) {
+					if ( e.fontFound ) {
+						return;
+					}
+					e.fontFound = true;
+				}
+
 				if ( $this.closest( '.wpview' ).length && 'edit-media' !== control.name ) {
 					return;
 				}

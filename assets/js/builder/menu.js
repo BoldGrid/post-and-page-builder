@@ -41,6 +41,17 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		},
 
 		/**
+		 * Set the target of the menu.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param  {object} control Control.
+		 */
+		setTarget: function( control, $element ) {
+			this.$element.targetData[control.name] = $element;
+		},
+
+		/**
 		 * Get the current element being modified.
 		 *
 		 * @since 1.2.7

@@ -19,7 +19,7 @@ import { Typography } from '@boldgrid/controls';
 
 		iconClasses: 'fa fa-text-width',
 
-		selectors: [ 'p, h1, h2, h3, h4, h5, h6, table, section, ul, ol, dl', 'blockquote' ],
+		selectors: [ 'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl', 'blockquote' ],
 
 		// Ignore images clicked in paragraphs.
 		exceptionSelector: 'img, .draggable-tools-imhwpb *',
@@ -172,7 +172,7 @@ import { Typography } from '@boldgrid/controls';
 		 */
 		_hideButtonColor: function() {
 			var $clone,
-				buttonQuery = '> .btn, > .button-primary, > .button-secondary, > a',
+				buttonQuery = '> .btn, > .button-primary, > .button-secondary',
 				$colorPreview = BG.Panel.$element.find( '.presets .font-color-control' ),
 				$target = BG.Menu.getTarget( self );
 
@@ -184,6 +184,8 @@ import { Typography } from '@boldgrid/controls';
 
 				// Hide color control.
 				$colorPreview.hide();
+			} else {
+				$colorPreview.show();
 			}
 		},
 
@@ -193,11 +195,10 @@ import { Typography } from '@boldgrid/controls';
 		 * @since 1.2.7
 		 */
 		openPanel: function() {
-			var panel = BG.Panel,
-				$target = BG.Menu.getTarget( self );
+			var panel = BG.Panel;
 
 			let typography = new Typography( {
-				target: $target,
+				target: BG.Menu.getTarget( self ),
 				fonts: self.createFontConfig()
 			} );
 
