@@ -107,7 +107,7 @@ The Post and Page Builder is open source software. Join in on our [GitHub reposi
 
 = Minimum Requirements =
 
-* PHP version 5.3 or greater
+* PHP version 5.4 or greater
 * WordPress 4.4 or greater
 
 = From within WordPress =

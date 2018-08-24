@@ -15,7 +15,7 @@ Official Download Link:
 
 **Tags:** page builder, drag and drop, tinymce, editor, landing page
 
-**Requires at least:** 4.4
+**Requires at least:** 4.7
 
 **Tested up to:** 4.9.8
 
