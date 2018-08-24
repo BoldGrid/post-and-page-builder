@@ -842,3 +842,7 @@ p.no-margin {
 .container {
 	max-width: 100%;
 }
+
+.boldgrid-shortcode .widget {
+	min-height: 25px;
+}

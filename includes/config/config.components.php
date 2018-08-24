@@ -4,6 +4,7 @@
 		'media_video',
 		'media_gallery',
 		'media_image',
+		'custom_html',
 		'text',
 	),
 	'types' => array(
@@ -31,11 +32,6 @@
 		'wp_pages' => array(
 			'js_control' => array(
 				'icon' => '<span class="dashicons dashicons-admin-page"></span>'
-			),
-		),
-		'wp_custom_html' => array(
-			'js_control' => array(
-				'icon' => '<span class="dashicons dashicons-media-code"></span>'
 			),
 		),
 		'wp_nav_menu' => array(

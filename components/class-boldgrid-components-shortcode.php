@@ -178,8 +178,8 @@ class Boldgrid_Components_Shortcode {
 	 * @return string           Shortcode output.
 	 */
 	public function get_shortcode_options( $attrs ) {
-		$attrs = ! empty( $attrs['opts'] ) ? $attrs['opts'] : array();
-		$attrs = json_decode( urldecode( $attrs ), true );
+		$attrs = ! empty( $attrs['opts'] ) ? $attrs['opts'] : '';
+		$attrs = json_decode( urldecode( $attrs ), true ) ?: array();
 
 		$output = array();
 		foreach( $attrs as $name => $val ) {

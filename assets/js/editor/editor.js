@@ -636,6 +636,10 @@ IMHWPB.Editor = function( $ ) {
 				BOLDGRID.EDITOR.GRIDBLOCK.View.updateHistoryStates();
 			} );
 
+			editor.on( 'cut', function() {
+				console.log( 'Validate wrappers' );
+			} );
+
 			/**
 			 * When the editor is initialized load the draggable ability
 			 */
