@@ -1117,6 +1117,9 @@
 .boldgrid-control.typography-control .font-color-control .bg-color-picker-control {
   display: none !important; }
 
+.boldgrid-control.typography-control .bg-select-title {
+  vertical-align: sub; }
+
 /*************** Image Panel ********************/
 .editor-panel[data-type='image-filter'] {
   width: 400px; }
@@ -2232,6 +2235,7 @@ body.boldgrid-editor-fullscreen {
 .boldgrid-control.font-family-control .select2-selection__rendered,
 .select2-results__option[aria-label="Used Fonts"] .select2-results__option,
 .select2-results__option[aria-label="Theme Fonts"] .select2-results__option,
+.select2-results__option[aria-label="Common Fonts"] .select2-results__option,
 .select2-results__option[aria-label="Google Fonts"] .select2-results__option {
   background-image: url(../image/web-fonts.png); }
 
@@ -2241,11 +2245,11 @@ body.boldgrid-editor-fullscreen {
   line-height: 35px;
   color: transparent; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option,
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option,
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
   font-size: 17px; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Default"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Arial"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Arial Black"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Comic Sans"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Impact"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Lucida Console"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Lucida Sans Unicode"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Palatino Linotype"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Tahoma"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Times New Roman"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Trebuchet MS"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Verdana"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Default"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Arial"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Arial Black"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Comic Sans"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Impact"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Lucida Console"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Lucida Sans Unicode"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Palatino Linotype"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Tahoma"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Times New Roman"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Trebuchet MS"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Verdana"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Default"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial Black"],
@@ -2263,73 +2267,73 @@ body.boldgrid-editor-fullscreen {
   transform: translateY(0);
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Arial"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Arial"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Arial"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Arial"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Arial"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial"] {
   font-family: Arial, Helvetica, sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Arial Black"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Arial Black"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Arial Black"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Arial Black"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Arial Black"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Arial Black"] {
   font-family: Arial Black, Gadget, sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Comic Sans"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Comic Sans"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Comic Sans"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Comic Sans"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Comic Sans"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Comic Sans"] {
   font-family: Comic Sans MS, Textile, cursive;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Courier"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Courier"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Courier"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Courier"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Courier"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Courier"] {
   font-family: 'Courier New', Courier, monospace;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Imapct"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Imapct"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Imapct"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Imapct"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Imapct"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Imapct"] {
   font-family: Impact, Charcoal, sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Lucida Console"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Lucida Console"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Lucida Console"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Lucida Console"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Lucida Console"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Console"] {
   font-family: 'Lucida Console', Monaco, monospace;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Lucida Sans Unicode"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Lucida Sans Unicode"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Lucida Sans Unicode"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Lucida Sans Unicode"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Lucida Sans Unicode"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Lucida Sans Unicode"] {
   font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Palatino Linotype"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Palatino Linotype"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Palatino Linotype"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Palatino Linotype"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Palatino Linotype"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Palatino Linotype"] {
   font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Tahoma"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Tahoma"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Tahoma"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Tahoma"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Tahoma"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Tahoma"] {
   font-family: Tahoma, Geneva, sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Times New Roman"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Times New Roman"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Times New Roman"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Times New Roman"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Times New Roman"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Times New Roman"] {
   font-family: 'Times New Roman', Times, serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Trebuchet MS"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Trebuchet MS"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Trebuchet MS"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Trebuchet MS"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Trebuchet MS"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Trebuchet MS"] {
   font-family: 'Trebuchet MS', Helvetica, sans-serif;
   background-image: none; }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[id$="Verdana"], .select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option[title="Verdana"],
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[id$="Verdana"], .select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option[title="Verdana"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[id$="Verdana"],
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered[title="Verdana"] {
   font-family: Verdana, Geneva, sans-serif;

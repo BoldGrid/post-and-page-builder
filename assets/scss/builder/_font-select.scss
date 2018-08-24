@@ -1,6 +1,7 @@
 .boldgrid-control.font-family-control .select2-selection__rendered,
 .select2-results__option[aria-label="Used Fonts"] .select2-results__option,
 .select2-results__option[aria-label="Theme Fonts"] .select2-results__option,
+.select2-results__option[aria-label="Common Fonts"] .select2-results__option,
 .select2-results__option[aria-label="Google Fonts"] .select2-results__option {
 	background-image: url(../image/web-fonts.png);
 }
@@ -11,7 +12,7 @@
 	color: transparent;
 }
 
-.select2-results__option:not([aria-label="Google Fonts"]) .select2-results__option,
+.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option,
 .panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
 	font-size: 17px;
 
