@@ -30,6 +30,9 @@ export class Drag {
 				// Don't chain the drop if the user never entered the container.
 				if ( BG.Controls.$container.find( BG.Controls.$container.$temp_insertion ).length ) {
 					BG.Controls.$container.trigger( 'drop' );
+				} else {
+					BG.Panel.$element.removeClass( 'component-drag' );
+					BG.Controls.$container.drag_cleanup();
 				}
 			}
 		} );
@@ -49,6 +52,7 @@ export class Drag {
 			}
 
 			if ( BG.Service.popover.selection.component && ! $drag.$current_drag.IMHWPB.componentEntered ) {
+				BG.Panel.closePanel();
 				$drag.$current_drag.IMHWPB.componentEntered = true;
 				BG.Service.component.prependContent( BG.Controls.$container.$temp_insertion );
 			}
@@ -66,6 +70,8 @@ export class Drag {
 		let $context = BG.Panel.$element.find( '.bg-component' );
 
 		$context.find( `[data-name="${component.name}"]` ).on( 'dragstart', event => {
+			event.skipDragImage = true;
+			BG.Panel.$element.addClass( 'component-drag' );
 			BG.Service.component.validateEditor();
 
 			BG.Service.popover.selection = {
@@ -86,6 +92,7 @@ export class Drag {
 	_drop() {
 		let component = BG.Service.popover.selection.component;
 		if ( component ) {
+			BG.Panel.$element.removeClass( 'component-drag' );
 			BG.Panel.closePanel();
 			component.onDragDrop( component, BG.Controls.$container.$temp_insertion );
 			BG.Service.popover.selection.component = null;

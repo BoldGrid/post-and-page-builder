@@ -1,4 +1,14 @@
 .editor-panel[data-type='add'] {
+	transition: opacity 0.25s;
+
+	&.component-drag {
+		opacity: 0.8;
+
+		.insert-component {
+			display: none !important;
+		}
+	}
+
 	.component-heading {
 		position: relative;
 		margin-bottom: 5px;
@@ -31,6 +41,28 @@
 
 		&.collapsed .dashicons {
 			transform: rotate(180deg);
+		}
+	}
+
+	.grip {
+		display: none;
+		opacity: 0;
+		transition: opacity 0.5s;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 28px;
+		top: 0;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+		background: rgba(0, 0, 0, 0.06);
+		color: #31373c;
+
+		.dashicons {
+			position: absolute;
+			top: 50%;
+			left: 3px;
+			transform: translateY(-50%);
 		}
 	}
 
@@ -73,10 +105,18 @@
 
 		&[draggable='true'] {
 			cursor: move;
+
+			.grip {
+				display: block;
+			}
 		}
 
 		&:hover {
 			box-shadow: 0 0 10px 1px #dddddd;
+
+			.grip {
+				opacity: 1;
+			}
 
 			.component-icon,
 			.component-icon svg,

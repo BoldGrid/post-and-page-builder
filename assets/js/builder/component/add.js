@@ -85,6 +85,7 @@ export class Add {
 						return `
 						<label ${'drag' === component.insertType ? 'draggable="true"' : ''} data-name="${component.name}"
 							data-insert-type="${component.insertType}">
+							<span class="grip"><span class="dashicons dashicons-move"></span></span>
 							<span class="dashicons dashicons-external component-popup"></span>
 							<span class="dashicons dashicons-plus-alt insert-component"></span>
 							<span class="component-icon">${component.icon}</span>

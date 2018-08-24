@@ -2414,7 +2414,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			self.setInheritedBg( self.$current_drag );
 
 			// Setting Drag Image is not allowed in IE, and fails on safari.
-			if ( 'undefined' != typeof event.originalEvent.dataTransfer.setDragImage && ! self.isSafari ) {
+			if ( ! event.skipDragImage && 'undefined' != typeof event.originalEvent.dataTransfer.setDragImage && ! self.isSafari ) {
 
 				// Turn off Drag Image.
 				var img = document.createElement( 'img' );
