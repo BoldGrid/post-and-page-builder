@@ -1,0 +1,15 @@
+<div class="bg-component">
+	<% _.each( sections, function ( section ) { %>
+	<div class="component-category component-<%=section.name%>">
+		<div class="component-heading">
+			<h3><%=section.title%></h3>
+			<span class="dashicons dashicons-arrow-down-alt2"></span>
+		</div>
+		<div class="bg-component-list">
+			<% _.each( components, function ( component ) { %>
+				<%=printComponent( section.name, component ) %>
+			<% } ); %>
+		</div>
+	</div>
+	<% } ); %>
+</div>

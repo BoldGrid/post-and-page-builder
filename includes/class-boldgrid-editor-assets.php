@@ -218,14 +218,13 @@ class Boldgrid_Editor_Assets {
 		$is_bg_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
 
 		$builder = new Boldgrid_Editor_Builder();
-
 		$config = Boldgrid_Editor_Service::get( 'config' );
 		$boldgrid_settings = Boldgrid_Editor_Config::get_mixed_option( 'boldgrid_settings' );
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
 		$vars = array(
-			'plugin_configs' => $this->configs,
+			'plugin_configs' => $config,
 			'is_boldgrid_theme' => $is_bg_theme,
 			'is_add_new' => 'post-new.php' === $pagenow,
 			'body_class' => Boldgrid_Editor_Theme::theme_body_class(),

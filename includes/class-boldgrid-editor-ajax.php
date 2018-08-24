@@ -58,7 +58,7 @@ class Boldgrid_Editor_Ajax {
 		$params = ! empty( $_POST ) ? $_POST : array();
 		$params['color'] = ! empty( $params['color'] ) ? stripslashes( $params['color'] ) : null;
 
-		$this->validate_nonce( 'gridblock_save' );
+		self::validate_nonce( 'gridblock_save' );
 
 		$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
 
@@ -103,7 +103,7 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.7.0
 	 */
 	public function get_saved_blocks() {
-		$this->validate_nonce( 'gridblock_save' );
+		self::validate_nonce( 'gridblock_save' );
 
 		wp_send_json( Boldgrid_Layout::get_all_gridblocks() );
 	}
@@ -126,7 +126,7 @@ class Boldgrid_Editor_Ajax {
 	 *
 	 * @since 1.5
 	 */
-	public function validate_nonce( $name ) {
+	public static function validate_nonce( $name ) {
 		$nonce = ! empty( $_POST[ self::$nonces[ $name ] ] ) ?
 			$_POST[ self::$nonces[ $name ] ] : null;
 
@@ -146,7 +146,7 @@ class Boldgrid_Editor_Ajax {
 	public function get_redirect_url() {
 		$urls = ! empty( $_POST['urls'] ) ? $_POST['urls'] : null;
 
-		$this->validate_nonce( 'image' );
+		self::validate_nonce( 'image' );
 		$unsplash_404 = 'https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200';
 
 		$redirectUrls = array();
@@ -172,7 +172,7 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.7.0
 	 */
 	public function save_key() {
-		$this->validate_nonce( 'gridblock_save' );
+		self::validate_nonce( 'gridblock_save' );
 
 		$connectKey = ! empty( $_POST['connectKey'] ) ? sanitize_text_field( $_POST['connectKey'] ) : null;
 		$connectKey = false === strpos( $connectKey, '-' ) ? $connectKey : md5( $connectKey );
@@ -214,7 +214,7 @@ class Boldgrid_Editor_Ajax {
 		$type = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : null;
 		$html = ! empty( $_POST['html'] ) ? $_POST['html'] : null;
 
-		$this->validate_nonce( 'gridblock_save' );
+		self::validate_nonce( 'gridblock_save' );
 
 		$post_id = wp_insert_post( array(
 			'post_title' => $title,
@@ -246,7 +246,7 @@ class Boldgrid_Editor_Ajax {
 		$response = array();
 		$image_data = ! empty( $_POST['image_data'] ) ? $_POST['image_data'] : null;
 
-		$this->validate_nonce( 'image' );
+		self::validate_nonce( 'image' );
 
 		if ( $this->is_base_64( $image_data ) ) {
 			$response = $this->upload_encoded( $image_data );

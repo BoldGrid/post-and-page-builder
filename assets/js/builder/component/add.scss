@@ -1,0 +1,153 @@
+.editor-panel[data-type='add'] {
+	.component-heading {
+		position: relative;
+		margin-bottom: 5px;
+		padding: 10px 0;
+		box-shadow: 0 5px 10px -7px #b7b7b7;
+		color: #7b7b7b;
+		cursor: pointer;
+		margin-right: 15px;
+		margin-left: 5px;
+		transition: all 0.25s;
+		background-color: rgba(248, 248, 248, 0.6);
+
+		&:hover {
+			background-color: #f8f8f8;
+			box-shadow: 0 7px 10px -7px #b7b7b7;
+		}
+
+		h3 {
+			display: inline;
+			margin-left: 10px;
+			margin-bottom: 10px;
+			font-weight: normal;
+		}
+
+		.dashicons {
+			position: absolute;
+			right: 13px;
+			transition: transform 0.25s;
+		}
+
+		&.collapsed .dashicons {
+			transform: rotate(180deg);
+		}
+	}
+
+	.bg-component-list {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0 auto;
+		align-items: center;
+	}
+
+	.component-icon,
+	.component-icon .dashicons,
+	.component-icon svg {
+		width: 55px;
+		height: 55px;
+	}
+
+	.component-icon {
+		.dashicons,
+		svg {
+			fill: #333333;
+			margin-top: 2px;
+		}
+	}
+
+	label {
+		margin: 10px;
+		position: relative;
+		padding: 10px;
+		width: 117px;
+		height: 74px;
+		box-shadow: 0 0 1px 1px #dddddd;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		transition: box-shadow 0.5s;
+		background-color: #fcfcfc;
+		border-radius: 2px;
+
+		&[draggable='true'] {
+			cursor: move;
+		}
+
+		&:hover {
+			box-shadow: 0 0 10px 1px #dddddd;
+
+			.component-icon,
+			.component-icon svg,
+			.component-icon path {
+				color: #f95b26;
+				fill: #f95b26;
+			}
+
+			.insert-component {
+				opacity: 1;
+			}
+		}
+
+		.component-name {
+			margin-top: -5px;
+			vertical-align: middle;
+		}
+
+		.component-icon {
+			margin-top: 2px;
+		}
+
+		> .dashicons {
+			opacity: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			padding: 5px;
+			font-size: 17px;
+			transition: opacity 0.25s;
+		}
+
+		.insert-component {
+			background: #32373c;
+			color: white;
+			border-radius: 2px;
+			padding-top: 8px;
+
+			&:hover {
+				color: #f95b26;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.component-icon .dashicons {
+		font-size: 36px;
+		transform: translateY(2px);
+	}
+
+	[data-name='block'] .component-icon svg {
+		transform: scale(1.4);
+	}
+
+	[data-name='button'] .component-icon svg {
+		transform: scale(0.8);
+	}
+
+	label[data-insert-type='popup'] {
+		cursor: pointer;
+
+		.insert-component {
+			display: none;
+		}
+
+		&:hover .component-popup {
+			opacity: 1;
+		}
+	}
+
+	label[data-insert-type='insert'] {
+		cursor: default;
+	}
+}

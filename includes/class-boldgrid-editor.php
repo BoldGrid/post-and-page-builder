@@ -104,6 +104,7 @@ class Boldgrid_Editor {
 
 		Boldgrid_Editor_Service::register( 'file_system', new Boldgrid_Editor_Fs() );
 
+		$this->setup_components();
 		$this->setup_page_title();
 
 		if ( is_admin() && current_user_can( 'edit_pages' ) ) {
@@ -114,6 +115,11 @@ class Boldgrid_Editor {
 			$this->front_end_hooks();
 		}
 
+	}
+
+	public function setup_components() {
+		$shortcode = new Boldgrid_Components_Shortcode();
+		$shortcode->init();
 	}
 
 	/**

@@ -294,7 +294,9 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 
 			// When the user clicks on a menu item, perform the corresponding action.
 			if ( control.onMenuClick ) {
-				this.$menu.on( 'click', '[data-action="menu-' + control.name + '"]', control.onMenuClick );
+				this.$menu.on( 'click', '[data-action="menu-' + control.name + '"]', () =>
+					control.onMenuClick()
+				);
 			}
 		},
 

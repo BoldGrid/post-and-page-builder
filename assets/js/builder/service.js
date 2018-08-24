@@ -15,6 +15,8 @@ import SectionPopover from './popover/section';
 import { Navigation as CustomizeNavigation } from './customize/navigation';
 import { View } from './view';
 import { ConnectKey } from './connect-key/prompt';
+import { Add as AddComponent } from './component/add';
+import { Component as LayoutComponent } from './component/layout/component';
 
 export class Service {
 	init() {
@@ -57,7 +59,6 @@ export class Service {
 			this.popover.column = new ColumnPopover().init();
 			this.popover.row = new RowPopover().init();
 			this.popover.section = new SectionPopover().init();
-
 			this.connectKey = new ConnectKey();
 
 			BOLDGRID.EDITOR.CONTROLS.Section.init( BOLDGRID.EDITOR.Controls.$container );
@@ -81,7 +82,9 @@ export class Service {
 			new Intro().init();
 			new LibrarySave().init();
 			new GridblockLead().init();
+			new LayoutComponent().init();
 			new Advanced().init();
+			this.component = new AddComponent().init();
 
 			BG.Service.customize = BG.Service.customize || {};
 			BG.Service.customize.navigation = new CustomizeNavigation().init();

@@ -25,6 +25,9 @@ require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-widget.php'
 // Controls.
 require_once BOLDGRID_EDITOR_PATH . '/controls/class-boldgrid-controls-page-title.php';
 
+// Component.
+require_once BOLDGRID_EDITOR_PATH . '/components/class-boldgrid-components-shortcode.php';
+
 // Media.
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media-tab.php';

@@ -89,8 +89,7 @@ class Boldgrid_Editor_Setup {
 			);
 		}
 
-		$ajax = new Boldgrid_Editor_Ajax();
-		$ajax->validate_nonce( 'setup' );
+		Boldgrid_Editor_Ajax::validate_nonce( 'setup' );
 
 		if ( ! empty( $settings ) ) {
 			Boldgrid_Editor_Option::update( 'setup', $settings );

@@ -121,6 +121,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self._setupColorClick();
 			self._setupCustomizeOpen();
 			self.removeSizeClasses();
+			self.registerComponent();
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.8.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'button',
+				title: 'Button',
+				type: 'design',
+				icon: require( './icon.svg' ),
+				getDragElement: () => $( this.getTemplate() )
+			};
+
+			BG.Service.component.register( config );
 		},
 
 		/**
@@ -231,19 +249,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Insert a new button.
+		 * Get a sample button.
 		 *
-		 * @since 1.2.7
+		 * @since 1.8.0
 		 */
-		insertNew: function() {
-			var $insertedButton;
-
-			send_to_editor( '<a class="btn btn-color-1 bg-inserted-button" href="#">Button</a>' );
-			$insertedButton = BG.Controls.$container.find( '.bg-inserted-button' ).last();
-			BG.Controls.$container.find( '.bg-inserted-button' ).removeClass( 'bg-inserted-button' );
-			BG.Controls.$menu.targetData[self.name] = $insertedButton;
-			$insertedButton.click();
-			self.openPanel();
+		getTemplate: function() {
+			return '<a class="btn btn-color-1" href="#">Button</a>';
 		},
 
 		/**

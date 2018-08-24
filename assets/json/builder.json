@@ -143,6 +143,7 @@
          "template/page/right-sidebar.php": "container-fluid"
     },
     "helpTooltip": {
+        "[data-tooltip-id='layouts']": "Add a grid structure that you can design from the ground up.",
         "[data-tooltip-id='color-saved']": "Add colors to this section to reuse them. Upon updating your page, these colors will be saved.",
         "[data-tooltip-id='color-theme']": "These colors are determined by your theme. You can change these colors by customizing your theme.",
         "[data-tooltip-id='background-size']": "The cover area background size is recomended for images that should span the full width of an area. Tiled background size is ideal for patterns and small images.",

@@ -61,6 +61,36 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 			self.template = wp.template( 'boldgrid-editor-hr' );
 		},
 
+		setup() {
+			this.registerComponent();
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.8.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'hr',
+				title: 'Divider',
+				type: 'design',
+				icon: require( './icon.svg' ),
+				onInsert: 'prependColumn',
+				getDragElement: () => $( this.getTemplate() )
+			};
+
+			BG.Service.component.register( config );
+		},
+
+		getTemplate() {
+			return `<div class="row bg-editor-hr-wrap">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<p><hr class="bg-hr bg-hr-16"></p>
+						</div>
+					</div>`;
+		},
+
 		/**
 		 * Override the get target method to return the hr inside the target instead of the target.
 		 *
