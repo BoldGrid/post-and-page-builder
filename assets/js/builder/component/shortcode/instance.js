@@ -34,31 +34,32 @@ export class Instance {
 	 * @since 1.8.0
 	 */
 	setup() {
+
+		// When the user clicks the add button.
 		this.component.js_control.onClick = () => {
 			this.insertedNode = true;
-			send_to_editor( this.getShortcode() );
-
-			/*
-			let $testElement = $( '<p></p>' );
+			let $sampleElement = $( '<p></p>' );
 
 			BG.Controls.$container
 				.find( '[class*="col-md-"]' )
 				.first()
-				.prepend( $testElement );
+				.prepend( $sampleElement );
 
-			BOLDGRID.EDITOR.mce.selection.select( $testElement[0] );
-			// BOLDGRID.EDITOR.mce.selection.setContent( );
-
-			// BG.Service.component.scrollToElement( $html, 200 );
-			//BG.Service.popover.section.transistionSection( $html, '#eeeeee' );
-			*/
+			BG.Service.component.scrollToElement( $sampleElement, 200 );
+			BOLDGRID.EDITOR.mce.selection.select( $sampleElement[0] );
+			BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
+			BOLDGRID.EDITOR.mce.undoManager.add();
 		};
+
+		// Get the drag element.
 		this.component.js_control.getDragElement = () => {
 			let $placeholder = $( new Placeholder().getPlaceholderHtml() );
 			$placeholder.attr( 'data-imhwpb-draggable', true );
 			$placeholder.css( { padding: '30px' } );
 			return $placeholder;
 		};
+
+		// When the shortcode is dropped.
 		this.component.js_control.onDragDrop = ( component, $target ) => {
 			this.insertedNode = true;
 			BOLDGRID.EDITOR.mce.selection.select( $target[0] );
@@ -123,10 +124,6 @@ export class Instance {
 	findTarget() {
 		let $wpView = $( BG.mce.selection.getNode() ),
 			$dragWrap = $wpView.parent( '[data-imhwpb-draggable="true"]' );
-
-		if ( ! $dragWrap.length ) {
-			$dragWrap = $wpView.wrap( '<div class="boldgrid-shortcode" data-imhwpb-draggable="true">' );
-		}
 
 		return $dragWrap;
 	}
