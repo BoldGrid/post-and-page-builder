@@ -37,6 +37,8 @@ export class Instance {
 
 		// When the user clicks the add button.
 		this.component.js_control.onClick = () => {
+			BG.Panel.showLoading();
+
 			this.insertedNode = true;
 			let $sampleElement = $( '<p></p>' );
 

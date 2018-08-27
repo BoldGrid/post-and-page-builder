@@ -361,6 +361,7 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			this.$element.find( '.panel-title .info' ).empty();
 			this.$element.find( '.panel-body' ).empty();
 			this.$element.find( '.panel-title .icon' ).attr( 'class', '' );
+			this.hideLoading();
 		},
 
 		/**

@@ -93,7 +93,7 @@ export class Control {
 			bindNode: function( editor, node ) {
 				let componentInstance = self.getComponentInstance( this );
 				if ( componentInstance && componentInstance.insertedNode ) {
-					BOLDGRID.EDITOR.mce.selection.select( node );
+					BG.mce.selection.select( node );
 					wp.mce.views.edit( editor, node );
 					self.getComponentInstance( this ).insertedNode = false;
 				}
