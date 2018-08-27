@@ -210,11 +210,29 @@ export class Add {
 	 * @since 1.8.0
 	 */
 	validateEditor() {
+		this.removeShortcodeWrap( BG.Controls.$container.$body );
+
 		if ( ! BG.Controls.$container.$body.html() ) {
 			BG.Controls.$container.$body.prepend( '<p></p>' );
 		}
 
 		BG.Controls.$container.validate_markup();
+	}
+
+	/**
+	 * Loop through all boldgrid shortcodes, if any are empty, remove them.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {jQuery} $context A selection to search within.
+	 */
+	removeShortcodeWrap( $context ) {
+		$context.find( '.boldgrid-shortcode' ).each( ( i, el ) => {
+			let $el = $( el );
+			if ( IMHWPB.Editor.instance.mce_element_is_empty( $el ) ) {
+				$el.remove();
+			}
+		} );
 	}
 
 	/**

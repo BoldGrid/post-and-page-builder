@@ -1674,6 +1674,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		self.remove_resizing_classes( $markup );
 		self.remove_border_classes( $markup );
 		self.removeClasses( $markup );
+		BG.Service.component.removeShortcodeWrap( $markup );
 		return $markup.html();
 	};
 

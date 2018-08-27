@@ -634,10 +634,15 @@ IMHWPB.Editor = function( $ ) {
 			editor.on( 'AddUndo', function( e ) {
 				e.level.content = self.cleanupContent( e.level.content );
 				BOLDGRID.EDITOR.GRIDBLOCK.View.updateHistoryStates();
-			} );
 
-			editor.on( 'cut', function() {
-				console.log( 'Validate wrappers' );
+				/*
+				 * Update the frame html, this is different from the undo level content.
+				 * An ideal solution would validate the undo level to the same
+				 * extent as the iframe.
+				 */
+				if ( BOLDGRID.EDITOR.Service.component ) {
+					BOLDGRID.EDITOR.Service.component.validateEditor();
+				}
 			} );
 
 			/**
@@ -706,6 +711,7 @@ IMHWPB.Editor = function( $ ) {
 			 * Used for debugging
 			var all_events = [
 				'AddUndo',
+				'cut',
 				'BeforeAddUndo',
 				'BeforeExecCommand',
 				'BeforeRenderUI',
@@ -739,7 +745,7 @@ IMHWPB.Editor = function( $ ) {
 
 			console.log(all_events.join());
 			editor.on( all_events.join(' '), function( e ) {
-					console.log(e.type);
+				console.log(e.type);
 			} );*/
 		} );
 	} );
