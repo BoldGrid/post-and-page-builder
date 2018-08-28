@@ -1,6 +1,6 @@
 .boldgrid-editor-template,
 .bg_block-template-default,
-.page-template-templatepagefullwidth-php.page-template-fullwidth{
+.page-template-templatepagefullwidth-php.page-template-fullwidth {
 	#content.site-content {
 		margin-top: 0;
 		margin-bottom: 0;
@@ -69,7 +69,7 @@
 	flex-direction: row-reverse;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
 	.bg-custom-template.sidebar-right,
 	.bg-custom-template.sidebar-left {
 		display: flex;

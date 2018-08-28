@@ -846,3 +846,7 @@ p.no-margin {
 .boldgrid-shortcode .widget {
 	min-height: 25px;
 }
+
+.boldgrid-shortcode .widget_search button svg {
+	display: none;
+}

@@ -91,4 +91,6 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 	} else {
 		add_action( 'setup_theme', 'boldgrid_editor_setup' );
 	}
+
+	add_action( 'widgets_init', array( 'Boldgrid_Editor', 'register_widgets' ) );
 }
