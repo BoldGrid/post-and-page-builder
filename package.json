@@ -74,7 +74,7 @@
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#typography",
 		"animate.css": "^3.5.2",
 		"babel-eslint": "^8.0.2",
-		"babel-loader": "^7.1.2",
+		"babel-loader": "^8.0.0",
 		"babel-minify-webpack-plugin": "^0.3.0",
 		"babel-preset-es2015": "^6.24.1",
 		"babel-preset-stage-0": "^6.24.1",
