@@ -50,20 +50,17 @@
 		transition: opacity 0.5s;
 		position: absolute;
 		left: 0;
-		bottom: 0;
-		width: 28px;
 		top: 0;
-		border-top-left-radius: 3px;
-		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
 		background: rgba(0, 0, 0, 0.06);
-		color: #31373c;
+		padding: 6px;
 
-		.dashicons {
+		/*		.dashicons {
 			position: absolute;
 			top: 50%;
 			left: 3px;
 			transform: translateY(-50%);
-		}
+		}*/
 	}
 
 	.bg-component-list {
@@ -131,7 +128,7 @@
 		}
 
 		.component-name {
-			margin-top: -5px;
+			margin-top: -8px;
 			vertical-align: middle;
 		}
 
@@ -150,14 +147,16 @@
 		}
 
 		.insert-component {
-			background: #32373c;
-			color: white;
+			background: rgba(0, 0, 0, 0.06);
 			border-radius: 2px;
 			padding-top: 8px;
+			cursor: pointer;
+		}
 
+		.grip,
+		.insert-component {
 			&:hover {
 				color: #f95b26;
-				cursor: pointer;
 			}
 		}
 	}

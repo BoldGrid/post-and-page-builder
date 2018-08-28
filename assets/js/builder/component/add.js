@@ -271,6 +271,8 @@ export class Add {
 	openPanel() {
 		let $control = this.createUI();
 
+		BG.Panel.resetPosition();
+
 		BG.Panel.clear();
 		BG.Panel.$element.find( '.panel-body' ).html( $control );
 		BG.Panel.open( this );

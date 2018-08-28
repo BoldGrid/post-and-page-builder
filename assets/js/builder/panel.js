@@ -104,6 +104,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		resetPosition: function() {
 			this.$element.css( {
 				top: '',
+				right: '',
+				bottom: '',
 				left: ''
 			} );
 		},

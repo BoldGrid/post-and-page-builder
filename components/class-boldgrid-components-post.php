@@ -60,6 +60,8 @@ class Boldgrid_Components_Post extends WP_Widget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance )  {
+		global $post;
+
 		$args = array_merge( self::$default_params, $args );
 
 		echo $args['before_widget'];
@@ -76,11 +78,11 @@ class Boldgrid_Components_Post extends WP_Widget {
 					print get_the_title( $post );
 					echo $args['after_title'];
 				} ?>
-
-				<?php if ( ! empty( $instance['thumbnail'] ) ) {
-					print get_the_post_thumbnail( $post, $instance['image_size'] );
-				} ?>
 			</a>
+
+			<?php if ( ! empty( $instance['thumbnail'] ) ) {
+				print get_the_post_thumbnail( $post, $instance['image_size'] );
+			} ?>
 
 			<?php if ( ! empty( $instance['excerpt'] ) ) { ?>
 				<p class="bgc-single-readmore">

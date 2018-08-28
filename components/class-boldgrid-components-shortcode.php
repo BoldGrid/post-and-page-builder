@@ -63,6 +63,7 @@ class Boldgrid_Components_Shortcode {
 				$widget->widget_options['classname'] : '';
 
 			$widget_config = array_merge( $args, array(
+				'widget_id' => null,
 				'before_title' => '<h2 class="widget-title">',
 				'after_title' => '</h2>',
 				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
