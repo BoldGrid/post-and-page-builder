@@ -136,7 +136,7 @@ class Boldgrid_Editor_Builder_Components {
 						$families[ $family ]['weights'] : array();
 
 					if ( 'italic' === $variant ) {
-						$weight = $weight + 'i';
+						$weight = $weight . 'i';
 					}
 
 					$families[$family]['weights'][] = $weight;
