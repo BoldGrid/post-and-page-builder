@@ -39,6 +39,7 @@ export class Section extends Base {
 		this.$element.find( '[data-action="move-down"]' ).on( 'click', () => this.moveDown() );
 		this.$element.find( '[data-action="save-gridblock"]' ).on( 'click', e => this._saveGridblock( e ) );
 		this.$element.find( '[data-action="add-new"]' ).on( 'click', () => this.addNewSection() );
+		this.$element.find( '[data-action="add-section-row"]' ).on( 'click', () => this.addRow() );
 		this.$element.find( '.context-menu-imhwpb' ).on( 'click', e => this.menuDirection( e ) );
 	}
 
@@ -51,6 +52,19 @@ export class Section extends Base {
 	 */
 	getSelectorString() {
 		return this.selectorsString;
+	}
+
+	/**
+	 * Add a row to a section.
+	 *
+	 * @since 1.8.0
+	 */
+	addRow() {
+		let $emptyRow = BG.Controls.$container.createEmptyRow();
+
+		BG.Service.popover.selection.$target.find( '.container, .container-fluid' ).append( $emptyRow );
+
+		BG.Controls.$container.postAddRow( $emptyRow );
 	}
 
 	/**
@@ -89,7 +103,7 @@ export class Section extends Base {
 	transistionSection( $newSection, color ) {
 		IMHWPB['tinymce_undo_disabled'] = true;
 
-		color = color || 'transparent';
+		color = color || '#eeeeee';
 
 		$newSection.css( {
 			transition: 'background-color 0.50s',

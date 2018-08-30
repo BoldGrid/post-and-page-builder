@@ -1,5 +1,4 @@
 var self,
-	hackSelf,
 	BG = BOLDGRID.EDITOR,
 	$ = jQuery;
 
@@ -52,6 +51,7 @@ export { GeneralActions as default };
 let native_menu_options = [
 	'duplicate',
 	'add-row',
+	'add-section-row',
 	'add-column',
 	'nest-row',
 	'clear',
@@ -117,7 +117,7 @@ let menuActions = {
 		wp_media_modal_action( event, $element );
 	},
 
-	add_row: function( e ) {
+	add_row: function() {
 		let $emptyRow = self.createEmptyRow();
 		BOLDGRID.EDITOR.Service.popover.selection.$target.before( $emptyRow );
 		self.postAddRow( $emptyRow );

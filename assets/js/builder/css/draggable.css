@@ -439,6 +439,9 @@ iframe[src^="https://maps.google.com"] {
 .popover-imhwpb .popover-menu-imhwpb ul .side-menu {
 	display: none;
 }
+.popover-imhwpb .popover-menu-imhwpb ul .side-menu ul::before {
+	display: none;
+}
 
 .popover-imhwpb .popover-menu-imhwpb ul .side-menu li:first-child {
 	color: #23282d;
@@ -449,6 +452,10 @@ iframe[src^="https://maps.google.com"] {
 	cursor: pointer !important;
 	color: white !important;
     background-color: #23282d !important;
+}
+
+.popover-imhwpb .side-menu-parent[data-action="section-add"] + .side-menu ul {
+	min-height: 60px;
 }
 
 .popover-imhwpb .popover-menu-imhwpb .side-menu:hover,
@@ -553,7 +560,7 @@ iframe[src^="https://maps.google.com"] {
 }
 .popover-imhwpb .popover-menu-imhwpb li[data-action="move-down"]:before,
 .popover-imhwpb .popover-menu-imhwpb li[data-action="move-up"]:before,
-.popover-imhwpb .popover-menu-imhwpb li[data-action="vertical-alignment"]:after,
+.popover-imhwpb .popover-menu-imhwpb li.side-menu-parent:after,
 .popover-imhwpb .popover-menu-imhwpb li[data-action="vertical-alignment"]::before,
 .popover-imhwpb .popover-menu-imhwpb li[data-action="add-media"]::before {
 	font: 400 18px/1 dashicons;
@@ -589,7 +596,7 @@ iframe[src^="https://maps.google.com"] {
 	padding: 5px 5px;
 	content: "\f08a";
 }
-.popover-imhwpb .popover-menu-imhwpb li[data-action="vertical-alignment"]:after {
+.popover-imhwpb .popover-menu-imhwpb li.side-menu-parent:after {
 	content: "\f139";
     position: absolute;
     padding: 0;
@@ -612,6 +619,7 @@ iframe[src^="https://maps.google.com"] {
 	background-image: url("../../../image/icons/add-column.png");
 }
 .popover-imhwpb .popover-menu-imhwpb li[data-action="add-new"]::before,
+.popover-imhwpb .popover-menu-imhwpb li[data-action="section-add"]::before,
 .popover-imhwpb .popover-menu-imhwpb li[data-action="add-row"]::before {
 	background-image: url("../../../image/icons/add-row.png");
 }

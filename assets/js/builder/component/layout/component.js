@@ -159,7 +159,7 @@ export class Component {
 
 			BG.Controls.$container.$body.prepend( $element );
 			BG.Service.component.scrollToElement( $element, 200 );
-			BG.Service.popover.section.transistionSection( $element, '#eeeeee' );
+			BG.Service.popover.section.transistionSection( $element );
 		} );
 	}
 }

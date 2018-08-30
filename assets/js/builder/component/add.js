@@ -141,7 +141,7 @@ export class Add {
 			this.prependContent( $html );
 
 			BG.Service.component.scrollToElement( $html, 200 );
-			BG.Service.popover.section.transistionSection( $html, '#eeeeee' );
+			BG.Service.popover.section.transistionSection( $html );
 
 			// Call the function.
 		} else if ( component.onInsert ) {
