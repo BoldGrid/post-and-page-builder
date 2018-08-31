@@ -298,6 +298,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'p:not(blockquote p)',
 		'button:not(p button):not(a button)',
 		'ul',
+		'pre',
 		'ol',
 		'dl',
 		'form',
@@ -347,6 +348,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		// Additional Content.
 		'form:not(.row .row form)',
 		'table:not(.row .row table)',
+		'pre:not(.row .row pre)',
 
 		// Nested Rows - Not rows nested out of master container.
 		'.row .row:not(.row .row .row)',
@@ -394,6 +396,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		// Additional Content.
 		'.row .row form',
 		'.row .row table',
+		'.row .row pre',
 
 		// Nested Rows - Not rows nested out of master container.
 		'.row .row .row',
@@ -429,6 +432,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'> dl',
 		'> form',
 		'> table',
+		'> pre',
 		'> .row',
 		'> dl',
 		'> form',
