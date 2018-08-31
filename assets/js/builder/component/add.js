@@ -114,6 +114,7 @@ export class Add {
 
 			$context.find( selector ).on( 'click', e => {
 				BG.Service.component.validateEditor();
+				BG.Controls.$container.validate_markup();
 				component.onClick( component );
 			} );
 
@@ -215,8 +216,6 @@ export class Add {
 		if ( ! BG.Controls.$container.$body.html() ) {
 			BG.Controls.$container.$body.prepend( '<p></p>' );
 		}
-
-		BG.Controls.$container.validate_markup();
 	}
 
 	/**

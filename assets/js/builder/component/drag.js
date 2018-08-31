@@ -72,7 +72,9 @@ export class Drag {
 		$context.find( `[data-name="${component.name}"]` ).on( 'dragstart', event => {
 			event.skipDragImage = true;
 			BG.Panel.$element.addClass( 'component-drag' );
+
 			BG.Service.component.validateEditor();
+			BG.Controls.$container.validate_markup();
 
 			BG.Service.popover.selection = {
 				name: 'content',
