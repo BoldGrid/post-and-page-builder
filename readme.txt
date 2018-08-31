@@ -144,10 +144,12 @@ Release Date: TBD
 * New Feature: Layout component.
 * New Feature: Anchors have individual font control.
 * New Feature: Rows can be added from the section popover.
+* New Feature: Pre tags are now supported for drag and drop.
 * Update: After first time setup page template will update for current page.
 * Bug Fix: Fix display issues when viewing saved blocks on BoldGrid Themes.
 * Bug Fix: Duplicate fonts displayed within font selection.
 * Bug Fix: Some theme fonts not available for selection.
+* Bug Fix: Block alignment issues saving to front end.
 * Bug Fix: Captions within blocks not translated when inserted.
 
 = 1.7.4 =
