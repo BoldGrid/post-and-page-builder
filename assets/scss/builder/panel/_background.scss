@@ -22,6 +22,10 @@
 		bottom: -59px;
 	}
 
+	.section .slider ~ .value {
+		top: -4px;
+	}
+
 	.current-selection {
 		position: relative;
 		height: 180px;
@@ -95,6 +99,7 @@
 
 	.customize .section:not(.back) {
 		display: none;
+		padding: 18px 15px;
 	}
 
 	.preset-wrapper[data-type="color"] ~ * .customize .background-color {
@@ -215,7 +220,6 @@
 		display: none;
 
 		.back {
-			margin-bottom: 0;
 			margin-bottom: 0;
 			padding: 8px 0 14px;
 		}

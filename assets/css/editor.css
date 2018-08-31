@@ -761,6 +761,9 @@
 .editor-panel[data-type="background"] .panel-footer {
   bottom: -59px; }
 
+.editor-panel[data-type="background"] .section .slider ~ .value {
+  top: -4px; }
+
 .editor-panel[data-type="background"] .current-selection {
   position: relative;
   height: 180px;
@@ -841,7 +844,8 @@
   position: relative; }
 
 .editor-panel[data-type="background"] .customize .section:not(.back) {
-  display: none; }
+  display: none;
+  padding: 18px 15px; }
 
 .editor-panel[data-type="background"] .preset-wrapper[data-type="color"] ~ * .customize .background-color {
   display: block; }
@@ -948,7 +952,6 @@
   display: none; }
 
 .editor-panel[data-type="background"] .background-design .customize .back {
-  margin-bottom: 0;
   margin-bottom: 0;
   padding: 8px 0 14px; }
 

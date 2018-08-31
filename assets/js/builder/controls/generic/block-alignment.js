@@ -53,16 +53,24 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 		_applyMargin: function( $el, value ) {
 			$el.removeAttr( 'align' );
 
+			let styles = {
+				'margin-left': 'auto',
+				'margin-right': '0'
+			};
+
 			if ( 'center' === value ) {
-				$el.css( 'margin-left', 'auto' );
-				$el.css( 'margin-right', 'auto' );
+				styles = {
+					'margin-left': 'auto',
+					'margin-right': 'auto'
+				};
 			} else if ( 'left' === value ) {
-				$el.css( 'margin-right', 'auto' );
-				$el.css( 'margin-left', '0' );
-			} else {
-				$el.css( 'margin-right', '0' );
-				$el.css( 'margin-left', 'auto' );
+				styles = {
+					'margin-left': '0',
+					'margin-right': 'auto'
+				};
 			}
+
+			BG.Controls.addStyles( $el, styles );
 		}
 	};
 
