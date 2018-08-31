@@ -86,7 +86,7 @@
 		"eslint-loader": "^2.0.0",
 		"eslint-plugin-html": "^4.0.1",
 		"eventemitter3": "^3.0.0",
-		"extract-loader": "^2.0.0",
+		"extract-loader": "^3.0.0",
 		"extract-text-webpack-plugin": "4.0.0-beta.0",
 		"file-loader": "^1.1.5",
 		"font-awesome": "^4.7.0",
