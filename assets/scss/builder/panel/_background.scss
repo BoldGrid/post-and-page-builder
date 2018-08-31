@@ -102,6 +102,10 @@
 		padding: 18px 15px;
 	}
 
+	.customize .section.generic-border-color {
+		display: block;
+	}
+
 	.preset-wrapper[data-type="color"] ~ * .customize .background-color {
 		display: block;
 	}

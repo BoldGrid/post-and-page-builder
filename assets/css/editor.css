@@ -847,6 +847,9 @@
   display: none;
   padding: 18px 15px; }
 
+.editor-panel[data-type="background"] .customize .section.generic-border-color {
+  display: block; }
+
 .editor-panel[data-type="background"] .preset-wrapper[data-type="color"] ~ * .customize .background-color {
   display: block; }
 
