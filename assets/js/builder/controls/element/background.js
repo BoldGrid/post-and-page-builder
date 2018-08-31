@@ -565,7 +565,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_setupBackgroundClick: function() {
 			var panel = BG.Panel;
 
-			panel.$element.on( 'click', '.background-design .selection', function() {
+			panel.$element.on( 'click', '.background-design .presets .selection', function() {
 				var $this = $( this ),
 					$target = self.getTarget(),
 					imageUrl = $this.attr( 'data-image-url' ),
