@@ -204,10 +204,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param jQuery $module.
 		 */
 		_clearInlineStyles: function( $module ) {
-			BG.Controls.addStyle( $module, 'padding', '' );
-			BG.Controls.addStyle( $module, 'margin', '' );
-			BG.Controls.addStyle( $module, 'background-color', '' );
-			BG.Controls.addStyle( $module, 'border-color', '' );
+			BG.Controls.addStyles( $module, {
+				padding: '',
+				margin: '',
+				'background-color': '',
+				'border-color': '',
+				'box-shadow': '',
+				border: ''
+			} );
 		},
 
 		/**
