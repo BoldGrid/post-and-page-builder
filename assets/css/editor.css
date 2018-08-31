@@ -1577,6 +1577,9 @@
   width: 100%;
   height: 100%; }
 
+.editor-panel .select2-selection.select2-selection--single {
+  position: relative; }
+
 /*--------------------------------------------------------------
 # Menu Styles
 --------------------------------------------------------------*/
