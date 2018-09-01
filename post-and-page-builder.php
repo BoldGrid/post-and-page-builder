@@ -69,12 +69,14 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 		Boldgrid_Editor_Service::get( 'main' )->run();
 	}
 
+	$autoload = require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+
 	// Load Library.
-	new Boldgrid\Library\Util\Load(
+	new \Boldgrid\Library\Util\Load(
 		array(
 			'type'            => 'plugin',
 			'file'            => plugin_basename( __FILE__ ),
-			'loader'          => require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php',
+			'loader'          => $autoload,
 			'keyValidate'     => true,
 			'licenseActivate' => false,
 		)
