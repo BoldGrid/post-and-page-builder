@@ -145,6 +145,8 @@ Release Date: TBD
 * New Feature: Anchors have individual font control.
 * New Feature: Rows can be added from the section popover.
 * New Feature: Pre tags are now supported for drag and drop.
+* New Feature: Added BoldGrid Connect Page.
+* New Feature: Support for Premium Ext.
 * Update: After first time setup page template will update for current page.
 * Bug Fix: Fix display issues when viewing saved blocks on BoldGrid Themes.
 * Bug Fix: Duplicate fonts displayed within font selection.

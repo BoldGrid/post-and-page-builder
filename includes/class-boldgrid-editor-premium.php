@@ -38,12 +38,10 @@ class Boldgrid_Editor_Premium {
 	 * @since 1.0.0
 	 */
 	public function admin_notice_setup() {
-		$is_premium_installed = false;
-		$is_premium_active = true;
-		$is_premium = false;
+		$config = Boldgrid_Editor_Service::get( 'config' );
 
 		// If the premium plugin is installed and all is good, abort!
-		if ( 0 && $this->core->config->is_premium_done ) {
+		if ( $config['premium']['is_premium_done'] ) {
 			return;
 		}
 
@@ -59,7 +57,7 @@ class Boldgrid_Editor_Premium {
 		$notices = array(
 			array(
 				'id'      => 'BGPPB_activate_premium',
-				'show'    => $is_premium && $is_premium_installed,
+				'show'    => $config['premium']['is_premium'] && $config['premium']['is_premium_installed'],
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for the wp-admin plugins page.
 					__(
@@ -71,7 +69,7 @@ class Boldgrid_Editor_Premium {
 			),
 			array(
 				'id'      => 'BGPPB_upgrade_premium',
-				'show'    => ! $is_premium && $is_premium_active,
+				'show'    => ! $config['premium']['is_premium'] && $config['premium']['is_premium_active'],
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for the upgrade page.
 					__( 'Thank you for activating the <strong>Post & Page Builder Premium</strong>! Before you can begin using all of the premium features, you must <a href="%2$s">add your premium key</a>. If you are using an Official BoldGrid Host, contact them or login to their management system to retrieve your Premium key. Otherwise, please visit <a href="%1$s" target="_blank">BoldGrid Central</a> to upgrade.', 'boldgrid-editor' ),
@@ -81,7 +79,7 @@ class Boldgrid_Editor_Premium {
 			),
 			array(
 				'id'      => 'BGPPB_download_premium',
-				'show'    => $is_premium && ! $is_premium_installed,
+				'show'    => $config['premium']['is_premium'] && ! $config['premium']['is_premium_installed'],
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for BoldGrid Central.
 					__(
