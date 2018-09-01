@@ -69,6 +69,17 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 		Boldgrid_Editor_Service::get( 'main' )->run();
 	}
 
+	// Load Library.
+	new Boldgrid\Library\Util\Load(
+		array(
+			'type'            => 'plugin',
+			'file'            => plugin_basename( __FILE__ ),
+			'loader'          => require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php',
+			'keyValidate'     => true,
+			'licenseActivate' => false,
+		)
+	);
+
 	function boldgrid_editor_deactivate() {
 		deactivate_plugins( array( 'boldgrid-editor/boldgrid-editor.php' ), true );
 	}

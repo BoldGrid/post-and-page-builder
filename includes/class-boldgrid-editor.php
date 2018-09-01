@@ -175,9 +175,11 @@ class Boldgrid_Editor {
 		$boldgrid_editor_media_map = new Boldgrid_Editor_Media_Map();
 		$boldgrid_editor_wpforms   = new Boldgrid_Editor_Wpforms();
 		$boldgrid_editor_setup     = new Boldgrid_Editor_Setup();
+		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
 
 		// Init Form deps.
 		$boldgrid_editor_wpforms->init();
+		$boldgrid_editor_premium->init();
 
 		// Check PHP and WordPress versions for compatibility.
 		add_action( 'admin_init', array ( $boldgrid_editor_version, 'check_php_wp_versions' ) );
