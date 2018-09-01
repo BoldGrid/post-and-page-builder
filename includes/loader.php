@@ -28,7 +28,6 @@ require_once BOLDGRID_EDITOR_PATH . '/controls/class-boldgrid-controls-page-titl
 
 // Component.
 require_once BOLDGRID_EDITOR_PATH . '/components/class-boldgrid-components-shortcode.php';
-require_once BOLDGRID_EDITOR_PATH . '/components/class-boldgrid-components-post.php';
 
 // Media.
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media.php';

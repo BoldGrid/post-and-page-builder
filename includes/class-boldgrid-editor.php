@@ -283,15 +283,6 @@ class Boldgrid_Editor {
 	}
 
 	/**
-	 * Register all widgets.
-	 *
-	 * @since 1.8.0
-	 */
-	public static function register_widgets() {
-		register_widget( 'Boldgrid_Components_Post' );
-	}
-
-	/**
 	 * Get the Post and Page Builder configuration array.
 	 *
 	 * @since 1.3.3
