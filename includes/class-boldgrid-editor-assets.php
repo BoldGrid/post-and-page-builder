@@ -169,6 +169,13 @@ class Boldgrid_Editor_Assets {
 			plugins_url( '/assets/css/buttons.min.css', BOLDGRID_EDITOR_ENTRY ),
 			array(), BOLDGRID_EDITOR_VERSION );
 		}
+
+		/*
+		 * Fired after the Post and Page Builder enqueues it's public scripts.
+		 *
+		 * @since 1.8.0
+		 */
+		do_action( 'boldgrid_editor_scripts_public' );
 	}
 
 	/**
@@ -365,6 +372,14 @@ class Boldgrid_Editor_Assets {
 		);
 
 		wp_enqueue_script( 'boldgrid-editor-drag' );
+
+
+		/*
+		 * Fired after the Post and Page Builder enqueues it's editor scripts.
+		 *
+		 * @since 1.8.0
+		 */
+		do_action( 'boldgrid_editor_scripts_builder' );
 	}
 
 	/**

@@ -289,6 +289,15 @@ class Boldgrid_Editor_MCE {
 
 		$styles = explode( ',', $css );
 
+		/*
+		 * Filter the styles to be enqueued into the editor iframe before the editor reorders.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param array $styles List of styles to enqueue.
+		 */
+		$styles = apply_filters( 'boldgrid_editor_before_editor_styles', $styles );
+
 		$styles = $this->prepend_bootstrap_styles( $styles );
 
 		array_unshift( $styles, plugins_url( '/assets/js/builder/css/before-theme.css',
@@ -329,6 +338,15 @@ class Boldgrid_Editor_MCE {
 
 			$mce_css[] = add_query_arg( 'boldgrid-editor-version', $query_arg, $editor_style );
 		}
+
+		/*
+		 * Filter the styles to be enqueued into the editor iframe after the editor reorders.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param array $styles List of styles to enqueue.
+		 */
+		$mce_css = apply_filters( 'boldgrid_editor_after_editor_styles', $mce_css );
 
 		return implode( ',', $mce_css );
 	}
