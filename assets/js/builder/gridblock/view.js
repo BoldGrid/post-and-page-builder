@@ -304,7 +304,7 @@ import { Industry } from './industry';
 					BG.Service.styleUpdater.getCachedCss() +
 					'</style>';
 
-				$iframe.find( 'head' ).html( headMarkup );
+				$iframe.find( 'head' ).append( headMarkup );
 			},
 
 			/**

@@ -67,7 +67,7 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		foreach ( $div as $potential_row ) {
 			$classes_attr = $potential_row->getAttribute( 'class' );
 
-			if ( preg_match( '/boldgrid-section(\s|$)/', $classes_attr ) &&
+			if ( preg_match( '/boldgrid-section(\s|$|-wrap)/', $classes_attr ) &&
 				 ! preg_match( '/hidden-md/', $classes_attr ) ) {
 
 				// Save Markup

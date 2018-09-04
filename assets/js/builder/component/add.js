@@ -141,7 +141,7 @@ export class Add {
 		if ( 'prependColumn' === component.onInsert ) {
 			this.prependContent( $html );
 
-			BG.Service.component.scrollToElement( $html, 200 );
+			this.scrollToElement( $html, 200 );
 			BG.Service.popover.section.transistionSection( $html );
 
 			// Call the function.

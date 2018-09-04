@@ -17,6 +17,7 @@ import { View } from './view';
 import { ConnectKey } from './connect-key/prompt';
 import { Add as AddComponent } from './component/add';
 import { Component as LayoutComponent } from './component/layout/component';
+import { EventEmitter } from 'eventemitter3';
 
 export class Service {
 	init() {
@@ -28,6 +29,8 @@ export class Service {
 		this._onWindowLoad();
 		this._onEditorLoad();
 		this._onEditorPreload();
+
+		this.event = new EventEmitter();
 
 		return this;
 	}

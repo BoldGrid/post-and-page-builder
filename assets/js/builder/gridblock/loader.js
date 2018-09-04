@@ -140,6 +140,10 @@ import { WebFont } from '@boldgrid/controls';
 
 					// Wait for images to load and then adjust iframe height.
 					setTimeout( () => {
+
+						// When a gridblock is rendered fire the event.
+						BG.Service.event.emit( 'blockRendered', gridblock );
+
 						self.preview.adjustHeight( $iframe, $gridblock );
 
 						// This gets a timeout because animations cause :visible to return false on MOZ.

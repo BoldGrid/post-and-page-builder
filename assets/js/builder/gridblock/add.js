@@ -96,7 +96,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 			 */
 			sendGridblock: function( html, $placeHolder, gridblockId ) {
 				var html = wp.mce.views.setMarkers( html ),
-					$inserting = $( html ),
+					$inserting = $( html ).addClass( 'gridblock-inserted' ),
 					draggable = IMHWPB.WP_MCE_Draggable.draggable_instance;
 
 				if ( ! $inserting || ! draggable ) {
@@ -105,7 +105,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 
 					// Select node with tinymce then insert to tigger mce events.
 					BOLDGRID.EDITOR.mce.selection.select( $placeHolder[0] );
-					BOLDGRID.EDITOR.mce.selection.setContent( $inserting.html() );
+					BOLDGRID.EDITOR.mce.selection.setContent( $inserting[0].outerHTML );
 
 					/*
 					 * The following method was disabled at this step because it caused
@@ -113,6 +113,10 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 					 */
 					// window.send_to_editor( $inserting.html() );
 				}
+
+				let $inserted = BG.Controls.$container.find( '.gridblock-inserted' );
+				BG.Service.event.emit( 'blockAdded', $inserted );
+				$inserted.find( '> *:first' ).unwrap();
 
 				// Update editor fonts.
 				BG.Service.styleUpdater.updateFontsUrl();
@@ -123,7 +127,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 				BOLDGRID.EDITOR.mce.focus();
 
 				setTimeout( function() {
-					BG.CONTROLS.Add.scrollToElement( $inserting, 0 );
+					BG.Service.component.scrollToElement( $inserting, 0 );
 				} );
 
 				self.$window.trigger( 'resize' );
