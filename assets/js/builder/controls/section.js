@@ -154,6 +154,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				return;
 			}
 
+			BG.Panel.closePanel();
 			$.fourpan.dismiss();
 			self.sectionDragEnabled = true;
 			self.$container.find( 'html' ).addClass( 'zoomout dragging-section' );
