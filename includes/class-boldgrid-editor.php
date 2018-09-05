@@ -181,9 +181,6 @@ class Boldgrid_Editor {
 		$boldgrid_editor_wpforms->init();
 		$boldgrid_editor_premium->init();
 
-		// Check PHP and WordPress versions for compatibility.
-		add_action( 'admin_init', array ( $boldgrid_editor_version, 'check_php_wp_versions' ) );
-
 		// Upgrade old versions of maps.
 		add_action( 'admin_init', array( $boldgrid_editor_media_map, 'upgrade_maps' ) );
 

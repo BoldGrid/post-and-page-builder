@@ -46,8 +46,24 @@ if ( ! defined( 'BOLDGRID_EDITOR_CONFIGDIR' ) ) {
 */
 if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_EDITOR_VERSION, '1.6.0.' ) ) {
 
-	// Prevent invalid PHP version from loading.
-	require BOLDGRID_PPB_PATH . '/includes/version-check.php';
+	// BEFORE LOADING CHECK - WP & PHP Versions.
+	require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-compatibility.php';
+	$compatibility = new Boldgrid_Editor_Compatibility( array(
+		'wp' => '4.7',
+		'php' => '5.4',
+	) );
+
+	if ( ! $compatibility->checkVersions() ) {
+		return;
+	}
+
+	// BEFORE LOADING CHECK - Build Files exist.
+	require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-development.php';
+	$development = new Boldgrid_Editor_Development();
+	if ( ! $development->checkValidBuild() ) {
+		return;
+	}
+
 	// Load the editor class.
 	require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor.php';
 

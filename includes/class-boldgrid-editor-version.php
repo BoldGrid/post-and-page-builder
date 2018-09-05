@@ -62,24 +62,4 @@ class Boldgrid_Editor_Version {
 			Boldgrid_Editor_Option::update( 'displayed_v1.3_notice', 1 );
 		}
 	}
-
-	/**
-	 * Check PHP and WordPress versions for compatibility
-	 */
-	public function check_php_wp_versions() {
-		// Check to see if WordPress version is installed at our required minimum or deactivate and
-		// die:
-		global $wp_version;
-		$required_wp_version = '4.4';
-		if ( version_compare( $wp_version, $required_wp_version, '<' ) ) {
-			deactivate_plugins( BOLDGRID_EDITOR_PATH . '/post-and-page-builder.php' );
-			wp_die(
-				'<p><center><strong>Post and Page Builder</strong> requires WordPress ' .
-				$required_wp_version . ' or higher.</center></p>', 'Plugin Activation Error',
-				array (
-					'response' => 200,
-					'back_link' => TRUE
-				) );
-		}
-	}
 }
