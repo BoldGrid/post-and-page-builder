@@ -7,7 +7,7 @@ export class Component {
 
 		this.config = {
 			name: 'spacer',
-			title: 'New Block',
+			title: 'New Section',
 			type: 'structure',
 			icon: require( './icon.svg' ),
 			insertType: 'insert',
