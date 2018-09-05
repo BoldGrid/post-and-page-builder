@@ -79,7 +79,13 @@ BOLDGRID.EDITOR.DRAG = BOLDGRID.EDITOR.DRAG || {};
 
 			self.$container
 				.on( 'dragstart', '.dragging-section', exit )
-				.on( 'mousedown', '.dragging-section .boldgrid-section', self.start )
+				.on(
+					'mousedown',
+					`
+					.dragging-section .boldgrid-section:not(.boldgrid-section-wrap .boldgrid-section),
+					.dragging-section .boldgrid-section-wrap`,
+					self.start
+				)
 				.on( 'mousemove', '.dragging-section', self.over )
 				.on( 'mouseup dragend', '.dragging-section', self.end )
 				.on( 'mousemove', '.dragging-section', self.overHelper );
@@ -208,7 +214,7 @@ BOLDGRID.EDITOR.DRAG = BOLDGRID.EDITOR.DRAG || {};
 		calcSectionLocs: function() {
 			var locs = [];
 
-			self.$container.$body.find( '> .boldgrid-section' ).each( function() {
+			self.$container.$body.find( '> .boldgrid-section, > .boldgrid-section-wrap' ).each( function() {
 				var pos = this.getBoundingClientRect(),
 					midPoint = ( pos.bottom - pos.top ) / 2 + pos.top;
 

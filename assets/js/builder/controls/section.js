@@ -112,13 +112,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self.$container.$body.find( '.loading-gridblock' ).remove();
 			self.sectionDragEnabled = false;
 			$body.removeClass( 'focus-on boldgrid-zoomout' );
-			$window.trigger( 'resize' );
 			$frameHtml.removeClass( 'zoomout dragging-section' );
 			self.$container.$body.attr( 'contenteditable', 'true' );
 			BG.Controls.$menu.hide();
 			self.$container.$body.css( 'transform', '' );
 			$frameHtml.css( 'max-height', '' );
 			$( '#content_ifr' ).css( 'max-height', '' );
+			$( window ).trigger( 'resize' );
 
 			$( 'html, body' ).animate(
 				{

@@ -322,6 +322,8 @@ IMHWPB.WP_MCE_Draggable = function() {
 		//Highlight the current display type
 		self.update_device_highlighting();
 		self.$window.trigger( 'resize.boldgrid-gallery' );
+
+		BG.Service.event.emit( 'mceResize' );
 	};
 
 	this.updateResizingIframe = function() {
