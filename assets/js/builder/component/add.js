@@ -28,6 +28,7 @@ export class Add {
 		this.defaults = {
 			type: 'design',
 			insertType: 'drag',
+			priority: 40,
 			onClick: component => this.sendToEditor( component ),
 			onDragDrop: ( component, $el ) => this.openCustomization( component, $el )
 		};
@@ -75,6 +76,7 @@ export class Add {
 
 		// Alphabetical order.
 		this.components = _.sortBy( this.components, val => val.title );
+		this.components = _.sortBy( this.components, val => val.priority );
 
 		this.$ui = $(
 			_.template( panelTemplate )( {

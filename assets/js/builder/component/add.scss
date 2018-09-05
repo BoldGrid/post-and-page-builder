@@ -167,6 +167,17 @@
 		transform: scale(0.8);
 	}
 
+	[data-name='premium'] {
+		background: #32373c !important;
+		color: white;
+
+		svg {
+			width: 30px;
+			position: relative;
+			top: -3px;
+		}
+	}
+
 	label[data-insert-type='popup'] {
 		cursor: pointer;
 
