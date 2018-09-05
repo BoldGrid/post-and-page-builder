@@ -76,6 +76,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 			enterIframeBody: function() {
 				if ( ! BG.DRAG.Section.isDragging() ) {
 					self.$mceContainer.find( 'body' ).append( self.currentDrag.$element );
+					BG.Service.event.emit( 'blockDragEnter', self.currentDrag.$element );
 					BG.DRAG.Section.startDrag( self.currentDrag.$element );
 				}
 			},

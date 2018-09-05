@@ -37,6 +37,8 @@ class Boldgrid_Components_Shortcode {
 	public function init() {
 		add_action( 'wp_loaded', function() {
 			$this->add_widget_configs();
+
+			// Update configs in the global configs.
 			$config = Boldgrid_Editor_Service::get( 'config' );
 			$config['component_controls'] = $this->config;
 			Boldgrid_Editor_Service::register( 'config', $config );
