@@ -330,7 +330,7 @@ class Boldgrid_Editor_Assets {
 		BOLDGRID_EDITOR_VERSION, true );
 
 		wp_enqueue_style( 'boldgrid-editor-fonts',
-			'https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600',
+			'https://fonts.googleapis.com/css?family=Open+Sans|Josefin+Sans:300,400,600',
 		false, BOLDGRID_EDITOR_VERSION, false );
 	}
 

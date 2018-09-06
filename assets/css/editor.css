@@ -287,6 +287,7 @@
 --------------------------------------------------------------*/
 .color-panel,
 .editor-panel {
+  font-family: 'Open Sans', sans-serif;
   display: none;
   position: fixed;
   top: 200px;
@@ -636,6 +637,18 @@
 .panel-body ul {
   text-align: center;
   margin-top: 0; }
+
+.editor-panel .mdc-select select {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin: 0;
+  vertical-align: initial;
+  height: initial;
+  line-height: 1.75rem;
+  padding-left: 0;
+  padding-right: 26px;
+  padding-top: 20px;
+  padding-bottom: 4px; }
 
 /*************** Icon Panel ********************/
 .editor-panel[data-type='icon'] {
