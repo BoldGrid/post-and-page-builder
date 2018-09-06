@@ -31,9 +31,9 @@ export class Component {
 	 */
 	getTemplate() {
 		return `
-			<blockquote>
-				Targeting best in class and possibly build ROI. Funneling user
-				stories so that as an end result, we create a better customer experience.
+			<blockquote class="bg-blockquote">
+				"Targeting best in class and possibly build ROI. Funneling user
+				stories so that as an end result, we create a better customer experience."
 			</blockquote>
 		`;
 	}
