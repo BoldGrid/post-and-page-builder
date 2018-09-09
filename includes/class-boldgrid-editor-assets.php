@@ -346,6 +346,7 @@ class Boldgrid_Editor_Assets {
 		$deps = array(
 			'jquery',
 			'media-views',
+			'mce-view',
 			'jquery-ui-draggable',
 			'jquery-ui-resizable',
 			'jquery-ui-slider',
