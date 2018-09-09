@@ -108,30 +108,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 	};
 
 	/**
-	 * When the user clicks on a button, set the cursor location inside the button
-	 */
-	this.set_button_cursor = function( e ) {
-		if ( e.clientX ) {
-			var this_button = $( this );
-			var buttons = self.draggable_instance.$master_container
-				.find( 'button:not([data-mce-bogus])' )
-				.not( this_button );
-			self.replace_all_buttons( buttons );
-			BOLDGRID.EDITOR.mce.selection.setCursorLocation( this, 1 );
-		}
-	};
-
-	/**
-	 * Refresh the buttons on the page, this is done so that they arent left with a
-	 */
-	this.replace_all_buttons = function( buttons ) {
-		buttons.each( function() {
-			var html = this.outerHTML;
-			$( this ).replaceWith( html );
-		} );
-	};
-
-	/**
 	 * Bind actions to the common events
 	 */
 	this.bind_events = function() {
@@ -145,7 +121,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 			.on( 'drag_end_dwpb.draggable_mce', self.drag_end_event )
 			.on( 'add_row_event_dwpb.draggable_mce', self.set_cursor )
 			.on( 'boldgrid_edit_row.draggable_mce', self.edit_row )
-			.on( 'click.draggable_mce', 'button:not([data-mce-bogus])', self.set_button_cursor )
 			.on( 'click.draggable_mce', 'a', function( e ) {
 				e.preventDefault();
 			} )

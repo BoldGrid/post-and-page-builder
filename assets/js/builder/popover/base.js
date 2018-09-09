@@ -124,6 +124,11 @@ export class Base {
 			this.$target = $newTarget;
 		}
 
+		// Check validation after all rewrites are done.
+		if ( this.$target.closest( '[contenteditable="false"]' ).length ) {
+			return;
+		}
+
 		this.$element.trigger( 'updatePosition' );
 
 		pos = this.$target[0].getBoundingClientRect();

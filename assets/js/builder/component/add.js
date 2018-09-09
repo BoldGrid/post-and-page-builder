@@ -20,7 +20,7 @@ export class Add {
 
 		// Panel Configurations.
 		this.panel = {
-			title: 'Block Components',
+			title: 'Add Block Component',
 			height: '640px',
 			width: '500px'
 		};

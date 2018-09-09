@@ -9,7 +9,7 @@
 			<li>
 				<ul class="help-text">
 					<i class="fa fa-plus" aria-hidden="true"></i>
-					<li class="control-name">Add New Item</li>
+					<li class="control-name">Add Block Component</li>
 					<li class="description">Insert a new element to your post. You can select from a
 						variety of element types. This option is always available.</li>
 				</ul>
