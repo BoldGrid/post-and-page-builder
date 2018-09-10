@@ -18,6 +18,7 @@ import { ConnectKey } from './connect-key/prompt';
 import { Add as AddComponent } from './component/add';
 import { Component as LayoutComponent } from './component/layout/component';
 import { EventEmitter } from 'eventemitter3';
+import { Generate } from '@boldgrid/controls/src/controls/color';
 
 export class Service {
 	init() {
@@ -43,6 +44,8 @@ export class Service {
 	_onWindowLoad() {
 		this.editorWidth = new EditorWidth().init();
 		this.loading = new LoadingGraphic().init();
+		this.colorCalculation = new Generate();
+
 		new View().init();
 	}
 

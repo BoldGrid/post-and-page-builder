@@ -347,7 +347,7 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 					e.fontFound = true;
 				}
 
-				if ( $this.closest( '[contenteditable="false"]' ).length ) {
+				if ( $this.closest( '[contenteditable="false"]:not(.wpview)' ).length ) {
 					return;
 				}
 

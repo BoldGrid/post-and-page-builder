@@ -125,7 +125,7 @@ export class Base {
 		}
 
 		// Check validation after all rewrites are done.
-		if ( this.$target.closest( '[contenteditable="false"]' ).length ) {
+		if ( this.$target.closest( '[contenteditable="false"]:not(.wpview)' ).length ) {
 			return;
 		}
 
