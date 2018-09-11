@@ -12,8 +12,8 @@ export class Clone {
 	 */
 	init() {
 		this.popover.$element.find( '[data-action="duplicate"]' ).on( 'click', () => {
-			this.clone();
-			this.postClone();
+			let $clone = this.clone();
+			this.postClone( $clone );
 		} );
 	}
 
@@ -23,9 +23,12 @@ export class Clone {
 	 * @since 1.6
 	 */
 	clone() {
-		let $target = this.popover.getWrapTarget();
+		let $target = this.popover.getWrapTarget(),
+			$clone = $target.clone();
 
-		$target.after( $target.clone() );
+		$target.after( $clone );
+
+		return $clone;
 	}
 
 	/**
@@ -33,8 +36,9 @@ export class Clone {
 	 *
 	 * @since 1.6
 	 */
-	postClone() {
-		BG.Controls.$container.trigger( 'boldgrid_clone_element', this.popover.getWrapTarget() );
+	postClone( $clone ) {
+		BG.Controls.$container.trigger( 'boldgrid_clone_element' );
+		BG.Service.event.emit( 'clone' + this.popover.eventName, $clone );
 		this.popover.updatePosition();
 	}
 }

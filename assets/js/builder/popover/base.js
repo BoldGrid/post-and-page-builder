@@ -42,6 +42,7 @@ export class Base {
 	 */
 	init() {
 		this.$target;
+		this.eventName = this.capitalize( this.name );
 		this.$element = this._render();
 
 		this.$element.hide();
@@ -53,6 +54,10 @@ export class Base {
 		new GeneralActions().bind( this );
 
 		return this;
+	}
+
+	capitalize( string ) {
+		return string[0].toUpperCase() + string.slice( 1 );
 	}
 
 	/**
