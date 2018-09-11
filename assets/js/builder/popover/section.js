@@ -12,6 +12,8 @@ export class Section extends Base {
 
 		this.name = 'section';
 
+		this.wrapTarget = '.boldgrid-section-wrap';
+
 		this.selectors = [ '.boldgrid-section' ];
 
 		this.emptySectionTemplate = wp.template( 'boldgrid-editor-empty-section' );
@@ -90,7 +92,7 @@ export class Section extends Base {
 	 */
 	addNewSection() {
 		let $newSection = $( this.emptySectionTemplate() );
-		this.$target.after( $newSection );
+		this.getWrapTarget().after( $newSection );
 		this.transistionSection( $newSection );
 	}
 
@@ -145,13 +147,13 @@ export class Section extends Base {
 	 * @since 1.2.7
 	 */
 	moveUp() {
-		let $prev = this.$target.prev();
+		let $target = this.getWrapTarget(),
+			$prev = $target.prev();
 
 		if ( $prev.length ) {
-			$prev.before( this.$target );
+			$prev.before( $target );
+			BG.Controls.$container.trigger( BG.Controls.$container.delete_event );
 		}
-
-		BG.Controls.$container.trigger( BG.Controls.$container.delete_event );
 	}
 
 	/**
@@ -161,7 +163,7 @@ export class Section extends Base {
 	 */
 	_saveGridblock( e ) {
 		BG.Controls.get( 'Library' ).openPanel( {
-			html: this.$target[0].outerHTML
+			html: this.getWrapTarget()[0].outerHTML
 		} );
 	}
 
@@ -171,12 +173,13 @@ export class Section extends Base {
 	 * @since 1.2.7
 	 */
 	moveDown() {
-		let $next = this.$target.next();
-		if ( $next.length ) {
-			$next.after( this.$target );
-		}
+		let $target = this.getWrapTarget(),
+			$next = $target.next();
 
-		BG.Controls.$container.trigger( BG.Controls.$container.delete_event );
+		if ( $next.length ) {
+			$next.after( $target );
+			BG.Controls.$container.trigger( BG.Controls.$container.delete_event );
+		}
 	}
 
 	/**

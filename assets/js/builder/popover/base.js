@@ -109,7 +109,6 @@ export class Base {
 		) {
 			return false;
 		}
-
 		if ( $newTarget ) {
 
 			// Rewrite target to parent.
@@ -126,6 +125,7 @@ export class Base {
 
 		// Check validation after all rewrites are done.
 		if ( this.$target.closest( '[contenteditable="false"]:not(.wpview)' ).length ) {
+			this.$element.hide();
 			return;
 		}
 
@@ -166,6 +166,22 @@ export class Base {
 	debouncedUpdate( event ) {
 		this._showCb( event );
 		this.mostRecentAction = 'enter';
+	}
+
+	/**
+	 * Get a potentially wrapping element.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return {jQuery} Element to modify.
+	 */
+	getWrapTarget() {
+		if ( ! this.wrapTarget ) {
+			return this.$target;
+		}
+
+		let $wrap = this.$target.closest( this.wrapTarget );
+		return $wrap.length ? $wrap : this.$target;
 	}
 
 	/**

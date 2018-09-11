@@ -23,8 +23,9 @@ export class Clone {
 	 * @since 1.6
 	 */
 	clone() {
-		let $clone = this.popover.$target.clone();
-		this.popover.$target.after( $clone );
+		let $target = this.popover.getWrapTarget();
+
+		$target.after( $target.clone() );
 	}
 
 	/**
@@ -33,7 +34,7 @@ export class Clone {
 	 * @since 1.6
 	 */
 	postClone() {
-		BG.Controls.$container.trigger( 'boldgrid_clone_element' );
+		BG.Controls.$container.trigger( 'boldgrid_clone_element', this.popover.getWrapTarget() );
 		this.popover.updatePosition();
 	}
 }
