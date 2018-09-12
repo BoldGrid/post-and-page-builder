@@ -38,12 +38,12 @@ export class Content extends Base {
 	 *
 	 * @return {jQuery} Element to modify.
 	 */
-	getWrapTarget() {
+	_findWrapTarget() {
 		if ( BG.Controls.$container.editting_as_row ) {
 			return this.$target;
 		}
 
-		return super.getWrapTarget();
+		return super._findWrapTarget();
 	}
 
 	/**

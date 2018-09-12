@@ -134,12 +134,15 @@ export class Base {
 			return;
 		}
 
+		// Store the wrap target for faster lookups later.
+		this.$target.$wrapTarget = this._findWrapTarget();
+
 		this.$element.trigger( 'updatePosition' );
 
-		pos = this.$target[0].getBoundingClientRect();
+		pos = this.$target.$wrapTarget[0].getBoundingClientRect();
 
 		this.$element.css( this.getPositionCss( pos ) ).show();
-		this.$target.addClass( 'popover-hover' );
+		this.$target.$wrapTarget.addClass( 'popover-hover' );
 	}
 
 	/**
@@ -181,6 +184,17 @@ export class Base {
 	 * @return {jQuery} Element to modify.
 	 */
 	getWrapTarget() {
+		return this.$target.$wrapTarget;
+	}
+
+	/**
+	 * Find the current wrapping target.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return {jQuery} Current wrap element.
+	 */
+	_findWrapTarget() {
 		if ( ! this.wrapTarget ) {
 			return this.$target;
 		}
@@ -299,7 +313,7 @@ export class Base {
 	 */
 	_removeBorder() {
 		if ( this.$target && this.$target.length ) {
-			this.$target.removeClass( 'popover-hover' );
+			this.getWrapTarget().removeClass( 'popover-hover' );
 		}
 	}
 
