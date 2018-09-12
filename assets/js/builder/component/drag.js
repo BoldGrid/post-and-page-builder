@@ -70,6 +70,7 @@ export class Drag {
 		let $context = BG.Panel.$element.find( '.bg-component' );
 
 		$context.find( `[data-name="${component.name}"]` ).on( 'dragstart', event => {
+			let $dragElement = component.getDragElement();
 			event.skipDragImage = true;
 			BG.Panel.$element.addClass( 'component-drag' );
 
@@ -79,7 +80,8 @@ export class Drag {
 			BG.Service.popover.selection = {
 				name: 'content',
 				component: component,
-				$target: component.getDragElement()
+				$target: $dragElement,
+				getWrapTarget: () => $dragElement
 			};
 
 			BG.Controls.$container.drag_handlers.start( event );
