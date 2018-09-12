@@ -865,7 +865,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			.on( 'click.draggable', self.hide_menus )
 			.on( 'click.draggable', self.failSafeCleanup )
 			.on( 'click.draggable', '.context-menu-imhwpb', self.setup_context_menu )
-			.on( 'boldgrid_modify_content.draggable', self.refresh_fourpan );
+			.on( 'boldgrid_modify_content.draggable', self.refresh_fourpan )
+			.on( 'boldgrid_modify_content.draggable', () => BG.Service.event.emit( 'modifyContent' ) );
 
 		self
 			.on( 'mouseleave.draggable', self.window_mouse_leave )
@@ -2807,9 +2808,11 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	 */
 	this.typing_events = {
 		start: function() {
+			BG.Service.event.emit( 'startTyping' );
 			self.find( 'html' ).addClass( 'boldgrid-is-typing' );
 		},
 		end: function() {
+			BG.Service.event.emit( 'endTyping' );
 			self.validate_markup();
 			self.find( 'html' ).removeClass( 'boldgrid-is-typing' );
 		}

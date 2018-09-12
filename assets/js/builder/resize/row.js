@@ -125,6 +125,8 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 					if ( self.$container.$html.hasClass( 'editing-as-row' ) && $.fourpan ) {
 						$.fourpan.refresh();
 					}
+
+					BG.Service.event.emit( 'rowResize', self.$currentRow );
 				}
 			} );
 		},

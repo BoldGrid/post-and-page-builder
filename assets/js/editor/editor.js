@@ -708,7 +708,8 @@ IMHWPB.Editor = function( $ ) {
 
 			/*
 			 *
-			 * Used for debugging
+			 * Used for debugging *
+
 			var all_events = [
 				'AddUndo',
 				'cut',
