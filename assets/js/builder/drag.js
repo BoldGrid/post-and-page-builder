@@ -1177,6 +1177,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		self.placeholder.revertContent();
 		self.finish_dragging();
 		self.trigger( self.drag_end_event, self.$temp_insertion );
+		BG.Service.event.emit( 'dragDrop', self.$temp_insertion );
 		self.$current_drag = null;
 		self.$temp_insertion.trigger( 'mouseenter' );
 		self.removeClass( 'drag-progress' );
@@ -2355,7 +2356,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			self.drag_drop_triggered = false;
 			var $this = $( this );
 
-			self.$current_drag = BG.Service.popover.selection.$target;
+			self.$current_drag = BG.Service.popover.selection.getWrapTarget();
 			self.$current_drag.addClass( 'dragging-imhwpb' );
 			self.addClass( 'drag-progress' );
 

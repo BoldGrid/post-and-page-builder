@@ -12,6 +12,8 @@ export class Content extends Base {
 
 		this.name = 'content';
 
+		this.wrapTarget = '.boldgrid-wrap-row';
+
 		this.nestedSelector = this.createNestedSelector();
 
 		return this;
@@ -27,6 +29,21 @@ export class Content extends Base {
 
 		this.$element.on( 'updatePosition', () => this._onUpdatePosition() );
 		this.$element.find( '.edit-as-row' ).on( 'click', () => this._onEditRow() );
+	}
+
+	/**
+	 * Override functionality to skip target wrap checking while in edit as row.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return {jQuery} Element to modify.
+	 */
+	getWrapTarget() {
+		if ( BG.Controls.$container.editting_as_row ) {
+			return this.$target;
+		}
+
+		return super.getWrapTarget();
 	}
 
 	/**
