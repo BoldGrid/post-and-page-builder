@@ -184,7 +184,7 @@ export class Base {
 	 * @return {jQuery} Element to modify.
 	 */
 	getWrapTarget() {
-		return this.$target.$wrapTarget;
+		return this.$target.$wrapTarget || this.$target;
 	}
 
 	/**

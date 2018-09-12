@@ -151,6 +151,10 @@ class Boldgrid_Components_Shortcode {
 
 		// Add a single configurable shortcode.
 		add_shortcode( 'boldgrid_component', function ( $attrs, $content = null ) {
+			if ( empty( $attrs['type'] ) ) {
+				return;
+			}
+
 			$component = ! empty( $this->config['components'][ $attrs['type'] ] ) ?
 				$this->config['components'][ $attrs['type'] ] : null;
 

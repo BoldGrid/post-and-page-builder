@@ -146,7 +146,7 @@ export class Content extends Base {
 		if ( BG.Controls.$container.editting_as_row ) {
 			$.fourpan.dismiss();
 		} else {
-			$.fourpan.highlight( this.$target );
+			$.fourpan.highlight( this.getWrapTarget() );
 		}
 	}
 }
