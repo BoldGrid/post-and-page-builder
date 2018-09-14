@@ -41,13 +41,15 @@ used in the WordPress page and post editor.
 ## Development
 
 ### Installing Dependencies
-composer install
-yarn install
+Before you can use the development version of this plugin you must install the dependencies.
 
 ```
-# CSS/JS Development
+composer install
+yarn install
+```
+### CSS/JS Development
 If you plan on modifying any front end assets you will need to start the webpack dev server.
-
+```
 # Run localhost:4000 with hot reload
 yarn dev
 
