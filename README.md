@@ -38,14 +38,20 @@ used in the WordPress page and post editor.
 
 2. Activate the plugin through the Plugins menu in WordPress.
 
-## JS/CSS Development
+## Development
+
+### Installing Dependencies
+Before you can use the development version of this plugin you must install the dependencies.
 
 ```
-# Install dependencies
+composer install
 yarn install
-
+```
+### CSS/JS Development
+If you plan on modifying any front end assets you will need to start the webpack dev server.
+```
 # Run localhost:4000 with hot reload
-npm start
+yarn dev
 
 # Add the following to your wp-config.php
 define( 'SCRIPT_DEBUG', true );
