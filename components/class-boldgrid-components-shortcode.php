@@ -64,13 +64,13 @@ class Boldgrid_Components_Shortcode {
 			$classname = ! empty( $widget->widget_options['classname'] ) ?
 				$widget->widget_options['classname'] : '';
 
-			$widget_config = array_merge( $args, array(
+			$widget_config = array_merge( array(
 				'widget_id' => null,
 				'before_title' => '<h4 class="widget-title">',
 				'after_title' => '</h4>',
 				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
 				'after_widget' => '</div>',
-			) );
+			), $args );
 
 			ob_start();
 			$widget->widget( $widget_config, $attrs );
