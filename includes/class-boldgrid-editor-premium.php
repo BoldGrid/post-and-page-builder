@@ -73,7 +73,7 @@ class Boldgrid_Editor_Premium {
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for the upgrade page.
 					__( 'Thank you for activating the <strong>Post & Page Builder Premium</strong>! Before you can begin using all of the premium features, you must <a href="%2$s">add your premium key</a>. If you are using an Official BoldGrid Host, contact them or login to their management system to retrieve your Premium key. Otherwise, please visit <a href="%1$s" target="_blank">BoldGrid Central</a> to upgrade.', 'boldgrid-editor' ),
-					'https://www.boldgrid.com/connect-keys/',
+					'https://www.boldgrid.com/central/',
 					admin_url( 'options-general.php?page=boldgrid-connect.php' )
 				) . '</p>',
 			),
