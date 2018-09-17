@@ -117,7 +117,7 @@ export class Base {
 		if ( $newTarget ) {
 
 			// Rewrite target to parent.
-			$newTarget = $newTarget.closest( this.getSelectorString() );
+			$newTarget = this._getParentTarget( $newTarget );
 
 			// If hovering over a new target, hide menu.
 			if ( this.$target && $newTarget[0] !== this.$target[0] ) {
@@ -140,7 +140,6 @@ export class Base {
 		this.$element.trigger( 'updatePosition' );
 
 		pos = this.$target.$wrapTarget[0].getBoundingClientRect();
-
 		this.$element.css( this.getPositionCss( pos ) ).show();
 		this.$target.$wrapTarget.addClass( 'popover-hover' );
 	}
@@ -188,7 +187,27 @@ export class Base {
 	}
 
 	/**
+	 * Check for parents if they exists and return it.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {jQuery} $target Target to check.
+	 * @return {jQuery}         Parent target.
+	 */
+	_getParentTarget( $target ) {
+		let $parent = $target.parents( this.getSelectorString() ).last();
+		return $parent.length ? $parent : $target;
+	}
+
+	/**
 	 * Find the current wrapping target.
+	 *
+	 * A wrap target is an element that contains a draggable item. The popover
+	 * should exist on the original target and only some actions will rewrite to the
+	 * wrap target. For example a boldgrid-slider wraps a group of sections.
+	 * When the user clicks the clone action the event is mapped to the wrap and
+	 * not the section. Other actions like change background, are still bound to
+	 * the section.
 	 *
 	 * @since 1.8.0
 	 *
