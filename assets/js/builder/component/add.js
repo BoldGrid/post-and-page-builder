@@ -169,10 +169,31 @@ export class Add {
 	 * @param  {jQuery} $html Element.
 	 */
 	prependContent( $html ) {
-		BG.Controls.$container.$body
-			.find( '[class*="col-md-"]' )
-			.first()
-			.prepend( $html );
+		let $firstColumn = BG.Controls.$container.$body
+			.find( '[class*="col-md-"]:not(.boldgrid-slider [class*="col-md-"])' )
+			.first();
+
+		if ( $html.is( '.boldgrid-section, .boldgrid-section-wrap' ) ) {
+			$firstColumn = BG.Controls.$container.$body;
+		}
+
+		if ( ! $firstColumn.length ) {
+			let $newSection = $( `
+				<div class="boldgrid-section">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+							</div>
+						</div>
+					</div>
+				</div>
+			` );
+
+			BG.Controls.$container.$body.prepend( $newSection );
+			$firstColumn = $newSection.find( '[class*="col-md-"]' );
+		}
+
+		$firstColumn.prepend( $html );
 	}
 
 	/**
