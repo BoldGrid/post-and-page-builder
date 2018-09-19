@@ -70,7 +70,7 @@
 		"stylelint": "^9.0.0"
 	},
 	"dependencies": {
-		"@boldgrid/components": "^2.12.1",
+		"@boldgrid/components": "^2.15.0",
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#typography",
 		"animate.css": "^3.5.2",
 		"babel-eslint": "^8.0.2",
