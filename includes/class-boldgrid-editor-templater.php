@@ -216,6 +216,11 @@ class Boldgrid_Editor_Templater {
 
 		// Get global post
 		global $post;
+		global $wp_query;
+
+		if ( ! empty( $wp_query->is_search ) ) {
+			return $template;
+		}
 
 		$is_custom_template = $this->is_custom_template( $template );
 
