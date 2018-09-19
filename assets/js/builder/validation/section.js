@@ -74,7 +74,8 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 		self.$context.find( '> *' ).each( function() {
 			var $this = $( this );
 
-			if ( $this.is( contentSelector ) ) {
+			// Do not wrap next page marker.
+			if ( $this.is( contentSelector ) && ! $this.find( '.mce-wp-nextpage' ).length ) {
 				group.push( this );
 			} else {
 				wrap();
