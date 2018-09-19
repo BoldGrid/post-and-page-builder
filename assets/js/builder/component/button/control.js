@@ -135,6 +135,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				title: 'Button',
 				type: 'design',
 				icon: require( './icon.svg' ),
+				onInsert: 'prependColumn',
 				getDragElement: () => $( this.getTemplate() )
 			};
 
@@ -254,7 +255,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.8.0
 		 */
 		getTemplate: function() {
-			return '<a class="btn btn-color-1" href="#">Button</a>';
+			return '<p><a class="btn btn-color-1" href="#">Button</a></p>';
 		},
 
 		/**
@@ -263,7 +264,23 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.2.7
 		 */
 		onMenuClick: function() {
+			self.rewriteInvalidTarget();
 			self.openPanel();
+		},
+
+		/**
+		 * If this panel is panel is opened with a target parent, rewrite to the selector child.
+		 *
+		 * @since 1.8.0
+		 */
+		rewriteInvalidTarget: function() {
+			let $target = BG.Menu.getTarget( self ),
+				selectors = self.selectors.join( ',' );
+
+			if ( ! $target.is( selectors ) ) {
+				$target = $target.find( selectors ).first();
+				BG.Controls.$menu.targetData[self.name] = $target;
+			}
 		},
 
 		/**
