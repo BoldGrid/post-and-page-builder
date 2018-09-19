@@ -37,11 +37,11 @@ export class Template {
 	updateDefaultContainer() {
 		let config = BoldgridEditor.builder_config.templateContainers;
 
-		if ( ! BoldgridEditor.is_boldgrid_template ) {
+		if ( ! BoldgridEditor.is_boldgrid_template && ! BoldgridEditor.is_boldgrid_theme ) {
 			if ( config[this.$templateInput.val()] ) {
 				BoldgridEditor['default_container'] = config[this.$templateInput.val()];
 			} else {
-				BoldgridEditor['default_container'] = 'container-fluid';
+				BoldgridEditor['default_container'] = 'container';
 			}
 		}
 	}

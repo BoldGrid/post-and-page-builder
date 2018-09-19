@@ -91,7 +91,7 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 	 * @param $context.
 	 */
 	self.updateContent = function( $context ) {
-		defaultContainerClass = BoldgridEditor.default_container || 'container-fluid';
+		defaultContainerClass = BoldgridEditor.default_container || 'container';
 		container = '<div class="' + defaultContainerClass + '"></div>';
 
 		self.$context = $context;
