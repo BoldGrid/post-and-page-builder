@@ -17,6 +17,8 @@
 			</div>
 			<?php include( __DIR__ . '/entry-footer.php' ); ?>
 		</article>
+
+		<?php include( __DIR__ . '/wp-link-pages.php' ); ?>
 	</div>
 	<?php if ( ! empty( $sidebar_location ) ) { ?>
 	<div class="bge-sidebar">
