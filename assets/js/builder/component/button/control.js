@@ -255,7 +255,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.8.0
 		 */
 		getTemplate: function() {
-			return '<p><a class="btn btn-color-1" href="#">Button</a></p>';
+			let classes = BoldgridEditor.is_boldgrid_theme ? 'button-primary' : 'btn btn-color-1';
+			return `<p><a class="${classes}" href="#">Button</a></p>`;
 		},
 
 		/**
