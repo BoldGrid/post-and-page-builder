@@ -156,6 +156,10 @@ iframe[src^="https://maps.google.com"] {
     cursor: auto;
 }
 
+.bg-drag-popover {
+    position: absolute;
+}
+
 .edit-as-row {
 	display: none;
 }

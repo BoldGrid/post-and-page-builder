@@ -708,8 +708,8 @@ IMHWPB.Editor = function( $ ) {
 
 			/*
 			 *
-			 * Used for debugging *
-
+			 * Used for debugging */
+			 /*
 			var all_events = [
 				'AddUndo',
 				'cut',
@@ -719,6 +719,7 @@ IMHWPB.Editor = function( $ ) {
 				'BeforeSetContent',
 				'ExecCommand',
 				'GetContent',
+				'SetContent',
 				'LoadContent',
 				'NodeChange',
 				'ObjectResizeStart',
@@ -747,7 +748,7 @@ IMHWPB.Editor = function( $ ) {
 			console.log(all_events.join());
 			editor.on( all_events.join(' '), function( e ) {
 				console.log(e.type);
-			} );*/
+			} ); */
 		} );
 	} );
 

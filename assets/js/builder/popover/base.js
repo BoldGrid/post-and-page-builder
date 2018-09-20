@@ -281,6 +281,9 @@ export class Base {
 			this.hideHandles();
 		} );
 
+		// Force the popovers to be repositioned.
+		BG.Service.event.on( 'popoverReposition', () => this.updatePosition() );
+
 		BG.Controls.$container.on( 'end_typing_boldgrid', () => {
 			if ( 'start_typing_boldgrid' === this.hideEventType ) {
 				this.updatePosition();
