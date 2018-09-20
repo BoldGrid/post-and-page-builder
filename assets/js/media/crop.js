@@ -57,6 +57,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.modalClear = function() {
+
 		/**
 		 * If we previously faded out the media modal, its display is none.
 		 * Reset the display.
@@ -72,7 +73,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		// Show a message that we're comparing our two images.
 		var template = wp.template( 'suggest-crop-compare' );
 		self.$modalContent.html( template() );
-	}
+	};
 
 	/**
 	 * @summar Crop an image.
@@ -82,6 +83,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.crop = function() {
+
 		// Disable the skip button. We're cropping, there's no turning back.
 		self.$skipButton.prop( 'disabled', true );
 
@@ -92,19 +94,20 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		self.$primaryButton.prop( 'disabled', true ).text( 'Cropping...' );
 
 		var data = {
-		    action : 'suggest_crop_crop',
-		    cropDetails : self.selectedCoordinates,
-		    path : self.$selectDimensions.find( 'option:selected' ).val(),
-		    originalWidth : $( self.oldImage )[0].naturalWidth,
-		    originalHeight : $( self.oldImage )[0].naturalHeight,
-		    id : self.$selectDimensions.attr( 'data-id' )
+			action: 'suggest_crop_crop',
+			cropDetails: self.selectedCoordinates,
+			path: self.$selectDimensions.find( 'option:selected' ).val(),
+			originalWidth: $( self.oldImage )[0].naturalWidth,
+			originalHeight: $( self.oldImage )[0].naturalHeight,
+			id: self.$selectDimensions.attr( 'data-id' )
 		};
 
 		$.post( ajaxurl, data, function( response ) {
+
 			// Validate our response and take action.
 			self.cropValidate( response );
 		} );
-	}
+	};
 
 	/**
 	 * @summary Steps to take when a crop fails.
@@ -119,7 +122,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		$( 'button.crop-fail' ).on( 'click', function() {
 			self.modal.close();
 		} );
-	}
+	};
 
 	/**
 	 * @summary Validate response after cropping image.
@@ -131,6 +134,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @param string response An ajax response.
 	 */
 	this.cropValidate = function( response ) {
+
 		// Abort if ajax failed.
 		if ( '0' === response ) {
 			self.cropInvalid();
@@ -150,12 +154,10 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		 * data is invalid.
 		 */
 		var validProperties = true;
-		var neededProperties = [
-		    'new_image_height', 'new_image_width', 'new_image_url'
-		];
+		var neededProperties = [ 'new_image_height', 'new_image_width', 'new_image_url' ];
 
 		$.each( neededProperties, function( key, property ) {
-			if ( response[ property ] === undefined ) {
+			if ( response[property] === undefined ) {
 				validProperties = false;
 				return false;
 			}
@@ -166,7 +168,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		} else {
 			self.cropInvalid();
 		}
-	}
+	};
 
 	/**
 	 * @summary Steps to take when an image is cropped successfull.
@@ -176,6 +178,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @param object response A json.parsed ajax response.
 	 */
 	this.cropValid = function( response ) {
+
 		// Get the currently selected text.
 		var node = tinyMCE.activeEditor.selection.getNode();
 
@@ -191,7 +194,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 
 		// Close our modal, we're done.
 		self.modal.close();
-	}
+	};
 
 	/**
 	 * @summary Set our image data.
@@ -209,15 +212,18 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @param object imageData Info on old and new image.
 	 */
 	this.setImages = function( imageData ) {
-		var oldImg = new Image(), newImg = new Image(), template = wp
-		    .template( 'suggest-crop-sizes' ), data = {
-		    action : 'suggest_crop_get_dimensions',
-		    attachment_id : imageData.attachment_id,
-		    originalWidth : imageData.customWidth,
-		    originalHeight : imageData.customHeight
-		};
+		var oldImg = new Image(),
+			newImg = new Image(),
+			template = wp.template( 'suggest-crop-sizes' ),
+			data = {
+				action: 'suggest_crop_get_dimensions',
+				attachment_id: imageData.attachment_id,
+				originalWidth: imageData.customWidth,
+				originalHeight: imageData.customHeight
+			};
 
 		jQuery.post( ajaxurl, data, function( response ) {
+
 			/**
 			 * Validate our response. If invalid, the modal will close and the
 			 * user will continue as if nothing happened.
@@ -246,6 +252,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 				self.oldImage = oldImg;
 
 				self.selectBestFit();
+
 				/**
 				 * Get the new image, the image we've chosen as a replacement.
 				 * We've waited up until this point to get the data, as
@@ -261,7 +268,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 			};
 			oldImg.src = imageData.originalUrl;
 		} );
-	}
+	};
 
 	/**
 	 * @summary Select our best image size.
@@ -272,17 +279,19 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.9
 	 */
 	this.selectBestFit = function() {
+
 		/**
 		 * Determine the orientation of our old image. Portrait is > 1,
 		 * Landscape is < 1, Square is 0.
 		 */
-		var orientation = parseFloat( self.oldImage.width / self.oldImage.height ), $bestSizes;
+		var orientation = parseFloat( self.oldImage.width / self.oldImage.height ),
+			$bestSizes;
 
 		/**
 		 * From the list of available sizes, select the ones that are a best
 		 * fit. If Landscape, width is the important factor, and vice versa.
 		 */
-		if ( orientation < 1 ) {
+		if ( 1 > orientation ) {
 			$bestSizes = self.$selectDimensions.find( 'option' ).filter( function() {
 				return $( this ).attr( 'data-height' ) >= self.oldImage.height;
 			} );
@@ -299,15 +308,19 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		if ( 1 === $bestSizes.length ) {
 			self.bestSizeSelector = $bestSizes.eq( 0 ).val();
 		} else if ( 0 === $bestSizes.length ) {
-			self.bestSizeSelector = self.$selectDimensions.find( 'option' ).last().val();
+			self.bestSizeSelector = self.$selectDimensions
+				.find( 'option' )
+				.last()
+				.val();
 		} else {
 			self.bestSizeSelector = $bestSizes.eq( 1 ).val();
 		}
 
 		// Select the best sized <option> in our <select>.
-		self.$selectDimensions.find( 'option[value="' + self.bestSizeSelector + '"]' ).prop(
-		    'selected', true );
-	}
+		self.$selectDimensions
+			.find( 'option[value="' + self.bestSizeSelector + '"]' )
+			.prop( 'selected', true );
+	};
 
 	/**
 	 * @summary Select an area on our new image.
@@ -319,41 +332,46 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.selectCoordinates = function() {
-		self.setDefaultCoordinates( self.oldImage.width, self.oldImage.height, self.newImage.width,
-		    self.newImage.height );
+		self.setDefaultCoordinates(
+			self.oldImage.width,
+			self.oldImage.height,
+			self.newImage.width,
+			self.newImage.height
+		);
 
 		// After adding the image, bind imgAreaSelect to it.
 		self.ias = self.$suggestCrop.imgAreaSelect( {
-		    aspectRatio : self.defaultCoordinates.aspectRatio,
-		    // When there's a selection within the image, show the drag handles.
-		    handles : true,
-		    imageHeight : self.newImage.height,
-		    imageWidth : self.newImage.width,
-		    instance : true,
-		    keys : true,
-		    persistent : true,
-		    parent : self.$modalContent.find( '.container-crop .left' ),
-		    // Set the default area to be selected.
-		    x1 : self.defaultCoordinates.x1,
-		    y1 : self.defaultCoordinates.y1,
-		    x2 : self.defaultCoordinates.x2,
-		    y2 : self.defaultCoordinates.y2,
-		    onInit : function( img, selection ) {
-			    self.setSelectedCoordinates( img, selection );
-		    },
-		    onSelectEnd : function( img, selection ) {
-			    self.setSelectedCoordinates( img, selection );
-		    }
+			aspectRatio: self.defaultCoordinates.aspectRatio,
+
+			// When there's a selection within the image, show the drag handles.
+			handles: true,
+			imageHeight: self.newImage.height,
+			imageWidth: self.newImage.width,
+			instance: true,
+			keys: true,
+			persistent: true,
+			parent: self.$modalContent.find( '.container-crop .left' ),
+
+			// Set the default area to be selected.
+			x1: self.defaultCoordinates.x1,
+			y1: self.defaultCoordinates.y1,
+			x2: self.defaultCoordinates.x2,
+			y2: self.defaultCoordinates.y2,
+			onInit: function( img, selection ) {
+				self.setSelectedCoordinates( img, selection );
+			},
+			onSelectEnd: function( img, selection ) {
+				self.setSelectedCoordinates( img, selection );
+			}
 		} );
-	}
+	};
 
 	/**
 	 * Init.
 	 *
 	 * @since 1.0.8
 	 */
-	this.init = function() {
-	}
+	this.init = function() {};
 
 	/**
 	 * @summary Actions to take when an image is inserted into the editor.
@@ -372,7 +390,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	this.onReplace = function( imageData ) {
 		self.modalOpen();
 		self.setImages( imageData );
-	}
+	};
 
 	/**
 	 * @summary Maintain crop selection on window resize.
@@ -380,18 +398,19 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.9
 	 */
 	this.onResize = function() {
+
 		// Only run if the modal is visible.
 		if ( self.$modalContent.is( ':visible' ) ) {
 			self.ias.setOptions( {
-			    imageHeight : self.newImage.naturalHeight,
-			    imageWidth : self.newImage.naturalWidth,
-			    x1 : self.selectedCoordinates.x1,
-			    y1 : self.selectedCoordinates.y1,
-			    x2 : self.selectedCoordinates.x2,
-			    y2 : self.selectedCoordinates.y2
+				imageHeight: self.newImage.naturalHeight,
+				imageWidth: self.newImage.naturalWidth,
+				x1: self.selectedCoordinates.x1,
+				y1: self.selectedCoordinates.y1,
+				x2: self.selectedCoordinates.x2,
+				y2: self.selectedCoordinates.y2
 			} );
 		}
-	}
+	};
 
 	/**
 	 * @summary When an image size is changed, take action.
@@ -405,48 +424,52 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	this.onSize = function( imgSrc ) {
 		var newImage;
 
-		self.$suggestCrop.off( 'load' ).attr( 'src', imgSrc ).on( 'load', function() {
-			newImage = $( this )[0];
+		self.$suggestCrop
+			.off( 'load' )
+			.attr( 'src', imgSrc )
+			.on( 'load', function() {
+				newImage = $( this )[0];
 
-			// img1 is the old image, the image we're replacing.
-			img1Width = self.oldImage.width;
-			img1Height = self.oldImage.height;
-			// img2 is this image, the new image.
-			img2Width = newImage.naturalWidth;
-			img2Height = newImage.naturalHeight;
+				// img1 is the old image, the image we're replacing.
+				img1Width = self.oldImage.width;
+				img1Height = self.oldImage.height;
 
-			/**
-			 * Pass all of the above data and calculate which area of the image
-			 * we should select and highlight by default.
-			 */
-			self.setDefaultCoordinates( img1Width, img1Height, img2Width, img2Height );
+				// img2 is this image, the new image.
+				img2Width = newImage.naturalWidth;
+				img2Height = newImage.naturalHeight;
 
-			self.ias.setOptions( {
-			    aspectRatio : self.defaultCoordinates.aspectRatio,
-			    imageHeight : newImage.naturalHeight,
-			    imageWidth : newImage.naturalWidth,
-			    x1 : self.defaultCoordinates.x1,
-			    y1 : self.defaultCoordinates.y1,
-			    x2 : self.defaultCoordinates.x2,
-			    y2 : self.defaultCoordinates.y2
+				/**
+				 * Pass all of the above data and calculate which area of the image
+				 * we should select and highlight by default.
+				 */
+				self.setDefaultCoordinates( img1Width, img1Height, img2Width, img2Height );
+
+				self.ias.setOptions( {
+					aspectRatio: self.defaultCoordinates.aspectRatio,
+					imageHeight: newImage.naturalHeight,
+					imageWidth: newImage.naturalWidth,
+					x1: self.defaultCoordinates.x1,
+					y1: self.defaultCoordinates.y1,
+					x2: self.defaultCoordinates.x2,
+					y2: self.defaultCoordinates.y2
+				} );
+
+				self.setSelectedCoordinates( null, {
+					height: newImage.naturalHeight,
+					width: newImage.naturalWidth,
+					x1: self.defaultCoordinates.x1,
+					y1: self.defaultCoordinates.y1,
+					x2: self.defaultCoordinates.x2,
+					y2: self.defaultCoordinates.y2
+				} );
+
+				/**
+				 * Because we're reseting the image, reset the force aspect ratio to
+				 * checked.
+				 */
+				self.$modalContent.find( '[name="force-aspect-ratio"]' ).prop( 'checked', true );
 			} );
-
-			self.setSelectedCoordinates( null, {
-			    height : newImage.naturalHeight,
-			    width : newImage.naturalWidth,
-			    x1 : self.defaultCoordinates.x1,
-			    y1 : self.defaultCoordinates.y1,
-			    x2 : self.defaultCoordinates.x2,
-			    y2 : self.defaultCoordinates.y2
-			} );
-
-			/**
-			 * Because we're reseting the image, reset the force aspect ratio to
-			 * checked.
-			 */
-			self.$modalContent.find( '[name="force-aspect-ratio"]' ).prop( 'checked', true );
-		} );
-	}
+	};
 
 	/**
 	 * @summary Create our modal.
@@ -457,11 +480,11 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 */
 	this.modalCreate = function() {
 		self.modal = wp.media( {
-		    id : 'crop',
-		    title : 'Crop Image',
-		    button : {
-			    text : 'Crop Image'
-		    }
+			id: 'crop',
+			title: 'Crop Image',
+			button: {
+				text: 'Crop Image'
+			}
 		} );
 
 		/*
@@ -470,9 +493,11 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		 */
 		self.modal.on( 'close', function() {
 			self.modal.remove();
-			$( '#crop' ).closest( '[id*="wp-uploader-id"]' ).remove();
+			$( '#crop' )
+				.closest( '[id*="wp-uploader-id"]' )
+				.remove();
 			delete self.modal;
-		});
+		} );
 
 		self.modal.open();
 
@@ -483,7 +508,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		$( window ).resize( function() {
 			self.onResize();
 		} );
-	}
+	};
 
 	/**
 	 * @summary Open our modal.
@@ -491,6 +516,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.modalOpen = function() {
+
 		// If the crop frame is already created, open it and return.
 		if ( self.modal ) {
 			self.modal.open();
@@ -500,7 +526,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 
 		self.modalCreate();
 		self.modalClear();
-	}
+	};
 
 	/**
 	 * @summary Action to take when image aspect ratios match.
@@ -508,6 +534,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.9
 	 */
 	this.onMatch = function() {
+
 		// Show a 'ratio match!' message.
 		var template = wp.template( 'suggest-crop-match' );
 		self.$modalContent.html( template() );
@@ -518,7 +545,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 				self.modal.close();
 			} );
 		}, 1000 );
-	}
+	};
 
 	/**
 	 * @summary Fill our modal.
@@ -529,9 +556,9 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 */
 	this.modalFill = function() {
 		var data = {
-		    oldImageSrc : self.oldImage.src,
-		    newImageSrc : self.newImage.src,
-		    newContentSrc : self.bestSizeSelector
+			oldImageSrc: self.oldImage.src,
+			newImageSrc: self.newImage.src,
+			newContentSrc: self.bestSizeSelector
 		};
 		var template = wp.template( 'suggest-crop' );
 		self.$modalContent.html( template( data ) );
@@ -539,7 +566,9 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		// After we've filled in our details, add our <select>.
 		self.$suggestCrop = self.$modalContent.find( '.suggest-crop' );
 
-		$( '.imgedit-group.imgedit-source p' ).last().html( self.$selectDimensions );
+		$( '.imgedit-group.imgedit-source p' )
+			.last()
+			.html( self.$selectDimensions );
 
 		// Bind our select element.
 		self.$selectDimensions.on( 'change', function() {
@@ -553,7 +582,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		self.bindModal();
 
 		self.selectCoordinates();
-	}
+	};
 
 	/**
 	 * @summary Set coordinates user selected.
@@ -573,7 +602,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 */
 	this.setSelectedCoordinates = function( img, selection ) {
 		self.selectedCoordinates = selection;
-	}
+	};
 
 	/**
 	 * @summary Determine what area of the image to crop by default.
@@ -586,11 +615,13 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @param integer img2Height Height of replacing image.
 	 */
 	this.setDefaultCoordinates = function( img1Width, img1Height, img2Width, img2Height ) {
-		var defaultWidth, defaultHeight, data = {};
+		var defaultWidth,
+			defaultHeight,
+			data = {};
 
 		// First, try maximizing the width.
 		defaultWidth = img2Width;
-		defaultHeight = ( img1Height * img2Width ) / img1Width;
+		defaultHeight = img1Height * img2Width / img1Width;
 
 		// Calculations below will center our selection.
 		data.x1 = 0;
@@ -601,7 +632,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		// If using 'maximum width' does not fit, then maximize our height.
 		if ( defaultHeight > img2Height ) {
 			defaultHeight = img2Height;
-			defaultWidth = ( img1Width * img2Height ) / img1Height;
+			defaultWidth = img1Width * img2Height / img1Height;
 
 			// Calculations below will center our selection.
 			data.x1 = ( img2Width - defaultWidth ) / 2;
@@ -614,7 +645,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 
 		// This data will be needed globally, so make it so.
 		self.defaultCoordinates = data;
-	}
+	};
 
 	/**
 	 * @summary Take action when image_data is set.
@@ -624,17 +655,21 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.compareImages = function() {
+
 		// Check if our two images have the same dimensions.
-		var sameDimensions = ( ( self.oldImage.width / self.oldImage.height ) === ( self.newImage.width / self.newImage.height ) );
+		var sameDimensions =
+			self.oldImage.width / self.oldImage.height === self.newImage.width / self.newImage.height;
 
 		if ( sameDimensions ) {
+
 			// Images have the same dimensions, so no need to suggest a crop.
 			self.onMatch();
 		} else {
+
 			// Fill in our self.modal, the UI for cropping an image.
 			self.modalFill();
 		}
-	}
+	};
 
 	/**
 	 * @summary Bind events of elements within our modal.
@@ -642,6 +677,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 	 * @since 1.0.8
 	 */
 	this.bindModal = function() {
+
 		/**
 		 * ELEMENT: help button.
 		 *
@@ -674,7 +710,7 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		self.$skipButton.on( 'click', function() {
 			self.modal.close();
 		} );
-	}
+	};
 
 	/**
 	 * @summary Bind the 'Force aspect ratio' checkbox.
@@ -687,28 +723,29 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 		// If the text "Force aspect ratio" is clicked, toggle the checkbox.
 		self.$modalContent.find( 'span#toggle-force' ).on( 'click', function() {
 			$checkBox.click();
-		} )
+		} );
 
 		// Remove any existing bindings.
 		$checkBox.off( 'change' );
 
 		$checkBox.on( 'change', function() {
+
 			// If the checkbox is checked, force the aspect ratio.
-			if ( $( this ).is( ":checked" ) ) {
+			if ( $( this ).is( ':checked' ) ) {
 				self.ias.setOptions( {
-				    aspectRatio : self.defaultCoordinates.aspectRatio,
-				    x1 : self.defaultCoordinates.x1,
-				    y1 : self.defaultCoordinates.y1,
-				    x2 : self.defaultCoordinates.x2,
-				    y2 : self.defaultCoordinates.y2
+					aspectRatio: self.defaultCoordinates.aspectRatio,
+					x1: self.defaultCoordinates.x1,
+					y1: self.defaultCoordinates.y1,
+					x2: self.defaultCoordinates.x2,
+					y2: self.defaultCoordinates.y2
 				} );
 			} else {
 				self.ias.setOptions( {
-					aspectRatio : false
+					aspectRatio: false
 				} );
 			}
 		} );
-	}
+	};
 };
 
 BOLDGRID.EDITOR.CropInstance = new BOLDGRID.EDITOR.Crop( jQuery );
