@@ -169,9 +169,15 @@ export class Add {
 	 * @param  {jQuery} $html Element.
 	 */
 	prependContent( $html ) {
-		let $firstColumn = BG.Controls.$container.$body
-			.find( '[class*="col-md-"]:not(.boldgrid-slider [class*="col-md-"])' )
-			.first();
+		let currentNode = BG.mce.selection.getNode(),
+			$currentNestedColumn = $( currentNode ).closest( '.row .row [class*="col-md-"]' ),
+			$firstColumn = BG.Controls.$container.$body
+				.find( '[class*="col-md-"]:not(.boldgrid-slider [class*="col-md-"])' )
+				.first();
+
+		if ( $currentNestedColumn.length ) {
+			$firstColumn = $currentNestedColumn;
+		}
 
 		if ( $html.is( '.boldgrid-section, .boldgrid-section-wrap' ) ) {
 			$firstColumn = BG.Controls.$container.$body;
