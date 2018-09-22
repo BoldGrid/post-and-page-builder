@@ -249,15 +249,13 @@ class Boldgrid_Editor_Builder {
 	public static function get_background_data() {
 		// Grab the first 20 gradients.
 		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
-		$gradients = json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/preset-gradients.json' ) );
-		$gradients = array_slice( $gradients ?: [], 0, 20 );
 
 		return array(
 			'color' => array(),
 			'image' => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/sample-images.json' ) ),
 			'pattern' => self::get_patterns(),
 			// 'default_gradients' =>  json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/gradients.json' ) ),
-			'gradients' => $gradients,
+			'gradients' => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/preset-gradients.json' ) ) ?: [],
 		);
 	}
 

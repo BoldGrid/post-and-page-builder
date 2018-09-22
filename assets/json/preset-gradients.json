@@ -1,998 +1,122 @@
-[  
-   {  
+[
+   {
       "color1":"#FFFFFF",
       "color2":"#FFFFFF",
       "direction":"to left",
       "css":"linear-gradient(to left,#FFFFFF,#FFFFFF)"
    },
-   {  
+   {
       "color1":"#EEEEEE",
       "color2":"#EEEEEE",
       "direction":"to left",
       "css":"linear-gradient(to left,#EEEEEE,#EEEEEE)"
    },
-   {  
+   {
       "color1":"#000000",
       "color2":"#000000",
       "direction":"to left",
       "css":"linear-gradient(to left,#000000,#000000)"
    },
-   {  
+   {
       "color1":"#A1FFCE",
       "color2":"#FAFFD1",
       "direction":"to left",
       "css":"linear-gradient(to left,#A1FFCE,#FAFFD1)"
    },
-   {  
+   {
       "color1":"#4776E6",
       "color2":"#8E54E9",
       "direction":"to left",
       "css":"linear-gradient(to left,#4776E6,#8E54E9)"
    },
-   {  
+   {
       "color1":"#EECDA3",
       "color2":"#EF629F",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#EECDA3,#EF629F)"
    },
-   {  
+   {
       "color1":"#BA5370",
       "color2":"#F4E2D8",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#BA5370,#F4E2D8)"
    },
-   {  
+   {
       "color1":"#E0EAFC",
       "color2":"#CFDEF3",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#E0EAFC,#CFDEF3)"
    },
-   {  
+   {
       "color1":"#4CA1AF",
       "color2":"#C4E0E5",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#4CA1AF,#C4E0E5)"
    },
-   {  
+   {
       "color1":"#000000",
       "color2":"#53346D",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#000000,#53346D)"
    },
-   {  
+   {
       "color1":"#4B79A1",
       "color2":"#283E51",
       "direction":"to left",
       "css":"linear-gradient(to left,#4B79A1,#283E51)"
    },
-   {  
+   {
       "color1":"#2980b9",
       "color2":"#2c3e50",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#2980b9,#2c3e50)"
    },
-   {  
+   {
       "color1":"#02AAB0",
       "color2":"#00CDAC",
       "direction":"to left",
       "css":"linear-gradient(to left,#02AAB0,#00CDAC)"
    },
-   {  
+   {
       "color1":"#1e3c72",
       "color2":"#2a5298",
       "direction":"to left",
       "css":"linear-gradient(to left,#1e3c72,#2a5298)"
    },
-   {  
+   {
       "color1":"#fd746c",
       "color2":"#ff9068",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#fd746c,#ff9068)"
    },
-   {  
+   {
       "color1":"#eacda3",
       "color2":"#d6ae7b",
       "direction":"to left",
       "css":"linear-gradient(to left,#eacda3,#d6ae7b)"
    },
-   {  
+   {
       "color1":"#457fca",
       "color2":"#5691c8",
       "direction":"to left",
       "css":"linear-gradient(to left,#457fca,#5691c8)"
    },
-   {  
+   {
       "color1":"#B24592",
       "color2":"#F15F79",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#B24592,#F15F79)"
    },
-   {  
+   {
       "color1":"#c2e59c",
       "color2":"#64b3f4",
       "direction":"to left",
       "css":"linear-gradient(to left,#c2e59c,#64b3f4)"
    },
-   {  
+   {
       "color1":"#FFB75E",
       "color2":"#ED8F03",
       "direction":"to bottom",
       "css":"linear-gradient(to bottom,#FFB75E,#ED8F03)"
-   },
-   {  
-      "color1":"#DA22FF",
-      "color2":"#9733EE",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#DA22FF,#9733EE)"
-   },
-   {  
-      "color1":"#348F50",
-      "color2":"#56B4D3",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#348F50,#56B4D3)"
-   },
-   {  
-      "color1":"#3CA55C",
-      "color2":"#B5AC49",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#3CA55C,#B5AC49)"
-   },
-   {  
-      "color1":"#003973",
-      "color2":"#E5E5BE",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#003973,#E5E5BE)"
-   },
-   {  
-      "color1":"#603813",
-      "color2":"#b29f94",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#603813,#b29f94)"
-   },
-   {  
-      "color1":"#E55D87",
-      "color2":"#5FC3E4",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#E55D87,#5FC3E4)"
-   },
-   {  
-      "color1":"#403B4A",
-      "color2":"#E7E9BB",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#403B4A,#E7E9BB)"
-   },
-   {  
-      "color1":"#F09819",
-      "color2":"#EDDE5D",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#F09819,#EDDE5D)"
-   },
-   {  
-      "color1":"#FF512F",
-      "color2":"#DD2476",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FF512F,#DD2476)"
-   },
-   {  
-      "color1":"#EDE574",
-      "color2":"#E1F5C4",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#EDE574,#E1F5C4)"
-   },
-   {  
-      "color1":"#AA076B",
-      "color2":"#61045F",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#AA076B,#61045F)"
-   },
-   {  
-      "color1":"#1A2980",
-      "color2":"#26D0CE",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#1A2980,#26D0CE)"
-   },
-   {  
-      "color1":"#FF512F",
-      "color2":"#F09819",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#FF512F,#F09819)"
-   },
-   {  
-      "color1":"#1D2B64",
-      "color2":"#F8CDDA",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#1D2B64,#F8CDDA)"
-   },
-   {  
-      "color1":"#4CB8C4",
-      "color2":"#3CD3AD",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#4CB8C4,#3CD3AD)"
-   },
-   {  
-      "color1":"#DD5E89",
-      "color2":"#F7BB97",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#DD5E89,#F7BB97)"
-   },
-   {  
-      "color1":"#D31027",
-      "color2":"#EA384D",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#D31027,#EA384D)"
-   },
-   {  
-      "color1":"#EB3349",
-      "color2":"#F45C43",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#EB3349,#F45C43)"
-   },
-   {  
-      "color1":"#1D976C",
-      "color2":"#93F9B9",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#1D976C,#93F9B9)"
-   },
-   {  
-      "color1":"#FF8008",
-      "color2":"#FFC837",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#FF8008,#FFC837)"
-   },
-   {  
-      "color1":"#16222A",
-      "color2":"#3A6073",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#16222A,#3A6073)"
-   },
-   {  
-      "color1":"#1F1C2C",
-      "color2":"#928DAB",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#1F1C2C,#928DAB)"
-   },
-   {  
-      "color1":"#614385",
-      "color2":"#516395",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#614385,#516395)"
-   },
-   {  
-      "color1":"#085078",
-      "color2":"#85D8CE",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#085078,#85D8CE)"
-   },
-   {  
-      "color1":"#2BC0E4",
-      "color2":"#EAECC6",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#2BC0E4,#EAECC6)"
-   },
-   {  
-      "color1":"#134E5E",
-      "color2":"#71B280",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#134E5E,#71B280)"
-   },
-   {  
-      "color1":"#5C258D",
-      "color2":"#4389A2",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#5C258D,#4389A2)"
-   },
-   {  
-      "color1":"#757F9A",
-      "color2":"#D7DDE8",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#757F9A,#D7DDE8)"
-   },
-   {  
-      "color1":"#232526",
-      "color2":"#414345",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#232526,#414345)"
-   },
-   {  
-      "color1":"#1CD8D2",
-      "color2":"#93EDC7",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#1CD8D2,#93EDC7)"
-   },
-   {  
-      "color1":"#3D7EAA",
-      "color2":"#FFE47A",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#3D7EAA,#FFE47A)"
-   },
-   {  
-      "color1":"#283048",
-      "color2":"#859398",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#283048,#859398)"
-   },
-   {  
-      "color1":"#24C6DC",
-      "color2":"#514A9D",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#24C6DC,#514A9D)"
-   },
-   {  
-      "color1":"#DC2424",
-      "color2":"#4A569D",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#DC2424,#4A569D)"
-   },
-   {  
-      "color1":"#ED4264",
-      "color2":"#FFEDBC",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ED4264,#FFEDBC)"
-   },
-   {  
-      "color1":"#DAE2F8",
-      "color2":"#D6A4A4",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#DAE2F8,#D6A4A4)"
-   },
-   {  
-      "color1":"#ECE9E6",
-      "color2":"#FFFFFF",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ECE9E6,#FFFFFF)"
-   },
-   {  
-      "color1":"#7474BF",
-      "color2":"#348AC7",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#7474BF,#348AC7)"
-   },
-   {  
-      "color1":"#EC6F66",
-      "color2":"#F3A183",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#EC6F66,#F3A183)"
-   },
-   {  
-      "color1":"#5f2c82",
-      "color2":"#49a09d",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#5f2c82,#49a09d)"
-   },
-   {  
-      "color1":"#C04848",
-      "color2":"#480048",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#C04848,#480048)"
-   },
-   {  
-      "color1":"#e43a15",
-      "color2":"#e65245",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#e43a15,#e65245)"
-   },
-   {  
-      "color1":"#414d0b",
-      "color2":"#727a17",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#414d0b,#727a17)"
-   },
-   {  
-      "color1":"#FC354C",
-      "color2":"#0ABFBC",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#FC354C,#0ABFBC)"
-   },
-   {  
-      "color1":"#4b6cb7",
-      "color2":"#182848",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#4b6cb7,#182848)"
-   },
-   {  
-      "color1":"#f857a6",
-      "color2":"#ff5858",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#f857a6,#ff5858)"
-   },
-   {  
-      "color1":"#a73737",
-      "color2":"#7a2828",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#a73737,#7a2828)"
-   },
-   {  
-      "color1":"#d53369",
-      "color2":"#cbad6d",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#d53369,#cbad6d)"
-   },
-   {  
-      "color1":"#e9d362",
-      "color2":"#333333",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#e9d362,#333333)"
-   },
-   {  
-      "color1":"#DE6262",
-      "color2":"#FFB88C",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#DE6262,#FFB88C)"
-   },
-   {  
-      "color1":"#666600",
-      "color2":"#999966",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#666600,#999966)"
-   },
-   {  
-      "color1":"#FFEEEE",
-      "color2":"#DDEFBB",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FFEEEE,#DDEFBB)"
-   },
-   {  
-      "color1":"#EFEFBB",
-      "color2":"#D4D3DD",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#EFEFBB,#D4D3DD)"
-   },
-   {  
-      "color1":"#c21500",
-      "color2":"#ffc500",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#c21500,#ffc500)"
-   },
-   {  
-      "color1":"#215f00",
-      "color2":"#e4e4d9",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#215f00,#e4e4d9)"
-   },
-   {  
-      "color1":"#50C9C3",
-      "color2":"#96DEDA",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#50C9C3,#96DEDA)"
-   },
-   {  
-      "color1":"#616161",
-      "color2":"#9bc5c3",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#616161,#9bc5c3)"
-   },
-   {  
-      "color1":"#ddd6f3",
-      "color2":"#faaca8",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#ddd6f3,#faaca8)"
-   },
-   {  
-      "color1":"#5D4157",
-      "color2":"#A8CABA",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#5D4157,#A8CABA)"
-   },
-   {  
-      "color1":"#E6DADA",
-      "color2":"#274046",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#E6DADA,#274046)"
-   },
-   {  
-      "color1":"#DAD299",
-      "color2":"#B0DAB9",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#DAD299,#B0DAB9)"
-   },
-   {  
-      "color1":"#D3959B",
-      "color2":"#BFE6BA",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#D3959B,#BFE6BA)"
-   },
-   {  
-      "color1":"#00d2ff",
-      "color2":"#3a7bd5",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#00d2ff,#3a7bd5)"
-   },
-   {  
-      "color1":"#870000",
-      "color2":"#190A05",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#870000,#190A05)"
-   },
-   {  
-      "color1":"#B993D6",
-      "color2":"#8CA6DB",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#B993D6,#8CA6DB)"
-   },
-   {  
-      "color1":"#649173",
-      "color2":"#DBD5A4",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#649173,#DBD5A4)"
-   },
-   {  
-      "color1":"#C9FFBF",
-      "color2":"#FFAFBD",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#C9FFBF,#FFAFBD)"
-   },
-   {  
-      "color1":"#606c88",
-      "color2":"#3f4c6b",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#606c88,#3f4c6b)"
-   },
-   {  
-      "color1":"#FBD3E9",
-      "color2":"#BB377D",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#FBD3E9,#BB377D)"
-   },
-   {  
-      "color1":"#ADD100",
-      "color2":"#7B920A",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#ADD100,#7B920A)"
-   },
-   {  
-      "color1":"#FF4E50",
-      "color2":"#F9D423",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FF4E50,#F9D423)"
-   },
-   {  
-      "color1":"#F0C27B",
-      "color2":"#4B1248",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#F0C27B,#4B1248)"
-   },
-   {  
-      "color1":"#000000",
-      "color2":"#e74c3c",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#000000,#e74c3c)"
-   },
-   {  
-      "color1":"#AAFFA9",
-      "color2":"#11FFBD",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#AAFFA9,#11FFBD)"
-   },
-   {  
-      "color1":"#B3FFAB",
-      "color2":"#12FFF7",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#B3FFAB,#12FFF7)"
-   },
-   {  
-      "color1":"#780206",
-      "color2":"#061161",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#780206,#061161)"
-   },
-   {  
-      "color1":"#9D50BB",
-      "color2":"#6E48AA",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#9D50BB,#6E48AA)"
-   },
-   {  
-      "color1":"#556270",
-      "color2":"#FF6B6B",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#556270,#FF6B6B)"
-   },
-   {  
-      "color1":"#70e1f5",
-      "color2":"#ffd194",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#70e1f5,#ffd194)"
-   },
-   {  
-      "color1":"#00c6ff",
-      "color2":"#0072ff",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#00c6ff,#0072ff)"
-   },
-   {  
-      "color1":"#fe8c00",
-      "color2":"#f83600",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#fe8c00,#f83600)"
-   },
-   {  
-      "color1":"#52c234",
-      "color2":"#061700",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#52c234,#061700)"
-   },
-   {  
-      "color1":"#485563",
-      "color2":"#29323c",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#485563,#29323c)"
-   },
-   {  
-      "color1":"#83a4d4",
-      "color2":"#b6fbff",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#83a4d4,#b6fbff)"
-   },
-   {  
-      "color1":"#FDFC47",
-      "color2":"#24FE41",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FDFC47,#24FE41)"
-   },
-   {  
-      "color1":"#abbaab",
-      "color2":"#ffffff",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#abbaab,#ffffff)"
-   },
-   {  
-      "color1":"#73C8A9",
-      "color2":"#373B44",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#73C8A9,#373B44)"
-   },
-   {  
-      "color1":"#D38312",
-      "color2":"#A83279",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#D38312,#A83279)"
-   },
-   {  
-      "color1":"#1e130c",
-      "color2":"#9a8478",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#1e130c,#9a8478)"
-   },
-   {  
-      "color1":"#948E99",
-      "color2":"#2E1437",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#948E99,#2E1437)"
-   },
-   {  
-      "color1":"#360033",
-      "color2":"#0b8793",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#360033,#0b8793)"
-   },
-   {  
-      "color1":"#FFA17F",
-      "color2":"#00223E",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FFA17F,#00223E)"
-   },
-   {  
-      "color1":"#43cea2",
-      "color2":"#185a9d",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#43cea2,#185a9d)"
-   },
-   {  
-      "color1":"#ffb347",
-      "color2":"#ffcc33",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#ffb347,#ffcc33)"
-   },
-   {  
-      "color1":"#6441A5",
-      "color2":"#2a0845",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#6441A5,#2a0845)"
-   },
-   {  
-      "color1":"#517fa4",
-      "color2":"#243949",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#517fa4,#243949)"
-   },
-   {  
-      "color1":"#ff0084",
-      "color2":"#33001b",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ff0084,#33001b)"
-   },
-   {  
-      "color1":"#00bf8f",
-      "color2":"#001510",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#00bf8f,#001510)"
-   },
-   {  
-      "color1":"#136a8a",
-      "color2":"#267871",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#136a8a,#267871)"
-   },
-   {  
-      "color1":"#8e9eab",
-      "color2":"#eef2f3",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#8e9eab,#eef2f3)"
-   },
-   {  
-      "color1":"#7b4397",
-      "color2":"#dc2430",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#7b4397,#dc2430)"
-   },
-   {  
-      "color1":"#D1913C",
-      "color2":"#FFD194",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#D1913C,#FFD194)"
-   },
-   {  
-      "color1":"#F1F2B5",
-      "color2":"#135058",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#F1F2B5,#135058)"
-   },
-   {  
-      "color1":"#6A9113",
-      "color2":"#141517",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#6A9113,#141517)"
-   },
-   {  
-      "color1":"#004FF9",
-      "color2":"#FFF94C",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#004FF9,#FFF94C)"
-   },
-   {  
-      "color1":"#525252",
-      "color2":"#3d72b4",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#525252,#3d72b4)"
-   },
-   {  
-      "color1":"#BA8B02",
-      "color2":"#181818",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#BA8B02,#181818)"
-   },
-   {  
-      "color1":"#ee9ca7",
-      "color2":"#ffdde1",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ee9ca7,#ffdde1)"
-   },
-   {  
-      "color1":"#304352",
-      "color2":"#d7d2cc",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#304352,#d7d2cc)"
-   },
-   {  
-      "color1":"#CCCCB2",
-      "color2":"#757519",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#CCCCB2,#757519)"
-   },
-   {  
-      "color1":"#2c3e50",
-      "color2":"#3498db",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#2c3e50,#3498db)"
-   },
-   {  
-      "color1":"#fc00ff",
-      "color2":"#00dbde",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#fc00ff,#00dbde)"
-   },
-   {  
-      "color1":"#e53935",
-      "color2":"#e35d5b",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#e53935,#e35d5b)"
-   },
-   {  
-      "color1":"#005C97",
-      "color2":"#363795",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#005C97,#363795)"
-   },
-   {  
-      "color1":"#f46b45",
-      "color2":"#eea849",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#f46b45,#eea849)"
-   },
-   {  
-      "color1":"#00C9FF",
-      "color2":"#92FE9D",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#00C9FF,#92FE9D)"
-   },
-   {  
-      "color1":"#673AB7",
-      "color2":"#512DA8",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#673AB7,#512DA8)"
-   },
-   {  
-      "color1":"#76b852",
-      "color2":"#8DC26F",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#76b852,#8DC26F)"
-   },
-   {  
-      "color1":"#8E0E00",
-      "color2":"#1F1C18",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#8E0E00,#1F1C18)"
-   },
-   {  
-      "color1":"#403A3E",
-      "color2":"#BE5869",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#403A3E,#BE5869)"
-   },
-   {  
-      "color1":"#C02425",
-      "color2":"#F0CB35",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#C02425,#F0CB35)"
-   },
-   {  
-      "color1":"#6a3093",
-      "color2":"#a044ff",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#6a3093,#a044ff)"
-   },
-   {  
-      "color1":"#114357",
-      "color2":"#F29492",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#114357,#F29492)"
-   },
-   {  
-      "color1":"#2F7336",
-      "color2":"#AA3A38",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#2F7336,#AA3A38)"
-   },
-   {  
-      "color1":"#5614B0",
-      "color2":"#DBD65C",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#5614B0,#DBD65C)"
-   },
-   {  
-      "color1":"#4DA0B0",
-      "color2":"#D39D38",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#4DA0B0,#D39D38)"
-   },
-   {  
-      "color1":"#5A3F37",
-      "color2":"#2C7744",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#5A3F37,#2C7744)"
-   },
-   {  
-      "color1":"#0099F7",
-      "color2":"#F11712",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#0099F7,#F11712)"
-   },
-   {  
-      "color1":"#834d9b",
-      "color2":"#d04ed6",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#834d9b,#d04ed6)"
-   },
-   {  
-      "color1":"#000000",
-      "color2":"#434343",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#000000,#434343)"
-   },
-   {  
-      "color1":"#ff4b1f",
-      "color2":"#1fddff",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ff4b1f,#1fddff)"
-   },
-   {  
-      "color1":"#f7ff00",
-      "color2":"#db36a4",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#f7ff00,#db36a4)"
-   },
-   {  
-      "color1":"#a80077",
-      "color2":"#66ff00",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#a80077,#66ff00)"
-   },
-   {  
-      "color1":"#1D4350",
-      "color2":"#A43931",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#1D4350,#A43931)"
-   },
-   {  
-      "color1":"#16BFFD",
-      "color2":"#CB3066",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#16BFFD,#CB3066)"
-   },
-   {  
-      "color1":"#ff4b1f",
-      "color2":"#ff9068",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#ff4b1f,#ff9068)"
-   },
-   {  
-      "color1":"#FF5F6D",
-      "color2":"#FFC371",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#FF5F6D,#FFC371)"
-   },
-   {  
-      "color1":"#2196f3",
-      "color2":"#f44336",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#2196f3,#f44336)"
-   },
-   {  
-      "color1":"#00d2ff",
-      "color2":"#928DAB",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#00d2ff,#928DAB)"
-   },
-   {  
-      "color1":"#3a7bd5",
-      "color2":"#3a6073",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#3a7bd5,#3a6073)"
-   },
-   {  
-      "color1":"#0B486B",
-      "color2":"#F56217",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#0B486B,#F56217)"
-   },
-   {  
-      "color1":"#e96443",
-      "color2":"#904e95",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#e96443,#904e95)"
-   },
-   {  
-      "color1":"#2C3E50",
-      "color2":"#4CA1AF",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#2C3E50,#4CA1AF)"
-   },
-   {  
-      "color1":"#2C3E50",
-      "color2":"#FD746C",
-      "direction":"to bottom",
-      "css":"linear-gradient(to bottom,#2C3E50,#FD746C)"
-   },
-   {  
-      "color1":"#F00000",
-      "color2":"#DC281E",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#F00000,#DC281E)"
-   },
-   {  
-      "color1":"#141E30",
-      "color2":"#243B55",
-      "direction":"to left",
-      "css":"linear-gradient(to left,#141E30,#243B55)"
    }
 ]
