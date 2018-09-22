@@ -250,7 +250,7 @@ class Boldgrid_Editor_Builder {
 		// Grab the first 20 gradients.
 		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
 		$gradients = json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/preset-gradients.json' ) );
-		$gradients = array_slice( $gradients, 0, 20 );
+		$gradients = array_slice( $gradients ?: [], 0, 20 );
 
 		return array(
 			'color' => array(),
