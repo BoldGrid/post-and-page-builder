@@ -18,7 +18,10 @@ class Public {
 				mobile: false
 			} );
 
-			wowJs.init();
+			// Disable on mobile.
+			if ( 768 <= $( window ).width() ) {
+				wowJs.init();
+			}
 		} );
 	}
 
