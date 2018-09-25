@@ -104,6 +104,7 @@ export class Instance {
 
 		/* eslint-disable */
 		data.action = action;
+		data.post_id = BoldgridEditor.post_id;
 		data.boldgrid_editor_gridblock_save = BoldgridEditor.nonce_gridblock_save;
 		/* eslint-enable */
 
