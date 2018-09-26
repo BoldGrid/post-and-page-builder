@@ -4,6 +4,7 @@ var $ = window.jQuery,
 import Clone from './actions/clone.js';
 import Delete from './actions/delete.js';
 import GeneralActions from './actions/general.js';
+import { EventEmitter } from 'eventemitter3';
 
 export class Base {
 	constructor( options ) {
@@ -31,6 +32,8 @@ export class Base {
 			'clear_dwpb',
 			'add_column_dwpb'
 		];
+
+		this.event = new EventEmitter();
 	}
 
 	/**
@@ -49,6 +52,7 @@ export class Base {
 		this._bindEvents();
 
 		// Init actions.
+		this._setupMenuClick();
 		this.options.actions.clone.init();
 		this.options.actions.delete.init();
 		new GeneralActions().bind( this );
@@ -357,6 +361,37 @@ export class Base {
 		BG.Controls.$container.$body.after( $popover );
 
 		return $popover;
+	}
+
+	/**
+	 * Setup the menu click event.
+	 *
+	 * @since 1.8.0
+	 */
+	_setupMenuClick() {
+		this.$element.find( '.context-menu-imhwpb' ).on( 'click', event => {
+			event.preventDefault();
+			event.stopPropagation();
+
+			BG.Controls.$container.hide_menus( event );
+
+			this.$element.$menu.toggleClass( 'hidden' );
+			BG.Controls.$container.setMenuPosition( this.$element );
+			this._updateMenuState();
+		} );
+	}
+
+	/**
+	 * Update the menu classes based on the visibility state.
+	 *
+	 * @since 1.8.0
+	 */
+	_updateMenuState() {
+		this.$element.removeClass( 'menu-open' );
+		if ( false === this.$element.$menu.hasClass( 'hidden' ) ) {
+			this.event.emit( 'open' );
+			this.$element.addClass( 'menu-open' );
+		}
 	}
 }
 

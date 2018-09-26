@@ -864,7 +864,6 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			.on( 'mouseup.draggable', '.drag-handle-imhwpb', self.drag_handle_mouseup )
 			.on( 'click.draggable', self.hide_menus )
 			.on( 'click.draggable', self.failSafeCleanup )
-			.on( 'click.draggable', '.context-menu-imhwpb', self.setup_context_menu )
 			.on( 'boldgrid_modify_content.draggable', self.refresh_fourpan )
 			.on( 'boldgrid_modify_content.draggable', () => BG.Service.event.emit( 'modifyContent' ) );
 
@@ -1238,35 +1237,6 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				$element.remove();
 			} );
 		} );
-	};
-
-	/**
-	 * The context menu action.
-	 */
-	this.setup_context_menu = function( event ) {
-		var $currentPopover;
-
-		event.preventDefault();
-		event.stopPropagation();
-		self.hide_menus( event );
-
-		$currentPopover = $( this ).closest( '.draggable-tools-imhwpb, .bg-drag-popover' );
-		$currentPopover.find( '.popover-menu-imhwpb' ).toggleClass( 'hidden' );
-		self.setMenuPosition( $currentPopover );
-		self.setMenuState( $currentPopover );
-	};
-
-	/**
-	 * Set a class defining if the popover menu is opened.
-	 *
-	 * @since 1.2.10
-	 * @param jQuery $currentPopover.
-	 */
-	this.setMenuState = function( $currentPopover ) {
-		$currentPopover.removeClass( 'menu-open' );
-		if ( false === $currentPopover.find( '.popover-menu-imhwpb' ).hasClass( 'hidden' ) ) {
-			$currentPopover.addClass( 'menu-open' );
-		}
 	};
 
 	/**

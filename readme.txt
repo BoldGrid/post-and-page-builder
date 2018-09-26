@@ -147,8 +147,8 @@ Release Date: TBD
 * New Feature: Pre tags are now supported for drag and drop.
 * New Feature: Added BoldGrid Connect Page.
 * New Feature: Support for Premium Extension
-* New Feature: Checks for development mode.
-* Update: Minimum PHP/WP Version changed.
+* Update: A notice will be displayed if an incomplete Github version of the plugin is active.
+* Update: Minimum PHP/WP Version changed to 5.4 and 4.7 respectfully.
 * Update: After first time setup page template will update for current page.
 * Bug Fix: Fix display issues when viewing saved blocks on BoldGrid Themes.
 * Bug Fix: Duplicate fonts displayed within font selection.

@@ -3387,6 +3387,9 @@ html:not(.dragging-section) .delete-icon-wrap {
 .media-placeholder .dashicons-admin-media + div {
   font-variant: small-caps; }
 
+.draggable-tools-imhwpb:not(.has-font-support) li[data-action="Font"] {
+  display: none; }
+
 /*--------------------------------------------------------------
 # General Edit Controls
 --------------------------------------------------------------*/

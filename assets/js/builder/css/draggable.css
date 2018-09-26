@@ -529,10 +529,6 @@ iframe[src^="https://maps.google.com"] {
 	left: -92px;
 }
 
-.nested-row-popover-imhwpb li[data-action="Font"] {
-	display: none !important;
-}
-
 .popover-imhwpb .popover-menu-imhwpb li[data-action="Advanced"]::before,
 .popover-imhwpb .popover-menu-imhwpb li[data-action="Font"]::before {
 	font: normal normal normal 15px/1 FontAwesome;

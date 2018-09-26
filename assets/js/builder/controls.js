@@ -305,6 +305,7 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 
 			// When the user clicks on an element that has an associated control.
 			// Add that control to the list of controls to be made visible.
+			control.selectorString = control.selectors.join();
 			this.$container.on( 'click', control.selectors.join(), function( e ) {
 				var $this = $( this );
 
