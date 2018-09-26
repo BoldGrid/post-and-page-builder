@@ -132,6 +132,28 @@ export class Instance {
 	}
 
 	/**
+	 * Show the loading graphic.
+	 *
+	 * @since 1.8.0
+	 */
+	initLoading() {
+		this.updating = true;
+		BG.Panel.showLoading();
+	}
+
+	/**
+	 * Hide the loading graphic.
+	 *
+	 * @since 1.8.0
+	 */
+	stopLoading() {
+		if ( this.updating ) {
+			this.updating = false;
+			BG.Panel.hideLoading();
+		}
+	}
+
+	/**
 	 * Open the customization panel for a component config.
 	 *
 	 * @since 1.8.0
@@ -147,8 +169,12 @@ export class Instance {
 			} )
 		);
 
+		this.viewInstance = viewInstance;
+		this.update = update;
+		this.$form = $template.find( '[data-control-name="design"] form' );
+
 		// AJAX the form. This will preset values.
-		this._loadForm( $template, viewInstance, update );
+		this._loadForm( $template );
 
 		BG.Panel.clear();
 		BG.Panel.$element.find( '.panel-body' ).html( $template );
@@ -171,10 +197,8 @@ export class Instance {
 	 * Load the customization form into the template
 	 *
 	 * @since 1.8.0
-	 *
-	 * @param {object} viewInstance MCE view object.
 	 */
-	_loadForm( $template, viewInstance, update ) {
+	_loadForm( $template ) {
 		let fail = () => {
 			$template
 				.find( 'form' )
@@ -183,16 +207,43 @@ export class Instance {
 
 		let $widgetsInput = $template.find( '.widget-inputs' );
 
-		this.getShortcodeData( 'form', viewInstance.shortcode.attrs.named.opts )
+		this.getShortcodeData( 'form', this.viewInstance.shortcode.attrs.named.opts )
 			.done( response => {
 				if ( response && response.content ) {
 					$widgetsInput.html( response.content );
-					this._bindFormInputs( update );
+					this._bindFormInputs();
 				} else {
 					fail();
 				}
 			} )
 			.fail( () => fail() );
+	}
+
+	/**
+	 * Update the shortcode
+	 *
+	 * @since 1.8.0
+	 */
+	_updateShortcode() {
+		let data = {};
+
+		if ( this.updating ) {
+			return;
+		}
+
+		this.initLoading();
+
+		_.each( this.$form.serializeArray(), val => {
+			data[val.name] = val.value;
+		} );
+
+		this.$form.find( 'input:checkbox' ).each( ( index, el ) => {
+			data[el.name] = el.checked ? 1 : 0;
+		} );
+
+		let values = encodeURIComponent( JSON.stringify( data ) );
+		this.panelEdit = true;
+		this.update( `[boldgrid_component type="${this.component.name}" opts="${values}"]` );
 	}
 
 	/**
@@ -203,22 +254,16 @@ export class Instance {
 	 * @param  {object} component Component Configuration.
 	 * @param  {function} update Update the shortcode method.
 	 */
-	_bindFormInputs( update ) {
-		BG.Panel.$element.find( '[data-control-name="design"] form' ).submit( e => {
+	_bindFormInputs() {
+		let debounced = _.debounce( () => {
+			this._updateShortcode();
+		}, 1500 );
+
+		this.$form.on( 'change', () => debounced() );
+
+		this.$form.on( 'submit', e => {
 			e.preventDefault();
-			let data = {},
-				$form = $( e.target );
-
-			_.each( $form.serializeArray(), val => {
-				data[val.name] = val.value;
-			} );
-
-			$form.find( 'input:checkbox' ).each( ( index, el ) => {
-				data[el.name] = el.checked ? 1 : 0;
-			} );
-
-			let values = encodeURIComponent( JSON.stringify( data ) );
-			update( `[boldgrid_component type="${this.component.name}" opts="${values}"]` );
+			this._updateShortcode();
 		} );
 	}
 }

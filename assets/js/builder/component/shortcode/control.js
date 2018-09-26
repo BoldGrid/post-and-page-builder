@@ -55,6 +55,7 @@ export class Control {
 				name = componentInstance.component.js_control.title;
 			}
 
+			componentInstance.stopLoading();
 			mce.render( self.errorTemplate( { name: name } ) );
 		};
 
@@ -96,6 +97,10 @@ export class Control {
 					BG.mce.selection.select( node );
 					wp.mce.views.edit( editor, node );
 					self.getComponentInstance( this ).insertedNode = false;
+				}
+
+				if ( componentInstance ) {
+					componentInstance.stopLoading();
 				}
 			}
 		} );
