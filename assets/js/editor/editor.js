@@ -788,7 +788,7 @@ IMHWPB.Editor = function( $ ) {
 		var $markup = $( markup );
 
 		//Strip out added spaces
-		$markup.find( 'a' ).each( function() {
+		$markup.find( 'a:not(.wpview a)' ).each( function() {
 			var $this = $( this );
 			var html = $this.html();
 
