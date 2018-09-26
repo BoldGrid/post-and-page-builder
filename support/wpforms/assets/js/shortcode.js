@@ -49,11 +49,20 @@
 					' data-title=' + title + '>' + this.template() + '</div>' );
 
 				setTimeout( function() {
-					if ( tinymce && tinymce.activeEditor ) {
-						$( tinymce.activeEditor.iframeElement ).contents()
-							.find( '.boldgrid-' + pluginName + '[data-id="' + options.id + '"]' )
-							.closest( '.wpview-body' )
-							.attr( 'contentEditable', true );
+					if ( tinymce && tinymce.activeEditor && BOLDGRID.EDITOR.mce ) {
+						let $form = $( BOLDGRID.EDITOR.mce.iframeElement ).contents()
+							.find( '.boldgrid-' + pluginName + '[data-id="' + options.id + '"]' );
+
+						$form.each( function() {
+							var $this = $( this );
+
+							$this.closest( '.wpview-body' ).attr( 'contentEditable', true );
+
+							if ( ! $this.closest( '.boldgrid-shortcode' ).length ) {
+								$this.closest( '.wpview' )
+									.wrapAll( '<div class="boldgrid-shortcode" data-imhwpb-draggable="true"></div>' );
+							}
+						} );
 					}
 				} );
 
