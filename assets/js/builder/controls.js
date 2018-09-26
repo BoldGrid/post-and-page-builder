@@ -339,14 +339,6 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 					}
 				}
 
-				// If the user clicks on a nested font element stop propagation.
-				if ( 'font' === control.name ) {
-					if ( e.fontFound ) {
-						return;
-					}
-					e.fontFound = true;
-				}
-
 				if ( $this.closest( '[contenteditable="false"]:not(.wpview)' ).length ) {
 					return;
 				}
@@ -358,6 +350,14 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 				// If the user clicks one of the controls exceptions, skip.
 				if ( control.exceptionSelector && e.target && $( e.target ).is( control.exceptionSelector ) ) {
 					return;
+				}
+
+				// If the user clicks on a nested font element stop propagation.
+				if ( 'font' === control.name ) {
+					if ( e.fontFound ) {
+						return;
+					}
+					e.fontFound = true;
 				}
 
 				self.$menu.targetData = self.$menu.targetData || {};

@@ -19,7 +19,9 @@ import { Typography } from '@boldgrid/controls';
 
 		iconClasses: 'fa fa-text-width',
 
-		selectors: [ 'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl', 'blockquote' ],
+		selectors: [
+			'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl, blockquote, .boldgrid-shortcode'
+		],
 
 		// Ignore images clicked in paragraphs.
 		exceptionSelector: 'img, .draggable-tools-imhwpb *',
