@@ -35,10 +35,11 @@ class Public {
 
 		if ( $parallaxBackgrounds.length ) {
 			$parallaxBackgrounds
-				.attr( 'data-stellar-background-ratio', '.3' )
-				.css( 'background-position-x', 0 );
+				.attr( 'data-stellar-background-ratio', '.3' );
 
-			$( 'body' ).stellar();
+			$( 'body' ).stellar( {
+				horizontalScrolling: false
+			} );
 		}
 	}
 }

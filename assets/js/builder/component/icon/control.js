@@ -75,7 +75,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				title: 'Icon',
 				type: 'design',
 				icon: '<span class="dashicons dashicons-star-filled"></span>',
-				getDragElement: () => $( self.getSample() )
+				getDragElement: () => self.getSample()
 			};
 
 			BG.Service.component.register( config );
@@ -133,9 +133,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @return {string} HTML for icon.
 		 */
 		getSample() {
-			return `
-				<i class="fa fa-cog bg-inserted-icon" aria-hidden="true"><span style="display:none;">&nbsp;</span></i>
-			`;
+			let $sample = $( `
+				<i class="fa fa-cog bg-inserted-icon" aria-hidden="true">
+					<span style="display:none;">&nbsp;</span>
+				</i>
+			` );
+
+			BG.Controls.addStyle( $sample, 'font-size', '36px' );
+
+			return $sample;
 		},
 
 		/**
