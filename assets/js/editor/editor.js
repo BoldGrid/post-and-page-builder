@@ -651,16 +651,18 @@ IMHWPB.Editor = function( $ ) {
 			editor.on( 'init', function( event ) {
 				IMHWPB.WP_MCE_Draggable.instance = new IMHWPB.WP_MCE_Draggable();
 
+				var $body = $( editor.getBody() );
 				var $tinymce_iframe = $( event.target.iframeElement ).contents();
+
 				if ( BoldgridEditor.body_class ) {
-					$tinymce_iframe.find( 'body' ).addClass( BoldgridEditor.body_class );
+					$body.addClass( BoldgridEditor.body_class );
 				}
 
 				if ( BoldgridEditor.hasDraggableEnabled ) {
 					IMHWPB.WP_MCE_Draggable.instance.load_draggable( $tinymce_iframe );
 					self.draggable = IMHWPB.WP_MCE_Draggable.instance.draggable_instance;
 					if ( self.draggable.ie_version && 11 >= self.draggable.ie_version ) {
-						$tinymce_iframe.find( 'body' ).addClass( 'dragging-disabled' );
+						$body.addClass( 'dragging-disabled' );
 					}
 				} else {
 

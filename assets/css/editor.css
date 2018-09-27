@@ -1839,6 +1839,9 @@
 .mce-widget[aria-label="BoldGrid Editing"] {
   display: none; }
 
+body#wpview-iframe-sandbox {
+  background: transparent !important; }
+
 /*--------------------------------------------------------------
 # Post.php Modifications
 --------------------------------------------------------------*/
