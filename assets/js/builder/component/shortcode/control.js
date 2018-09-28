@@ -102,6 +102,8 @@ export class Control {
 				if ( componentInstance ) {
 					componentInstance.stopLoading();
 				}
+
+				BG.Service.event.emit( 'widgetUpdated', node );
 			}
 		} );
 	}
