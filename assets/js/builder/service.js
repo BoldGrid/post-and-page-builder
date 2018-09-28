@@ -26,12 +26,11 @@ export class Service {
 		// Services.
 		this.editorWidth = null;
 		this.styleUpdater = null;
+		this.event = new EventEmitter();
 
 		this._onWindowLoad();
 		this._onEditorLoad();
 		this._onEditorPreload();
-
-		this.event = new EventEmitter();
 
 		return this;
 	}

@@ -103,7 +103,7 @@ export class Control {
 					componentInstance.stopLoading();
 				}
 
-				BG.Service.event.emit( 'widgetUpdated', node );
+				BG.Service.event.emit( 'shortcodeUpdated', node );
 			}
 		} );
 	}
