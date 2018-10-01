@@ -30,6 +30,7 @@ export class Content extends Base {
 		this.$element.on( 'updatePosition', () => this._onUpdatePosition() );
 		this.$element.find( '.edit-as-row' ).on( 'click', () => this._onEditRow() );
 		this.event.on( 'open', () => this._toggleFontOption() );
+		this.event.on( 'open', () => this._toggleAdvancedOption() );
 	}
 
 	/**
@@ -41,6 +42,17 @@ export class Content extends Base {
 	_toggleFontOption() {
 		let display = this.$target.is( BG.Controls.get( 'font' ).selectorString );
 		this.$element.toggleClass( 'has-font-support', display );
+	}
+
+	/**
+	 * When the popover is opened toggle visibility of the font option Based
+	 * on the selector of the font control.
+	 *
+	 * @since 1.8.0
+	 */
+	_toggleAdvancedOption() {
+		let display = ! this.$target.hasClass( 'wpview' );
+		this.$element.toggleClass( 'has-advanced-support', display );
 	}
 
 	/**
