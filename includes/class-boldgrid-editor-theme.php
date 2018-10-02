@@ -81,6 +81,23 @@ class Boldgrid_Editor_Theme {
 	 */
 	public function BGTFW_config_filters( $configs ) {
 		$configs = $this->update_tgm( $configs );
+		$configs = $this->body_color_links( $configs );
+
+		return $configs;
+	}
+
+	/**
+	 * Shortcodes now inherit from theme body color links.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  array $configs BGTFW Configs.
+	 * @return array          BGTFW Configs.
+	 */
+	public function body_color_links( $configs ) {
+		if ( ! empty( $configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'] ) ) {
+			$configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'][] = '.boldgrid-shortcode .widget a';
+		}
 
 		return $configs;
 	}
