@@ -118,10 +118,10 @@
     webpack "^4.0.0"
     webpack-cli "^2.0.12"
 
-"@boldgrid/components@^2.15.1":
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.1.tgz#c5175690f0d6b76919bf751a453d2c74900c2e14"
-  integrity sha512-nwI6DksXq+rpg3UahJR+IYGD3KQEoLWRJ8v61j2PIPHry+ipMT7bs3KIdwj2a0pvxhEGhYwM3m4+MOWIV1g9zg==
+"@boldgrid/components@^2.15.2":
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.2.tgz#e32bf1a600dfeba53a409705911d2a2a35fbf9ac"
+  integrity sha512-VVLcMmFgEC05HcF/18+H+E26apv2m8DLidOSIkLvQTtfwb+RyGIgS2tzBcHiGwdyHUaCwZ/8SaLkd6EqNZrR7Q==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
   version "0.13.1"

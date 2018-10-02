@@ -53,9 +53,9 @@ export class Control {
 			let name = 'BoldGrid Component';
 			if ( componentInstance ) {
 				name = componentInstance.component.js_control.title;
+				componentInstance.stopLoading();
 			}
 
-			componentInstance.stopLoading();
 			mce.render( self.errorTemplate( { name: name } ) );
 		};
 
