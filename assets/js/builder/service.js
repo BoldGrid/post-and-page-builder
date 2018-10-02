@@ -19,6 +19,7 @@ import { Add as AddComponent } from './component/add';
 import { Component as LayoutComponent } from './component/layout/component';
 import { EventEmitter } from 'eventemitter3';
 import { Generate } from '@boldgrid/controls/src/controls/color';
+import { Sanitize } from './sanitize';
 
 export class Service {
 	init() {
@@ -27,6 +28,7 @@ export class Service {
 		this.editorWidth = null;
 		this.styleUpdater = null;
 		this.event = new EventEmitter();
+		this.sanitize = new Sanitize();
 
 		this._onWindowLoad();
 		this._onEditorLoad();

@@ -47,6 +47,7 @@ export class Add {
 		BOLDGRID.EDITOR.Controls.registerControl( this );
 
 		this.dragHandler.bindBaseEvents();
+		BG.Service.event.on( 'cleanup', $markup => this.removeShortcodeWrap( $markup ) );
 
 		return this;
 	}

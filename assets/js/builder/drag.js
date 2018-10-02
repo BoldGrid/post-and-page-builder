@@ -661,12 +661,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		self.wrap_hr_tags();
 		self.wrap_content_elements( self );
 		self.add_redundant_classes( self );
-		self.removeClasses( self );
-		self.remove_resizing_classes( self );
-	};
-
-	this.removeClasses = function( $container ) {
-		$container.find( '.bg-control-element' ).removeClass( 'bg-control-element' );
+		BG.Service.sanitize.removeClasses( self );
 	};
 
 	/**
@@ -1643,51 +1638,13 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	};
 
 	/**
-	 * Remove any classes that were added by the the draggable class.
-	 */
-	this.frame_cleanup = function( markup ) {
-		var $markup = $( '<div>' + markup + '</div>' );
-		self.remove_resizing_classes( $markup );
-		self.remove_border_classes( $markup );
-		self.removeClasses( $markup );
-		BG.Service.component.removeShortcodeWrap( $markup );
-
-		BG.Service.event.emit( 'cleanup', $markup );
-
-		return $markup.html();
-	};
-
-	/**
-	 * Remove resizing class.
-	 */
-	this.remove_resizing_classes = function( $container ) {
-		$container.find( '.resizing-imhwpb' ).removeClass( 'resizing-imhwpb' );
-	};
-
-	/**
-	 * Remove border classes.
-	 */
-	this.remove_border_classes = function( $container ) {
-
-		// Remove Border Classes.
-		$container
-			.find(
-				'.resize-border-left-imhwpb, .resizing-imhwpb, .popover-hover, .resize-border-right-imhwpb, .content-border-imhwpb'
-			)
-			.removeClass(
-				'resize-border-right-imhwpb resizing-imhwpb popover-hover resize-border-left-imhwpb content-border-imhwpb'
-			);
-	};
-
-	/**
 	 * Method to be called when the resize process has completed.
 	 */
 	this.end_resize = function() {
 		self.resize = false;
-		self.remove_border_classes( self );
 
 		self.$html.removeClass( 'no-select-imhwpb' );
-		self.remove_resizing_classes( self );
+		BG.Service.sanitize.removeClasses( self );
 		self.removeClass( 'resizing-imhwpb cursor-not-allowed-imhwpb' );
 
 		self.trigger( self.resize_finish_event );
@@ -1701,7 +1658,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			self.end_resize();
 		}
 
-		self.remove_resizing_classes( self );
+		BG.Service.sanitize.removeClasses( self, 'resize' );
 
 		self.hover_elements = {
 			content: null,

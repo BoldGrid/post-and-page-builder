@@ -1,6 +1,7 @@
 var IMHWPB = IMHWPB || {};
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
+var BG = BOLDGRID.EDITOR;
 
 /**
  * IMHWPB.Editor
@@ -290,6 +291,8 @@ IMHWPB.Editor = function( $ ) {
 				if ( true == IMHWPB.tinymce_undo_disabled ) {
 					return false;
 				}
+
+				e.level.content = BG.Service.sanitize.cleanup( e.level.content );
 			} );
 
 			// On Undo and redo make sure galleries are intialized.
@@ -627,12 +630,11 @@ IMHWPB.Editor = function( $ ) {
 			editor.on( 'GetContent', function( e ) {
 				if ( e.content ) {
 					e.content = self.reset_anchor_spaces( '<div>' + e.content + '</div>', false );
-					e.content = self.cleanupContent( e.content );
+					e.content = BG.Service.sanitize.cleanup( e.content );
 				}
 			} );
 
 			editor.on( 'AddUndo', function( e ) {
-				e.level.content = self.cleanupContent( e.level.content );
 				BOLDGRID.EDITOR.GRIDBLOCK.View.updateHistoryStates();
 
 				/*
@@ -710,8 +712,7 @@ IMHWPB.Editor = function( $ ) {
 
 			/*
 			 *
-			 * Used for debugging */
-			 /*
+			 * Used for debugging
 			var all_events = [
 				'AddUndo',
 				'cut',
@@ -750,20 +751,9 @@ IMHWPB.Editor = function( $ ) {
 			console.log(all_events.join());
 			editor.on( all_events.join(' '), function( e ) {
 				console.log(e.type);
-			} ); */
+			} );*/
 		} );
 	} );
-
-	this.cleanupContent = function( content ) {
-		if (
-			IMHWPB.WP_MCE_Draggable.instance &&
-			IMHWPB.WP_MCE_Draggable.instance.draggable_instance
-		) {
-			content = IMHWPB.WP_MCE_Draggable.instance.draggable_instance.frame_cleanup( content );
-		}
-
-		return content;
-	};
 
 	/**
 	 * Check if an element is empty after being validated by mce
