@@ -103,6 +103,18 @@ class Boldgrid_Editor_Theme {
 	}
 
 	/**
+	 * Add Body classes to editor to hide.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return array Classes.
+	 */
+	public function add_body_class( $classes ) {
+		$classes[] = 'boldgrid-ppb';
+		return $classes;
+	}
+
+	/**
 	 * Remove boldgrid-editor slug from the reccomended plugins.
 	 *
 	 * @since 1.6.1
