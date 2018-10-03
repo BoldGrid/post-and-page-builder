@@ -60,7 +60,7 @@
 
 							if ( ! $this.closest( '.boldgrid-shortcode' ).length ) {
 								$this.closest( '.wpview' )
-									.wrapAll( '<div class="boldgrid-shortcode" data-imhwpb-draggable="true"></div>' );
+									.wrapAll( '<div class="boldgrid-shortcode wpforms-shortcode" data-imhwpb-draggable="true"></div>' );
 							}
 						} );
 					}

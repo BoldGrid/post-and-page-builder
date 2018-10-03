@@ -21,6 +21,17 @@
 class Boldgrid_Editor_Theme {
 
 	/**
+	 * Body class for plugin.
+	 *
+	 * This is essentially a flag to determine that the plugin is active.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @var string
+	 */
+	public static $plugin_body_class = 'boldgrid-ppb';
+
+	/**
 	 * Default palette.
 	 *
 	 * @since 1.6
@@ -100,6 +111,18 @@ class Boldgrid_Editor_Theme {
 		}
 
 		return $configs;
+	}
+
+	/**
+	 * Add Body classes to editor to hide.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return array Classes.
+	 */
+	public function add_body_class( $classes ) {
+		$classes[] = self::$plugin_body_class;
+		return $classes;
 	}
 
 	/**
@@ -217,6 +240,8 @@ class Boldgrid_Editor_Theme {
 
 		$boldgrid_palette_class = ! empty( $theme_mods['boldgrid_palette_class'] ) ?
 			$theme_mods['boldgrid_palette_class'] : 'palette-primary';
+
+		$boldgrid_palette_class .= ' ' . self::$plugin_body_class;
 
 		return $boldgrid_palette_class;
 	}

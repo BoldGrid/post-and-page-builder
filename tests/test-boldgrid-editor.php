@@ -87,7 +87,7 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	 */
 	public function test_theme_body_class_default(){
 		$theme_body_class = Boldgrid_Editor_Theme::theme_body_class();
-		$this->assertEquals( 'palette-primary', $theme_body_class );
+		$this->assertEquals( 'palette-primary boldgrid-ppb', $theme_body_class );
 
 	}
 
