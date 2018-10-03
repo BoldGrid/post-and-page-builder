@@ -140,7 +140,7 @@ class Boldgrid_Editor_Assets {
 			'boldgrid-editor-public', $script_url,
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
-		wp_enqueue_style( 'animate-css',
+		wp_enqueue_style( 'animatecss',
 			plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
 			array(), BOLDGRID_EDITOR_VERSION );
 
@@ -419,7 +419,7 @@ class Boldgrid_Editor_Assets {
 
 		wp_register_style( 'editor-css-imhwpb', self::editor_css_url(), array(), BOLDGRID_EDITOR_VERSION );
 
-		wp_enqueue_style( 'editor-animate-css',
+		wp_enqueue_style( 'animatecss',
 		plugins_url( '/assets/css/animate.min.css', $plugin_file ), array(), BOLDGRID_EDITOR_VERSION );
 
 		wp_enqueue_style( 'boldgrid-components',
