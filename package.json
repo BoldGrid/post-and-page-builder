@@ -72,7 +72,7 @@
 	"dependencies": {
 		"@boldgrid/components": "^2.15.2",
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#typography",
-		"animate.css": "^3.5.2",
+		"animate.css": "^3.7.0",
 		"babel-eslint": "^8.0.2",
 		"babel-loader": "^7.1.2",
 		"babel-minify-webpack-plugin": "^0.3.0",
