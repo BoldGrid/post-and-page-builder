@@ -132,6 +132,14 @@ module.exports = {
 				to: cssDir
 			},
 			{
+				from: require.resolve( 'animate.css/animate.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( 'animate.css/animate.min.css' ),
+				to: cssDir
+			},
+			{
 				from: 'node_modules/@boldgrid/controls/dist/scss/color-palette-scss',
 				to: path.resolve( scssDir, 'color-palette-scss' )
 			}

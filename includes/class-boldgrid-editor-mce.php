@@ -312,6 +312,9 @@ class Boldgrid_Editor_MCE {
 		$styles[] = plugins_url( '/assets/js/builder/css/draggable.css',
 			BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
 
+		$styles[] = plugins_url( '/assets/css/animate.min.css',
+			BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
+
 		$styles[] = Boldgrid_Editor_Assets::editor_css_url();
 
 		$builder_styles = new Boldgrid_Editor_Builder_Styles();
