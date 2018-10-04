@@ -55,6 +55,7 @@ gulp.task( 'sass', function() {
 		.pipe(
 			cssnano( {
 				discardComments: { removeAll: true },
+				safe: true,
 				zindex: false
 			} )
 		)
