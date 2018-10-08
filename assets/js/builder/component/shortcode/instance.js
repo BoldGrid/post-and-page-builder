@@ -260,6 +260,7 @@ export class Instance {
 		}, 1500 );
 
 		this.$form.on( 'change', () => debounced() );
+		this.$form.on( 'input', () => debounced() );
 
 		this.$form.on( 'submit', e => {
 			e.preventDefault();

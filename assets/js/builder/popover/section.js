@@ -57,6 +57,18 @@ export class Section extends Base {
 	}
 
 	/**
+	 * If the element that I entered is still within the current target, do not hide.
+	 *
+	 * @since 1.6
+	 *
+	 * @param  {$} $target Jquery
+	 * @return {$}         Should we prevent mouse leave action?
+	 */
+	preventMouseLeave( $target ) {
+		return $target && ( $target.hasClass( 'slick-dots' ) || $target.hasClass( 'slick-arrow' ) );
+	}
+
+	/**
 	 * Add a row to a section.
 	 *
 	 * @since 1.8.0
