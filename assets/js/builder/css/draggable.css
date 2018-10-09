@@ -341,14 +341,14 @@ iframe[src^="https://maps.google.com"] {
 }
 
 .dragging-section .draggable-tools-imhwpb,
-.dragging-section .draghandle,
+.dragging-section .resize-handle,
 .dragging-section .section-drag-handle,
 .disabled-section-width .popover-menu-imhwpb [data-action="section-width"],
 .drag-progress .section-drag-handle,
 .bg-disabled-handles .draggable-tools-imhwpb,
-.bg-disabled-handles .draghandle,
+.bg-disabled-handles .resize-handle,
 .bg-disabled-handles .section-drag-handle,
-.boldgrid-is-typing .draghandle,
+.boldgrid-is-typing .resize-handle,
 .boldgrid-is-typing .draggable-tools-imhwpb,
 .boldgrid-is-typing .section-drag-handle,
 .editing-as-row .section-drag-handle {
@@ -825,7 +825,7 @@ button {
 	cursor: text;
 }
 
-html.selecting:not(.changing-padding-top):not(.changing-padding-bottom) .draghandle,
+html.selecting:not(.changing-padding-top):not(.changing-padding-bottom) .resize-handle,
 html.selecting .popover-imhwpb {
 	display: none !important;
 }

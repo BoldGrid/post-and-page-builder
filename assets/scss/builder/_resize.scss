@@ -1,39 +1,35 @@
-.drag-progress .draghandle {
-	display: none !important;
-}
-
-.draghandle {
+.resize-handle {
 	z-index: 99998;
 	position: fixed;
 	cursor: ns-resize;
 	background-color: $menu-color;
-	border-radius: 3px;
+	border-radius: 3px 3px 0 0;
 	color: white;
-	box-shadow: 0 0 4px -1px $menu-color;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: 14px;
-	text-align: center;
-	line-height: 20px;
+	font-size: 17px;
 
-	&:hover {
-		color: $hover-color;
+	.size {
+		font-size: 12px;
+		vertical-align: middle;
+		padding-right: 7px;
 	}
 
-	&:before {
+	&.top {
+		border-radius: 0 0 3px 3px;
+	}
+}
+
+.draghandle {
+	font: normal normal normal 14px/1 FontAwesome;
+	text-align: center;
+	font-size: 12px;
+	padding: 0 6px 0 10px;
+
+	&::before {
 		content: "\f07d";
 	}
 }
 
-.changing-padding-top .draghandle.top,
-.changing-padding-bottom .draghandle.bottom {
-	color: $hover-color;
-}
-
-.changing-padding-top .draghandle.bottom {
-	display: none !important;
-}
-
-.changing-padding-bottom .draghandle.top {
+.drag-progress .draghandle {
 	display: none !important;
 }
 

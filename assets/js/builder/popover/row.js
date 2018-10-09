@@ -56,7 +56,11 @@ export class Row extends Base {
 	 * @return {$}         Should we prevent mouse leave action?
 	 */
 	preventMouseLeave( $target ) {
-		return $target && $target.hasClass( 'draghandle' ) && this.$target.is( BG.RESIZE.Row.$currentRow );
+		return (
+			$target &&
+			$target.closest( '.resize-handle' ).length &&
+			this.$target.is( BG.RESIZE.Row.$currentRow )
+		);
 	}
 
 	/**

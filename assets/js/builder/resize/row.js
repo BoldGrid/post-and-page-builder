@@ -45,19 +45,24 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 		 */
 		createHandles: function() {
 			self.$topHandle = $(
-				'<span class="draghandle top" title="Drag Resize Row" data-setting="padding-top"></span>'
+				`
+				<div class="resize-handle top" title="Drag Resize Row" data-setting="padding-top">
+					<span class="draghandle"></span>
+					<span class="size">20px</span>
+				</div>
+				`
 			);
 			self.$bottomHandle = $(
-				'<span class="draghandle bottom" title="Drag Resize Row" data-setting="padding-bottom"></span>'
+				`
+					<div class="resize-handle bottom" title="Drag Resize Row" data-setting="padding-bottom">
+						<span class="draghandle"></span>
+						<span class="size">20px</span>
+					</div>
+				`
 			);
 
-			$.each( [ self.$topHandle, self.$bottomHandle ], function() {
-				this.css( {
-					position: 'fixed',
-					height: self.handleSize,
-					width: self.handleSize
-				} );
-			} );
+			self.$topHandle[0].$size = self.$topHandle.find( '.size' );
+			self.$bottomHandle[0].$size = self.$bottomHandle.find( '.size' );
 
 			self.$container
 				.find( 'body' )
@@ -75,7 +80,7 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 		initDraggable: function() {
 			var startPadding, setting;
 
-			self.$container.find( '.draghandle' ).draggable( {
+			self.$container.find( '.resize-handle' ).draggable( {
 				scroll: false,
 				axis: 'y',
 				start: function() {
@@ -93,7 +98,7 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 					self.$currentRow.removeClass( 'changing-padding' );
 					self.$container.$html.removeClass( 'no-select-imhwpb' );
 					self.$container.$html.removeClass( 'changing-' + setting );
-					self.hideHandles();
+					self.positionHandles( self.$currentRow );
 				},
 				drag: function( e, ui ) {
 					var padding,
@@ -103,6 +108,8 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 
 					if ( 'padding-top' === setting ) {
 						padding = parseInt( self.$currentRow.css( setting ) ) - diff;
+						self._syncBottomHandle( padding, diff );
+
 						relativePos = 'top';
 						if ( 0 < padding && diff ) {
 							window.scrollBy( 0, -diff );
@@ -120,6 +127,7 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 						padding = 0;
 					}
 
+					ui.helper[0].$size.html( padding + 'px' );
 					BG.Controls.addStyle( self.$currentRow, setting, padding );
 
 					if ( self.$container.$html.hasClass( 'editing-as-row' ) && $.fourpan ) {
@@ -128,6 +136,48 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 
 					BG.Service.event.emit( 'rowResize', self.$currentRow );
 				}
+			} );
+		},
+
+		/**
+		 * When the top handle is dragged, update the bottom handle.
+		 *
+		 * This is done because the fixed positioning of each means that adding
+		 * padding to the top changes the position of the bottom.
+		 *
+		 * @since 1.8.0
+		 */
+		_syncBottomHandle( padding, diff ) {
+			if ( 0 <= padding ) {
+				let currentTop = parseInt( self.$bottomHandle.css( 'top' ), 10 );
+
+				/*
+				 * If possible, apply the diff to the other handle.
+				 * In the case of negetive padding to a hard update. This optiomization
+				 * prevents a repaint and stuttering.
+				 */
+				self.$bottomHandle.css( 'top', currentTop - diff );
+			} else {
+				self.updateHandlePosition( self.$bottomHandle );
+			}
+		},
+
+		/**
+		 * Update the handle position.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param  {jQuery} $handle Handle to update.
+		 * @param  {object} cords   Row bounding rect.
+		 */
+		updateHandlePosition: function( $handle, cords ) {
+			let pos = cords ? cords : self.$currentRow[0].getBoundingClientRect(),
+				rightOffset = pos.right - 100,
+				top = $handle.hasClass( 'top' ) ? pos.top - 1 : pos.bottom - self.handleOffset + 1;
+
+			$handle.css( {
+				top: top,
+				left: rightOffset
 			} );
 		},
 
@@ -145,25 +195,21 @@ BOLDGRID.EDITOR.RESIZE = BOLDGRID.EDITOR.RESIZE || {};
 				return;
 			}
 
-			pos = $this[0].getBoundingClientRect();
-			rightOffset = pos.right - 100;
-
 			if ( self.currentlyDragging ) {
 				return false;
 			}
 
+			pos = $this[0].getBoundingClientRect();
+
 			// Save the current row.
 			self.$currentRow = $this;
 
-			self.$topHandle.css( {
-				top: pos.top - 1,
-				left: rightOffset
-			} );
+			this.updateHandlePosition( self.$topHandle, pos );
+			this.updateHandlePosition( self.$bottomHandle, pos );
 
-			self.$bottomHandle.css( {
-				top: pos.bottom - self.handleOffset + 1,
-				left: rightOffset
-			} );
+			// Set the size text box
+			self.$topHandle[0].$size.html( self.$currentRow.css( 'padding-top' ) );
+			self.$bottomHandle[0].$size.html( self.$currentRow.css( 'padding-bottom' ) );
 
 			self.$topHandle.show();
 			self.$bottomHandle.show();

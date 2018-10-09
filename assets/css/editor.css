@@ -2033,37 +2033,33 @@ body.boldgrid-editor-fullscreen {
 /*--------------------------------------------------------------
 # Drag n Drop Resize
 --------------------------------------------------------------*/
-.drag-progress .draghandle {
-  display: none !important; }
-
-.draghandle {
+.resize-handle {
   z-index: 99998;
   position: fixed;
   cursor: ns-resize;
   background-color: #32373c;
-  border-radius: 3px;
+  border-radius: 3px 3px 0 0;
   color: white;
-  -webkit-box-shadow: 0 0 4px -1px #32373c;
-  box-shadow: 0 0 4px -1px #32373c;
+  font-size: 17px; }
+
+.resize-handle .size {
+  font-size: 12px;
+  vertical-align: middle;
+  padding-right: 7px; }
+
+.resize-handle.top {
+  border-radius: 0 0 3px 3px; }
+
+.draghandle {
   font: normal normal normal 14px/1 FontAwesome;
-  font-size: 14px;
   text-align: center;
-  line-height: 20px; }
+  font-size: 12px;
+  padding: 0 6px 0 10px; }
 
-.draghandle:hover {
-  color: #f95b26; }
-
-.draghandle:before {
+.draghandle::before {
   content: "\f07d"; }
 
-.changing-padding-top .draghandle.top,
-.changing-padding-bottom .draghandle.bottom {
-  color: #f95b26; }
-
-.changing-padding-top .draghandle.bottom {
-  display: none !important; }
-
-.changing-padding-bottom .draghandle.top {
+.drag-progress .draghandle {
   display: none !important; }
 
 .changing-padding-bottom #boldgrid-draggable-resizing-overlay,
@@ -2239,6 +2235,9 @@ body.boldgrid-editor-fullscreen {
 
 #tinymce .background-fixed {
   background-attachment: scroll !important; }
+
+.wpview {
+  margin: 0; }
 
 .draggable-inactive .color-panel,
 .draggable-inactive .editor-panel,
