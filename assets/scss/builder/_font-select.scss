@@ -1,107 +1,56 @@
-.boldgrid-control.font-family-control .select2-selection__rendered,
-.select2-results__option[aria-label="Used Fonts"] .select2-results__option,
-.select2-results__option[aria-label="Theme Fonts"] .select2-results__option,
-.select2-results__option[aria-label="Common Fonts"] .select2-results__option,
-.select2-results__option[aria-label="Google Fonts"] .select2-results__option {
+.bgcon-google-font {
 	background-image: url(../image/web-fonts.png);
-}
-
-.panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
-	transform: translateY(-10px);
-	line-height: 35px;
 	color: transparent;
 }
 
-.select2-results__option:not([aria-label="Google Fonts"]):not([aria-label="Common Fonts"]) .select2-results__option,
-.panel-body .boldgrid-control.font-family-control .select2-selection__rendered {
+.bgcon-system-font {
 	font-size: 17px;
 
-	&[title="Default"],
-	&[title="Arial"],
-	&[title="Arial Black"],
-	&[title="Comic Sans"],
-	&[title="Impact"],
-	&[title="Lucida Console"],
-	&[title="Lucida Sans Unicode"],
-	&[title="Palatino Linotype"],
-	&[title="Tahoma"],
-	&[title="Times New Roman"],
-	&[title="Trebuchet MS"],
-	&[title="Verdana"] {
-		color: black;
-		transform: translateY(0);
-		background-image: none;
-	}
-
-	&[id$="Arial"],
-	&[title="Arial"] {
+	&.arial {
 		font-family: Arial, Helvetica, sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Arial Black"],
-	&[title="Arial Black"] {
+	&.arial-black {
 		font-family: Arial Black, Gadget, sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Comic Sans"],
-	&[title="Comic Sans"] {
+	&.comic-sans {
 		font-family: Comic Sans MS, Textile, cursive;
-		background-image: none;
 	}
 
-	&[id$="Courier"],
-	&[title="Courier"] {
+	&.courier {
 		font-family: 'Courier New', Courier, monospace;
-		background-image: none;
 	}
 
-	&[id$="Imapct"],
-	&[title="Imapct"] {
+	&.impact {
 		font-family: Impact, Charcoal, sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Lucida Console"],
-	&[title="Lucida Console"] {
+	&.lucida-console {
 		font-family: 'Lucida Console', Monaco, monospace;
-		background-image: none;
 	}
 
-	&[id$="Lucida Sans Unicode"],
-	&[title="Lucida Sans Unicode"] {
+	&.lucida-sans-unicode {
 		font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Palatino Linotype"],
-	&[title="Palatino Linotype"] {
+	&.palatino-linotype {
 		font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-		background-image: none;
 	}
 
-	&[id$="Tahoma"],
-	&[title="Tahoma"] {
+	&.tahoma {
 		font-family: Tahoma, Geneva, sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Times New Roman"],
-	&[title="Times New Roman"] {
+	&.times-new-roman {
 		font-family: 'Times New Roman', Times, serif;
-		background-image: none;
 	}
 
-	&[id$="Trebuchet MS"],
-	&[title="Trebuchet MS"] {
+	&.trebuchet-ms {
 		font-family: 'Trebuchet MS', Helvetica, sans-serif;
-		background-image: none;
 	}
 
-	&[id$="Verdana"],
-	&[title="Verdana"] {
+	&.verdana {
 		font-family: Verdana, Geneva, sans-serif;
-		background-image: none;
 	}
 }

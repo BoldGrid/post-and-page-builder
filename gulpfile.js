@@ -32,6 +32,26 @@ var config = {
 	jsonDir: './assets/json'
 };
 
+// Update google fonts css.
+gulp.task( 'fontFamilyCss', () => {
+	let fileContent = fs.readFileSync( config.src + '/node_modules/google-fonts-complete/google-fonts.json', 'utf8' ),
+		webFonts = JSON.parse( fileContent ),
+		outFilename = config.cssDest + '/font-family-controls.min.css',
+		css = '',
+		index = 0;
+
+	for ( let font in webFonts ) {
+		let position = -5 + ( index * -37 ),
+			classname = font.replace( /\s+/g, '-' ).toLowerCase();
+
+		css += '.bgcon-google-font.' + classname + '{background-position: 8px ' + position + 'px;}';
+		index++;
+	}
+
+	fs.writeFileSync( outFilename, css );
+} );
+
+
 // Compile sass files.
 gulp.task( 'sass', function() {
 	gulp
