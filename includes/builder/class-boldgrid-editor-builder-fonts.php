@@ -56,7 +56,7 @@ class Boldgrid_Editor_Builder_Fonts {
 		foreach ( $families as $familyName => $config ) {
 			$param = $familyName;
 			if ( ! empty( $config['weights'] ) ) {
-				$param = $familyName . ':' . implode( ',', array_unique( $config['weights'] ) );
+				$param = $familyName . '|' . implode( ',', array_unique( $config['weights'] ) );
 			}
 
 			$familyParam[] = $param;
