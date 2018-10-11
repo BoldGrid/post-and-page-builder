@@ -113,7 +113,8 @@ module.exports = {
 			},
 			{
 				from: srcDir + '/node_modules/font-awesome/fonts',
-				to: fontsDir
+				to: fontsDir,
+				ignore: [ 'fontawesome-webfont.svg' ]
 			},
 			{
 				from: require.resolve( 'font-awesome/css/font-awesome.min.css' ),
@@ -138,6 +139,10 @@ module.exports = {
 			{
 				from: require.resolve( 'animate.css/animate.min.css' ),
 				to: cssDir
+			},
+			{
+				from: require.resolve( '@boldgrid/controls/src/controls/typography/family/google-fonts.json' ),
+				to: jsonDir
 			},
 			{
 				from: 'node_modules/@boldgrid/controls/dist/scss/color-palette-scss',

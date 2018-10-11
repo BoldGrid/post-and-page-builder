@@ -125,9 +125,9 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#6549fd77d27e4231c44f68f28d2d10c75772de8b"
+  resolved "https://github.com/BoldGrid/controls#03eeb090cf75d943dfdbe7b6d1ef723aa40f7613"
   dependencies:
-    "@boldgrid/components" "^2.12.1"
+    "@boldgrid/components" "^2.15.2"
     Buttons "https://github.com/alexwolfe/Buttons"
     Iris "git+https://github.com/Automattic/Iris.git#master"
     animate.css "^3.5.2"
@@ -142,7 +142,6 @@
     ejs-loader "^0.3.1"
     eslint-config-wordpress "^2.0.0"
     eventemitter3 "^3.1.0"
-    google-fonts-complete "^1.2.1"
     google-material-color-palette-json "^2.0.1"
     html-loader "^0.5.1"
     http-server "^0.11.0"
