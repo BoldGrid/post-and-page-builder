@@ -56,7 +56,10 @@ yarn dev
 # Add the following to your wp-config.php
 define( 'SCRIPT_DEBUG', true );
 define( 'BGEDITOR_SCRIPT_DEBUG', true );
+```
 
-# Build for production
+### Build for production
+The full build is committed to github (changing soon). Before pushing up your changes, run the following command to ensure all assets are updated.
+```
 yarn build
 ```
