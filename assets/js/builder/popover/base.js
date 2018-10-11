@@ -97,7 +97,7 @@ export class Base {
 	 * @param  {object} event Event from listeners.
 	 */
 	updatePosition( event ) {
-		let pos, $newTarget;
+		let $newTarget;
 
 		this._removeBorder();
 
@@ -141,11 +141,20 @@ export class Base {
 		// Store the wrap target for faster lookups later.
 		this.$target.$wrapTarget = this._findWrapTarget();
 
-		this.$element.trigger( 'updatePosition' );
-
-		pos = this.$target.$wrapTarget[0].getBoundingClientRect();
-		this.$element.css( this.getPositionCss( pos ) ).show();
+		this._setPosition();
+		this.$element.show();
 		this.$target.$wrapTarget.addClass( 'popover-hover' );
+	}
+
+	/**
+	 * Set positioning of popovers.
+	 *
+	 * @since 1.8.0
+	 */
+	_setPosition() {
+		this.$element.trigger( 'updatePosition' );
+		let pos = this.$target.$wrapTarget[0].getBoundingClientRect();
+		this.$element.css( this.getPositionCss( pos ) );
 	}
 
 	/**
@@ -320,6 +329,15 @@ export class Base {
 			this.hideEventType = event.type;
 			this.hideHandles();
 		} );
+
+		BG.Controls.$container.$window.on(
+			'resize',
+			_.debounce( () => {
+				if ( 'block' === this.$element.css( 'display' ) && this.$target ) {
+					this._setPosition();
+				}
+			}, 100 )
+		);
 	}
 
 	/**
