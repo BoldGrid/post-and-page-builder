@@ -12,17 +12,27 @@ class Public {
 	init() {
 		$( () => {
 			this.setupParallax();
-
-			let wowJs = new window.WOW( {
-				live: false,
-				mobile: false
-			} );
-
-			// Disable on mobile.
-			if ( 768 <= $( window ).width() ) {
-				wowJs.init();
-			}
+			this.initWowJs();
 		} );
+
+		return this;
+	}
+
+	/**
+	 * Setup wow js.
+	 *
+	 * @since 1.8.0
+	 */
+	initWowJs() {
+		this.wowJs = new window.WOW( {
+			live: false,
+			mobile: false
+		} );
+
+		// Disable on mobile.
+		if ( 768 <= $( window ).width() ) {
+			this.wowJs.init();
+		}
 	}
 
 	/**
@@ -44,4 +54,6 @@ class Public {
 	}
 }
 
-new Public().init();
+
+window.BOLDGRID = window.BOLDGRID || {};
+window.BOLDGRID.PPB = new Public().init();
