@@ -121,21 +121,26 @@ class Boldgrid_Editor_Builder_Components {
 	 */
 	public static function find_fonts( $xpath ) {
 		$families = array();
+		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
+		$googleFonts = json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/google-fonts.json' ), true ) ?: [];
 
 		foreach ( $xpath->query( '//*[@data-font-family]' ) as $node ) {
 			$family = $node->getAttribute( 'data-font-family' );
 			$weight = $node->getAttribute( 'data-font-weight' );
-			$variant = $node->getAttribute( 'data-font-style' );
+			$variant = $node->getAttribute( 'data-font-style' ) ?: 'normal';
 
 			// Combine font famillies.
-			if ( $family ) {
+			if ( $family && ! empty( $googleFonts[ $family ] ) ) {
+				$weights = ! empty( $googleFonts[ $family ]['variants'][ $variant ] ) ?
+					$googleFonts[ $family ]['variants'][ $variant ] : $googleFonts[ $family ]['variants']['normal'];
+
 				$families[ $family ] = ! empty( $families[ $family ] ) ? $families[ $family ] : array();
 
-				if ( $weight ) {
+				if ( $weight && $weights && false !== array_search( $weight, $weights ) ) {
 					$families[ $family ]['weights'] = ! empty( $families[ $family ]['weights'] ) ?
 						$families[ $family ]['weights'] : array();
 
-					if ( 'italic' === $variant ) {
+					if ( 'italic' === $variant && ! empty( $googleFonts[ $family ]['variants'][ $variant ] ) ) {
 						$weight = $weight . 'i';
 					}
 

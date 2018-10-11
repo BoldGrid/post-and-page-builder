@@ -2256,6 +2256,9 @@ body.boldgrid-editor-fullscreen {
   background-image: url(../image/web-fonts.png);
   color: transparent; }
 
+.select2-results .font-wrap.bgcon-google-font {
+  margin-left: 0; }
+
 .bgcon-system-font {
   font-size: 17px; }
 
