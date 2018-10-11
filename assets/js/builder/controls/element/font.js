@@ -28,6 +28,8 @@ import { Typography } from '@boldgrid/controls';
 
 		templateMarkup: null,
 
+		allowNested: true,
+
 		disabledTextContrast: true,
 
 		init: function() {

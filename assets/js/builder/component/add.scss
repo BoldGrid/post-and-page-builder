@@ -1,6 +1,10 @@
 .editor-panel[data-type='add'] {
 	transition: opacity 0.25s;
 
+	.bg-component {
+		padding-bottom: 20px;
+	}
+
 	&.component-drag {
 		opacity: 0.8;
 

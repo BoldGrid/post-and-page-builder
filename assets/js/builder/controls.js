@@ -307,7 +307,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			// Add that control to the list of controls to be made visible.
 			control.selectorString = control.selectors.join();
 			this.$container.on( 'click', control.selectors.join(), function( e ) {
-				var $this = $( this );
+				var $this = $( this ),
+					controlEventNamespace = 'bg-' + control.name;
 
 				//@TODO: Move this.
 				if ( 'box' === control.name ) {
@@ -353,12 +354,13 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 					return;
 				}
 
-				// If the user clicks on a nested font element stop propagation.
-				if ( 'font' === control.name ) {
-					if ( e.fontFound ) {
+				if ( control.allowNested ) {
+					e[controlEventNamespace] = e[controlEventNamespace] || {};
+					if ( e[controlEventNamespace].found ) {
 						return;
 					}
-					e.fontFound = true;
+
+					e[controlEventNamespace].found = true;
 				}
 
 				self.$menu.targetData = self.$menu.targetData || {};
