@@ -2045,7 +2045,8 @@ body.boldgrid-editor-fullscreen {
 .resize-handle .size {
   font-size: 12px;
   vertical-align: middle;
-  padding-right: 7px; }
+  padding-right: 7px;
+  font-family: Open Sans, sans-serif; }
 
 .resize-handle.top {
   border-radius: 0 0 3px 3px; }
