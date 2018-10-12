@@ -56,7 +56,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		openSupportCenter: function() {
 			window.open(
-				'https://www.boldgrid.com/support/editing-your-pages/post-and-page-builder/?source=boldgrid-editor_drop-tab',
+				'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/?source=boldgrid-editor_drop-tab',
 				'_blank'
 			);
 		},
