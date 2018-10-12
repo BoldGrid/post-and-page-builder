@@ -7,6 +7,7 @@ export class Width {
 		this.$resizeiframe;
 		this.resizable = false;
 		this.stylesheetWaitTime = 500;
+		this.minWidth = 600;
 
 		this.updateIframeUrl();
 
@@ -64,9 +65,11 @@ export class Width {
 	 */
 	getWidth() {
 		let width = 'auto';
-
 		if ( this.$postContainer && this.$postContainer.width() ) {
-			width = this.$postContainer.width();
+			let calcWidth = this.$postContainer.width();
+			if ( this.minWidth <= calcWidth ) {
+				width = calcWidth;
+			}
 		}
 
 		return width;
@@ -86,7 +89,8 @@ export class Width {
 		}
 
 		BG.$window.trigger( 'boldgrid_post_width', { width: this.getWidth() } );
-		BG.Service.loading.hide();
+
+		setTimeout( () => BG.Service.loading.hide() );
 	}
 
 	/**
@@ -121,9 +125,7 @@ export class Width {
 			$deferred.resolve();
 		};
 
-		setTimeout( function() {
-			$deferred.resolve();
-		}, 3000 );
+		setTimeout( () => $deferred.resolve(), 3000 );
 
 		return $deferred;
 	}

@@ -43,8 +43,8 @@ export class Service {
 	 * @since 1.6
 	 */
 	_onWindowLoad() {
-		this.editorWidth = new EditorWidth().init();
 		this.loading = new LoadingGraphic().init();
+		this.editorWidth = new EditorWidth().init();
 		this.colorCalculation = new Generate();
 
 		new View().init();
@@ -99,4 +99,5 @@ export class Service {
 	}
 }
 
-BOLDGRID.EDITOR.Service = new Service().init();
+BOLDGRID.EDITOR.Service = new Service();
+BOLDGRID.EDITOR.Service.init();
