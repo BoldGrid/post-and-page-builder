@@ -7,7 +7,7 @@ export class Width {
 		this.$resizeiframe;
 		this.resizable = false;
 		this.stylesheetWaitTime = 500;
-		this.minWidth = 600;
+		this.minWidth = 500;
 
 		this.updateIframeUrl();
 
