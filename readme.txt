@@ -136,7 +136,7 @@ WordPress Editor.
 
 = 1.8.0 =
 
-Release Date: TBD
+Release Date: October 16th, 2018
 
 * New Feature: Column and Row backgrounds are now supported
 * New Feature: Add Components and Widgets
