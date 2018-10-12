@@ -138,15 +138,16 @@ WordPress Editor.
 
 Release Date: TBD
 
-* New Feature: Column and Row backgrounds are now supported.
-* New Feature: Add Components and Widgets.
-* New Feature: Upgraded typography controls.
-* New Feature: Layout component.
-* New Feature: Anchors have individual font control.
-* New Feature: Rows can be added from the section popover.
-* New Feature: Pre tags are now supported for drag and drop.
-* New Feature: Added BoldGrid Connect Page.
+* New Feature: Column and Row backgrounds are now supported
+* New Feature: Add Components and Widgets
+* New Feature: Upgraded typography controls
+* New Feature: Layout component
+* New Feature: Anchors have individual font control
+* New Feature: Rows can be added from the section popover
+* New Feature: Pre tags are now supported for drag and drop
+* New Feature: Added BoldGrid Connect Page
 * New Feature: Support for Premium Extension
+* New Feature: Row resize pixel preview
 * Update: A notice will be displayed if an incomplete Github version of the plugin is active.
 * Update: Minimum PHP/WP Version changed to 5.4 and 4.7 respectfully.
 * Update: After first time setup page template will update for current page.
