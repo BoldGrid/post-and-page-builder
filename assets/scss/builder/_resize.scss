@@ -37,6 +37,18 @@
 		}
 	}
 
+	&.top.minsize {
+		.icon::before {
+			content: "\f176";
+		}
+	}
+
+	&.bottom.minsize {
+		.icon::before {
+			content: "\f175";
+		}
+	}
+
 	.overlay {
 		top: 0;
 		display: none;

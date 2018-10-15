@@ -20,9 +20,8 @@ export class Handle {
 	 */
 	render() {
 		this.$element = $( `
-			<div class="${this.position} resize-handle" title="${this.tooltip}" data-setting="${
-			this.cssProperty
-		}">
+			<div class="${this.position} resize-handle" title="${this.tooltip}"
+				data-setting="${this.cssProperty}">
 				<div class="draghandle">
 					<span class="icon"></span>
 					<span class="size"></span>
@@ -47,7 +46,9 @@ export class Handle {
 	 * @since 1.8.0
 	 */
 	updateSizeDisplay( $target ) {
-		this.$size.html( $target.css( this.cssProperty ) );
+		let value = $target.css( this.cssProperty );
+		this.$element.toggleClass( 'minsize', ! parseInt( value, 10 ) );
+		this.$size.html( value );
 	}
 
 	/**
@@ -129,8 +130,8 @@ export class Handle {
 				}
 
 				this._updateOverlayCss( padding );
+				this.updateSizeDisplay( this.rowResize.$currentRow );
 
-				this.$size.html( padding + 'px' );
 				BG.Controls.addStyle( this.rowResize.$currentRow, this.cssProperty, padding );
 
 				if ( BG.Controls.$container.$html.hasClass( 'editing-as-row' ) && $.fourpan ) {
