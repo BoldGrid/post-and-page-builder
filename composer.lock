@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4fb00e33c871302e812f6ba341d1de2d",
     "content-hash": "fbb8fbf2971562ce44099a1ba0acbeaf",
     "packages": [
         {
@@ -54,7 +53,7 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2018-10-03 17:20:26"
+            "time": "2018-10-03T17:20:26+00:00"
         }
     ],
     "packages-dev": [],
