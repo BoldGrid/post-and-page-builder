@@ -827,7 +827,7 @@ button {
 
 html.selecting:not(.changing-padding-top):not(.changing-padding-bottom) .resize-handle,
 html.selecting .popover-imhwpb {
-	display: none !important;
+	visibility: hidden !important;
 }
 html.selecting .popover-hover {
 	outline-color: transparent !important;

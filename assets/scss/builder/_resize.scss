@@ -1,11 +1,51 @@
 .resize-handle {
-	z-index: 99998;
 	position: fixed;
-	cursor: ns-resize;
-	background-color: $menu-color;
-	border-radius: 3px 3px 0 0;
-	color: white;
-	font-size: 17px;
+	height: 0;
+
+	&.bottom {
+		.overlay {
+			transform: translateY(-100%);
+		}
+
+		.draghandle {
+			transform: translateY(-100%);
+		}
+	}
+
+	.draghandle {
+		z-index: 99998;
+		position: relative;
+		cursor: ns-resize;
+		border-radius: 3px 3px 0 0;
+		font-size: 17px;
+		background-color: $menu-color;
+		color: white;
+		text-align: center;
+		padding: 3px 3px 3px 10px;
+
+		&:hover + .overlay {
+			display: block;
+		}
+	}
+
+	.icon {
+		font: normal normal normal 14px/1 FontAwesome;
+		padding-right: 5px;
+
+		&::before {
+			content: "\f07d";
+		}
+	}
+
+	.overlay {
+		top: 0;
+		display: none;
+		position: absolute;
+		background-color: rgba(189, 207, 145, 0.7);
+		border-style: dashed;
+		border-width: 1px 0;
+		color: #a7a7a7;
+	}
 
 	.size {
 		font-size: 12px;
@@ -13,19 +53,8 @@
 		font-family: Open Sans, sans-serif;
 	}
 
-	&.top {
+	&.top .draghandle {
 		border-radius: 0 0 3px 3px;
-	}
-}
-
-.draghandle {
-	font: normal normal normal 14px/1 FontAwesome;
-	text-align: center;
-	font-size: 12px;
-	padding: 0 6px 0 10px;
-
-	&::before {
-		content: "\f07d";
 	}
 }
 
@@ -36,4 +65,10 @@
 .changing-padding-bottom #boldgrid-draggable-resizing-overlay,
 .changing-padding-top #boldgrid-draggable-resizing-overlay {
 	cursor: ns-resize !important;
+}
+
+.changing-padding-bottom, .changing-padding-top {
+	.resize-handle .overlay {
+		display: block !important;
+	}
 }

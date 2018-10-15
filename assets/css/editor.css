@@ -2034,30 +2034,54 @@ body.boldgrid-editor-fullscreen {
 # Drag n Drop Resize
 --------------------------------------------------------------*/
 .resize-handle {
-  z-index: 99998;
   position: fixed;
+  height: 0; }
+
+.resize-handle.bottom .overlay {
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%); }
+
+.resize-handle.bottom .draghandle {
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%); }
+
+.resize-handle .draghandle {
+  z-index: 99998;
+  position: relative;
   cursor: ns-resize;
-  background-color: #32373c;
   border-radius: 3px 3px 0 0;
+  font-size: 17px;
+  background-color: #32373c;
   color: white;
-  font-size: 17px; }
+  text-align: center;
+  padding: 3px 3px 3px 10px; }
+
+.resize-handle .draghandle:hover + .overlay {
+  display: block; }
+
+.resize-handle .icon {
+  font: normal normal normal 14px/1 FontAwesome;
+  padding-right: 5px; }
+
+.resize-handle .icon::before {
+  content: "\f07d"; }
+
+.resize-handle .overlay {
+  top: 0;
+  display: none;
+  position: absolute;
+  background-color: rgba(189, 207, 145, 0.7);
+  border-style: dashed;
+  border-width: 1px 0;
+  color: #a7a7a7; }
 
 .resize-handle .size {
   font-size: 12px;
   padding-right: 7px;
   font-family: Open Sans, sans-serif; }
 
-.resize-handle.top {
+.resize-handle.top .draghandle {
   border-radius: 0 0 3px 3px; }
-
-.draghandle {
-  font: normal normal normal 14px/1 FontAwesome;
-  text-align: center;
-  font-size: 12px;
-  padding: 0 6px 0 10px; }
-
-.draghandle::before {
-  content: "\f07d"; }
 
 .drag-progress .draghandle {
   display: none !important; }
@@ -2065,6 +2089,9 @@ body.boldgrid-editor-fullscreen {
 .changing-padding-bottom #boldgrid-draggable-resizing-overlay,
 .changing-padding-top #boldgrid-draggable-resizing-overlay {
   cursor: ns-resize !important; }
+
+.changing-padding-bottom .resize-handle .overlay, .changing-padding-top .resize-handle .overlay {
+  display: block !important; }
 
 /*--------------------------------------------------------------
 # Color Controls
@@ -2243,7 +2270,7 @@ body.boldgrid-editor-fullscreen {
 .draggable-inactive .editor-panel,
 .draggable-inactive #boldgrid-instance-menu,
 .draggable-inactive .bg-drag-popover,
-.draggable-inactive .draghandle {
+.draggable-inactive .resize-handle {
   display: none !important; }
 
 .draggable-inactive .boldgrid-section:hover {
