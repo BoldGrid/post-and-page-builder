@@ -2066,6 +2066,12 @@ body.boldgrid-editor-fullscreen {
 .resize-handle .icon::before {
   content: "\f07d"; }
 
+.resize-handle.top.minsize .icon::before {
+  content: "\f176"; }
+
+.resize-handle.bottom.minsize .icon::before {
+  content: "\f175"; }
+
 .resize-handle .overlay {
   top: 0;
   display: none;
