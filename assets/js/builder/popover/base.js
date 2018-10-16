@@ -321,8 +321,15 @@ export class Base {
 		} );
 
 		BG.Controls.$container.on( 'mouseleave', event => {
-			this.hideEventType = event.type;
-			this.debouncedHide();
+
+			/*
+			 * Something is triggering this event without manually. Dont hide the
+			 * handles unless the user mouses out themselves.
+			 */
+			if ( event.relatedTarget ) {
+				this.hideEventType = event.type;
+				this.debouncedHide();
+			}
 		} );
 
 		BG.Controls.$container.on( this.hideHandleEvents.join( ' ' ), event => {
