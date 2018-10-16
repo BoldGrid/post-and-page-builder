@@ -2034,7 +2034,7 @@ body.boldgrid-editor-fullscreen {
 # Drag n Drop Resize
 --------------------------------------------------------------*/
 .resize-handle {
-  position: fixed;
+  position: fixed !important;
   height: 0; }
 
 .resize-handle.bottom .overlay {

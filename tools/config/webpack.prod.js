@@ -28,6 +28,10 @@ module.exports = {
 		publicPath: '/'
 	},
 
+	externals: {
+		jquery: 'jQuery'
+	},
+
 	module: {
 		rules: [
 			{
@@ -149,6 +153,11 @@ module.exports = {
 				to: path.resolve( scssDir, 'color-palette-scss' )
 			}
 		] ),
+
+		new webpack.ProvidePlugin( {
+			$: 'jquery',
+			jQuery: 'jquery'
+		} ),
 
 		new ExtractTextPlugin( 'assets/css/bundle.min.css' )
 	]
