@@ -2045,12 +2045,26 @@ body.boldgrid-editor-fullscreen {
   -webkit-transform: translateY(-100%);
   transform: translateY(-100%); }
 
+.resize-handle a {
+  padding: 5px;
+  background: #fff;
+  font-size: 11px;
+  color: #32373c;
+  text-align: center;
+  width: 20px;
+  display: inline-block;
+  cursor: pointer; }
+
+.resize-handle a:hover {
+  background: rgba(255, 255, 255, 0.8); }
+
 .resize-handle .draghandle {
   z-index: 99998;
   position: relative;
   cursor: ns-resize;
   border-radius: 3px 3px 0 0;
   font-size: 17px;
+  left: -25px;
   background-color: #32373c;
   color: white;
   text-align: center;

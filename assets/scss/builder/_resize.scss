@@ -12,12 +12,28 @@
 		}
 	}
 
+	a {
+		padding: 5px;
+		background: #fff;
+		font-size: 11px;
+		color: #32373c;
+		text-align: center;
+		width: 20px;
+		display: inline-block;
+		cursor: pointer;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.8);
+		}
+	}
+
 	.draghandle {
 		z-index: 99998;
 		position: relative;
 		cursor: ns-resize;
 		border-radius: 3px 3px 0 0;
 		font-size: 17px;
+		left: -25px;
 		background-color: $menu-color;
 		color: white;
 		text-align: center;

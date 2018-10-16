@@ -659,7 +659,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		}
 
 		self.wrap_hr_tags();
-		self.wrap_content_elements( self );
+		self.wrap_content_elements( self.$body );
 		self.add_redundant_classes( self );
 		BG.Service.sanitize.removeClasses( self );
 	};

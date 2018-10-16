@@ -25,6 +25,10 @@ export class Handle {
 				<div class="draghandle">
 					<span class="icon"></span>
 					<span class="size"></span>
+					<span>
+						<a href="#" class="action increment"><i class="fa fa-plus" aria-hidden="true"></i></a>
+						<a href="#" class="action decrement"><i class="fa fa-minus" aria-hidden="true"></i></a>
+					</span>
 				</div>
 				<div class="overlay"></div>
 			</div>
@@ -36,6 +40,7 @@ export class Handle {
 		this.$size = this.$element.find( '.size' );
 
 		this.initDraggable();
+		this._setupActions();
 
 		return this.$element;
 	}
@@ -69,6 +74,29 @@ export class Handle {
 		} );
 
 		this._setOverlayPosition( pos );
+	}
+
+	/**
+	 * Handle the click events on the plus and minus arrows.
+	 *
+	 * @since 1.8.0
+	 */
+	_setupActions() {
+		this.$element.find( '.action' ).on( 'click', e => {
+			e.stopPropagation();
+			e.preventDefault();
+
+			let newValue,
+				$this = $( e.currentTarget ),
+				value = this.rowResize.$currentRow.css( this.cssProperty );
+
+			value = parseInt( value, 10 );
+			newValue = $this.hasClass( 'increment' ) ? value + 1 : value - 1;
+			newValue = Math.max( 0, newValue );
+
+			this.rowResize.positionHandles( this.rowResize.$currentRow );
+			this._setCssVal( newValue );
+		} );
 	}
 
 	/**
@@ -129,18 +157,29 @@ export class Handle {
 					padding = 0;
 				}
 
-				this._updateOverlayCss( padding );
-				this.updateSizeDisplay( this.rowResize.$currentRow );
-
-				BG.Controls.addStyle( this.rowResize.$currentRow, this.cssProperty, padding );
-
-				if ( BG.Controls.$container.$html.hasClass( 'editing-as-row' ) && $.fourpan ) {
-					$.fourpan.refresh();
-				}
-
-				BG.Service.event.emit( 'rowResize', this.rowResize.$currentRow );
+				this._setCssVal( padding );
 			}
 		} );
+	}
+
+	/**
+	 * Update thhe targets CSS value.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param {integer} value Value.
+	 */
+	_setCssVal( value ) {
+		BG.Controls.addStyle( this.rowResize.$currentRow, this.cssProperty, value );
+
+		this._updateOverlayCss( value );
+		this.updateSizeDisplay( this.rowResize.$currentRow );
+
+		if ( BG.Controls.$container.$html.hasClass( 'editing-as-row' ) && $.fourpan ) {
+			$.fourpan.refresh();
+		}
+
+		BG.Service.event.emit( 'rowResize', this.rowResize.$currentRow );
 	}
 
 	/**
