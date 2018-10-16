@@ -12,7 +12,7 @@
 		}
 	}
 
-	a {
+	a.action {
 		padding: 5px;
 		background: #fff;
 		font-size: 11px;
@@ -21,8 +21,10 @@
 		width: 20px;
 		display: inline-block;
 		cursor: pointer;
+		box-shadow: none;
 
 		&:hover {
+			text-decoration: none;
 			background: rgba(255, 255, 255, 0.8);
 		}
 	}
