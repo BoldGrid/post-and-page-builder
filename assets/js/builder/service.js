@@ -21,6 +21,8 @@ import { EventEmitter } from 'eventemitter3';
 import { Generate } from '@boldgrid/controls/src/controls/color';
 import { Sanitize } from './sanitize';
 
+import { ActionMenu } from '@boldgrid/controls/src/controls/action-menu';
+
 export class Service {
 	init() {
 
@@ -48,6 +50,19 @@ export class Service {
 		this.colorCalculation = new Generate();
 
 		new View().init();
+
+		let actionMenu = new ActionMenu( {
+			name: 'modify',
+			label: 'Slide Actions',
+			action: 'Edit',
+			options: [
+				{ name: 'bgppb', label: 'Post and Page Builder' },
+				{ name: 'basic', label: 'WordPress Editor' },
+				{ name: 'classic', label: 'Classic Editor' }
+			]
+		} );
+
+		jQuery( '#bg-target' ).after( actionMenu.render() );
 	}
 
 	/**

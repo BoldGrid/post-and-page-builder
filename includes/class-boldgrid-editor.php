@@ -267,6 +267,11 @@ class Boldgrid_Editor {
 		add_action( 'wp_ajax_boldgrid_generate_blocks', array( $boldgrid_editor_ajax, 'generate_blocks' ) );
 		add_action( 'wp_ajax_boldgrid_editor_save_key', array( $boldgrid_editor_ajax, 'save_key' ) );
 		add_action( 'wp_ajax_boldgrid_get_saved_blocks', array( $boldgrid_editor_ajax, 'get_saved_blocks' ) );
+		add_filter( 'use_block_editor_for_post', '__return_false' );
+
+		add_action( 'in_admin_header', function() {
+			print '<div id="bg-target"><span>Current Editor</span><span>Post and Page Builder</span></div>';
+		} );
 
 		// Add Loading Graphic.
 		add_filter( 'the_editor', function ( $html ) {
