@@ -26,7 +26,12 @@ class Boldgrid_Editor_Premium {
 	 * @since 1.0.0
 	 */
 	public function init() {
-		add_action( 'admin_notices', [ $this, 'admin_notice_setup' ] );
+		// "Upgrade to premium" notices. Notice class instantiated to trigger required hooks.
+		$notice_class = '\Boldgrid\Library\Library\Notice';
+		if ( class_exists( $notice_class ) ) {
+			new $notice_class( 'Static Notice' );
+			add_action( 'admin_notices', [ $this, 'admin_notice_setup' ] );
+		}
 	}
 
 	/**
@@ -47,10 +52,6 @@ class Boldgrid_Editor_Premium {
 
 		// Check user role.
 		if ( ! current_user_can( 'update_plugins' ) ) {
-			return;
-		}
-
-		if ( ! class_exists( '\Boldgrid\Library\Library\Notice' ) ) {
 			return;
 		}
 
