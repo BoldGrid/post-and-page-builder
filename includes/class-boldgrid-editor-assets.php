@@ -120,6 +120,24 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
+	 * Get the URL for a weboack script.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string $name Filename.
+	 * @return string       URL to file.
+	 */
+	public static function get_webpack_script( $name ) {
+		$configs = Boldgrid_Editor_Service::get( 'config' );
+		$script_url = plugins_url( '/assets/dist/' . $name . '.min.js', BOLDGRID_EDITOR_ENTRY );
+		if ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG ) {
+			$script_url = $configs['development_server'] . '/' . $name . '.js';
+		}
+
+		return $script_url;
+	}
+
+	/**
 	 * Enqueue Styles to the front end of the site.
 	 *
 	 * @since 1.2.7
@@ -131,13 +149,8 @@ class Boldgrid_Editor_Assets {
 			plugins_url( '/assets/js/jquery-stellar/jquery.stellar.js', BOLDGRID_EDITOR_ENTRY ),
 		array( 'jquery' ),BOLDGRID_EDITOR_VERSION, true );
 
-		$script_url = plugins_url( '/assets/js/public.min.js', BOLDGRID_EDITOR_ENTRY );
-		if ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG ) {
-			$script_url = $this->configs['development_server'] . '/public.js';
-		}
-
 		wp_enqueue_script(
-			'boldgrid-editor-public', $script_url,
+			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
 		wp_enqueue_style( 'animatecss',
@@ -260,6 +273,7 @@ class Boldgrid_Editor_Assets {
 			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
+			'global_settings' => Boldgrid_Editor_Service::get( 'settings' )->getAll(),
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
 			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,
@@ -357,13 +371,8 @@ class Boldgrid_Editor_Assets {
 			'wp-util',
 		);
 
-		$script_url = plugins_url( '/assets/js/editor.min.js', $plugin_file );
-		if ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG ) {
-			$script_url = $this->configs['development_server'] . '/editor.js';
-		}
-
 		wp_register_script( 'boldgrid-editor-drag',
-			$script_url, $deps, BOLDGRID_EDITOR_VERSION, true );
+			self::get_webpack_script( 'editor' ), $deps, BOLDGRID_EDITOR_VERSION, true );
 
 		// Send Variables to the view.
 		wp_localize_script(

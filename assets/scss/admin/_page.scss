@@ -1,0 +1,28 @@
+.wrap.bg-content {
+	margin: 0;
+}
+
+.boldgrid-page-banner {
+	margin-left: -20px;
+	display: flex;
+	background: #0073aa;
+	color: #fff;
+	border-bottom: 5px solid #fff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+
+	h1 {
+		color: currentColor;
+	}
+
+	.branding {
+		padding: 20px 40px;
+
+		img {
+			width: 70px;
+		}
+	}
+
+	.page-title {
+		align-self: center;
+	}
+}

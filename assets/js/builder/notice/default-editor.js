@@ -24,7 +24,7 @@ export class DefaultEditor extends Notice {
 	 * @since 1.6
 	 */
 	init() {
-		if ( 1 || BoldgridEditor.display_intro ) {
+		if ( BoldgridEditor.display_intro ) {
 			this.$body = $( 'body' );
 
 			this.$panelHtml = $( this.getTemplateMarkup() );

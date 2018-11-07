@@ -14,11 +14,14 @@ var webpackConfig = {
 
 	entry: {
 		public: './assets/js/public.js',
-		editor: './assets/js/index.js'
+		editor: './assets/js/editor.js',
+		gutenberg: './assets/js/gutenberg.js',
+		classic: './assets/js/classic.js',
+		settings: './assets/js/settings.js'
 	},
 	output: {
 		filename: './[name].js',
-		path: distDir,
+		path: distDir + './assets/dist',
 		publicPath: '/'
 	},
 
@@ -31,6 +34,10 @@ var webpackConfig = {
 			errors: true,
 			warnings: true
 		}
+	},
+
+	externals: {
+		jquery: 'jQuery'
 	},
 
 	module: {
@@ -99,7 +106,12 @@ var webpackConfig = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 
-		new webpack.NamedModulesPlugin()
+		new webpack.NamedModulesPlugin(),
+
+		new webpack.ProvidePlugin( {
+			$: 'jquery',
+			jQuery: 'jquery'
+		} )
 	]
 };
 

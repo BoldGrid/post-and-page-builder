@@ -20,11 +20,15 @@ module.exports = {
 
 	entry: {
 		public: './assets/js/public.js',
-		editor: './assets/js/index.js'
+		editor: './assets/js/editor.js',
+		gutenberg: './assets/js/gutenberg.js',
+		classic: './assets/js/classic.js',
+		settings: './assets/js/settings.js'
 	},
+
 	output: {
 		filename: './assets/js/[name].min.js',
-		path: distDir,
+		path: distDir + './assets/dist',
 		publicPath: '/'
 	},
 

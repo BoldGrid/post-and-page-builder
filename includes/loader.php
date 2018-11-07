@@ -3,6 +3,7 @@ if ( ! class_exists( 'Boldgrid_Editor_Media_Tab' ) ) {
 	require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media-tab.php';
 }
 
+require_once BOLDGRID_EDITOR_PATH . '/autoload.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-config.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-crop.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-ajax.php';
@@ -20,6 +21,7 @@ require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-uninstall.p
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-service.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-upgrade.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-postmeta.php';
+require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-setting.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-templater.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-widget.php';
 

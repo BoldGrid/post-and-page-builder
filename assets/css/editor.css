@@ -1838,6 +1838,42 @@
 body#wpview-iframe-sandbox {
   background: transparent !important; }
 
+#bgppb-choose-editor {
+  display: none;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  float: right;
+  height: 28px;
+  margin: 0 0 0 6px;
+  border: 1px solid #ddd;
+  border-top: none;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1); }
+
+#bgppb-choose-editor .label {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  height: 100%;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #22282c;
+  padding: 0 12px;
+  color: white; }
+
+#bgppb-choose-editor .menu-container {
+  position: absolute;
+  bottom: 0;
+  left: 58px; }
+
+#bgppb-choose-editor .mdc-menu {
+  z-index: 9999; }
+
 /*--------------------------------------------------------------
 # Post.php Modifications
 --------------------------------------------------------------*/

@@ -9,6 +9,8 @@
  */
 include __DIR__ . '/loader.php';
 
+use \Boldgrid\PPB;
+
 /**
  * Post and Page Builder class
  */
@@ -178,10 +180,15 @@ class Boldgrid_Editor {
 		$boldgrid_editor_wpforms   = new Boldgrid_Editor_Wpforms();
 		$boldgrid_editor_setup     = new Boldgrid_Editor_Setup();
 		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
+		$setting_view              = new PPB\View\Settings();
+		$gutenberg_view            = new PPB\View\Gutenberg();
+		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
 
-		// Init Form deps.
+
 		$boldgrid_editor_wpforms->init();
 		$boldgrid_editor_premium->init();
+		$gutenberg_view->init();
+		$setting_view->init();
 
 		// Upgrade old versions of maps.
 		add_action( 'admin_init', array( $boldgrid_editor_media_map, 'upgrade_maps' ) );
@@ -195,9 +202,14 @@ class Boldgrid_Editor {
 		$script_name = ! empty( $_SERVER['SCRIPT_NAME'] ) ? $_SERVER['SCRIPT_NAME'] : false;
 		$page_name = basename( $script_name );
 		$edit_post_page = in_array( $page_name, $valid_pages );
+
 		if ( $edit_post_page ) {
 			$current_post_id = ! empty( $_REQUEST['post'] ) ? $_REQUEST['post'] : null;
 			$current_post = get_post( $current_post_id );
+
+			add_action( 'admin_init', function () use ( $current_post ) {
+				Boldgrid_Editor_Service::get( 'settings' )->save_meta_editor( $current_post );
+			} );
 
 			/*
 			 * Determine the current post type.
@@ -267,11 +279,7 @@ class Boldgrid_Editor {
 		add_action( 'wp_ajax_boldgrid_generate_blocks', array( $boldgrid_editor_ajax, 'generate_blocks' ) );
 		add_action( 'wp_ajax_boldgrid_editor_save_key', array( $boldgrid_editor_ajax, 'save_key' ) );
 		add_action( 'wp_ajax_boldgrid_get_saved_blocks', array( $boldgrid_editor_ajax, 'get_saved_blocks' ) );
-		add_filter( 'use_block_editor_for_post', '__return_false' );
-
-		add_action( 'in_admin_header', function() {
-			print '<div id="bg-target"><span>Current Editor</span><span>Post and Page Builder</span></div>';
-		} );
+		add_filter( 'use_block_editor_for_post', array( Boldgrid_Editor_Service::get( 'settings' ), 'is_block_editor' ) );
 
 		// Add Loading Graphic.
 		add_filter( 'the_editor', function ( $html ) {

@@ -192,7 +192,7 @@ class Boldgrid_Editor_Gridblock_Post {
 			add_action( 'init', array ( $this, 'register_post_type' ) );
 		}
 
-		add_action( 'admin_init', array( $this, 'add_menu_items' ) );
+		add_action( 'admin_menu', array( $this, 'add_menu_items' ) );
 		add_action( 'template_include', array( $this, 'set_template' ) );
 		add_action( 'template_redirect', array( $this, 'restrict_public_access' ) );
 	}
