@@ -1,5 +1,6 @@
 import { MatMenu } from '@boldgrid/controls/src/controls/mat-menu';
 import { Editor as EditorSetting } from '../../settings/editor';
+import './editor-select.scss';
 
 export class EditorSelect {
 
@@ -45,7 +46,7 @@ export class EditorSelect {
 	_renderMenu() {
 		let matMenu = new MatMenu( {
 			name: 'bgppb-choose-editor',
-			options: this.editorSetting.labels
+			options: this.editorSetting.labels.filter( choice => 'default' !== choice.value )
 		} );
 
 		this.$element.find( '.menu-container' ).append( matMenu.render() );

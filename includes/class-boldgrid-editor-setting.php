@@ -181,7 +181,7 @@ class Boldgrid_Editor_Setting {
 			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
 
 		$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
-		if ( $post ) {
+		if ( ! $default_editor_override && $post ) {
 			$default_editor = get_post_meta( $post->ID, '_bgppb_default_editor', true ) ?: $default_editor;
 		}
 

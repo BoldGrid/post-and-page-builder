@@ -29,11 +29,18 @@ class Classic {
 	public function init() {
 		add_action( 'admin_enqueue_scripts', function () {
 			wp_enqueue_script(
-				'my-block-editor-js',
+				'bgppb-classic',
 				\Boldgrid_Editor_Assets::get_webpack_script( 'classic' ),
-				[ 'jquery' ],
+				array( 'jquery', 'underscore' ),
 				BOLDGRID_EDITOR_VERSION,
-				true
+				true );
+
+			wp_localize_script(
+				'bgppb-classic',
+				'BoldgridEditor = BoldgridEditor || {}; BoldgridEditor',
+				[
+					'global_settings' => \Boldgrid_Editor_Service::get( 'settings' )->get_all(),
+				]
 			);
 		} );
 	}
