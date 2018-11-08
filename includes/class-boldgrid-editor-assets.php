@@ -273,7 +273,7 @@ class Boldgrid_Editor_Assets {
 			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
-			'global_settings' => Boldgrid_Editor_Service::get( 'settings' )->getAll(),
+			'global_settings' => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
 			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,

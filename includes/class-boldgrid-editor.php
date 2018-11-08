@@ -211,6 +211,8 @@ class Boldgrid_Editor {
 				Boldgrid_Editor_Service::get( 'settings' )->save_meta_editor( $current_post );
 			} );
 
+			add_filter( 'use_block_editor_for_post', array( Boldgrid_Editor_Service::get( 'settings' ), 'is_block_editor' ), 99 );
+
 			/*
 			 * Determine the current post type.
 			 *
@@ -225,45 +227,59 @@ class Boldgrid_Editor {
 				$current_post_type = 'post';
 			}
 
-			// Currently only pages and posts are supported. @since 1.3.1
-			if ( ! in_array( $current_post_type, $this->config->get_configs( 'allowed_post_types' ) ) ) {
-				return false;
+			$editor = Boldgrid_Editor_Service::get( 'settings' )->get_current_editor( $current_post, $current_post_type );
+
+			if ( 'classic' === $editor ) {
+				$classic_view = new PPB\View\Classic();
+				$classic_view->init();
 			}
 
-			$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
-			$this->set_is_boldgrid_theme( $is_boldgrid_theme );
+			// Only if loading our builder.
+			if ( 'bgppb' === $editor ) {
+				$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
+				$this->set_is_boldgrid_theme( $is_boldgrid_theme );
 
-			add_action( 'load-post.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
-			add_action( 'load-post-new.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
+				add_action( 'load-post.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
+				add_action( 'load-post-new.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
 
-			add_action( 'save_post', array( $boldgrid_editor_builder, 'save_colors' ), 10, 2  );
-			add_action( 'save_post', array( $boldgrid_editor_builder, 'record_feedback' ), 10, 2  );
-			add_action( 'edit_form_after_title', array( $boldgrid_editor_builder, 'post_inputs' ) );
-			add_action( 'save_post', array( $boldgrid_editor_builder, 'save_container_meta' ), 10, 2  );
-			add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2  );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_colors' ), 10, 2  );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'record_feedback' ), 10, 2  );
+				add_action( 'edit_form_after_title', array( $boldgrid_editor_builder, 'post_inputs' ) );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_container_meta' ), 10, 2  );
+				add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2  );
 
-			add_action( 'media_buttons', array( $boldgrid_editor_mce, 'load_editor_hooks' ) );
-			add_action( 'media_buttons', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
+				add_action( 'media_buttons', array( $boldgrid_editor_mce, 'load_editor_hooks' ) );
+				add_action( 'media_buttons', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
 
-			// Display and save admin notice state.
-			add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );
-			add_action( 'shutdown', array ( $boldgrid_editor_version, 'save_notice_state' ) );
+				// Display and save admin notice state.
+				add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );
+				add_action( 'shutdown', array ( $boldgrid_editor_version, 'save_notice_state' ) );
 
-			// Create media modal tabs.
-			$configs = array_merge( $this->get_path_configs(), $this->get_tab_configs() );
-			$boldgrid_editor_media->create_tabs( $configs, $is_boldgrid_theme );
+				// Create media modal tabs.
+				$configs = array_merge( $this->get_path_configs(), $this->get_tab_configs() );
+				$boldgrid_editor_media->create_tabs( $configs, $is_boldgrid_theme );
 
-			// Add screen display buttons.
-			$boldgrid_editor_mce->add_window_size_buttons();
+				// Add screen display buttons.
+				$boldgrid_editor_mce->add_window_size_buttons();
 
-			// This has a high priority to override duplicate files in other boldgrid plugins.
-			add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_assets, 'enqueue_scripts_action' ), 5 );
+				// This has a high priority to override duplicate files in other boldgrid plugins.
+				add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_assets, 'enqueue_scripts_action' ), 5 );
 
-			// Add ?boldgrid-editor-version=$version_number to each added file.
-			add_filter( 'mce_css', array ( $boldgrid_editor_mce, 'add_cache_busting' ) );
+				// Add ?boldgrid-editor-version=$version_number to each added file.
+				add_filter( 'mce_css', array ( $boldgrid_editor_mce, 'add_cache_busting' ) );
 
-			if ( 'media-upload.php' !== $page_name ) {
-				add_action( 'admin_print_footer_scripts', array ( $boldgrid_editor_builder, 'print_scripts' ), 25 );
+				if ( 'media-upload.php' !== $page_name ) {
+					add_action( 'admin_print_footer_scripts', array ( $boldgrid_editor_builder, 'print_scripts' ), 25 );
+				}
+
+				// Add Loading Graphic.
+				add_filter( 'the_editor', function ( $html ) {
+					$active = 'tinymce' ===  wp_default_editor() ? 'active' : 'disabled';
+					return '<div class="bg-editor-loading-main ' . $active . '"><div class="bg-editor-loading"></div>' . $html . '</div>';
+				} );
+
+				$boldgrid_editor_crop = new Boldgrid_Editor_Crop();
+				$boldgrid_editor_crop->add_hooks();
 			}
 		}
 
@@ -279,19 +295,9 @@ class Boldgrid_Editor {
 		add_action( 'wp_ajax_boldgrid_generate_blocks', array( $boldgrid_editor_ajax, 'generate_blocks' ) );
 		add_action( 'wp_ajax_boldgrid_editor_save_key', array( $boldgrid_editor_ajax, 'save_key' ) );
 		add_action( 'wp_ajax_boldgrid_get_saved_blocks', array( $boldgrid_editor_ajax, 'get_saved_blocks' ) );
-		add_filter( 'use_block_editor_for_post', array( Boldgrid_Editor_Service::get( 'settings' ), 'is_block_editor' ) );
-
-		// Add Loading Graphic.
-		add_filter( 'the_editor', function ( $html ) {
-			$active = 'tinymce' ===  wp_default_editor() ? 'active' : 'disabled';
-			return '<div class="bg-editor-loading-main ' . $active . '"><div class="bg-editor-loading"></div>' . $html . '</div>';
-		} );
 
 		// Save a users selection for enabling draggable.
 		add_action( 'wp_ajax_boldgrid_draggable_enabled', array ( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
-
-		$boldgrid_editor_crop = new Boldgrid_Editor_Crop();
-		$boldgrid_editor_crop->add_hooks();
 	}
 
 	/**

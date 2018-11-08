@@ -1,7 +1,7 @@
 import { MatMenu } from '@boldgrid/controls/src/controls/mat-menu';
-import { Editor as EditorSetting } from './editor';
+import { Editor as EditorSetting } from '../../settings/editor';
 
-export class EditorClassic {
+export class EditorSelect {
 
 	constructor() {
 		this.editorSetting = new EditorSetting();

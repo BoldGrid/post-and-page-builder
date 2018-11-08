@@ -2,8 +2,9 @@ export class Editor {
 	constructor() {
 		this.labels = [
 			{ name: 'bgppb', value: 'bgppb', label: 'Post and Page Builder' },
-			{ name: 'basic', value: 'basic', label: 'WordPress Editor' },
-			{ name: 'classic', value: 'basic', label: 'Classic Editor' }
+			{ name: 'modern', value: 'modern', label: 'WordPress Editor' },
+			{ name: 'classic', value: 'classic', label: 'Classic Editor' },
+			{ name: 'default', value: 'default', label: 'Default' }
 		];
 	}
 

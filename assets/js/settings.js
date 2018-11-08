@@ -6,7 +6,7 @@ class Settings {
 	constructor() {
 		this.editor = new Editor();
 
-		this.$page = $( '.wrap.bg-content' );
+		this.$page = $( '.bgppb-page-settings .bg-content' );
 		this.title = 'Post and Page Builder Settings';
 		this.description = 'Configuration options for the BoldGrid Post and Page Builder';
 	}
@@ -19,12 +19,14 @@ class Settings {
 		let $html = $( this.getHTML() );
 
 		$html.find( 'mat-menu' ).each( ( index, el ) => {
-			let $el = $( el );
+			let $el = $( el ),
+				name = $el.attr( 'name' );
 
 			let matMenu = new MatSelect( {
-				name: $el.attr( 'name' ),
-				label: $el.attr( 'name' ),
-				settings: this.editor.labels
+				name: `bgppb_post_type[${name}]`,
+				label: $el.attr( 'label' ),
+				settings: this.editor.labels,
+				selected: BoldgridEditor.settings.default_editor[ name ]
 			} );
 
 			$el.replaceWith( matMenu.render() );
@@ -61,25 +63,31 @@ class Settings {
 		}
 	}
 
+	getCPTInputs() {
+		return  BoldgridEditor.customPostTypes.map(
+			type => `<mat-menu name="${type.value}" label="${type.label}" />` ).join( '' );
+	}
+
 	getHTML() {
 		return `
 			${this.getPageBanner( this.title, this.description ) }
 			<div class="card">
-				<form>
+				<form method="POST">
+					<input type="hidden" name="bgppb-form-action" value="default_editor">
 					<h2>Default Editor</h2>
 					<p>
 						Choose the way default way to edit your content.
 						You can also choose an editor for a specific post by selecting it within the
 						editor.
 					</p>
-					<div class="wordpress-types">
+					<div class="post-type-category">
 						<h4>Default Post Types</h4>
-						<mat-menu name="Posts" />
-						<mat-menu name="Pages" />
+						<mat-menu name="post" label="Posts" />
+						<mat-menu name="page" label="Pages" />
 					</div>
-					<div>
+					<div class="post-type-category">
 						<h4>Custom Post Types</h4>
-						<mat-menu name="Blocks" />
+						${ this.getCPTInputs() }
 					</div>
 					<div>
 						<button class="button-primary">Submit</button>

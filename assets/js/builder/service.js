@@ -21,7 +21,7 @@ import { Component as LayoutComponent } from './component/layout/component';
 import { EventEmitter } from 'eventemitter3';
 import { Generate } from '@boldgrid/controls/src/controls/color';
 import { Sanitize } from './sanitize';
-import { EditorClassic } from '../settings/editor-classic';
+import { EditorSelect } from '../view/classic/editor-select';
 
 export class Service {
 	init() {
@@ -49,7 +49,7 @@ export class Service {
 		this.editorWidth = new EditorWidth().init();
 		this.colorCalculation = new Generate();
 
-		new EditorClassic().init();
+		new EditorSelect().init();
 		new View().init();
 	}
 

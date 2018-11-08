@@ -1,2 +1,20 @@
 @import '../../../scss/_material-reset.scss';
 @import '../../../scss/admin/_page';
+
+.bgppb-page-settings {
+	.post-type-category {
+		margin: 2em 0;
+
+		h4 {
+			margin: 0.5em 0;
+		}
+	}
+
+	h2 {
+		margin: 0;
+	}
+
+	.card {
+		padding: 2.5em;
+	}
+}
