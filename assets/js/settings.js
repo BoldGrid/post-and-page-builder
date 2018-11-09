@@ -12,10 +12,11 @@ class Settings {
 	}
 
 	init() {
-		$( this.renderForm() );
+		let $html = this.getForm();
+		this.$page.find( 'bgppb-settings-form' ).replaceWith( $html );
 	}
 
-	renderForm() {
+	getForm() {
 		let $html = $( this.getHTML() );
 
 		$html.find( 'mat-menu' ).each( ( index, el ) => {
@@ -32,7 +33,7 @@ class Settings {
 			$el.replaceWith( matMenu.render() );
 		} );
 
-		this.$page.find( 'bgppb-settings-form' ).replaceWith( $html );
+		return $html;
 	}
 
 	getPageBanner( pageTitle, description ) {

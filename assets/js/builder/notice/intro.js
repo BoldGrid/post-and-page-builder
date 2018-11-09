@@ -4,6 +4,7 @@ var $ = window.jQuery,
 import templateHtml from '../../../../includes/template/intro.html';
 import { Base as Notice } from './base';
 import { ColorPaletteSelection } from '@boldgrid/controls';
+import { Settings } from '../settings';
 
 export class Intro extends Notice {
 	constructor() {
@@ -33,6 +34,7 @@ export class Intro extends Notice {
 
 			this.templateMarkup = _.template( templateHtml )();
 			this.$panelHtml = $( this.templateMarkup );
+			this.$panelHtml.find( 'default-editor-form' ).replaceWith( new Settings().getForm() );
 			this.$templateInputs = this.$panelHtml.find( 'input[name="template"]' );
 
 			this.openPanel();
