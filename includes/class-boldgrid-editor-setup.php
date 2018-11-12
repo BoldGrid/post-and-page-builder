@@ -56,6 +56,7 @@ class Boldgrid_Editor_Setup {
 	public function reset_editor_settings() {
 		Boldgrid_Editor_Option::update( 'setup', array() );
 		Boldgrid_Editor_Option::update( 'styles', array() );
+		Boldgrid_Editor_Option::update( 'default_editor', array() );
 		Boldgrid_Editor_Option::update( 'preview_styles', array() );
 	}
 
@@ -78,13 +79,12 @@ class Boldgrid_Editor_Setup {
 	 */
 	public function ajax() {
 		$response = array();
-		$settings = ! empty( $_POST['settings'] ) ? $_POST['settings'] : 'setup-failed';
 
-		if ( ! empty( $_POST['settings'] ) ) {
+		if ( ! empty( $_POST['bgppb-template'] ) ) {
 			$settings = array(
 				'template' => array(
-					'choice' => ! empty( $settings['template']['choice'] ) ?
-						sanitize_text_field( $settings['template']['choice'] ) : 'fullwidth'
+					'choice' => ! empty( $_POST['bgppb-template'] ) ?
+						sanitize_text_field( $_POST['bgppb-template'] ) : 'fullwidth'
 				)
 			);
 		}

@@ -30,8 +30,10 @@ export class Page {
 		this.$page.find( 'bgppb-settings-view' ).replaceWith( `
 			${this.banner.getHTML( this.title, this.description ) }
 			<div class="card">
-				${this.defaultEditor.getForm()}
+			<default-editor/>
 			</div>
 		` );
+
+		this.$page.find( 'default-editor' ).replaceWith( this.defaultEditor.getForm() );
 	}
 }

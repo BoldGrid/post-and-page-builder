@@ -1,4 +1,6 @@
 <div class="setup">
+	<input type="hidden" name="action" value="boldgrid_editor_setup">
+	<input type="hidden" name="boldgrid_editor_setup" value="<%= nonce %>">
 	<div data-step="welcome" class="step active welcome" data-panel-width="600" data-panel-info="Step 1/4">
 		<img src="../../../../image/notice/plugin-icon-editor.png">
 		<div class="step-content">
@@ -17,7 +19,7 @@
 		</div>
 	</div>
 	<div data-step="default-editor" data-panel-info="Step 2/4" class="step choose-template" data-panel-width="550"
-	    data-panel-height="550" data-panel-title="Post and Page Builder - Editor">
+	    data-panel-height="425" data-panel-title="Post and Page Builder - Editor">
 		<h3>Select a default editor:</h3>
 		<default-editor-form />
 		<p class="buttons">
@@ -33,28 +35,28 @@
 			<label>
 				<span class="radio">
 					<span class="label">Full Width (Recommended)</span>
-					<input class="template sidebar none" type="radio" name="template" checked value="fullwidth">
+					<input class="template sidebar none" type="radio" name="bgppb-template" checked value="fullwidth">
 					<span class="template-icon"></span>
 				</span>
 			</label>
 			<label>
 			<span class="radio">
 					<span class="label">Right Sidebar</span>
-			<input class="template sidebar right" type="radio" name="template" value="right-sidebar">
+			<input class="template sidebar right" type="radio" name="bgppb-template" value="right-sidebar">
 			<span class="template-icon"></span>
 			</span>
 			</label>
 			<label>
 				<span class="radio">
 					<span class="label">Left Sidebar</span>
-					<input class="template sidebar left" type="radio" name="template" value="left-sidebar">
+					<input class="template sidebar left" type="radio" name="bgppb-template" value="left-sidebar">
 					<span class="template-icon"></span>
 				</span>
 			</label>
 			<label>
 				<span class="radio">
 					<span class="label">Theme Default</span>
-					<input class="template default" type="radio" name="template" value="default">
+					<input class="template default" type="radio" name="bgppb-template" value="default">
 					<span class="template-icon"></span>
 				</span>
 			</label>

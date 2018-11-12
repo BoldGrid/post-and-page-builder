@@ -29,14 +29,15 @@ export class Notice extends Base {
 	 */
 	init() {
 		if ( BoldgridEditor.display_intro ) {
+			this.defaultEditor = new DefaultEditor();
 			this.selection = new ColorPaletteSelection();
 			this.$body = $( 'body' );
 			this.settings = this.getDefaults();
 
-			this.templateMarkup = _.template( templateHtml )();
+			this.templateMarkup = _.template( templateHtml )( { nonce: BoldgridEditor.setupNonce } );
 			this.$panelHtml = $( this.templateMarkup );
-			this.$panelHtml.find( 'default-editor-form' ).replaceWith( new DefaultEditor().getForm() );
-			this.$templateInputs = this.$panelHtml.find( 'input[name="template"]' );
+			this.$panelHtml.find( 'default-editor-form' ).replaceWith( this.defaultEditor.getForm() );
+			this.$templateInputs = this.$panelHtml.find( 'input[name="bgppb-template"]' );
 
 			this.openPanel();
 			this._setupNav();
@@ -50,9 +51,6 @@ export class Notice extends Base {
 		return {
 			template: {
 				choice: 'fullwidth'
-			},
-			palette: {
-				choice: null
 			}
 		};
 	}
@@ -95,13 +93,7 @@ export class Notice extends Base {
 			url: ajaxurl,
 			dataType: 'json',
 			timeout: 10000,
-			data: {
-				action: 'boldgrid_editor_setup',
-
-				// eslint-disable-next-line
-				boldgrid_editor_setup: BoldgridEditor.setupNonce,
-				settings: this.settings
-			}
+			data: BG.Panel.$element.find( 'input, select' ).serialize()
 		} );
 	}
 

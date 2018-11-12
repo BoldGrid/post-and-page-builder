@@ -28,7 +28,9 @@ export class Form {
 			$el.replaceWith( matMenu.render() );
 		} );
 
-		return $html[0].outerHTML;
+		this.$form = $html;
+
+		return this.$form;
 	}
 
 	/**
@@ -49,12 +51,12 @@ export class Form {
 					editor. To learn more about your choices visit our
 					<a href="https://www.boldgrid.com/support/boldgrid-post-and-page-builder/post-and-page-builder/">support center</a>.
 				</p>
-				<div class="post-type-category">
-					<h4>Default Post Types</h4>
+				<div class="post-type-category native">
+					<h4>WordPress Post Types</h4>
 					<mat-menu name="post" label="Posts" />
 					<mat-menu name="page" label="Pages" />
 				</div>
-				<div class="post-type-category">
+				<div class="post-type-category cpt">
 					<h4>Custom Post Types</h4>
 					${ this._getCPTInputs() }
 				</div>
