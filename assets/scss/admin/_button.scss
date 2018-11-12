@@ -3,9 +3,8 @@
 	text-transform: uppercase;
 	font-weight: 300;
 	font-size: 13px;
-	font-weight: 600;
 	padding: 10px 35px;
-	line-height: inherit;
+	line-height: 2em;
 
 	&.bg-primary-color {
 		background-color: $boldgrid-color;

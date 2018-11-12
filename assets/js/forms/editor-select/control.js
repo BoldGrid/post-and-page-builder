@@ -1,11 +1,16 @@
 import { MatMenu } from '@boldgrid/controls/src/controls/mat-menu';
-import { Editor as EditorSetting } from '../../settings/editor';
-import './editor-select.scss';
+import { Utility } from '../utility';
+import './style.scss';
 
-export class EditorSelect {
+export class Control {
 
 	constructor() {
-		this.editorSetting = new EditorSetting();
+		this.labels = [
+			{ name: 'bgppb', value: 'bgppb', label: 'Post and Page Builder' },
+			{ name: 'modern', value: 'modern', label: 'WordPress Editor' },
+			{ name: 'classic', value: 'classic', label: 'Classic Editor' },
+			{ name: 'default', value: 'default', label: 'Default' }
+		];
 	}
 
 	/**
@@ -25,6 +30,17 @@ export class EditorSelect {
 	}
 
 	/**
+	 * Change the editor type.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  {string} editorType Editor type to swicth to.
+	 */
+	changeType( editorType ) {
+		new Utility().postForm( { 'bgppb_default_editor_post': editorType } );
+	}
+
+	/**
 	 * Handle Menu item clicks.
 	 *
 	 * @since 1.9.0
@@ -32,7 +48,7 @@ export class EditorSelect {
 	_setupMenu() {
 		this.$element.find( '[data-action]' ).on( 'click', ( e ) => {
 			let name = $( e.currentTarget ).attr( 'data-action' );
-			this.editorSetting.changeType( name );
+			this.changeType( name );
 		} );
 	}
 
@@ -46,7 +62,7 @@ export class EditorSelect {
 	_renderMenu() {
 		let matMenu = new MatMenu( {
 			name: 'bgppb-choose-editor',
-			options: this.editorSetting.labels.filter( choice => 'default' !== choice.value )
+			options: this.labels.filter( choice => 'default' !== choice.value )
 		} );
 
 		this.$element.find( '.menu-container' ).append( matMenu.render() );
@@ -77,7 +93,7 @@ export class EditorSelect {
 	 * @return {string} HTML.
 	 */
 	_getHtml() {
-		const editor = this.editorSetting.labels.find( ( val ) => val.name === BoldgridEditor.global_settings.current_editor );
+		const editor = this.labels.find( ( val ) => val.name === BoldgridEditor.globalSettings.current_editor );
 
 		return `
 			<div id="bgppb-choose-editor" class="screen-meta-toggle">

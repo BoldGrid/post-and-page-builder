@@ -122,7 +122,11 @@ class Settings {
 				$this->getJSVars()
 			);
 
-			wp_enqueue_script( 'bgppb-settings' );
+			if ( ! \Boldgrid_Editor_Assets::is_webpack() ) {
+				wp_enqueue_style( 'bgppb-settings',
+					plugins_url( '/assets/dist/settings.min.css', BOLDGRID_EDITOR_ENTRY ),
+					array(), BOLDGRID_EDITOR_VERSION );
+			}
 		} );
 	}
 
@@ -134,38 +138,9 @@ class Settings {
 	 * @return array List of JS Variables.
 	 */
 	public function getJSVars() {
-		return [
-			'customPostTypes' => $this->getCustomPostTypes(),
-			'pluginVersion' => BOLDGRID_EDITOR_VERSION,
-			'settings' => \Boldgrid_Editor_Service::get( 'settings' )->get_all(),
+		return array_merge( \Boldgrid_Editor_Service::get( 'assets' )->get_shared_vars(), [
 			'adminColors' => self::getAdminColors()
-		];
-	}
-
-	/**
-	 * Get the custom post types used.
-	 *
-	 * @since 1.9.0
-	 *
-	 * @return array Custom post types.
-	 */
-	public function getCustomPostTypes() {
-		$types = get_post_types( [
-			'public'   => true,
-			'_builtin' => false
-		], 'objects' );
-
-		$formatted = [];
-		foreach( $types as $type ) {
-			if ( ! empty( $type->label ) ) {
-				$formatted[] = [
-					'value' => $type->name,
-					'label' => $type->label,
-				];
-			}
-		}
-
-		return $formatted;
+		] );
 	}
 
 	/**
@@ -195,7 +170,7 @@ class Settings {
 	 * @return string Page Content.
 	 */
 	public function getPageContent() {
-		echo '<div class="wrap bg-content"><bgppb-settings-form/></div>';
+		echo '<div class="wrap bg-content"><bgppb-settings-view/></div>';
 	}
 
 	/**

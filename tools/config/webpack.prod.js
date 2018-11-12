@@ -27,8 +27,8 @@ module.exports = {
 	},
 
 	output: {
-		filename: './assets/js/[name].min.js',
-		path: distDir + './assets/dist',
+		filename: './assets/dist/[name].min.js',
+		path: distDir,
 		publicPath: '/'
 	},
 
@@ -163,6 +163,6 @@ module.exports = {
 			jQuery: 'jquery'
 		} ),
 
-		new ExtractTextPlugin( 'assets/css/bundle.min.css' )
+		new ExtractTextPlugin( distDir + '[name].min.css' )
 	]
 };

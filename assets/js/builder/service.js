@@ -5,7 +5,6 @@ import StyleUpdater from './style/updater';
 import LoadingGraphic from './tinymce/loading';
 import { Palette } from './controls/color/palette';
 import { Intro } from './notice/intro';
-import { DefaultEditor } from './notice/default-editor';
 import { Save as LibrarySave } from './library/save';
 import { Advanced } from './controls/element/advanced';
 import { Lead as GridblockLead } from './gridblock/lead';
@@ -21,7 +20,7 @@ import { Component as LayoutComponent } from './component/layout/component';
 import { EventEmitter } from 'eventemitter3';
 import { Generate } from '@boldgrid/controls/src/controls/color';
 import { Sanitize } from './sanitize';
-import { EditorSelect } from '../view/classic/editor-select';
+import { EditorSelect } from '../forms/editor-select';
 
 export class Service {
 	init() {
@@ -90,7 +89,6 @@ export class Service {
 			BG.Controls.colorControl = BG.CONTROLS.Color.init();
 
 			new Intro().init();
-			new DefaultEditor().init();
 			new LibrarySave().init();
 			new GridblockLead().init();
 			new LayoutComponent().init();

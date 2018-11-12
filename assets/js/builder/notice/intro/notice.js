@@ -1,12 +1,13 @@
 var $ = window.jQuery,
 	BG = BOLDGRID.EDITOR;
 
-import templateHtml from '../../../../includes/template/intro.html';
-import { Base as Notice } from './base';
+import './style.scss';
+import templateHtml from './template.html';
+import { Base } from '../base';
 import { ColorPaletteSelection } from '@boldgrid/controls';
-import { Settings } from '../settings';
+import { DefaultEditor } from '../../../forms/default-editor';
 
-export class Intro extends Notice {
+export class Notice extends Base {
 	constructor() {
 		super();
 
@@ -34,7 +35,7 @@ export class Intro extends Notice {
 
 			this.templateMarkup = _.template( templateHtml )();
 			this.$panelHtml = $( this.templateMarkup );
-			this.$panelHtml.find( 'default-editor-form' ).replaceWith( new Settings().getForm() );
+			this.$panelHtml.find( 'default-editor-form' ).replaceWith( new DefaultEditor().getForm() );
 			this.$templateInputs = this.$panelHtml.find( 'input[name="template"]' );
 
 			this.openPanel();

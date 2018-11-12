@@ -1,1 +1,2 @@
-import './view/gutenberg/main.js';
+import { Page } from './view/gutenberg/page.js';
+new Page().init();

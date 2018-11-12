@@ -169,7 +169,6 @@ class Boldgrid_Editor {
 		global $wp_customize;
 
 		$boldgrid_editor_ajax      = new Boldgrid_Editor_Ajax();
-		$boldgrid_editor_assets    = new Boldgrid_Editor_Assets( $this->config->get_configs() );
 		$boldgrid_editor_builder   = new Boldgrid_Editor_Builder();
 		$builder_styles            = new Boldgrid_Editor_Builder_Styles();
 		$boldgrid_editor_mce       = new Boldgrid_Editor_MCE( $this->config );
@@ -182,8 +181,10 @@ class Boldgrid_Editor {
 		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
 		$setting_view              = new PPB\View\Settings();
 		$gutenberg_view            = new PPB\View\Gutenberg();
-		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
 
+		// Register Services
+		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
+		Boldgrid_Editor_Service::register( 'assets', new Boldgrid_Editor_Assets( $this->config->get_configs() ) );
 
 		$boldgrid_editor_wpforms->init();
 		$boldgrid_editor_premium->init();
@@ -263,7 +264,7 @@ class Boldgrid_Editor {
 				$boldgrid_editor_mce->add_window_size_buttons();
 
 				// This has a high priority to override duplicate files in other boldgrid plugins.
-				add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_assets, 'enqueue_scripts_action' ), 5 );
+				add_action( 'admin_enqueue_scripts', array( Boldgrid_Editor_Service::get( 'assets' ), 'enqueue_scripts_action' ), 5 );
 
 				// Add ?boldgrid-editor-version=$version_number to each added file.
 				add_filter( 'mce_css', array ( $boldgrid_editor_mce, 'add_cache_busting' ) );

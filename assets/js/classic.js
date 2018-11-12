@@ -1,2 +1,4 @@
-import { View } from './view/classic/view.js';
-new View().init();
+import '../scss/_material-reset.scss';
+import { Page } from './view/classic';
+
+new Page().init();

@@ -89,7 +89,7 @@ gulp.task( 'merge-webpack', function() {
 	gulp
 		.src( [
 			config.dist + '/assets/css/editor.min.css',
-			config.dist + '/assets/css/bundle.min.css'
+			config.dist + '/assets/dist/editor.min.css'
 		] )
 		.pipe(
 			autoprefixer( {

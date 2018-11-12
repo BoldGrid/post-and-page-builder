@@ -1,17 +1,13 @@
-export class Editor {
-	constructor() {
-		this.labels = [
-			{ name: 'bgppb', value: 'bgppb', label: 'Post and Page Builder' },
-			{ name: 'modern', value: 'modern', label: 'WordPress Editor' },
-			{ name: 'classic', value: 'classic', label: 'Classic Editor' },
-			{ name: 'default', value: 'default', label: 'Default' }
-		];
-	}
+export class Utility {
 
-	changeType( editorType ) {
-		this.postForm( { 'bgppb_default_editor_post': editorType } );
-	}
-
+	/**
+	 * Submit a post request via JS.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  {object}  params         List of params to post.
+	 * @param  {Boolean} [newTab=false] Wehther to open in a new tab or not.
+	 */
 	postForm( params, newTab = false ) {
 		const form = jQuery( '<form method=\'POST\' style=\'display:none;\'></form>' ).appendTo(
 			document.body

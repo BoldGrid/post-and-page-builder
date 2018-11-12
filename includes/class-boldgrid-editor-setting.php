@@ -100,6 +100,32 @@ class Boldgrid_Editor_Setting {
 	}
 
 	/**
+	 * Get the custom post types used.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return array Custom post types.
+	 */
+	public function get_custom_post_types() {
+		$types = get_post_types( [
+			'public'   => true,
+			'_builtin' => false
+		], 'objects' );
+
+		$formatted = [];
+		foreach( $types as $type ) {
+			if ( ! empty( $type->label ) ) {
+				$formatted[] = [
+					'value' => $type->name,
+					'label' => $type->label,
+				];
+			}
+		}
+
+		return $formatted;
+	}
+
+	/**
 	 * Are we using gutenberg?
 	 *
 	 * @since 1.9.0
