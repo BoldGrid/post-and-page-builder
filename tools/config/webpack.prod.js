@@ -163,6 +163,6 @@ module.exports = {
 			jQuery: 'jquery'
 		} ),
 
-		new ExtractTextPlugin( distDir + '[name].min.css' )
+		new ExtractTextPlugin( 'assets/dist/[name].min.css' )
 	]
 };

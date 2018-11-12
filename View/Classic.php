@@ -43,11 +43,7 @@ class Classic {
 				]
 			);
 
-			if ( ! \Boldgrid_Editor_Assets::is_webpack() ) {
-				wp_enqueue_style( 'bgppb-settings',
-					plugins_url( '/assets/dist/settings.min.css', BOLDGRID_EDITOR_ENTRY ),
-					array(), BOLDGRID_EDITOR_VERSION );
-			}
+			\Boldgrid_Editor_Assets::enqueue_webpack_style( 'classic' );
 		} );
 	}
 }

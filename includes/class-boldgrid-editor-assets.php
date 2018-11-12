@@ -138,6 +138,21 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
+	 * Enqueue a style added by webpack.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string $name Name of style.
+	 */
+	public static function enqueue_webpack_style( $name ) {
+		if ( ! self::is_webpack() ) {
+			wp_enqueue_style( 'bgppb-style-' . $name,
+				plugins_url( '/assets/dist/' . $name . '.min.css', BOLDGRID_EDITOR_ENTRY ),
+				array(), BOLDGRID_EDITOR_VERSION );
+		}
+	}
+
+	/**
 	 * Are we running in webpack?
 	 *
 	 * @since 1.9.0
