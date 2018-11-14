@@ -66,11 +66,6 @@ export class Width {
 	getWidth() {
 		let width = 'auto';
 		if ( this.$postContainer && this.$postContainer.width() ) {
-			console.log(
-				this.$postContainer,
-				this.$postContainer.width(),
-				this.$postContainer.outerWidth()
-			);
 			let calcWidth = this.$postContainer.width();
 			if ( this.minWidth <= calcWidth ) {
 				width = calcWidth;

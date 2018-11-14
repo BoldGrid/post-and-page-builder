@@ -46,21 +46,22 @@ class Boldgrid_Editor {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->add_ppb_filters();
+
 		$this->is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
 
 		$config = new Boldgrid_Editor_Config();
 		$this->set_config( $config );
-		$tab_configs = require BOLDGRID_EDITOR_PATH . '/includes/config/layouts.php';
-		$tab_configs = apply_filters( 'boldgrid-media-modal-config', $tab_configs );
-		$this->set_tab_configs( $tab_configs );
 
-		$plugin_filename = BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php';
-
-		$path_configs = array (
-			'plugin_dir' => BOLDGRID_EDITOR_PATH,
-			'plugin_filename' => $plugin_filename
-		);
-		$this->set_path_configs( $path_configs );
+		if ( is_admin() ) {
+			$tab_configs = require BOLDGRID_EDITOR_PATH . '/includes/config/layouts.php';
+			$tab_configs = apply_filters( 'boldgrid-media-modal-config', $tab_configs );
+			$this->set_tab_configs( $tab_configs );
+			$this->set_path_configs( array (
+				'plugin_dir' => BOLDGRID_EDITOR_PATH,
+				'plugin_filename' => BOLDGRID_EDITOR_ENTRY
+			) );
+		}
 
 		Boldgrid_Editor_Service::register( 'config', $config->get_configs() );
 	}
@@ -300,6 +301,19 @@ class Boldgrid_Editor {
 
 		// Save a users selection for enabling draggable.
 		add_action( 'wp_ajax_boldgrid_draggable_enabled', array ( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
+	}
+
+	/**
+	 * Add hooks and filters on PPB events. Runs before everything.
+	 *
+	 * @since 1.9.0
+	 */
+	public function add_ppb_filters() {
+
+		// Admin specific filters, Runs before anything else.
+		if ( is_admin() ) {
+			add_filter( 'BoldgridEditor\Config', 'Boldgrid_Editor_Setting::set_available_editors' );
+		}
 	}
 
 	/**

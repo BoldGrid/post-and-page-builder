@@ -141,6 +141,7 @@ Release Date: TBD
 * New Feature: Users can now switch between editors
 * New Feature: A default editor can be specified
 * New Feature: Builder can be enabled on custom post types
+* Update: Lengthened timeouts on block generating
 
 = 1.8.0 =
 

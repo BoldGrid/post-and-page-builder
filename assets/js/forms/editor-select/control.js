@@ -13,6 +13,8 @@ export class Control {
 			{ name: 'default', value: 'default', label: 'Default' }
 		];
 
+		this.labels = this._filterAvailableEditors( this.labels );
+
 		this.loading = new Loading();
 	}
 
@@ -65,6 +67,18 @@ export class Control {
 			.attr( 'value', BoldgridEditor.editor_override );
 
 		$form.append( $input );
+	}
+
+	/**
+	 * Remove editors that are not supported.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  {array} editors List of editors.
+	 * @return {array}         Updated list of editors.
+	 */
+	_filterAvailableEditors( editors ) {
+		return editors.filter( ( editor ) => -1 !== BoldgridEditor.plugin_configs.valid_editors.indexOf( editor.name ) );
 	}
 
 	/**

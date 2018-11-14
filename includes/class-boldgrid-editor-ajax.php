@@ -59,6 +59,7 @@ class Boldgrid_Editor_Ajax {
 		$params['color'] = ! empty( $params['color'] ) ? stripslashes( $params['color'] ) : null;
 
 		self::validate_nonce( 'gridblock_save' );
+		set_time_limit ( 45 );
 
 		$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
 
@@ -67,7 +68,7 @@ class Boldgrid_Editor_Ajax {
 
 		// Dont put the parameters in the body breaks wp version < 4.6.
 		$api_response = wp_remote_get( self::get_end_point('gridblock_generate') . '?' . http_build_query( $params ), array(
-			'timeout' => 10,
+			'timeout' => 30,
 		) );
 
 		if ( ! is_wp_error( $api_response ) ) {

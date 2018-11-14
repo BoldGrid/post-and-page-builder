@@ -20,13 +20,6 @@
  */
 class Boldgrid_Editor_Setting {
 
-	public static $valid_editors = [
-		'classic',
-		'modern',
-		'default',
-		'bgppb'
-	];
-
 	/**
 	 * Bind events.
 	 *
@@ -40,6 +33,21 @@ class Boldgrid_Editor_Setting {
 		} );
 
 		add_action( 'save_post', array( $this, 'save_meta_editor' ), 10, 2 );
+	}
+
+	/**
+	 * Update the list of available editors.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param array $configs Configurations.\
+	 */
+	public static function set_available_editors( $configs ) {
+		if ( function_exists( 'register_block_type' ) ) {
+			$configs['valid_editors'][] = 'modern';
+		}
+
+		return $configs;
 	}
 
 	/**
@@ -115,11 +123,12 @@ class Boldgrid_Editor_Setting {
 	public function get_saved_editor_options() {
 		$default_editor = Boldgrid_Editor_Option::get( 'default_editor', [] );
 
+		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
 		$initial_editor_setting = [];
 		$all_post_types = $this->get_all_cpts();
 		foreach( $all_post_types as $post_type ) {
 			$initial_editor_setting[ $post_type ] = ! empty( $default_editor[ $post_type ] )
-				&& in_array( $default_editor[ $post_type ], self::$valid_editors, true ) ?
+				&& in_array( $default_editor[ $post_type ], $valid_editors, true ) ?
 				$default_editor[ $post_type ] : $this->get_initial_editor_option( $post_type );
 		}
 
@@ -187,11 +196,12 @@ class Boldgrid_Editor_Setting {
 	public function save_default_editor( $choices ) {
 		$saved_options = Boldgrid_Editor_Option::get( 'default_editor' );
 		$all_post_types = $this->get_all_cpts();
+		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
 
 		// Loop through all post types and validate the choice.
 		foreach( $all_post_types as $post_type ) {
 			if ( ! empty( $choices[ $post_type ] ) ) {
-				$editor = in_array( $choices[ $post_type ], self::$valid_editors, true ) ?
+				$editor = in_array( $choices[ $post_type ], $valid_editors, true ) ?
 					$choices[ $post_type ] : $this->get_initial_editor_option( $post_type );
 
 				$saved_options[ $post_type ] = $editor;

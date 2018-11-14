@@ -12,6 +12,8 @@ export class Loader {
 	constructor() {
 		this.notices = {
 			intro: Intro,
+
+			// eslint-disable-next-line
 			editor_choice: EditorChoice
 		};
 	}

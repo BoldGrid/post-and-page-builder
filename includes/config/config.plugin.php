@@ -21,6 +21,11 @@ return array (
 	'templates' => array(
 		'default_content_width' => 1140,
 	),
+	'valid_editors' => array(
+		'classic',
+		'default',
+		'bgppb'
+	),
 	'component_controls' => include __DIR__ . '/config.components.php',
 	'urls' => array(
 		'premium_key' => 'https://www.boldgrid.com/connect-keys',
