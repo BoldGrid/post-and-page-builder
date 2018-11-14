@@ -258,7 +258,6 @@ class Boldgrid_Editor_Assets {
 		global $is_IE, $post, $pagenow;
 
 		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
-		$plugin_file = BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php';
 		$post_type = $post ? $post->post_type : '';
 		$default_tab = wp_default_editor();
 		$is_bg_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
@@ -270,7 +269,6 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
 		$vars = array(
-			'plugin_configs' => $config,
 			'is_boldgrid_theme' => $is_bg_theme,
 			'is_add_new' => 'post-new.php' === $pagenow,
 			'body_class' => Boldgrid_Editor_Theme::theme_body_class(),
@@ -279,7 +277,6 @@ class Boldgrid_Editor_Assets {
 			'post_type' => $post_type,
 			'is_boldgrid_template' => Boldgrid_Editor_Service::get( 'templater' )->is_custom_template( $post->page_template ),
 			'site_url' => $this->get_post_url(),
-			'plugin_url' => plugins_url( '', $plugin_file ),
 			'claim_envato_key' => apply_filters( 'Boldgrid\Library\Library\Notice\ClaimPremiumKey_enable', false ),
 			'is_IE' => $is_IE,
 			'version' => BOLDGRID_EDITOR_VERSION,
@@ -303,7 +300,7 @@ class Boldgrid_Editor_Assets {
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
 			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,
-			'display_intro' => Boldgrid_Editor_Setup::should_show_setup(),
+			'notices' => Boldgrid_Editor_Setup::get_notice_status(),
 			'setup_settings' => Boldgrid_Editor_Option::get( 'setup' ),
 			'control_styles' => ! $is_bg_theme ? Boldgrid_Editor_Builder_Styles::get_option() : array(),
 			'admin-url' => get_admin_url(),
@@ -330,9 +327,12 @@ class Boldgrid_Editor_Assets {
 
 	public function get_shared_vars() {
 		return [
+			'plugin_url' => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
+			'plugin_configs' => Boldgrid_Editor_Service::get( 'config' ),
 			'globalSettings' => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes' => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
 			'pluginVersion' => BOLDGRID_EDITOR_VERSION,
+			'editor_override' => Boldgrid_Editor_Setting::get_editor_override()
 		];
 	}
 

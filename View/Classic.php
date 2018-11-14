@@ -38,9 +38,7 @@ class Classic {
 			wp_localize_script(
 				'bgppb-classic',
 				'BoldgridEditor = BoldgridEditor || {}; BoldgridEditor',
-				[
-					'global_settings' => \Boldgrid_Editor_Service::get( 'settings' )->get_all(),
-				]
+				\Boldgrid_Editor_Service::get( 'assets' )->get_shared_vars()
 			);
 
 			\Boldgrid_Editor_Assets::enqueue_webpack_style( 'classic' );

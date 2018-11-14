@@ -28,15 +28,42 @@ class Boldgrid_Editor_Setting {
 	];
 
 	/**
+	 * Bind events.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  integer $post_id Current Post ID.
+	 */
+	public function init( $post_id ) {
+		add_action( 'admin_init', function () use ( $post_id ) {
+			Boldgrid_Editor_Service::get( 'settings' )->save_meta_editor( $post_id );
+		} );
+
+		add_action( 'save_post', array( $this, 'save_meta_editor' ), 10, 2 );
+	}
+
+	/**
+	 * Get the editor override.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return string Text field
+	 */
+	public static function get_editor_override() {
+		return ! empty( $_POST['bgppb_default_editor_post'] ) ?
+			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
+	}
+
+	/**
 	 *  Save the default editor used for the post.
 	 *
 	 * @since 1.9.0
 	 *
-	 * @param  WP_Post $post Post Object.
+	 * @param  WP_Post $post_id Post Object.
 	 */
-	public function save_meta_editor( $post ) {
-		$default_editor = ! empty( $_POST['bgppb_default_editor_post'] ) ?
-			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
+	public function save_meta_editor( $post_id ) {
+		$post = get_post( $post_id );
+		$default_editor = self::get_editor_override();
 
 		if ( $default_editor && $post ) {
 			update_post_meta(
@@ -121,6 +148,10 @@ class Boldgrid_Editor_Setting {
 				];
 			}
 		}
+
+		usort( $formatted, function ( $a, $b ) {
+			return strcmp( $a['label'], $b['label'] );
+		} );
 
 		return $formatted;
 	}

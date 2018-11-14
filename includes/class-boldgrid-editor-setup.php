@@ -27,16 +27,64 @@ class Boldgrid_Editor_Setup {
 	 *
 	 * @return boolean Should we show first time setup.
 	 */
-	public static function should_show_setup() {
-		$show = false;
-		$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
+	public static function get_notice_status() {
 		$setup = Boldgrid_Editor_Option::get( 'setup' );
 
-		if ( ! $is_boldgrid_theme && ! $setup ) {
-			$show = true;
+		/*
+		 * Editor Choice Notice Should Display
+		 * - If the user previously had version < 1.9 of the PPB
+		 *
+		 * The intro should display if the user
+		 * - has not gone through setup
+		 * - and is not an exiting user
+		 */
+		return [
+			[ 'name' => 'editor_choice', 'enabled' => self::has_editor_choice_notice() ],
+			[ 'name' => 'intro', 'enabled' => ! self::is_notice_dismissed( 'editor_choice' ) && ! $setup ],
+		];
+	}
+
+	/**
+	 * Should we display the editor choice notice?
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return boolean Display Notice?
+	 */
+	public static function has_editor_choice_notice() {
+		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.9.0-rc.0' ) && ! self::check_and_dismiss( 'editor_choice' );
+	}
+
+	/**
+	 * Check if a notice is dismissed.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string  $name Name of a notice.
+	 * @return boolean       Is this notice dimissed?
+	 */
+	public static function is_notice_dismissed( $name ) {
+		$notices = Boldgrid_Editor_Option::get( 'notices', [] );
+		return ! empty( $notices[ $name ]['dismissed'] );
+	}
+
+	/**
+	 * Check if a notice is dimissed, dismiss it's not.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string $name Name of notice.
+	 * @return boolean      Is this notice dimissed?
+	 */
+	public static function check_and_dismiss( $name ) {
+		$notices = Boldgrid_Editor_Option::get( 'notices', [] );
+		$is_dismissed = ! empty( $notices[ $name ]['dismissed'] );
+		if ( ! $is_dismissed ) {
+			$notices[ $name ]['dismissed'] = true;
+			Boldgrid_Editor_Option::update( 'notices', $notices );
 		}
 
-		return $show;
+		return $is_dismissed;
 	}
 
 	/**
@@ -56,8 +104,10 @@ class Boldgrid_Editor_Setup {
 	public function reset_editor_settings() {
 		Boldgrid_Editor_Option::update( 'setup', array() );
 		Boldgrid_Editor_Option::update( 'styles', array() );
+		Boldgrid_Editor_Option::update( 'notices', array() );
 		Boldgrid_Editor_Option::update( 'default_editor', array() );
 		Boldgrid_Editor_Option::update( 'preview_styles', array() );
+		Boldgrid_Editor_Option::update( 'activated_version', BOLDGRID_EDITOR_VERSION );
 	}
 
 	/**
@@ -99,5 +149,4 @@ class Boldgrid_Editor_Setup {
 			wp_send_json_error();
 		}
 	}
-
 }

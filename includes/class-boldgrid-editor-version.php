@@ -29,7 +29,7 @@ class Boldgrid_Editor_Version {
 	 *
 	 * @return boolean $is_old_version.
 	 */
-	public static function is_version_older( $older_than_version ) {
+	public static function is_activated_version_older_than( $older_than_version ) {
 		$is_old_version = true;
 
 		$check_version = Boldgrid_Editor_Option::get( 'activated_version' );
@@ -49,7 +49,7 @@ class Boldgrid_Editor_Version {
 	 */
 	public static function should_display_notice() {
 		// 1.3 is the version that we'll be displaying the notice for.
-		return self::is_version_older('1.3') && ! Boldgrid_Editor_Option::get( 'displayed_v1.3_notice' );
+		return self::is_activated_version_older_than('1.3') && ! Boldgrid_Editor_Option::get( 'displayed_v1.3_notice' );
 	}
 
 	/**

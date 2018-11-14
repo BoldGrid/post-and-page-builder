@@ -67,8 +67,8 @@
 .page-template.boldgrid-editor-template .entry-header .entry-title {
   margin: 0; }
 
-.page-template.boldgrid-editor-template .entry-content,
-.page-template.boldgrid-editor-template .entry-content .the-content {
+.page-template.boldgrid-editor-template .bge-entry-content,
+.page-template.boldgrid-editor-template .bge-entry-content .the-content {
   width: 100%;
   max-width: 100%;
   padding: 0; }

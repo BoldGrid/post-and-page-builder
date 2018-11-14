@@ -99,7 +99,7 @@ class Settings {
 		$this->enqueueScripts();
 
 		add_filter( 'admin_body_class', function( $classes ) {
-			$classes .= ' bgppb-page-settings ';
+			$classes .= ' bgppb-page bgppb-page--settings ';
 			return $classes;
 		} );
 	}

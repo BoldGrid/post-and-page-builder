@@ -28,23 +28,21 @@ export class Notice extends Base {
 	 * @since 1.6
 	 */
 	init() {
-		if ( BoldgridEditor.display_intro ) {
-			this.defaultEditor = new DefaultEditor();
-			this.selection = new ColorPaletteSelection();
-			this.$body = $( 'body' );
-			this.settings = this.getDefaults();
+		this.defaultEditor = new DefaultEditor();
+		this.selection = new ColorPaletteSelection();
+		this.$body = $( 'body' );
+		this.settings = this.getDefaults();
 
-			this.templateMarkup = _.template( templateHtml )( { nonce: BoldgridEditor.setupNonce } );
-			this.$panelHtml = $( this.templateMarkup );
-			this.$panelHtml.find( 'default-editor-form' ).replaceWith( this.defaultEditor.getForm() );
-			this.$templateInputs = this.$panelHtml.find( 'input[name="bgppb-template"]' );
+		this.templateMarkup = _.template( templateHtml )( { nonce: BoldgridEditor.setupNonce } );
+		this.$panelHtml = $( this.templateMarkup );
+		this.$panelHtml.find( 'default-editor-form' ).replaceWith( this.defaultEditor.getForm() );
+		this.$templateInputs = this.$panelHtml.find( 'input[name="bgppb-template"]' );
 
-			this.openPanel();
-			this._setupNav();
-			this._addPanelSettings( 'welcome' );
-			this.bindDismissButton();
-			this._setupStepActions();
-		}
+		this.openPanel();
+		this._setupNav();
+		this._addPanelSettings( 'welcome' );
+		this.bindDismissButton();
+		this._setupStepActions();
 	}
 
 	getDefaults() {
@@ -62,7 +60,6 @@ export class Notice extends Base {
 	 */
 	openPanel() {
 		BG.Panel.currentControl = this;
-		this.$body.addClass( 'bg-editor-intro' );
 		BG.Panel.setDimensions( this.panel.width, this.panel.height );
 		BG.Panel.setTitle( this.panel.title );
 		BG.Panel.setContent( this.$panelHtml );

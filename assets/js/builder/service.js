@@ -4,7 +4,7 @@ import EditorWidth from './tinymce/width';
 import StyleUpdater from './style/updater';
 import LoadingGraphic from './tinymce/loading';
 import { Palette } from './controls/color/palette';
-import { Intro } from './notice/intro';
+import { Loader } from './notice/loader';
 import { Save as LibrarySave } from './library/save';
 import { Advanced } from './controls/element/advanced';
 import { Lead as GridblockLead } from './gridblock/lead';
@@ -88,7 +88,7 @@ export class Service {
 			// Init Color Control.
 			BG.Controls.colorControl = BG.CONTROLS.Color.init();
 
-			new Intro().init();
+			new Loader().init();
 			new LibrarySave().init();
 			new GridblockLead().init();
 			new LayoutComponent().init();

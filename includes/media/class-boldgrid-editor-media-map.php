@@ -51,7 +51,7 @@ class Boldgrid_Editor_Media_Map {
 		$has_updated_maps = Boldgrid_Editor_Option::get( 'updated_maps' );
 		$has_updated_maps = ! empty( $has_updated_maps );
 
-		return false === $has_updated_maps && Boldgrid_Editor_Version::is_version_older( self::DYNAMIC_MAP_VERSION );
+		return false === $has_updated_maps && Boldgrid_Editor_Version::is_activated_version_older_than( self::DYNAMIC_MAP_VERSION );
 	}
 
 	/**

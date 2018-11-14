@@ -208,9 +208,7 @@ class Boldgrid_Editor {
 			$current_post_id = ! empty( $_REQUEST['post'] ) ? $_REQUEST['post'] : null;
 			$current_post = get_post( $current_post_id );
 
-			add_action( 'admin_init', function () use ( $current_post ) {
-				Boldgrid_Editor_Service::get( 'settings' )->save_meta_editor( $current_post );
-			} );
+			Boldgrid_Editor_Service::get( 'settings' )->init( $current_post_id );
 
 			add_filter( 'use_block_editor_for_post', array( Boldgrid_Editor_Service::get( 'settings' ), 'is_block_editor' ), 99 );
 
@@ -229,6 +227,9 @@ class Boldgrid_Editor {
 			}
 
 			$editor = Boldgrid_Editor_Service::get( 'settings' )->get_current_editor( $current_post, $current_post_type );
+
+			// Set the editor Type.
+			Boldgrid_Editor_Service::register( 'editor_type', $editor );
 
 			if ( 'classic' === $editor ) {
 				$classic_view = new PPB\View\Classic();

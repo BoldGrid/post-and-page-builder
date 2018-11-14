@@ -49,7 +49,7 @@ export class Form {
 					Choose the way default way to edit your content.
 					You can also choose an editor for a specific post by selecting it within the
 					editor. To learn more about your choices visit our
-					<a href="https://www.boldgrid.com/support/boldgrid-post-and-page-builder/post-and-page-builder/">support center</a>.
+					<a target="_blank" href="${BoldgridEditor.plugin_configs.urls.support_default_editor}">support article</a>.
 				</p>
 				<div class="post-type-category native">
 					<h4>WordPress Post Types</h4>

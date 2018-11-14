@@ -3,8 +3,14 @@ var el = wp.element.createElement;
 var registerPlugin = wp.plugins.registerPlugin;
 
 import { EditorSelect } from '../../forms/editor-select';
+import { Loading } from '../loading';
+import './style.scss';
 
 export class Page {
+	constructor() {
+		this.editorSelect = new EditorSelect();
+		this.loading = new Loading();
+	}
 
 	init() {
 		$( () => this._onload() );
@@ -17,16 +23,25 @@ export class Page {
 	 */
 	_onload() {
 		this.registerPlugin( {
-			pluginName: 'bgppb-classic',
-			type: 'classic',
-			label: 'Classic Editor'
+			pluginName: 'bgppb',
+			type: 'bgppb',
+			label: 'Post and Page Builder',
+			icon: el(
+				'img',
+				{
+					src: BoldgridEditor.plugin_url + '/assets/image/boldgrid-logo.svg'
+				}
+			)
 		} );
 
 		this.registerPlugin( {
-			pluginName: 'bgppb',
-			type: 'bgppb',
-			label: 'Post and Page Builder'
+			pluginName: 'bgppb-classic',
+			type: 'classic',
+			label: 'Classic Editor',
+			icon: 'edit'
 		} );
+
+		this.editorSelect.setEditorOverrideInput( $( 'form.metabox-base-form' ) );
 	}
 
 	/**
@@ -38,16 +53,30 @@ export class Page {
 	 */
 	registerPlugin( configs ) {
 		registerPlugin( configs.pluginName, {
-			icon: '',
+			icon: configs.icon || '',
 			render: () => {
 				return el(
 					wp.editPost.PluginSidebarMoreMenuItem,
-					{},
-					el(
-						'span',
-						{ onClick: () => new EditorSelect().changeType( configs.type ) },
-						__( configs.label )
-					),
+					{
+					},
+					[
+						el(
+							'span',
+							{
+							},
+							__( configs.label )
+						),
+						el(
+							'span',
+							{
+								className: 'editor-selector',
+								onClick: ( e ) => {
+									e.stopPropagation();
+									this.editorSelect.changeType( configs.type );
+								}
+							}
+						)
+					]
 				);
 			}
 		} );

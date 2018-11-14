@@ -7,7 +7,7 @@ export class Page {
 		this.banner = new Banner();
 		this.defaultEditor = new DefaultEditor();
 
-		this.$page = $( '.bgppb-page-settings .bg-content' );
+		this.$page = $( '.bgppb-page--settings .bg-content' );
 		this.title = 'Post and Page Builder Settings';
 		this.description = 'Configuration options for the BoldGrid Post and Page Builder';
 	}
@@ -29,8 +29,10 @@ export class Page {
 	setPageHTML() {
 		this.$page.find( 'bgppb-settings-view' ).replaceWith( `
 			${this.banner.getHTML( this.title, this.description ) }
-			<div class="card">
-			<default-editor/>
+			<div class="bgppb-page__body">
+				<div class="card">
+					<default-editor/>
+				</div>
 			</div>
 		` );
 

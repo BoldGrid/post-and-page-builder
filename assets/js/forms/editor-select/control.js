@@ -1,16 +1,19 @@
 import { MatMenu } from '@boldgrid/controls/src/controls/mat-menu';
 import { Utility } from '../utility';
+import { Loading } from '../../view/loading';
 import './style.scss';
 
 export class Control {
 
 	constructor() {
 		this.labels = [
-			{ name: 'bgppb', value: 'bgppb', label: 'Post and Page Builder' },
+			{ name: 'bgppb', value: 'bgppb', label: `<img src="${BoldgridEditor.plugin_url}/assets/image/boldgrid-logo.svg"/> Post and Page Builder` },
 			{ name: 'modern', value: 'modern', label: 'WordPress Editor' },
 			{ name: 'classic', value: 'classic', label: 'Classic Editor' },
 			{ name: 'default', value: 'default', label: 'Default' }
 		];
+
+		this.loading = new Loading();
 	}
 
 	/**
@@ -27,6 +30,7 @@ export class Control {
 
 		this.$element.show();
 		$( '#screen-meta-links' ).append( this.$element );
+		this.setEditorOverrideInput( $( 'form#post' ) );
 	}
 
 	/**
@@ -37,7 +41,30 @@ export class Control {
 	 * @param  {string} editorType Editor type to swicth to.
 	 */
 	changeType( editorType ) {
-		new Utility().postForm( { 'bgppb_default_editor_post': editorType } );
+		this.loading.show();
+		new Utility().postForm( { 'bgppb_default_editor_post': editorType }, false );
+		setTimeout( () => this.loading.hide(), 3000 );
+	}
+
+	/**
+	 * Add an editor override input to the form.
+	 *
+	 * This makes sure that when a user switches from one editor to another, the
+	 * editor they've chosen is saved for new posts.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param {$} $form Element.
+	 */
+	setEditorOverrideInput( $form ) {
+		let $input = $( '<input/>' );
+
+		$input
+			.attr( 'type', 'hidden' )
+			.attr( 'name', 'bgppb_default_editor_post' )
+			.attr( 'value', BoldgridEditor.editor_override );
+
+		$form.append( $input );
 	}
 
 	/**

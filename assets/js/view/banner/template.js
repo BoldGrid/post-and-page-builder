@@ -13,12 +13,12 @@ export class Template {
 	 */
 	getHTML( pageTitle, description ) {
 		let $el = $( `
-			<div class="boldgrid-page-banner">
-				<div class="branding">
+			<div class="bgppb-banner">
+				<div class="bgppb-banner__branding">
 					<img src="https://ps.w.org/post-and-page-builder/assets/icon-128x128.png">
 					<div class="version">Version: ${BoldgridEditor.pluginVersion}</div>
 				</div>
-				<div class="page-title">
+				<div class="bgppb-banner__title">
 					<h1>${pageTitle}</h1>
 					<p>${description}</p>
 				</div>

@@ -23,7 +23,8 @@ return array (
 	),
 	'component_controls' => include __DIR__ . '/config.components.php',
 	'urls' => array(
-		'premium_key' => 'https://www.boldgrid.com/connect-keys'
+		'premium_key' => 'https://www.boldgrid.com/connect-keys',
+		'support_default_editor' => 'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/',
 	),
 	'main_file_path'        => BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php',
 	'plugin_transient_name' => 'boldgrid_editor_version_data',

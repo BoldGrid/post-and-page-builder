@@ -12,7 +12,7 @@
 				</header>
 			<?php } ?>
 
-			<div class="entry-content">
+			<div class="bge-entry-content">
 				<?php the_content(); ?>
 			</div>
 			<?php include( __DIR__ . '/entry-footer.php' ); ?>
