@@ -134,6 +134,14 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.9.0 =
+
+Release Date: TBD
+
+* New Feature: Users can now switch between editors
+* New Feature: A default editor can be specified
+* New Feature: Builder can be enabled on custom post types
+
 = 1.8.0 =
 
 Release Date: October 16th, 2018
