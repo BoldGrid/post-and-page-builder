@@ -47,31 +47,6 @@ class Settings {
 			'bgppb-settings',
 			array( $this, 'getPageContent' )
 		);
-
-		/*
-		return;
-		//@TODO: fix this, menu highlighting is broken with this approach.
-		// Create the path: admin.php?page=bgppb-settings
-		add_menu_page(
-			'Post and Page Builder Settings',
-			'Settings',
-			'manage_options',
-			'bgppb-settings',
-			array( $this, 'getPageContent' )
-		);
-
-		// Remove the path from the Menu.
-		//remove_menu_page( 'bgppb-settings' );
-
-		// Nest the path.
-		add_submenu_page(
-			'edit.php?post_type=bg_block',
-			'Post and Page Builder Settings',
-			'Settings',
-			'manage_options',
-			'admin.php?page=bgppb-settings'
-		);
-		*/
 	}
 
 	/**

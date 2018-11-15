@@ -325,6 +325,13 @@ class Boldgrid_Editor_Assets {
 		return apply_filters( 'BoldgridEditor\PageBuilder', $vars );
 	}
 
+	/**
+	 * JS varaiables to be added with all admin page scrips.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return array JS Variables.
+	 */
 	public function get_shared_vars() {
 		return [
 			'plugin_url' => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
@@ -332,7 +339,7 @@ class Boldgrid_Editor_Assets {
 			'globalSettings' => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes' => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
 			'pluginVersion' => BOLDGRID_EDITOR_VERSION,
-			'editor_override' => Boldgrid_Editor_Setting::get_editor_override()
+			'editor_override' => Boldgrid_Editor_Setting::get_editor_override(),
 		];
 	}
 

@@ -24,7 +24,7 @@ return array (
 	'valid_editors' => array(
 		'classic',
 		'default',
-		'bgppb'
+		'bgppb',
 	),
 	'component_controls' => include __DIR__ . '/config.components.php',
 	'urls' => array(
