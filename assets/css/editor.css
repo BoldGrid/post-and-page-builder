@@ -1837,6 +1837,9 @@
 body#wpview-iframe-sandbox {
   background: transparent !important; }
 
+#post-body-content #insert-gridblocks-button {
+  display: inline-block; }
+
 /*--------------------------------------------------------------
 # Post.php Modifications
 --------------------------------------------------------------*/
