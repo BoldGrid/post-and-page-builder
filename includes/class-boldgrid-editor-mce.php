@@ -78,7 +78,7 @@ class Boldgrid_Editor_MCE {
 		global $typenow;
 
 		// verify the post type
-		if ( ! in_array( $typenow, $this->configs->get_configs( 'allowed_post_types' ) ) ) {
+		if ( 'bgppb' !== Boldgrid_Editor_Service::get( 'editor_type' ) ) {
 			return;
 		}
 
