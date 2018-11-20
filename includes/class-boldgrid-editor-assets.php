@@ -120,6 +120,50 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
+	 * Get the URL for a weboack script.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string $name Filename.
+	 * @return string       URL to file.
+	 */
+	public static function get_webpack_script( $name ) {
+		$configs = Boldgrid_Editor_Service::get( 'config' );
+		$script_url = plugins_url( '/assets/dist/' . $name . '.min.js', BOLDGRID_EDITOR_ENTRY );
+		if ( self::is_webpack() ) {
+			$script_url = $configs['development_server'] . '/' . $name . '.js';
+		}
+
+		return $script_url;
+	}
+
+	/**
+	 * Enqueue a style added by webpack.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @param  string $name Name of style.
+	 */
+	public static function enqueue_webpack_style( $name ) {
+		if ( ! self::is_webpack() ) {
+			wp_enqueue_style( 'bgppb-style-' . $name,
+				plugins_url( '/assets/dist/' . $name . '.min.css', BOLDGRID_EDITOR_ENTRY ),
+				array(), BOLDGRID_EDITOR_VERSION );
+		}
+	}
+
+	/**
+	 * Are we running in webpack?
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return boolean Is this a webpack build?
+	 */
+	public static function is_webpack() {
+		return ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG );
+	}
+
+	/**
 	 * Enqueue Styles to the front end of the site.
 	 *
 	 * @since 1.2.7
@@ -131,13 +175,8 @@ class Boldgrid_Editor_Assets {
 			plugins_url( '/assets/js/jquery-stellar/jquery.stellar.js', BOLDGRID_EDITOR_ENTRY ),
 		array( 'jquery' ),BOLDGRID_EDITOR_VERSION, true );
 
-		$script_url = plugins_url( '/assets/js/public.min.js', BOLDGRID_EDITOR_ENTRY );
-		if ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG ) {
-			$script_url = $this->configs['development_server'] . '/public.js';
-		}
-
 		wp_enqueue_script(
-			'boldgrid-editor-public', $script_url,
+			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
 		wp_enqueue_style( 'animatecss',
@@ -219,7 +258,6 @@ class Boldgrid_Editor_Assets {
 		global $is_IE, $post, $pagenow;
 
 		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
-		$plugin_file = BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php';
 		$post_type = $post ? $post->post_type : '';
 		$default_tab = wp_default_editor();
 		$is_bg_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
@@ -231,7 +269,6 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
 		$vars = array(
-			'plugin_configs' => $config,
 			'is_boldgrid_theme' => $is_bg_theme,
 			'is_add_new' => 'post-new.php' === $pagenow,
 			'body_class' => Boldgrid_Editor_Theme::theme_body_class(),
@@ -240,7 +277,6 @@ class Boldgrid_Editor_Assets {
 			'post_type' => $post_type,
 			'is_boldgrid_template' => Boldgrid_Editor_Service::get( 'templater' )->is_custom_template( $post->page_template ),
 			'site_url' => $this->get_post_url(),
-			'plugin_url' => plugins_url( '', $plugin_file ),
 			'claim_envato_key' => apply_filters( 'Boldgrid\Library\Library\Notice\ClaimPremiumKey_enable', false ),
 			'is_IE' => $is_IE,
 			'version' => BOLDGRID_EDITOR_VERSION,
@@ -260,10 +296,11 @@ class Boldgrid_Editor_Assets {
 			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
+
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
 			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,
-			'display_intro' => Boldgrid_Editor_Setup::should_show_setup(),
+			'notices' => Boldgrid_Editor_Setup::get_notice_status(),
 			'setup_settings' => Boldgrid_Editor_Option::get( 'setup' ),
 			'control_styles' => ! $is_bg_theme ? Boldgrid_Editor_Builder_Styles::get_option() : array(),
 			'admin-url' => get_admin_url(),
@@ -276,6 +313,8 @@ class Boldgrid_Editor_Assets {
 			),
 		);
 
+		$vars = array_merge( $vars, $this->get_shared_vars() );
+
 		/**
 		 * Overrdie any of the variables sent to the front end application.
 		 *
@@ -284,6 +323,24 @@ class Boldgrid_Editor_Assets {
 		 * @param type  $var Array of variables to be passed to editor scripts.
 		 */
 		return apply_filters( 'BoldgridEditor\PageBuilder', $vars );
+	}
+
+	/**
+	 * JS varaiables to be added with all admin page scrips.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return array JS Variables.
+	 */
+	public function get_shared_vars() {
+		return [
+			'plugin_url' => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
+			'plugin_configs' => Boldgrid_Editor_Service::get( 'config' ),
+			'globalSettings' => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
+			'customPostTypes' => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
+			'pluginVersion' => BOLDGRID_EDITOR_VERSION,
+			'editor_override' => Boldgrid_Editor_Setting::get_editor_override(),
+		];
 	}
 
 	/**
@@ -357,13 +414,8 @@ class Boldgrid_Editor_Assets {
 			'wp-util',
 		);
 
-		$script_url = plugins_url( '/assets/js/editor.min.js', $plugin_file );
-		if ( defined( 'BGEDITOR_SCRIPT_DEBUG' ) && BGEDITOR_SCRIPT_DEBUG ) {
-			$script_url = $this->configs['development_server'] . '/editor.js';
-		}
-
 		wp_register_script( 'boldgrid-editor-drag',
-			$script_url, $deps, BOLDGRID_EDITOR_VERSION, true );
+			self::get_webpack_script( 'editor' ), $deps, BOLDGRID_EDITOR_VERSION, true );
 
 		// Send Variables to the view.
 		wp_localize_script(

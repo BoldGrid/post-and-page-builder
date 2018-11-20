@@ -20,10 +20,14 @@ module.exports = {
 
 	entry: {
 		public: './assets/js/public.js',
-		editor: './assets/js/index.js'
+		editor: './assets/js/editor.js',
+		gutenberg: './assets/js/gutenberg.js',
+		classic: './assets/js/classic.js',
+		settings: './assets/js/settings.js'
 	},
+
 	output: {
-		filename: './assets/js/[name].min.js',
+		filename: './assets/dist/[name].min.js',
 		path: distDir,
 		publicPath: '/'
 	},
@@ -159,6 +163,6 @@ module.exports = {
 			jQuery: 'jquery'
 		} ),
 
-		new ExtractTextPlugin( 'assets/css/bundle.min.css' )
+		new ExtractTextPlugin( 'assets/dist/[name].min.css' )
 	]
 };

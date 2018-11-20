@@ -1,0 +1,34 @@
+.bgppb-banner {
+	margin-left: -20px;
+	display: flex;
+	background: #0073aa;
+	color: #fff;
+	border-bottom: 5px solid #fff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+
+	h1 {
+		color: currentColor;
+	}
+
+	.notice {
+		display: none !important;
+	}
+}
+
+.bgppb-banner__branding {
+	padding: 20px 40px;
+
+	img {
+		width: 70px;
+		display: block;
+		margin: 5px auto;
+	}
+}
+
+.bgppb-banner__title {
+	align-self: center;
+}
+
+.wrap.bg-content {
+	margin: 0;
+}

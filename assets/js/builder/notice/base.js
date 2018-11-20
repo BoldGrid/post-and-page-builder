@@ -1,6 +1,8 @@
 var $ = window.jQuery,
 	BG = BOLDGRID.EDITOR;
 
+import './base.scss';
+
 export class Base {
 
 	/**
@@ -10,7 +12,7 @@ export class Base {
 	 */
 	bindDismissButton() {
 		BG.Panel.$element
-			.find( '.bg-upgrade-notice, .setup' )
+			.find( '.bg-upgrade-notice, .setup, .base-notice' )
 			.find( '.dismiss' )
 			.one( 'click', () => {
 				this.dismissPanel();

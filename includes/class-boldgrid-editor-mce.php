@@ -51,7 +51,7 @@ class Boldgrid_Editor_MCE {
 	 * @since 1.1.
 	 */
 	public function load_editor_hooks() {
-		echo '<button type="button" id="insert-gridblocks-button" class="button gridblock-icon boldgrid-color">' .
+		echo '<button type="button" id="insert-gridblocks-button" class="button gridblock-icon boldgrid-color hidden">' .
 			'<span class="wp-media-buttons-icon"></span> Add Block</button>';
 	}
 
@@ -78,7 +78,7 @@ class Boldgrid_Editor_MCE {
 		global $typenow;
 
 		// verify the post type
-		if ( ! in_array( $typenow, $this->configs->get_configs( 'allowed_post_types' ) ) ) {
+		if ( 'bgppb' !== Boldgrid_Editor_Service::get( 'editor_type' ) ) {
 			return;
 		}
 

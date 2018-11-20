@@ -99,6 +99,10 @@ class Boldgrid_Controls_Page_Title {
 	public function add_checkbox() {
 		global $pagenow;
 
+		if ( 'bgppb' !== Boldgrid_Editor_Service::get( 'editor_type' ) ) {
+			return;
+		}
+
 		$post_id = ! empty( $_REQUEST['post'] ) ? $_REQUEST['post'] : null;
 
 		$template_file = null;

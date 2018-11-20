@@ -224,9 +224,8 @@
   text-transform: uppercase;
   font-weight: 300;
   font-size: 13px;
-  font-weight: 600;
   padding: 10px 35px;
-  line-height: inherit; }
+  line-height: 2em; }
 
 .bg-editor-button.bg-primary-color {
   background-color: #f95b26;
@@ -317,7 +316,7 @@
   padding: 15px 22px;
   font-weight: 300;
   margin: 0;
-  font-size: 16px; }
+  font-size: 14px; }
 
 .color-panel .panel-title .info,
 .editor-panel .panel-title .info {
@@ -1837,6 +1836,9 @@
 
 body#wpview-iframe-sandbox {
   background: transparent !important; }
+
+#post-body-content #insert-gridblocks-button {
+  display: inline-block; }
 
 /*--------------------------------------------------------------
 # Post.php Modifications
@@ -3480,75 +3482,6 @@ html:not(.dragging-section) .delete-icon-wrap {
     border-radius: 0; }
   .bg-editor-intro .editor-panel p.intro {
     width: 100%; } }
-
-.bg-editor-intro .step:not(.active) {
-  display: none; }
-
-.bg-editor-intro .editor-panel .panel-title {
-  pointer-events: none; }
-
-.bg-editor-intro .editor-panel .setup {
-  padding: 10px; }
-
-.bg-editor-intro .editor-panel .setup .palette-selection p {
-  font-size: 15px; }
-
-.bg-editor-intro .editor-panel .setup h2 {
-  line-height: 1.1;
-  font-size: 24px;
-  margin-bottom: 0; }
-
-.bg-editor-intro .editor-panel .setup .buttons {
-  text-align: right;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 15px 20px;
-  bottom: 0; }
-
-.bg-editor-intro .editor-panel .setup p {
-  font-family: inherit;
-  margin-left: 0; }
-
-@media screen and (max-width: 915px) {
-  .bg-editor-intro .editor-panel .setup .buttons {
-    position: static; }
-  .bg-editor-intro .editor-panel .setup .buttons .btn {
-    margin: 5px 0; }
-  .bg-editor-intro .editor-panel .setup .welcome .step-content {
-    margin-left: 0; }
-  .bg-editor-intro .editor-panel .setup .welcome img {
-    display: none; } }
-
-.setup .palette-selection .palette-row {
-  margin-right: -1px; }
-
-.setup .palette-selection .palette-row li {
-  margin-bottom: 0; }
-
-.setup .welcome img {
-  position: absolute;
-  width: 75px;
-  left: 20px;
-  top: 25px; }
-
-.setup .welcome .step-content {
-  margin-left: 90px; }
-
-.setup .welcome .lead {
-  font-size: 14px; }
-
-.setup .choose-template .bg-editor-radio {
-  text-align: left;
-  max-width: 240px;
-  margin: 0 auto;
-  margin-top: 30px; }
-
-.setup .choose-template .lead {
-  font-size: 14px; }
-
-.setup .done a.support-link {
-  color: #0073aa; }
 
 /*--------------------------------------------------------------
 # Forms Integration

@@ -1,0 +1,42 @@
+.bgppb-page-loading__spinner {
+	&::after {
+		content: ' ';
+		width: 50px;
+		height: 50px;
+		background-color: #000;
+		display: block;
+		border-radius: 100%;
+		animation: bgppb-sk-scaleout 1s infinite ease-in-out;
+	}
+
+	@keyframes bgppb-sk-scaleout {
+		0% {
+			transform: scale(0);
+		}
+
+		100% {
+			transform: scale(1);
+			opacity: 0;
+		}
+	}
+}
+
+.bgppb-page-loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 999999;
+	background: rgba(255, 255, 255, 0.7);
+
+	.bgppb-page-loading__spinner,
+	.bgppb-page-loading__logo {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate3d(-50%, -50%, 0);
+		width: 50px;
+		height: 50px;
+	}
+}

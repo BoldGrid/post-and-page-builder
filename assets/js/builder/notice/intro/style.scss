@@ -1,0 +1,126 @@
+.bg-editor-intro .step {
+	&:not(.active) {
+		display: none;
+	}
+}
+
+.bg-editor-intro .editor-panel {
+	.panel-title {
+		pointer-events: none;
+	}
+
+	.setup {
+		padding: 10px;
+
+		.palette-selection p {
+			font-size: 15px;
+		}
+
+		h2 {
+			line-height: 1.1;
+			font-size: 24px;
+			margin-bottom: 0;
+		}
+
+		.buttons {
+			text-align: right;
+			position: absolute;
+			left: 0;
+			right: 0;
+			margin: 15px 20px;
+			bottom: 0;
+		}
+
+		p {
+			font-family: inherit;
+			margin-left: 0;
+		}
+
+		@media screen and (max-width: 915px) {
+			.buttons {
+				position: static;
+
+				.btn {
+					margin: 5px 0;
+				}
+			}
+
+			.welcome {
+				.step-content {
+					margin-left: 0;
+				}
+
+				img {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.bgppb-default-editor {
+		.button-primary {
+			display: none;
+		}
+
+		h2 {
+			display: none;
+		}
+
+		.post-type-category.cpt {
+			display: none;
+		}
+	}
+}
+
+.setup .palette-selection .palette-row {
+	margin-right: -1px;
+
+	li {
+		margin-bottom: 0;
+	}
+}
+
+.setup .welcome {
+	img {
+		position: absolute;
+		width: 75px;
+		left: 20px;
+		top: 25px;
+	}
+
+	.step-content {
+		margin-left: 90px;
+	}
+
+	h2 {
+		margin-top: 15px;
+
+		span {
+			display: block;
+			margin-bottom: 5px;
+		}
+	}
+
+	.lead {
+		font-size: 14px;
+	}
+}
+
+.setup .choose-template {
+	.bg-editor-radio {
+		text-align: left;
+		max-width: 240px;
+		margin: 0 auto;
+		margin-top: 30px;
+	}
+
+	.lead {
+		font-size: 14px;
+	}
+}
+
+.setup .done {
+	a.support-link {
+		color: #0073aa;
+	}
+}

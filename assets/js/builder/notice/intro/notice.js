@@ -1,11 +1,13 @@
 var $ = window.jQuery,
 	BG = BOLDGRID.EDITOR;
 
-import templateHtml from '../../../../includes/template/intro.html';
-import { Base as Notice } from './base';
+import './style.scss';
+import templateHtml from './template.html';
+import { Base } from '../base';
 import { ColorPaletteSelection } from '@boldgrid/controls';
+import { DefaultEditor } from '../../../forms/default-editor';
 
-export class Intro extends Notice {
+export class Notice extends Base {
 	constructor() {
 		super();
 
@@ -26,30 +28,27 @@ export class Intro extends Notice {
 	 * @since 1.6
 	 */
 	init() {
-		if ( BoldgridEditor.display_intro ) {
-			this.selection = new ColorPaletteSelection();
-			this.$body = $( 'body' );
-			this.settings = this.getDefaults();
+		this.defaultEditor = new DefaultEditor();
+		this.selection = new ColorPaletteSelection();
+		this.$body = $( 'body' );
+		this.settings = this.getDefaults();
 
-			this.templateMarkup = _.template( templateHtml )();
-			this.$panelHtml = $( this.templateMarkup );
-			this.$templateInputs = this.$panelHtml.find( 'input[name="template"]' );
+		this.templateMarkup = _.template( templateHtml )( { nonce: BoldgridEditor.setupNonce } );
+		this.$panelHtml = $( this.templateMarkup );
+		this.$panelHtml.find( 'default-editor-form' ).replaceWith( this.defaultEditor.getForm() );
+		this.$templateInputs = this.$panelHtml.find( 'input[name="bgppb-template"]' );
 
-			this.openPanel();
-			this._setupNav();
-			this._addPanelSettings( 'welcome' );
-			this.bindDismissButton();
-			this._setupStepActions();
-		}
+		this.openPanel();
+		this._setupNav();
+		this._addPanelSettings( 'welcome' );
+		this.bindDismissButton();
+		this._setupStepActions();
 	}
 
 	getDefaults() {
 		return {
 			template: {
 				choice: 'fullwidth'
-			},
-			palette: {
-				choice: null
 			}
 		};
 	}
@@ -61,7 +60,6 @@ export class Intro extends Notice {
 	 */
 	openPanel() {
 		BG.Panel.currentControl = this;
-		this.$body.addClass( 'bg-editor-intro' );
 		BG.Panel.setDimensions( this.panel.width, this.panel.height );
 		BG.Panel.setTitle( this.panel.title );
 		BG.Panel.setContent( this.$panelHtml );
@@ -92,13 +90,7 @@ export class Intro extends Notice {
 			url: ajaxurl,
 			dataType: 'json',
 			timeout: 10000,
-			data: {
-				action: 'boldgrid_editor_setup',
-
-				// eslint-disable-next-line
-				boldgrid_editor_setup: BoldgridEditor.setupNonce,
-				settings: this.settings
-			}
+			data: BG.Panel.$element.find( 'input, select' ).serialize()
 		} );
 	}
 

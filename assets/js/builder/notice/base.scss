@@ -1,0 +1,28 @@
+.market-notice {
+	display: flex;
+	padding: 10px 0;
+
+	.message h2 {
+		line-height: 1em;
+		margin: 20px 0;
+		font-size: 28px;
+
+		span {
+			margin: 5px 0;
+			display: block;
+		}
+	}
+
+	.graphic {
+		padding: 20px;
+
+		img {
+			margin-top: 8px;
+			width: 250px;
+		}
+	}
+
+	.buttons {
+		margin-top: 25px;
+	}
+}
