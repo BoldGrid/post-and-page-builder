@@ -136,7 +136,7 @@ WordPress Editor.
 
 = 1.9.0 =
 
-Release Date: TBD
+Release Date: November 26th, 2018
 
 * New Feature: Users can now switch between editors
 * New Feature: A default editor can be specified
