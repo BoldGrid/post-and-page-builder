@@ -3,7 +3,7 @@
  * Plugin Name: Post and Page Builder
  * Plugin URI: https://www.boldgrid.com/boldgrid-editor/
  * Description: Customized drag and drop editing for posts and pages. The Post and Page Builder adds functionality to the existing TinyMCE Editor to give you easier control over your content.
- * Version: 1.8.0
+ * Version: 1.8.1
  * Author: BoldGrid <support@boldgrid.com>
  * Author URI: https://www.boldgrid.com/
  * Text Domain: boldgrid-editor
@@ -71,7 +71,6 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 	register_activation_hook( __FILE__, 'boldgrid_editor_deactivate' );
 
 	register_deactivation_hook( __FILE__,  array( 'Boldgrid_Editor_Activate', 'on_deactivate' ) );
-	register_uninstall_hook( __FILE__, array( 'Boldgrid_Editor_Uninstall', 'on_delete' ) );
 
 	add_action( 'activate_boldgrid-editor/boldgrid-editor.php',
 		array( 'Boldgrid_Editor_Activate', 'block_activate' ) );
