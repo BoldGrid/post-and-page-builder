@@ -1,7 +1,7 @@
 <div class="setup">
 	<input type="hidden" name="action" value="boldgrid_editor_setup">
 	<input type="hidden" name="boldgrid_editor_setup" value="<%= nonce %>">
-	<div data-step="welcome" class="step active welcome" data-panel-width="600" data-panel-info="Step 1/4">
+	<div data-step="welcome" class="step active welcome" data-panel-width="600" data-panel-info="<%= stepper.getLabel('welcome') %>">
 		<img src="../../../../image/notice/plugin-icon-editor.png">
 		<div class="step-content">
 			<h2>
@@ -14,19 +14,19 @@
 			</p>
 			<p class="buttons">
 				<a class='btn bg-editor-button btn-rounded bg-secondary-color dismiss'>Skip Setup</a>
-				<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="default-editor">Okay, Let's Go!</a>
+				<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="<%= stepper.getNext('welcome') %>">Okay, Let's Go!</a>
 			</p>
 		</div>
 	</div>
-	<div data-step="default-editor" data-panel-info="Step 2/4" class="step choose-template" data-panel-width="550"
+	<div data-step="default-editor" data-panel-info="<%= stepper.getLabel('default-editor') %>" class="step choose-template" data-panel-width="550"
 	    data-panel-height="425" data-panel-title="Post and Page Builder - Editor">
 		<h3>Select a default editor:</h3>
 		<default-editor-form />
 		<p class="buttons">
-			<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="choose-template">Next Step</a>
+			<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="<%= stepper.getNext('default-editor') %>">Next Step</a>
 		</p>
 	</div>
-	<div data-step="choose-template" data-panel-info="Step 3/4" class="step choose-template" data-panel-width="350"
+	<div data-step="choose-template" data-panel-info="<%= stepper.getLabel('choose-template') %>" class="step choose-template" data-panel-width="350"
 	    data-panel-height="550" data-panel-title="Post and Page Builder - Templates">
 		<h3>Choose your default template:</h3>
 		<p class="lead">The Post and Page Builder includes 3 custom page templates provide more layout control. Choose your
@@ -62,10 +62,10 @@
 			</label>
 		</div>
 		<p class="buttons">
-			<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="done">Next Step</a>
+			<a class='btn bg-editor-button btn-rounded bg-primary-color' data-action-step="<%= stepper.getNext('choose-template') %>">Next Step</a>
 		</p>
 	</div>
-	<div class="done step" data-step="done" data-panel-info="Step 4/4" data-panel-height="250" data-panel-width="525"
+	<div class="done step" data-step="done" data-panel-info="<%= stepper.getLabel('done') %>" data-panel-height="250" data-panel-width="525"
 	    data-panel-title="Post and Page Builder - Help">
 		<h2>Your done!</h2>
 		<p>

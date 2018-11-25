@@ -20,6 +20,15 @@ export class Notice extends Base {
 			disabledClose: true,
 			autoCenter: true
 		};
+
+		this.stepConfig = {
+			boldgridTheme: [ 'welcome', 'default-editor', 'done' ],
+			standard: [ 'welcome', 'default-editor', 'choose-template', 'done' ]
+		};
+
+		this.steps = BoldgridEditor.is_boldgrid_theme ?
+			this.stepConfig.boldgridTheme :
+			this.stepConfig.standard;
 	}
 
 	/**
@@ -33,7 +42,10 @@ export class Notice extends Base {
 		this.$body = $( 'body' );
 		this.settings = this.getDefaults();
 
-		this.templateMarkup = _.template( templateHtml )( { nonce: BoldgridEditor.setupNonce } );
+		this.templateMarkup = _.template( templateHtml )( {
+			nonce: BoldgridEditor.setupNonce,
+			stepper: this.getStepper()
+		} );
 		this.$panelHtml = $( this.templateMarkup );
 		this.$panelHtml.find( 'default-editor-form' ).replaceWith( this.defaultEditor.getForm() );
 		this.$templateInputs = this.$panelHtml.find( 'input[name="bgppb-template"]' );
@@ -43,6 +55,31 @@ export class Notice extends Base {
 		this._addPanelSettings( 'welcome' );
 		this.bindDismissButton();
 		this._setupStepActions();
+	}
+
+	/**
+	 * Moethods to help with the stepper UI.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return {object} Template methods.
+	 */
+	getStepper() {
+		let self = this;
+
+		return {
+			getLabel( step ) {
+				let size = self.steps.length,
+					current = self.steps.findIndex( el => step === el ) + 1;
+
+				return `Step: ${current}/${size}`;
+			},
+			getNext( step ) {
+				let current = self.steps.findIndex( el => step === el ) + 1;
+
+				return self.steps[current];
+			}
+		};
 	}
 
 	getDefaults() {
@@ -73,7 +110,7 @@ export class Notice extends Base {
 		this.settings.template.choice = this.$templateInputs.filter( ':checked' ).val();
 
 		// If the user enters the first time setup on a page, update the meta box.
-		if ( 'default' !== this.settings.template.choice ) {
+		if ( 'default' !== this.settings.template.choice && ! BoldgridEditor.is_boldgrid_theme ) {
 			let val = 'template/page/' + this.settings.template.choice + '.php';
 			$( '#page_template' )
 				.val( val )
