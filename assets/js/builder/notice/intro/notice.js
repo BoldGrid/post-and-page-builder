@@ -105,8 +105,6 @@ export class Notice extends Base {
 	}
 
 	dismissPanel() {
-		super.dismissPanel();
-
 		this.settings.template.choice = this.$templateInputs.filter( ':checked' ).val();
 
 		// If the user enters the first time setup on a page, update the meta box.
@@ -119,15 +117,29 @@ export class Notice extends Base {
 
 		// Make ajax call to save the given settings.
 		this.saveSettings();
+
+		super.dismissPanel();
 	}
 
 	saveSettings() {
+		let $inputs = BG.Panel.$element.find( 'input, select' ),
+			savedValues = $inputs.serializeArray();
+
 		$.ajax( {
 			type: 'post',
 			url: ajaxurl,
 			dataType: 'json',
 			timeout: 10000,
-			data: BG.Panel.$element.find( 'input, select' ).serialize()
+			data: $inputs.serialize()
+		} ).done( response => {
+
+			// If the user changes their default editor in the setup screen, reload page to add settings.
+			let inputName = `bgppb_post_type[${BoldgridEditor.post_type}]`,
+				input = savedValues.find( val => val.name === inputName );
+
+			if ( input && 'bgppb' !== input.value ) {
+				window.location.reload();
+			}
 		} );
 	}
 
