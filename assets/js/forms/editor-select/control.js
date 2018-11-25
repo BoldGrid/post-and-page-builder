@@ -7,10 +7,10 @@ export class Control {
 
 	constructor() {
 		this.labels = [
-			{ name: 'bgppb', value: 'bgppb', label: `<img src="${BoldgridEditor.plugin_url}/assets/image/boldgrid-logo.svg"/> Post and Page Builder` },
-			{ name: 'modern', value: 'modern', label: 'WordPress Editor' },
-			{ name: 'classic', value: 'classic', label: 'Classic Editor' },
-			{ name: 'default', value: 'default', label: 'Default' }
+			{ name: 'bgppb', value: 'bgppb', label: `<img src="${BoldgridEditor.plugin_url}/assets/image/boldgrid-logo.svg"/> <span>Post and Page Builder</span>` },
+			{ name: 'modern', value: 'modern', label: '<span>WordPress Editor</span>' },
+			{ name: 'classic', value: 'classic', label: '<span>Classic Editor</span>' },
+			{ name: 'default', value: 'default', label: '<span>Default</span>' }
 		];
 
 		this.labels = this._filterAvailableEditors( this.labels );
@@ -103,7 +103,8 @@ export class Control {
 	_renderMenu() {
 		let matMenu = new MatMenu( {
 			name: 'bgppb-choose-editor',
-			options: this.labels.filter( choice => 'default' !== choice.value )
+			options: this.labels.filter( choice => 'default' !== choice.value ),
+			selected: BoldgridEditor.globalSettings.current_editor
 		} );
 
 		this.$element.find( '.menu-container' ).append( matMenu.render() );

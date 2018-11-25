@@ -44,11 +44,11 @@ export class Form {
 		return `
 			<form method="POST" class="bgppb-default-editor">
 				<input type="hidden" name="bgppb-form-action" value="default_editor">
-				<h2>Default Editor</h2>
+				<h2>Preferred Editor</h2>
 				<p>
-					Choose the way default way to edit your content.
-					You can also choose an editor for a specific post by selecting it within the
-					editor. To learn more about your choices visit our
+					The BoldGrid Post and Page Builder is recommended for all types of content,
+					but you can change this if needed.  You can also select a specific editor
+					directly from within a page, post, or block. To learn more about this feature visit our
 					<a target="_blank" href="${BoldgridEditor.plugin_configs.urls.support_default_editor}">support article</a>.
 				</p>
 				<div class="post-type-category native">

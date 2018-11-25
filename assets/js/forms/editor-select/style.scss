@@ -1,3 +1,14 @@
+.mdc-menu--supports-icon {
+	.mdc-list-item img {
+		position: absolute;
+		width: 25px;
+	}
+
+	.mdc-list-item span {
+		padding-left: 2em;
+	}
+}
+
 #bgppb-choose-editor {
 	display: none;
 	position: relative;
