@@ -22,6 +22,8 @@ export class Page {
 	 * @since 1.9.0
 	 */
 	_onload() {
+		this._bindSidebarOpen();
+
 		this.registerPlugin( {
 			pluginName: 'bgppb',
 			type: 'bgppb',
@@ -45,6 +47,25 @@ export class Page {
 	}
 
 	/**
+	 * When the sidebar changes, check if it's one of our plugins..
+	 *
+	 * @since 1.9.0
+	 */
+	_bindSidebarOpen() {
+		wp.data.subscribe( ( e ) => {
+			let post = wp.data.select( 'core/edit-post' ),
+				isBgppb = post.isPluginSidebarOpened( 'bgppb' ),
+				isClassic = post.isPluginSidebarOpened( 'bgppb-classic' );
+
+			if ( isBgppb ) {
+				this.editorSelect.changeType( 'bgppb' );
+			} else if ( isClassic ) {
+				this.editorSelect.changeType( 'classic' );
+			}
+		} );
+	}
+
+	/**
 	 * Add a new item to the gutenberg menu.
 	 *
 	 * @since 1.9.0
@@ -58,25 +79,9 @@ export class Page {
 				return el(
 					wp.editPost.PluginSidebarMoreMenuItem,
 					{
+						target: configs.pluginName
 					},
-					[
-						el(
-							'span',
-							{
-							},
-							__( configs.label )
-						),
-						el(
-							'span',
-							{
-								className: 'editor-selector',
-								onClick: ( e ) => {
-									e.stopPropagation();
-									this.editorSelect.changeType( configs.type );
-								}
-							}
-						)
-					]
+					__( configs.label )
 				);
 			}
 		} );
