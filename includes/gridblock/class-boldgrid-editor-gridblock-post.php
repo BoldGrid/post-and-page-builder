@@ -96,6 +96,7 @@ class Boldgrid_Editor_Gridblock_Post {
 			'taxonomies'          => array( 'bg_block_type' ),
 			'hierarchical'        => false,
 			'show_ui'             => true,
+			'show_in_rest'        => true,
 			// 'show_in_menu'        => false,
 			// 'show_in_admin_bar'   => false,
 			'menu_position'       => 60,
@@ -123,6 +124,7 @@ class Boldgrid_Editor_Gridblock_Post {
 				'label' => __( 'Block Types' ),
 				'show_admin_column' => true,
 				'show_in_menu' => false,
+				'show_in_rest' => true,
 				'show_in_nav_menus' => false,
 				'description' => 'Block Types'
 			)
