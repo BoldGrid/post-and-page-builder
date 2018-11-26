@@ -54,13 +54,12 @@ export class Page {
 	_bindSidebarOpen() {
 		wp.data.subscribe( ( e ) => {
 			let post = wp.data.select( 'core/edit-post' ),
-				isBgppb = post.isPluginSidebarOpened( 'bgppb' ),
-				isClassic = post.isPluginSidebarOpened( 'bgppb-classic' );
+				sidebar = post.getActiveGeneralSidebarName();
 
-			if ( isBgppb ) {
-				this.editorSelect.changeType( 'bgppb' );
-			} else if ( isClassic ) {
+			if ( 'bgppb-classic/bgppb-classic' === sidebar ) {
 				this.editorSelect.changeType( 'classic' );
+			} else if ( 'bgppb/bgppb' === sidebar  ) {
+				this.editorSelect.changeType( 'bgppb' );
 			}
 		} );
 	}
