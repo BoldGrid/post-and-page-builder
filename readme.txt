@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 1.9.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,12 +136,18 @@ WordPress Editor.
 
 = 1.9.0 =
 
-Release Date: November 26th, 2018
+Release Date: November 27th, 2018
 
 * New Feature: Users can now switch between editors
 * New Feature: A default editor can be specified
 * New Feature: Builder can be enabled on custom post types
 * Update: Lengthened timeouts on block generating
+
+= 1.8.1 =
+
+Release Date: November 21st, 2018
+
+* Bug Fix: Deleting plugin caused issues with BoldGrid Library.
 
 = 1.8.0 =
 
