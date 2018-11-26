@@ -50,7 +50,7 @@ export class Form {
 				<input type="hidden" name="bgppb-form-action" value="default_editor">
 				<h2>Preferred Editor</h2>
 				<p>
-					Choose the way default way to edit your content.
+					Choose the preferred way to edit your content.
 					You can also choose an editor for a specific post by selecting it within the
 					editor. To learn more about your choices visit our
 					<a target="_blank" href="${BoldgridEditor.plugin_configs.urls.support_default_editor}">support article</a>.
