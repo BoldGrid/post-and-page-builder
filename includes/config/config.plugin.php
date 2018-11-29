@@ -43,7 +43,7 @@ return array (
 		'boldgrid-components' => array(
 			'handle' => 'boldgrid-components',
 			'deps' => array(),
-			'version' => '2.15.2',
+			'version' => '2.16.1',
 			'src' => plugins_url( '/assets/css/components.min.css', BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' ),
 			'mce_str_match' => '/components.',
 		),
