@@ -694,7 +694,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				! $this
 					.parent()
 					.closest_context(
-						self.original_selector_strings.content_selectors_string,
+						self.original_selector_strings.general_content_selector_string,
 						$context
 					).length
 			) {
@@ -718,7 +718,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 
 			if (
 				! $this.closest_context(
-					self.original_selector_strings.content_selectors_string,
+					self.original_selector_strings.general_content_selector_string,
 					self
 				).length
 			) {
