@@ -170,6 +170,7 @@ class Boldgrid_Editor {
 		global $wp_customize;
 
 		$boldgrid_editor_ajax      = new Boldgrid_Editor_Ajax();
+		$boldgrid_editor_crop      = new Boldgrid_Editor_Crop();
 		$boldgrid_editor_builder   = new Boldgrid_Editor_Builder();
 		$builder_styles            = new Boldgrid_Editor_Builder_Styles();
 		$boldgrid_editor_mce       = new Boldgrid_Editor_MCE( $this->config );
@@ -183,7 +184,7 @@ class Boldgrid_Editor {
 		$setting_view              = new PPB\View\Settings();
 		$gutenberg_view            = new PPB\View\Gutenberg();
 
-		// Register Services
+		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
 		Boldgrid_Editor_Service::register( 'assets', new Boldgrid_Editor_Assets( $this->config->get_configs() ) );
 
@@ -195,10 +196,10 @@ class Boldgrid_Editor {
 		// Upgrade old versions of maps.
 		add_action( 'admin_init', array( $boldgrid_editor_media_map, 'upgrade_maps' ) );
 
-		$valid_pages = array (
+		$valid_pages = array(
 			'post.php',
 			'post-new.php',
-			'media-upload.php'
+			'media-upload.php',
 		);
 
 		$script_name = ! empty( $_SERVER['SCRIPT_NAME'] ) ? $_SERVER['SCRIPT_NAME'] : false;
@@ -219,9 +220,9 @@ class Boldgrid_Editor {
 			 * The post type is "post", unless specified by $current_post->post_type or
 			 * $_GET['post_type'].
 			 */
-			if( ! empty( $current_post->post_type ) ) {
+			if ( ! empty( $current_post->post_type ) ) {
 				$current_post_type = $current_post->post_type;
-			} elseif( isset( $_GET['post_type'] ) ) {
+			} else if ( isset( $_GET['post_type'] ) ) {
 				$current_post_type = $_GET['post_type'];
 			} else {
 				$current_post_type = 'post';
@@ -242,21 +243,22 @@ class Boldgrid_Editor {
 				$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
 				$this->set_is_boldgrid_theme( $is_boldgrid_theme );
 
+				add_action( 'admin_footer', array( $boldgrid_editor_crop, 'admin_footer' ) );
 				add_action( 'load-post.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
 				add_action( 'load-post-new.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
 
-				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_colors' ), 10, 2  );
-				add_action( 'save_post', array( $boldgrid_editor_builder, 'record_feedback' ), 10, 2  );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_colors' ), 10, 2 );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'record_feedback' ), 10, 2 );
 				add_action( 'edit_form_after_title', array( $boldgrid_editor_builder, 'post_inputs' ) );
-				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_container_meta' ), 10, 2  );
-				add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2  );
+				add_action( 'save_post', array( $boldgrid_editor_builder, 'save_container_meta' ), 10, 2 );
+				add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2 );
 
 				add_action( 'media_buttons', array( $boldgrid_editor_mce, 'load_editor_hooks' ) );
 				add_action( 'media_buttons', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
 
 				// Display and save admin notice state.
 				add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );
-				add_action( 'shutdown', array ( $boldgrid_editor_version, 'save_notice_state' ) );
+				add_action( 'shutdown', array( $boldgrid_editor_version, 'save_notice_state' ) );
 
 				// Create media modal tabs.
 				$configs = array_merge( $this->get_path_configs(), $this->get_tab_configs() );
@@ -269,26 +271,23 @@ class Boldgrid_Editor {
 				add_action( 'admin_enqueue_scripts', array( Boldgrid_Editor_Service::get( 'assets' ), 'enqueue_scripts_action' ), 5 );
 
 				// Add ?boldgrid-editor-version=$version_number to each added file.
-				add_filter( 'mce_css', array ( $boldgrid_editor_mce, 'add_cache_busting' ) );
+				add_filter( 'mce_css', array( $boldgrid_editor_mce, 'add_cache_busting' ) );
 
 				if ( 'media-upload.php' !== $page_name ) {
-					add_action( 'admin_print_footer_scripts', array ( $boldgrid_editor_builder, 'print_scripts' ), 25 );
+					add_action( 'admin_print_footer_scripts', array( $boldgrid_editor_builder, 'print_scripts' ), 25 );
 				}
 
 				// Add Loading Graphic.
 				add_filter( 'the_editor', function ( $html ) {
-					$active = 'tinymce' ===  wp_default_editor() ? 'active' : 'disabled';
+					$active = 'tinymce' === wp_default_editor() ? 'active' : 'disabled';
 					return '<div class="bg-editor-loading-main ' . $active . '"><div class="bg-editor-loading"></div>' . $html . '</div>';
 				} );
-
-				$boldgrid_editor_crop = new Boldgrid_Editor_Crop();
-				$boldgrid_editor_crop->add_hooks();
 			}
 		}
 
 		if ( $edit_post_page || isset( $wp_customize ) ) {
 			// Append Editor Styles.
-			add_filter( 'tiny_mce_before_init', array ( $boldgrid_editor_mce, 'allow_empty_tags' ), 29 );
+			add_filter( 'tiny_mce_before_init', array( $boldgrid_editor_mce, 'allow_empty_tags' ), 29 );
 		}
 
 		add_action( 'wp_ajax_boldgrid_canvas_image', array( $boldgrid_editor_ajax, 'upload_image_ajax' ) );
@@ -298,9 +297,11 @@ class Boldgrid_Editor {
 		add_action( 'wp_ajax_boldgrid_generate_blocks', array( $boldgrid_editor_ajax, 'generate_blocks' ) );
 		add_action( 'wp_ajax_boldgrid_editor_save_key', array( $boldgrid_editor_ajax, 'save_key' ) );
 		add_action( 'wp_ajax_boldgrid_get_saved_blocks', array( $boldgrid_editor_ajax, 'get_saved_blocks' ) );
+		add_action( 'wp_ajax_suggest_crop_crop', array( $boldgrid_editor_crop, 'crop' ) );
+		add_action( 'wp_ajax_suggest_crop_get_dimensions', array( $boldgrid_editor_crop, 'get_dimensions' ) );
 
 		// Save a users selection for enabling draggable.
-		add_action( 'wp_ajax_boldgrid_draggable_enabled', array ( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
+		add_action( 'wp_ajax_boldgrid_draggable_enabled', array( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
 	}
 
 	/**
