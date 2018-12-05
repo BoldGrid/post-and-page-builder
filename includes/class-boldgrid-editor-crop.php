@@ -17,58 +17,6 @@
  * @since 1.0.8
  */
 class Boldgrid_Editor_Crop {
-	/**
-	 * Should the 'suggest crop' feature be loaded?
-	 *
-	 * @since 1.0.8
-	 * @access public
-	 * @var bool $should_be_loaded Set in the constructor.
-	 */
-	public $should_be_loaded = false;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 1.0.8
-	 *
-	 * @global string $pagenow;
-	 */
-	public function __construct() {
-		global $pagenow;
-
-		$valid_pages = array (
-			'post.php',
-			'post-new.php',
-			'media-upload.php'
-		);
-
-		$this->should_be_loaded = in_array( $pagenow, $valid_pages );
-	}
-
-	/**
-	 * Add hooks.
-	 *
-	 * @since 1.0.8
-	 */
-	public function add_hooks() {
-		if ( is_admin() ) {
-			add_action( 'admin_footer', array (
-				$this,
-				'admin_footer'
-			) );
-		}
-
-		add_action( 'wp_ajax_suggest_crop_crop', array (
-			$this,
-			'crop'
-		) );
-
-		add_action( 'wp_ajax_suggest_crop_get_dimensions',
-			array (
-				$this,
-				'get_dimensions'
-			) );
-	}
 
 	/**
 	 * Admin footer.
@@ -76,9 +24,7 @@ class Boldgrid_Editor_Crop {
 	 * @since 1.0.8
 	 */
 	public function admin_footer() {
-		if ( $this->should_be_loaded ) {
-			require_once BOLDGRID_EDITOR_PATH . '/includes/template/crop.php';
-		}
+		require_once BOLDGRID_EDITOR_PATH . '/includes/template/crop.php';
 	}
 
 	/**
