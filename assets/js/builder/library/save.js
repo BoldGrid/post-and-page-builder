@@ -76,7 +76,7 @@ export class Save {
 			url: ajaxurl,
 			dataType: 'json',
 			method: 'POST',
-			timeout: 5000,
+			timeout: 20000,
 			data: data
 		} );
 	}

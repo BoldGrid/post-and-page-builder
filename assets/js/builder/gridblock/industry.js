@@ -87,7 +87,7 @@ export class Industry {
 					BoldgridEditor.plugin_configs.asset_server +
 					BoldgridEditor.plugin_configs.ajax_calls.gridblock_industries,
 				dataType: 'json',
-				timeout: 10000
+				timeout: 20000
 			} )
 
 				// On success, create select menu.

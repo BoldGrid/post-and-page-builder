@@ -67,7 +67,7 @@ export class FetchSaved {
 			type: 'post',
 			url: ajaxurl,
 			dataType: 'json',
-			timeout: 10000,
+			timeout: 20000,
 			data: {
 				/*eslint-disable */
 				action: 'boldgrid_get_saved_blocks',
