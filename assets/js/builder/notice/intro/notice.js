@@ -129,7 +129,7 @@ export class Notice extends Base {
 			type: 'post',
 			url: ajaxurl,
 			dataType: 'json',
-			timeout: 10000,
+			timeout: 20000,
 			data: $inputs.serialize()
 		} ).done( response => {
 

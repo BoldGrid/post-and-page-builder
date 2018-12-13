@@ -57,7 +57,7 @@ import { Industry } from './industry';
 						BoldgridEditor.plugin_configs.asset_server +
 						BoldgridEditor.plugin_configs.ajax_calls.gridblock_types,
 					dataType: 'json',
-					timeout: 4000,
+					timeout: 20000,
 					data: {
 						// eslint-disable-next-line
 						release_channel: BoldgridEditor.boldgrid_settings.theme_release_channel,

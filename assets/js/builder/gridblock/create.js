@@ -98,7 +98,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 						type: 'post',
 						url: ajaxurl,
 						dataType: 'json',
-						timeout: 10000,
+						timeout: 20000,
 						data: {
 							action: 'boldgrid_canvas_image',
 
