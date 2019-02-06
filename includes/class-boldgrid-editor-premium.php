@@ -35,6 +35,22 @@ class Boldgrid_Editor_Premium {
 	}
 
 	/**
+	 * Get the plugins premium url.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @return string URL.
+	 */
+	public function get_premium_url() {
+		$url = 'https://www.boldgrid.com/central/plugins';
+		if ( class_exists( '\Boldgrid\Library\Library\Plugin\Plugin' ) ) {
+			$url = new \Boldgrid\Library\Library\Plugin\Plugin( 'post-and-page-builder-premium' );
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Display "setup" admin notices.
 	 *
 	 * This method is currently used to display admin notices to help guide the
@@ -74,7 +90,7 @@ class Boldgrid_Editor_Premium {
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for the upgrade page.
 					__( 'Thank you for activating the <strong>Post & Page Builder Premium</strong>! Before you can begin using all of the premium features, you must <a href="%2$s">add your premium key</a>. If you are using an Official BoldGrid Host, contact them or login to their management system to retrieve your Premium key. Otherwise, please visit <a href="%1$s" target="_blank">BoldGrid Central</a> to upgrade.', 'boldgrid-editor' ),
-					'https://www.boldgrid.com/central/',
+					$config['urls']['premium_key'] . '?source=ppbp-installed',
 					admin_url( 'options-general.php?page=boldgrid-connect.php' )
 				) . '</p>',
 			),
@@ -87,7 +103,7 @@ class Boldgrid_Editor_Premium {
 						'Hello there! We see that you have a <strong>Premium BoldGrid Connect Key</strong> and you have the <strong>Post & Page Builder</strong> activated! Be sure to download the <strong>Post and Page Builder Premium Extension</strong> from <a href="%1$s">BoldGrid Central</a> to gain access to more features!',
 						'boldgrid-editor'
 					),
-					'https://www.boldgrid.com/central'
+					$this->get_premium_url()
 				) . '</p>',
 			),
 		);
