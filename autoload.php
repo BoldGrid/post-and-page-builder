@@ -4,7 +4,7 @@ function bgppb_autoload ( $className ) {
 		return;
 	}
 	$updatedClass = str_replace( 'Boldgrid\PPB\\', '', $className );
-	$path = __DIR__ . DIRECTORY_SEPARATOR . $updatedClass . '.php';
+	$path = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . $updatedClass . '.php';
 	$path = str_replace( '\\', '/', $path );
 
 	if ( file_exists( $path ) && $className !== $updatedClass ) {

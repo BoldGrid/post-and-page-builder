@@ -379,8 +379,12 @@ class Boldgrid_Editor_Builder {
 			$feedback = json_decode( $feedback, true );
 			$feedback = is_array( $feedback ) ? $feedback : array();
 
-			foreach( $feedback as $item ) {
+			foreach ( $feedback as $item ) {
 				do_action( 'boldgrid_feedback_add', $item['action'], $item['data'] );
+
+				if ( 'installed_gridblock' === $item['action'] ) {
+					Boldgrid_Editor_Service::get( 'rating' )->record( 'block_install' );
+				}
 			}
 		}
 	}

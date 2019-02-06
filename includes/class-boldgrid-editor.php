@@ -186,6 +186,7 @@ class Boldgrid_Editor {
 
 		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
+		Boldgrid_Editor_Service::register( 'rating', new PPB\View\Rating\Service() );
 		Boldgrid_Editor_Service::register( 'assets', new Boldgrid_Editor_Assets( $this->config->get_configs() ) );
 
 		$boldgrid_editor_wpforms->init();

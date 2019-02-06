@@ -21,6 +21,11 @@ if ( ! defined( 'BOLDGRID_EDITOR_VERSION' ) ) {
 	define( 'BOLDGRID_EDITOR_VERSION', implode( get_file_data( __FILE__, array( 'Version' ), 'plugin' ) ) );
 }
 
+// Define boldgrid-backup key.
+if ( ! defined( 'BOLDGRID_EDITOR_KEY' ) ) {
+	define( 'BOLDGRID_EDITOR_KEY', 'bgppb' );
+}
+
 // Define Editor path.
 if ( ! defined( 'BOLDGRID_EDITOR_PATH' ) ) {
 	define( 'BOLDGRID_EDITOR_PATH', dirname( __FILE__ ) );

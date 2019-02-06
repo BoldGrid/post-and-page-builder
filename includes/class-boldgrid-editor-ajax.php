@@ -228,6 +228,8 @@ class Boldgrid_Editor_Ajax {
 			$output = wp_set_post_terms( $post_id, array( $type ), 'bg_block_type' );
 		}
 
+		Boldgrid_Editor_Service::get( 'rating' )->record( 'block_save' );
+
 		if ( ! empty( $post_id ) ) {
 			wp_send_json_success( get_post( $post_id ) );
 		} else {

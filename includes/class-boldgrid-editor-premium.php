@@ -1,23 +1,23 @@
 <?php
 /**
-* File: Premium.php
-*
-* Print out serveral notices.
-*
-* @since      1.0.0
-* @package    BoldGrid
-* @subpackage PPBP
-* @author     BoldGrid <support@boldgrid.com>
-* @link       https://boldgrid.com
-*/
+ * File: Premium.php
+ *
+ * Print out serveral notices.
+ *
+ * @since      1.0.0
+ * @package    BoldGrid
+ * @subpackage PPBP
+ * @author     BoldGrid <support@boldgrid.com>
+ * @link       https://boldgrid.com
+ */
 
 /**
-* Class: Premium
-*
-* Print out serveral notices.
-*
-* @since 1.0.0
-*/
+ * Class: Premium
+ *
+ * Print out serveral notices.
+ *
+ * @since 1.0.0
+ */
 class Boldgrid_Editor_Premium {
 
 	/**
