@@ -2,7 +2,7 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.0
+Tested up to: 5.0.3
 Requires PHP: 5.4
 Stable tag: 1.9.2
 License: GPLv2 or later
