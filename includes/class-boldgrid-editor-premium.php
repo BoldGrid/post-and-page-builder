@@ -44,7 +44,8 @@ class Boldgrid_Editor_Premium {
 	public function get_premium_url() {
 		$url = 'https://www.boldgrid.com/central/plugins';
 		if ( class_exists( '\Boldgrid\Library\Library\Plugin\Plugin' ) ) {
-			$url = new \Boldgrid\Library\Library\Plugin\Plugin( 'post-and-page-builder-premium' );
+			$premium_plugin = new \Boldgrid\Library\Library\Plugin\Plugin( 'post-and-page-builder-premium' );
+			$url = $premium_plugin->getDownloadUrl();
 		}
 
 		return $url;
