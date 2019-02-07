@@ -4,20 +4,19 @@
 	</div>
 	<div class="existing-key">
 		<h2><%= ( 'basic' === license ) ? 'Free' : 'Premium' %> BoldGrid Connect Key</h2>
-			<% if ( 'basic' === license ) { %>
-			<p>Thank you for adding your Connect Key. Try upgrading to a Premium subscription for full access to BoldGrid!</p>
-			<% } else if ( 'premium' === license ) { %>
-				<p>Awesome! You have Premium Connect Key saved on this site.</p>
-				<p>Make sure you're getting the most out of your premium subscription
-				by installing our other <a href="https://www.boldgrid.com/wordpress-plugins/"
-				target="_blank">BoldGrid plugins</a>. As a Premium user, you also
-				have unlimited access to <a href="https://www.boldgrid.com/central/get-it-now"
-				target="_blank">Cloud WordPress</a> where you can create new WordPress sites
-				for free. If you need any help, our support team is eager to serve!</p>
-			<% } %>
-		</p>
 		<% if ( 'basic' === license ) { %>
-		<p><a class="button button-primary upgrade-key" target="_blank" href="<%=newKeyLink %>">Upgrade</a></p>
+			<p>Thank you for adding your Connect Key. Try upgrading to a Premium subscription for full access to BoldGrid!</p>
+		<% } else if ( 'premium' === license ) { %>
+			<p>Awesome! You have Premium Connect Key saved on this site.</p>
+			<p>Make sure you're getting the most out of your premium subscription
+			by installing our other <a href="https://www.boldgrid.com/wordpress-plugins/"
+			target="_blank">BoldGrid plugins</a>. As a Premium user, you also
+			have unlimited access to <a href="https://www.boldgrid.com/central/get-it-now"
+			target="_blank">Cloud WordPress</a> where you can create new WordPress sites
+			for free. If you need any help, our support team is eager to serve!</p>
+		<% } %>
+		<% if ( 'basic' === license ) { %>
+			<p><a class="button button-primary upgrade-key" target="_blank" href="<%=premiumKeyLink %>">Upgrade</a></p>
 		<% } %>
 		<p>
 			<a class="change-connect-key" href="#">Click here to change your Connect Key</a>

@@ -29,6 +29,7 @@ return array (
 	'component_controls' => include __DIR__ . '/config.components.php',
 	'urls' => array(
 		'premium_key' => 'https://www.boldgrid.com/connect-keys',
+		'new_key' => 'https://www.boldgrid.com/central/account/new-key',
 		'support_default_editor' => 'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/preferred-editor/',
 	),
 	'main_file_path'        => BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php',

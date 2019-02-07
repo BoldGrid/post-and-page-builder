@@ -14,8 +14,9 @@ export class ConnectKey {
 		this.licenseTypes = [];
 		this.activeConfig = {};
 
-		this.newKeyLink =
-			BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-add-gridblock';
+		this.newKeyLink = BoldgridEditor.plugin_configs.urls.new_key;
+		this.premiumKeyLink =
+			BoldgridEditor.plugin_configs.urls.premium_key + '?source=bgppb-key-prompt';
 
 		this.config = {
 			free: {
@@ -115,6 +116,7 @@ export class ConnectKey {
 		const $content = $(
 			_.template( enterKeyHtml )( {
 				newKeyLink: this.newKeyLink,
+				premiumKeyLink: this.premiumKeyLink,
 				journey: this.licenseTypes.length ? 'existing-key' : '',
 				claimEnvato: BoldgridEditor.claim_envato_key,
 				license: this.getLicenseType( this.licenseTypes )
