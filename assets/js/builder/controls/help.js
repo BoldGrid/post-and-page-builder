@@ -27,14 +27,35 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					class: 'action font-awesome fa-question support-center'
 				},
 				{
+					name: 'User Community',
+					class: 'action font-awesome fa-users bg-user-community'
+				},
+				{
 					name: 'Information',
 					class: 'action font-awesome fa-info bg-editor-information'
 				}
 			]
 		},
 
+		urls: {
+			supportCenter:
+				'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/?source=boldgrid-editor_drop-tab',
+			userCommunity: 'https://www.facebook.com/groups/BGTeamOrange'
+		},
+
 		init: function() {
 			BOLDGRID.EDITOR.Controls.registerControl( this );
+		},
+
+		/**
+		 * Open a URL in a new tab.
+		 *
+		 * @since 1.10.0
+		 *
+		 * @param  {string} url URL name.
+		 */
+		openTab( url ) {
+			window.open( self.urls[url], '_blank' );
 		},
 
 		/**
@@ -45,20 +66,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			BG.Menu.$element
 				.find( '.bg-editor-menu-dropdown' )
-				.on( 'click', '.action.support-center', self.openSupportCenter )
-				.on( 'click', '.action.bg-editor-information', self.iconHelp );
-		},
-
-		/**
-		 * Go to the support center.
-		 *
-		 * @since 1.5
-		 */
-		openSupportCenter: function() {
-			window.open(
-				'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/?source=boldgrid-editor_drop-tab',
-				'_blank'
-			);
+				.on( 'click', '.action.support-center', () => self.openTab( 'supportCenter' ) )
+				.on( 'click', '.action.bg-editor-information', self.iconHelp )
+				.on( 'click', '.action.bg-user-community', () => self.openTab( 'userCommunity' ) );
 		},
 
 		/**
