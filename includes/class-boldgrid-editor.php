@@ -177,25 +177,23 @@ class Boldgrid_Editor {
 		$boldgrid_editor_media     = new Boldgrid_Editor_Media();
 		$boldgrid_editor_theme     = new Boldgrid_Editor_Theme();
 		$boldgrid_editor_version   = new Boldgrid_Editor_Version();
-		$boldgrid_editor_media_map = new Boldgrid_Editor_Media_Map();
 		$boldgrid_editor_wpforms   = new Boldgrid_Editor_Wpforms();
 		$boldgrid_editor_setup     = new Boldgrid_Editor_Setup();
 		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
 		$setting_view              = new PPB\View\Settings();
 		$gutenberg_view            = new PPB\View\Gutenberg();
+		$rating_service            = new PPB\Rating\Service();
 
 		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
-		Boldgrid_Editor_Service::register( 'rating', new PPB\Rating\Service() );
+		Boldgrid_Editor_Service::register( 'rating', $rating_service );
 		Boldgrid_Editor_Service::register( 'assets', new Boldgrid_Editor_Assets( $this->config->get_configs() ) );
 
 		$boldgrid_editor_wpforms->init();
 		$boldgrid_editor_premium->init();
 		$gutenberg_view->init();
 		$setting_view->init();
-
-		// Upgrade old versions of maps.
-		add_action( 'admin_init', array( $boldgrid_editor_media_map, 'upgrade_maps' ) );
+		$rating_service->init();
 
 		$valid_pages = array(
 			'post.php',

@@ -102,15 +102,20 @@ $default_prompt = array(
 	),
 );
 
-// Set a title or description for your backup.
+// Install a number of blocks.
 $block_install_prompt                            = $default_prompt;
 $block_install_prompt['name']                    = 'block_install';
 $block_install_prompt['slides']['start']['text'] = __( 'You\'re doing a great job of adding blocks to your site. It\'s looking great! Starting with Blocks is the most popular way to build pages.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
 
-// Download a backup to your local machine.
+// Save blocks to your library.
 $block_save_prompt                            = $default_prompt;
 $block_save_prompt['name']                    = 'block_save';
 $block_save_prompt['slides']['start']['text'] = __( 'You\'re making a really nice collection of blocks. Nice Job! Users who save their favorite Blocks generally find making their pages easier.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
+
+// Upgrades 2 minor versions
+$dedicated_user                            = $default_prompt;
+$dedicated_user['name']                    = 'dedicated_user';
+$dedicated_user['slides']['start']['text'] = __( 'Great job keeping your plugin up to date and thank you for being a dedicated BoldGrid user.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
 
 return array(
 	'block_save'  => array(
@@ -120,5 +125,9 @@ return array(
 	'block_install' => array(
 		'threshold' => 10,
 		'prompt'    => $block_install_prompt,
+	),
+	'dedicated_user' => array(
+		'threshold' => 1,
+		'prompt'    => $dedicated_user,
 	),
 );

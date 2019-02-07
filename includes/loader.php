@@ -35,7 +35,6 @@ require_once BOLDGRID_EDITOR_PATH . '/components/class-boldgrid-components-short
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media-tab.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-layout.php';
-require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media-map.php';
 
 // Gridblock Post types.
 require_once BOLDGRID_EDITOR_PATH . '/includes/gridblock/class-boldgrid-editor-gridblock-post.php';
