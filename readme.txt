@@ -134,6 +134,20 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.10.0 =
+
+Release Date: TBD
+
+* Fix: Block preview size on theme twentynineteen
+* Update: Links to User community group
+* Update: Intermittent feedback requests
+
+= 1.9.2 =
+
+Release Date: December 11th, 2018
+
+* Fix: Issue saving blocks from page builder interface
+
 = 1.9.1 =
 
 Release Date: December 5th, 2018

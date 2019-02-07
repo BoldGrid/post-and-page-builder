@@ -101,7 +101,7 @@ class Boldgrid_Editor_Premium {
 				'message' => '<p>' . sprintf(
 					// translators: 1: URL address for BoldGrid Central.
 					__(
-						'Hello there! We see that you have a <strong>Premium BoldGrid Connect Key</strong> and you have the <strong>Post & Page Builder</strong> activated! Be sure to download the <strong>Post and Page Builder Premium Extension</strong> from <a href="%1$s">BoldGrid Central</a> to gain access to more features!',
+						'Hello there! We see that you have a <strong>Premium BoldGrid Connect Key</strong> and you have the <strong>Post & Page Builder</strong> activated! Be sure to download the <a href="%1$s">Post and Page Builder Premium Extension</a> to gain access to more features!',
 						'boldgrid-editor'
 					),
 					$this->get_premium_url()
