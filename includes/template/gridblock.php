@@ -98,6 +98,7 @@ body {
 .redacted-placeholder {
 	padding: 60px 0;
 	background-color: rgb(249, 249, 249);
+	line-height: 1;
 }
 @font-face {
     font-family: "Redacted Script";
