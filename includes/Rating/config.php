@@ -110,7 +110,7 @@ $block_install_prompt['slides']['start']['text'] = __( 'You\'re doing a great jo
 // Save blocks to your library.
 $block_save_prompt                            = $default_prompt;
 $block_save_prompt['name']                    = 'block_save';
-$block_save_prompt['slides']['start']['text'] = __( 'You\'re making a really nice collection of blocks. Nice Job! Users who save their favorite Blocks generally find making their pages easier.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
+$block_save_prompt['slides']['start']['text'] = __( 'You\'re making a really nice collection of blocks. Nice Job! You can build pages much faster by using your saved blocks.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
 
 // Upgrades 2 minor versions
 $dedicated_user                            = $default_prompt;
