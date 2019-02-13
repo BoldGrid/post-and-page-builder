@@ -1,14 +1,13 @@
 <?php
 /**
- * File: config.activity.php
+ * File: config.php
  *
  * @link https://www.boldgrid.com
- * @since 1.7.2
+ * @since 1.10.0
  *
- * @package    Boldgrid_Backup
- * @subpackage Boldgrid_Backup/includes
+ * @package    Boldgrid
+ * @package    Boldgrid\PPB\Rating
  * @copyright  BoldGrid
- * @version    $Id$
  * @author     BoldGrid <support@boldgrid.com>
  *
  * @link https://github.com/BoldGrid/library/wiki/Library-RatingPrompt
