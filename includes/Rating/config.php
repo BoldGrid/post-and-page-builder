@@ -1,14 +1,13 @@
 <?php
 /**
- * File: config.activity.php
+ * File: config.php
  *
  * @link https://www.boldgrid.com
- * @since 1.7.2
+ * @since 1.10.0
  *
- * @package    Boldgrid_Backup
- * @subpackage Boldgrid_Backup/includes
+ * @package    Boldgrid
+ * @package    Boldgrid\PPB\Rating
  * @copyright  BoldGrid
- * @version    $Id$
  * @author     BoldGrid <support@boldgrid.com>
  *
  * @link https://github.com/BoldGrid/library/wiki/Library-RatingPrompt
@@ -110,7 +109,7 @@ $block_install_prompt['slides']['start']['text'] = __( 'You\'re doing a great jo
 // Save blocks to your library.
 $block_save_prompt                            = $default_prompt;
 $block_save_prompt['name']                    = 'block_save';
-$block_save_prompt['slides']['start']['text'] = __( 'You\'re making a really nice collection of blocks. Nice Job! Users who save their favorite Blocks generally find making their pages easier.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
+$block_save_prompt['slides']['start']['text'] = __( 'You\'re making a really nice collection of blocks. Nice Job! You can build pages much faster by using your saved blocks.', 'boldgrid-editor' ) . ' ' . $lang['feel_good_value'];
 
 // Upgrades 2 minor versions
 $dedicated_user                            = $default_prompt;

@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.0.3
 Requires PHP: 5.4
-Stable tag: 1.9.2
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,9 +136,10 @@ WordPress Editor.
 
 = 1.10.0 =
 
-Release Date: TBD
+Release Date: February 14, 2019
 
 * Fix: Block preview size on theme twentynineteen
+* Fix: ACF Plugin compatibility issue
 * Update: Links to User community group
 * Update: Intermittent feedback requests
 

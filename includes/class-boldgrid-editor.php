@@ -169,6 +169,7 @@ class Boldgrid_Editor {
 	public function add_admin_hooks() {
 		global $wp_customize;
 
+		$editor = false;
 		$boldgrid_editor_ajax      = new Boldgrid_Editor_Ajax();
 		$boldgrid_editor_crop      = new Boldgrid_Editor_Crop();
 		$boldgrid_editor_builder   = new Boldgrid_Editor_Builder();
@@ -193,7 +194,6 @@ class Boldgrid_Editor {
 		$boldgrid_editor_premium->init();
 		$gutenberg_view->init();
 		$setting_view->init();
-		$rating_service->init();
 
 		$valid_pages = array(
 			'post.php',
@@ -282,6 +282,11 @@ class Boldgrid_Editor {
 					return '<div class="bg-editor-loading-main ' . $active . '"><div class="bg-editor-loading"></div>' . $html . '</div>';
 				} );
 			}
+		}
+
+		// Do not show rating notices in gutenberg, they need styling.
+		if ( ! $edit_post_page || 'modern' !== $editor ) {
+			$rating_service->init();
 		}
 
 		if ( $edit_post_page || isset( $wp_customize ) ) {
