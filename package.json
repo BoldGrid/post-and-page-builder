@@ -80,7 +80,7 @@
 		"babel-preset-stage-0": "^6.24.1",
 		"boldgrid-theme-framework": "https://github.com/BoldGrid/boldgrid-theme-framework.git#dev",
 		"bootstrap-sass": "^3.3.7",
-		"copy-webpack-plugin": "^4.5.1",
+		"copy-webpack-plugin": "^5.0.0",
 		"eslint": "^4.6.1",
 		"eslint-config-wordpress": "^2.0.0",
 		"eslint-loader": "^2.0.0",
