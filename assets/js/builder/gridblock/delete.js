@@ -42,6 +42,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 				 */
 				mouseEnter: function() {
 					var $this = $( this ),
+						$wrap = $this.closest( '.boldgrid-section-wrap' ),
 						rect = this.getBoundingClientRect();
 
 					self.$deleteIcon.css( {
@@ -50,7 +51,7 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 						top: rect.top + rect.height / 2
 					} );
 
-					self.$deleteIcon.$section = $this;
+					self.$deleteIcon.$section = $wrap.length ? $wrap : $this;
 				},
 
 				/**
