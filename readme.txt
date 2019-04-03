@@ -139,6 +139,13 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.10.1 In progress =
+
+Release Date: tbd
+
+* Update: Verbiage update within Custom Classes section
+* Fix: Minor bug fix of delete icon within delete.js
+
 = 1.10.0 =
 
 Release Date: February 14, 2019
