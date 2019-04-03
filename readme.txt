@@ -85,21 +85,16 @@ Our drag and drop system is built on the Bootstrap Grid. You can drag columns, r
 
 Choose your brand's colors and we'll help your design stay unified. Our unique color palette system is built with SASS and allows you to change all the colors on your site. You don't have to choose from a few presets anymore!
 
-== Getting Started & Support ==
+== Frequently Asked Questions ==
+
+= Where can I find documentation and user guides? =
 
 If you have any questions on getting started with the BoldGrid Post and Page Builder, please visit our [Getting Started Guide](https://www.boldgrid.com/support/boldgrid-post-and-page-builder/).
 We also suggest joining our [Team Orange User Group community](https://www.facebook.com/groups/BGTeamOrange) for free support, tips and tricks.
 
-== Frequently Asked Questions ==
-
 = Will the Post and Page Builder work with my theme? =
 
 Yes; the Post and Page Builder is compatible with any theme. We recommend using BoldGrid themes which provide additional features and are optimized for use with the Post and Page Builder.
-
-= Where can I find more help? =
-For information on using the Post and Page Builder or other BoldGrid plugins, please visit our [Support Center](https://www.boldgrid.com/support/).
-
-For general questions check out our [Frequently Asked Questions](https://www.boldgrid.com/faqs/) page.
 
 = Where can I report issues or ask questions? =
 Bugs can be reported either in the [WordPress support forum](https://wordpress.org/support/plugin/post-and-page-builder) or in the [BoldGrid Support Center](https://www.boldgrid.com/support/questions/).
