@@ -139,7 +139,7 @@ WordPress Editor.
 Release Date: tbd
 
 * Update: Verbiage update within Custom Classes section
-* Fix: Minor bug fix of delete icon within delete.js
+* Fix: Section wrappers not deleted within add blocks
 
 = 1.10.0 =
 
