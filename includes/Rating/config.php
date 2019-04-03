@@ -60,6 +60,11 @@ $default_prompt = array(
 					'snooze' => WEEK_IN_SECONDS,
 					'slide'  => 'maybe_later',
 				),
+				'user_group'          => array(
+					'text'   => __( 'Maybe later, I\'d first like to post a question to the Team Orange User Group.', 'boldgrid-editor' ),
+					'snooze' => WEEK_IN_SECONDS,
+					'link'   => 'https://www.facebook.com/groups/BGTeamOrange',
+				),
 				'already_did'         => array(
 					'text'  => __( 'I already did', 'boldgrid-editor' ),
 					'slide' => 'already_did',

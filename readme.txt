@@ -139,6 +139,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.10.1 In progress =
+
+Release Date: tbd
+
+* Update: Adding Orange User Group support links to the rating promt and help tab.
+
 = 1.10.0 =
 
 Release Date: February 14, 2019
