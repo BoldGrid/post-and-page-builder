@@ -67,7 +67,7 @@
 		"pump": "^3.0.0",
 		"run-sequence": "^2.2.1",
 		"style-loader": "^0.20.0",
-		"stylelint": "^9.0.0"
+		"stylelint": "^10.0.0"
 	},
 	"dependencies": {
 		"@boldgrid/components": "^2.16.1",
