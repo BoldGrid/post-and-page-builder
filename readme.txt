@@ -134,14 +134,14 @@ WordPress Editor.
 
 == Changelog ==
 
-= 1.10.1 In progress =
+= 1.10.1 =
 
 Release Date: May 8th, 2019
 
 * Update: Verbiage update within Custom Classes section
 * Update: Update BoldGrid library version
 * Fix: Section wrappers not deleted within add blocks
-* Fix: Issue where animations not removes from column shape
+* Fix: Issue where animations not removed from column shapes
 
 = 1.10.0 =
 
