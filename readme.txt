@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.10.0
+Stable tag: 1.10.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,10 +136,12 @@ WordPress Editor.
 
 = 1.10.1 In progress =
 
-Release Date: tbd
+Release Date: May 8th, 2019
 
 * Update: Verbiage update within Custom Classes section
+* Update: Update BoldGrid library version
 * Fix: Section wrappers not deleted within add blocks
+* Fix: Issue where animations not removes from column shape
 
 = 1.10.0 =
 
