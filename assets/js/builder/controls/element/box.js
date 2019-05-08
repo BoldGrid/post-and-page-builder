@@ -116,6 +116,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				let $module,
 					$target = BG.Menu.getTarget( self );
 
+				if ( panel.isCustomizeOpen() ) {
+					return;
+				}
+
 				$module = self.findModule( $target );
 				self.removeModuleClasses( $module );
 

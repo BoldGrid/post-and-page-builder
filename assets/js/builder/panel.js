@@ -424,6 +424,10 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			self.$element.addClass( 'customize-open' );
 		},
 
+		isCustomizeOpen() {
+			return self.$element.hasClass( 'customize-open' );
+		},
+
 		enterCustomization() {
 			self.$element.find( '.panel-body .customize' ).show();
 			self.$element.find( '.presets' ).hide();
