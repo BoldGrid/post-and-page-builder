@@ -77,7 +77,6 @@ class Boldgrid_Editor_Theme {
 
 			if ( strpos( $author, 'boldgrid' ) !== false ) {
 				$current_boldgrid_theme = $current_theme->get( 'Name' );
-				var_dump( $current_boldgrid_theme ); die;
 			} elseif ( is_child_theme() ) {
 				$parent = $current_theme->get( 'Template' );
 
@@ -86,7 +85,7 @@ class Boldgrid_Editor_Theme {
 				$author = strtolower( $author );
 
 				if ( strpos( $author, 'boldgrid' ) !== false ) {
-					$current_boldgrid_theme = $parent->get( 'Name' );
+					$current_boldgrid_theme = $current_theme->get( 'Name' );
 				}
 			}
 		}
