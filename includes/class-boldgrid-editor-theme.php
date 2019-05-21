@@ -77,7 +77,7 @@ class Boldgrid_Editor_Theme {
 
 			if ( strpos( $author, 'boldgrid' ) !== false ) {
 				$current_boldgrid_theme = $current_theme->get( 'Name' );
-			} elseif ( is_child_theme() ) {
+			} elseif ( get_template_directory() !== get_stylesheet_directory() ) {
 				$parent = $current_theme->get( 'Template' );
 
 				$parent = wp_get_theme( $parent );
