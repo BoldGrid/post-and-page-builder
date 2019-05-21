@@ -71,12 +71,26 @@ class Boldgrid_Editor_Theme {
 
 		$current_theme = $wp_theme;
 
-		if ( is_a( $current_theme, 'WP_Theme' ) &&
-			strpos( $current_theme->get( 'TextDomain' ), 'boldgrid' ) !== false ) {
-				$current_boldgrid_theme = $current_theme->get( 'Name' );
-			}
+		if ( is_a( $current_theme, 'WP_Theme' ) ) {
+			$author = $current_theme->get( 'Author' );
+			$author = strtolower( $author );
 
-			return $current_boldgrid_theme;
+			if ( strpos( $author, 'boldgrid' ) !== false ) {
+				$current_boldgrid_theme = $current_theme->get( 'Name' );
+			} elseif ( is_child_theme() ) {
+				$parent = $current_theme->get( 'Template' );
+
+				$parent = wp_get_theme( $parent );
+				$author = $parent->get( 'Author' );
+				$author = strtolower( $author );
+
+				if ( strpos( $author, 'boldgrid' ) !== false ) {
+					$current_boldgrid_theme = $current_theme->get( 'Name' );
+				}
+			}
+		}
+
+		return $current_boldgrid_theme;
 	}
 
 	/**
