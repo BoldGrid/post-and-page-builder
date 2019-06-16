@@ -62,7 +62,7 @@
 		"karma-webpack": "^3.0.0",
 		"lint-staged": "^7.0.5",
 		"prettier": "^1.8.2",
-		"prettier-eslint": "^8.2.2",
+		"prettier-eslint": "^9.0.0",
 		"prettier-eslint-cli": "^4.4.0",
 		"pump": "^3.0.0",
 		"run-sequence": "^2.2.1",
