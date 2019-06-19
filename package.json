@@ -85,7 +85,7 @@
 		"eslint-config-wordpress": "^2.0.0",
 		"eslint-loader": "^2.0.0",
 		"eslint-plugin-html": "^4.0.1",
-		"eventemitter3": "^3.1.0",
+		"eventemitter3": "^4.0.0",
 		"extract-loader": "^2.0.0",
 		"extract-text-webpack-plugin": "4.0.0-beta.0",
 		"file-loader": "^1.1.5",
