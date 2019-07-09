@@ -307,6 +307,9 @@ class Boldgrid_Editor_Assets {
 			'inspiration' => get_option( 'boldgrid_install_options' ),
 			'grid_block_nonce' => wp_create_nonce( 'boldgrid_gridblock_image_ajax_nonce' ),
 			'nonce_gridblock_save' => wp_create_nonce( 'boldgrid_editor_gridblock_save' ),
+			'components' => [
+				'buttons' =>  Boldgrid_Editor_Option::get( 'components_buttons', true ),
+			],
 			'features' => array(
 				'template_via_url' => ! $is_bg_theme,
 				'button_colors' => ! $builder->requires_deprecated_buttons(),

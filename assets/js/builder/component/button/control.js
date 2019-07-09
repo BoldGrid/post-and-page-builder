@@ -84,7 +84,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		],
 
 		init: function() {
-			BOLDGRID.EDITOR.Controls.registerControl( this );
+			if ( BoldgridEditor.components.buttons ) {
+				BOLDGRID.EDITOR.Controls.registerControl( this );
+			}
 		},
 
 		/**

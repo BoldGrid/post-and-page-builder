@@ -19,6 +19,7 @@ export class Palette {
 			BoldgridEditor.plugin_url + '/assets/js/sass-js/sass.worker.js?' + BoldgridEditor.version;
 
 		this.colorPalette = new ColorPalette( {
+			includeButtonCss: BoldgridEditor.components.buttons,
 			sass: {
 				workerURL: this.workerUrl,
 				basePath: BoldgridEditor['plugin_url'] + '/assets/scss'
