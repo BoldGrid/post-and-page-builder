@@ -31,7 +31,7 @@ export class Control {
 		this._setupClick();
 
 		this.$element.show();
-		$( '#screen-meta-links' ).append( this.$element );
+		$( '#screen-meta-links' ).prepend( this.$element );
 		this.setEditorOverrideInput( $( 'form#post' ) );
 	}
 
