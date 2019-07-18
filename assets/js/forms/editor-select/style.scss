@@ -13,8 +13,7 @@
 	display: none;
 	position: relative;
 	user-select: none;
-	float: right;
-	height: 28px;
+	float: left;
 	margin: 0 0 0 6px;
 	border: 1px solid #ddd;
 	border-top: none;
@@ -26,7 +25,7 @@
 		height: 100%;
 		align-items: center;
 		background: #22282c;
-		padding: 0 12px;
+		padding: 6px 12px;
 		color: white;
 	}
 
@@ -55,5 +54,11 @@
 	.current-editor img {
 		position: relative;
 		left: -5px;
+		top: 3px;
+		transform: none;
+	}
+
+	.current-editor {
+		border: 0;
 	}
 }
