@@ -31,7 +31,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	self.scrollInterval = false;
 
 	// Tinymce element used for auto scrolling.
-	this.$mce_32 = $( '#wp-content-wrap .mce-container-body .mce-toolbar-grp:first-of-type' );
+	this.$mce_32 = $( '#wp-content-wrap .mce-container-body .mce-toolbar-grp:first' );
 
 	self.$post_status_info = $( '#post-status-info' );
 
