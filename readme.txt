@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.10.5 =
+
+Release Date: July 18th, 2019
+
+* Fix: Compatibility with tinymce Advanced.
+
 = 1.10.4 =
 
 Release Date: July 9th, 2019
