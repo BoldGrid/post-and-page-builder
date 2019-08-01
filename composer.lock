@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "boldgrid/library",
-            "version": "2.8.0",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BoldGrid/library.git",
-                "reference": "51afe070e211cff9cf78454ff97912a0d943805c"
+                "reference": "1f703de85afb9e218af0781c5973510894325631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BoldGrid/library/zipball/51afe070e211cff9cf78454ff97912a0d943805c",
-                "reference": "51afe070e211cff9cf78454ff97912a0d943805c",
+                "url": "https://api.github.com/repos/BoldGrid/library/zipball/1f703de85afb9e218af0781c5973510894325631",
+                "reference": "1f703de85afb9e218af0781c5973510894325631",
                 "shasum": ""
             },
             "type": "library",
@@ -33,27 +33,28 @@
             "authors": [
                 {
                     "name": "Tim Elsass",
+                    "role": "Developer",
                     "email": "dev@tim.ph",
-                    "homepage": "http://tim.ph",
-                    "role": "Developer"
+                    "homepage": "http://tim.ph"
                 },
                 {
                     "name": "Rafael Ramos",
-                    "homepage": "http://rafael-ramos.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://rafael-ramos.com"
+                },
+                {
+                    "name": "Joe Cartonia",
+                    "role": "Developer",
+                    "email": "joec@boldgrid.com",
+                    "homepage": "https://twitter.com/joemotocss"
                 },
                 {
                     "name": "bwmarkle",
                     "role": "Developer"
-                },
-                {
-                    "name": "Joe C",
-                    "email": "joec@boldgrid.com",
-                    "role": "Developer"
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2019-04-16T10:45:05+00:00"
+            "time": "2019-08-01T18:27:41+00:00"
         }
     ],
     "packages-dev": [],
