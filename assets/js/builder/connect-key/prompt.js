@@ -167,6 +167,11 @@ export class ConnectKey {
 			'data-requires-premium',
 			-1 === this.licenseTypes.indexOf( 'premium' ) ? 1 : 0
 		);
+
+		BG.GRIDBLOCK.View.$gridblocks.attr(
+			'data-requires-basic',
+			-1 === this.licenseTypes.indexOf( 'basic' ) ? 1 : 0
+		);
 	}
 
 	/**

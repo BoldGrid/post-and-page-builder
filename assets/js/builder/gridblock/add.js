@@ -34,13 +34,18 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 				var $placeHolder,
 					$this = $( this ),
 					$gridblock = $this.closest( '.gridblock' ),
+					license = BG.GRIDBLOCK.Generate.getLicense( $gridblock ),
 					gridblockId = $gridblock.attr( 'data-id' );
 
 				if ( BG.GRIDBLOCK.Generate.needsUpgrade( $gridblock ) ) {
-					window.open(
-						BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-add-gridblock',
-						'_blank'
-					);
+					if ( 'premium' === license ) {
+						window.open(
+							BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-add-gridblock',
+							'_blank'
+						);
+					} else {
+						BG.Service.connectKey.showNotice();
+					}
 				} else {
 					$placeHolder = self.insertPlaceHolder( gridblockId );
 					self.replaceGridblock( $placeHolder, gridblockId );

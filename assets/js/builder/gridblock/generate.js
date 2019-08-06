@@ -69,9 +69,15 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 			 */
 			needsUpgrade( $gridblock ) {
 				return (
-					parseInt( $gridblock.attr( 'data-is-premium' ) ) &&
-					parseInt( BG.GRIDBLOCK.View.$gridblocks.attr( 'data-requires-premium' ) )
+					( parseInt( $gridblock.attr( 'data-is-premium' ) ) &&
+						parseInt( BG.GRIDBLOCK.View.$gridblocks.attr( 'data-requires-premium' ) ) ) ||
+					( 'basic' === self.getLicense( $gridblock ) &&
+						parseInt( BG.GRIDBLOCK.View.$gridblocks.attr( 'data-requires-basic' ) ) )
 				);
+			},
+
+			getLicense( $gridblock ) {
+				return $gridblock.attr( 'data-license' );
 			},
 
 			requestGridblocks: function( options ) {

@@ -3011,6 +3011,7 @@ html:not(.dragging-section) .delete-icon-wrap {
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%); }
 
+.zoom-gridblocks-section .gridblock .basic-label,
 .zoom-gridblocks-section .gridblock .premium-label {
   opacity: 0;
   font-variant: small-caps;
@@ -3027,10 +3028,14 @@ html:not(.dragging-section) .delete-icon-wrap {
   -webkit-transition: opacity 0.5s;
   transition: opacity 0.5s; }
 
+.zoom-gridblocks-section .gridblock .basic-label .boldgrid-seal,
 .zoom-gridblocks-section .gridblock .premium-label .boldgrid-seal {
   position: absolute;
   left: -20px;
   top: 13px; }
+
+.zoom-gridblocks-section .gridblock[data-license='basic']:hover .basic-label {
+  opacity: 1; }
 
 .zoom-gridblocks-section .gridblock[data-is-premium='1']:hover .premium-label {
   opacity: 1; }
@@ -3083,14 +3088,20 @@ html:not(.dragging-section) .delete-icon-wrap {
 .zoom-gridblocks-section .gridblock .action-items .fa:hover {
   background-color: #f95b26; }
 
+.zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'],
 .zoom-gridblocks-section .gridblocks[data-requires-premium='1'] .gridblock[data-is-premium='1'] {
   cursor: default; }
 
+.zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .add-gridblock::before,
 .zoom-gridblocks-section .gridblocks[data-requires-premium='1'] .gridblock[data-is-premium='1'] .add-gridblock::before {
   content: 'Get Premium'; }
 
+.zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .save,
 .zoom-gridblocks-section .gridblocks[data-requires-premium='1'] .gridblock[data-is-premium='1'] .save {
   display: none !important; }
+
+.zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .add-gridblock::before {
+  content: 'Add Connect Key'; }
 
 @media (min-width: 1600px) {
   .zoom-gridblocks-section .gridblock {
