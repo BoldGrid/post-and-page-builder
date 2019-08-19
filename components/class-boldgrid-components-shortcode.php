@@ -44,6 +44,7 @@ class Boldgrid_Components_Shortcode {
 			Boldgrid_Editor_Service::register( 'config', $config );
 
 			$this->register_components();
+			$this->register_shortcodes();
 		}, 20 );
 	}
 
@@ -173,6 +174,33 @@ class Boldgrid_Components_Shortcode {
 					$this->ajax_shortcode( $component, 'form' );
 				} );
 			}
+		}
+
+	}
+
+	/**
+	 * Bind all generic shortcode api calls to a do shortcode event.
+	 * 
+	 * @since 1.11.0
+	 * 
+	 * @global $shortcode_tags.
+	 */
+	public function register_shortcodes() {
+		global $shortcode_tags;
+
+		$tags = ! empty( $shortcode_tags ) && is_array( $shortcode_tags ) ? $shortcode_tags : [];
+
+		foreach ( array_keys( $tags ) as $tag ) {
+			add_action( 'wp_ajax_boldgrid_shortcode_' . $tag , function () {
+				Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
+	
+				$text = isset( $_POST['text'] ) ? $_POST['text'] : null;
+				$html = do_shortcode( $text );
+
+				wp_send_json( array(
+					'content' => $html
+				) );
+			} );
 		}
 	}
 

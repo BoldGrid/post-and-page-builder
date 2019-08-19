@@ -1,12 +1,20 @@
-var BG = BOLDGRID.EDITOR,
-	$ = jQuery;
-
-import { Instance as ShortcodeIntance } from './instance';
-import errorTemplate from './error.html';
+import errorTemplate from '../widget/error.html';
 
 export class Control {
 	constructor() {
 		this.componentShortcodes = {};
+
+		this.defaultShortcodes = [
+			'boldgrid_component',
+			'wp_caption',
+			'caption',
+			'gallery',
+			'playlist',
+			'audio',
+			'video',
+			'embed'
+		];
+
 		this.errorTemplate = _.template( errorTemplate );
 	}
 
@@ -16,95 +24,66 @@ export class Control {
 	 * @since 1.8.0
 	 */
 	init() {
-		_.each( BoldgridEditor.plugin_configs.component_controls.components, component => {
-			let shortcode = new ShortcodeIntance( component );
-			this.componentShortcodes[component.name] = shortcode;
-
-			BG.$window.on( 'boldgrid_editor_loaded', () => {
-				shortcode.setup();
-			} );
-		} );
-
 		this.register();
-	}
-
-	/**
-	 * Given an MCE view instance, find component class.
-	 *
-	 * @since 1.8.0
-	 *
-	 * @param  {object} mceView   MCE view instance.
-	 * @return {ShortcodeIntance} Shortcode instance.
-	 */
-	getComponentInstance( mceViewInstance ) {
-		let type = mceViewInstance.shortcode.attrs.named.type;
-		return this.componentShortcodes[type];
 	}
 
 	/**
 	 * Register the standard mce boldgrid component view.
 	 *
-	 * @since 1.8.0
+	 * @since 1.11.0
 	 */
 	register() {
 		let self = this;
+		let shortcodes = BoldgridEditor.shortcodes.filter( val => {
+			return ! this.defaultShortcodes.includes( val );
+		} );
 
-		let fail = ( mce, componentInstance ) => {
-			let name = 'BoldGrid Component';
-			if ( componentInstance ) {
-				name = componentInstance.component.js_control.title;
-				componentInstance.stopLoading();
-			}
-
-			mce.render( self.errorTemplate( { name: name } ) );
-		};
-
-		wp.mce.views.register( 'boldgrid_component', {
-
-			/*
-			 * Make an API call to get the widget.
-			 */
-			initialize: function() {
-				let componentInstance = self.getComponentInstance( this );
-
-				if ( ! componentInstance ) {
-					fail( this );
-					return;
+		for ( let shortcode of shortcodes ) {
+			wp.mce.views.register( shortcode, {
+				initialize: function() {
+					self
+						.getShortcodeData( shortcode, this.text )
+						.done( response => {
+							this.render( response.content || '<p></p>' );
+						} )
+						.fail( () => {
+							self.errorTemplate( { name: shortcode } );
+						} );
+				},
+				edit: () => {
+					alert(
+						'This shortcode does not support editing through the Post and Page Builder. Try editing in text mode.'
+					);
 				}
+			} );
+		}
+	}
 
-				componentInstance
-					.getShortcodeData( 'content', this.shortcode.attrs.named.opts )
-					.done( response => {
-						if ( response && response.content ) {
-							this.render( response.content );
-						} else {
-							fail( this, componentInstance );
-						}
-					} )
-					.fail( () => fail( this, componentInstance ) );
-			},
+	/**
+	 * Get the content for the shortcode.
+	 *
+	 * @since 1.11.0
+	 *
+	 * @param  {string} shortcodeName Shortcode tag.
+	 * @param  {string} text          Shortcode.
+	 */
+	getShortcodeData( shortcodeName, text ) {
+		let action = 'boldgrid_shortcode_' + shortcodeName;
+		let data = {};
 
-			edit: function( text, update ) {
-				let componentInstance = self.getComponentInstance( this );
-				if ( componentInstance ) {
-					componentInstance.openPanel( this, update );
-				}
-			},
+		/* eslint-disable */
+		data.action = action;
+		data.post_id = BoldgridEditor.post_id;
+		data.boldgrid_editor_gridblock_save = BoldgridEditor.nonce_gridblock_save;
+		data.text = text;
+		/* eslint-enable */
 
-			bindNode: function( editor, node ) {
-				let componentInstance = self.getComponentInstance( this );
-				if ( componentInstance && componentInstance.insertedNode ) {
-					BG.mce.selection.select( node );
-					wp.mce.views.edit( editor, node );
-					self.getComponentInstance( this ).insertedNode = false;
-				}
-
-				if ( componentInstance ) {
-					componentInstance.stopLoading();
-				}
-
-				BG.Service.event.emit( 'shortcodeUpdated', node );
-			}
+		return $.ajax( {
+			type: 'post',
+			url: ajaxurl,
+			dataType: 'json',
+			timeout: 20000,
+			data: data
 		} );
 	}
 }

@@ -255,7 +255,7 @@ class Boldgrid_Editor_Assets {
 	 * @return array List of variables to be passed.
 	 */
 	public function get_js_vars() {
-		global $is_IE, $post, $pagenow;
+		global $is_IE, $post, $pagenow, $shortcode_tags;
 
 		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
 		$post_type = $post ? $post->post_type : '';
@@ -296,6 +296,7 @@ class Boldgrid_Editor_Assets {
 			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
+			'shortcodes' => array_keys( $shortcode_tags ) ?: [],
 
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
