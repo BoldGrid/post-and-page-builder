@@ -24,7 +24,9 @@ export class Control {
 	 * @since 1.8.0
 	 */
 	init() {
-		this.register();
+
+		// Wait & let other mce views register first.
+		setTimeout( () => this.register(), 1000 );
 	}
 
 	/**
@@ -35,7 +37,7 @@ export class Control {
 	register() {
 		let self = this;
 		let shortcodes = BoldgridEditor.shortcodes.filter( val => {
-			return ! this.defaultShortcodes.includes( val );
+			return ! this.defaultShortcodes.includes( val ) && ! wp.mce.views.get( val );
 		} );
 
 		for ( let shortcode of shortcodes ) {
