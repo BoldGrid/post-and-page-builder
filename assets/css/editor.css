@@ -3011,6 +3011,9 @@ html:not(.dragging-section) .delete-icon-wrap {
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%); }
 
+.zoom-gridblocks-section .gridblock .basic-label {
+  display: none; }
+
 .zoom-gridblocks-section .gridblock .basic-label,
 .zoom-gridblocks-section .gridblock .premium-label {
   opacity: 0;
@@ -3099,6 +3102,9 @@ html:not(.dragging-section) .delete-icon-wrap {
 .zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .save,
 .zoom-gridblocks-section .gridblocks[data-requires-premium='1'] .gridblock[data-is-premium='1'] .save {
   display: none !important; }
+
+.zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .basic-label {
+  display: block; }
 
 .zoom-gridblocks-section .gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] .add-gridblock::before {
   content: 'Add Connect Key'; }

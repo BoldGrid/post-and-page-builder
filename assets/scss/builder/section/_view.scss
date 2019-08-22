@@ -687,6 +687,10 @@ html:not(.dragging-section) .delete-icon-wrap {
 			transform: translateX(-50%) translateY(-50%);
 		}
 
+		.basic-label {
+			display: none;
+		}
+
 		.basic-label,
 		.premium-label {
 			opacity: 0;
@@ -789,6 +793,10 @@ html:not(.dragging-section) .delete-icon-wrap {
 	}
 
 	.gridblocks[data-requires-basic='1'] .gridblock[data-license='basic'] {
+		.basic-label {
+			display: block;
+		}
+
 		.add-gridblock::before {
 			content: 'Add Connect Key';
 		}

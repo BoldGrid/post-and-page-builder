@@ -163,10 +163,12 @@ export class ConnectKey {
 	 * @since 1.7.0
 	 */
 	_setHasPremium() {
-		BG.GRIDBLOCK.View.$gridblocks.attr(
-			'data-requires-premium',
-			-1 === this.licenseTypes.indexOf( 'premium' ) ? 1 : 0
-		);
+		let hasPremium = false;
+		if ( this.licenseTypes.find( val => [ 'post-and-page-builder', 'premium' ].includes( val ) ) ) {
+			hasPremium = true;
+		}
+
+		BG.GRIDBLOCK.View.$gridblocks.attr( 'data-requires-premium', hasPremium ? 0 : 1 );
 
 		BG.GRIDBLOCK.View.$gridblocks.attr(
 			'data-requires-basic',

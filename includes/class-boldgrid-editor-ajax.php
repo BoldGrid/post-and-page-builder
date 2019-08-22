@@ -186,7 +186,7 @@ class Boldgrid_Editor_Ajax {
 		$types = wp_remote_retrieve_header( $api_response, 'License-Types' );
 		$types = $types ? $types : '[]';
 		$types = json_decode( $types, true );
-		$types = array_intersect( $types, array( 'basic', 'premium' ) );
+		$types = array_values( array_intersect( $types, array( 'basic', 'premium' ) ) );
 
 		if ( ! empty( $types ) ) {
 
