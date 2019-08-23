@@ -71,6 +71,7 @@ class Boldgrid_Editor_Premium {
 						),
 					admin_url( 'plugins.php' )
 				) . '</p>',
+				'class'   => 'notice notice-warning',
 			),
 			array(
 				'id'      => 'BGPPB_upgrade_premium',
@@ -81,6 +82,7 @@ class Boldgrid_Editor_Premium {
 					admin_url( 'options-general.php?page=boldgrid-connect.php' ),
 					$config['urls']['premium_key'] . '?source=ppbp-installed'
 				) . '</p>',
+				'class'   => 'notice notice-warning',
 			),
 			array(
 				'id'      => 'BGPPB_download_premium',
@@ -93,6 +95,7 @@ class Boldgrid_Editor_Premium {
 						),
 					$this->get_premium_url()
 				) . '</p>',
+				'class'   => 'notice notice-warning',
 			),
 		);
 
@@ -129,9 +132,30 @@ class Boldgrid_Editor_Premium {
 
 		foreach ( $notices as $notice ) {
 			if ( $notice['show'] ) {
-				\Boldgrid\Library\Library\Notice::show( $notice['message'], $notice['id'] );
+				\Boldgrid\Library\Library\Notice::show( $notice['message'], $notice['id'], $notice['class'] );
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Filter the P&PB feature within the "BoldGrid Notifications" card on the WordPress dashboard.
+	 *
+	 * @since 1.11.1
+	 *
+	 * @param  \Boldgrid\Library\Library\Ui\Feature    The feature object.
+	 * @param  \Boldgrid\Library\Library\Plugin\Plugin The plugin object.
+	 * @return \Boldgrid\Library\Library\Ui\Feature
+	 */
+	public function filter_feature( Boldgrid\Library\Library\Ui\Feature $feature, \Boldgrid\Library\Library\Plugin\Plugin $plugin ) {
+		$notices = $this->get_admin_notices();
+
+		foreach ( $notices as $notice ) {
+			if ( $notice['show'] ) {
+				$feature->content .= '<div class="' . $notice['class'] . ' inline">' . $notice['message'] . '</div>';
+			}
+		}
+
+		return $feature;
 	}
 }

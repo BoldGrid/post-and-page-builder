@@ -306,6 +306,9 @@ class Boldgrid_Editor {
 
 		// Save a users selection for enabling draggable.
 		add_action( 'wp_ajax_boldgrid_draggable_enabled', array( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
+
+		// Filter "BoldGrid Notifications" on the WordPress Dashboard.
+		add_filter( 'Boldgrid\Library\Notifications\DashboardWidget\getFeaturePlugin\post-and-page-builder', array( $boldgrid_editor_premium, 'filter_feature' ), 10, 2 );
 	}
 
 	/**
