@@ -24,11 +24,22 @@ class Boldgrid_Editor_Premium {
 	 * Add Premium Hooks.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @global string $pagenow
 	 */
 	public function init() {
-		// "Upgrade to premium" notices. Notice class instantiated to trigger required hooks.
+		global $pagenow;
+
+		/*
+		 * "Upgrade to premium" notices.
+		 *
+		 * Notice class instantiated to trigger required hooks.
+		 *
+		 * Do not show on the dashboard (index.php) as the notices will instead by placed in the
+		 * "BoldGrid Notifications" widget.
+		 */
 		$notice_class = '\Boldgrid\Library\Library\Notice';
-		if ( class_exists( $notice_class ) ) {
+		if ( 'index.php' !== $pagenow && class_exists( $notice_class ) ) {
 			new $notice_class( 'Static Notice' );
 			add_action( 'admin_notices', [ $this, 'admin_notice_setup' ] );
 		}
