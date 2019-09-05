@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "fbb8fbf2971562ce44099a1ba0acbeaf",
     "packages": [
         {
             "name": "boldgrid/library",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BoldGrid/library.git",
-                "reference": "4a0a16cf9620bc2076e8a247d0d39df8dd6afc57"
+                "reference": "0a21e6dfa33e15ae1c6fda29360486170e807dac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BoldGrid/library/zipball/4a0a16cf9620bc2076e8a247d0d39df8dd6afc57",
-                "reference": "4a0a16cf9620bc2076e8a247d0d39df8dd6afc57",
+                "url": "https://api.github.com/repos/BoldGrid/library/zipball/0a21e6dfa33e15ae1c6fda29360486170e807dac",
+                "reference": "0a21e6dfa33e15ae1c6fda29360486170e807dac",
                 "shasum": ""
             },
             "type": "library",
@@ -33,20 +33,20 @@
             "authors": [
                 {
                     "name": "Tim Elsass",
-                    "role": "Developer",
                     "email": "dev@tim.ph",
-                    "homepage": "http://tim.ph"
+                    "homepage": "http://tim.ph",
+                    "role": "Developer"
                 },
                 {
                     "name": "Rafael Ramos",
-                    "role": "Developer",
-                    "homepage": "http://rafael-ramos.com"
+                    "homepage": "http://rafael-ramos.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Joe Cartonia",
-                    "role": "Developer",
                     "email": "joec@boldgrid.com",
-                    "homepage": "https://twitter.com/joemotocss"
+                    "homepage": "https://twitter.com/joemotocss",
+                    "role": "Developer"
                 },
                 {
                     "name": "bwmarkle",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2019-08-29T11:41:49+00:00"
+            "time": "2019-09-05T14:44:58+00:00"
         }
     ],
     "packages-dev": [],
