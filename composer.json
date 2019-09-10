@@ -1,5 +1,10 @@
 {
     "require": {
         "boldgrid/library": "^2.4"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "composer run-script post-autoload-dump -d ./vendor/boldgrid/library"
+        ]
     }
 }

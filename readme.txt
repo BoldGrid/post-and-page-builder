@@ -134,6 +134,10 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.11.2 In progress =
+
+* Fix: Added composer hook for library build.
+
 = 1.11.1 =
 
 Release Date: September 5th, 2019
