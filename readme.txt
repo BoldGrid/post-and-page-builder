@@ -134,7 +134,9 @@ WordPress Editor.
 
 == Changelog ==
 
-= 1.11.2 In progress =
+= 1.11.2 =
+
+Release Date: September 17th, 2019
 
 * Update: Added premium links in menu, plugins page and settings page.
 * Fix: Added composer hook for library build.
