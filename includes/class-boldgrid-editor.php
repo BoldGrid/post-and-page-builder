@@ -184,6 +184,7 @@ class Boldgrid_Editor {
 		$setting_view              = new PPB\View\Settings();
 		$gutenberg_view            = new PPB\View\Gutenberg();
 		$rating_service            = new PPB\Rating\Service();
+		$plugins_view              = new PPB\View\Plugins();
 
 		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
@@ -194,6 +195,7 @@ class Boldgrid_Editor {
 		$boldgrid_editor_premium->init();
 		$gutenberg_view->init();
 		$setting_view->init();
+		$plugins_view->init();
 
 		$valid_pages = array(
 			'post.php',
