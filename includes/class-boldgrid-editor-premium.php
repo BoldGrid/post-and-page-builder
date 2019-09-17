@@ -43,6 +43,42 @@ class Boldgrid_Editor_Premium {
 			new $notice_class( 'Static Notice' );
 			add_action( 'admin_notices', [ $this, 'admin_notice_setup' ] );
 		}
+
+		add_action( 'admin_init', function () {
+			$config = \Boldgrid_Editor_Service::get( 'config' );
+			if ( empty( $config['is_premium'] ) ) {
+				$this->add_submenu_item();
+			}
+		} );
+	}
+
+	/**
+	 * Add a menu item for the premium key.
+	 *
+	 * @since 1.11.2
+	 */
+	public function add_submenu_item() {
+		global $submenu;
+
+		$config = \Boldgrid_Editor_Service::get( 'config' );
+		$premium_url = $config['urls']['premium_key'] . '?source=ppbp-admin-menu';
+
+		$menu_slug = 'edit.php?post_type=bg_block';
+
+		add_submenu_page(
+			$menu_slug,
+			__( 'Get Premium', 'boldgrid-editor' ),
+			'<span class="dashicons dashicons-dashboard"></span> <span class="get-premium">' . __( 'Get Premium', 'boldgrid-editor' ) . '</span>',
+			'edit_pages',
+			'ppb-get-premium'
+		);
+
+		// Change the url (2 is key of the menu item's slug / url).
+		foreach ( $submenu[ $menu_slug ] as &$item ) {
+			if ( 'ppb-get-premium' === $item[2] ) {
+				$item[2] = $premium_url;
+			}
+		}
 	}
 
 	/**
