@@ -110,7 +110,8 @@ class Settings {
 	 */
 	public function getJSVars() {
 		return array_merge( \Boldgrid_Editor_Service::get( 'assets' )->get_shared_vars(), [
-			'adminColors' => self::getAdminColors()
+			'adminColors' => self::getAdminColors(),
+			'cards' => $this->getCards(),
 		] );
 	}
 
@@ -164,5 +165,25 @@ class Settings {
 	public function submitDefaultEditor() {
 		$post_types = ! empty( $_POST['bgppb_post_type'] ) ? $_POST['bgppb_post_type'] : [];
 		\Boldgrid_Editor_Service::get( 'settings' )->save_default_editor( $post_types );
+	}
+
+	/**
+	 * Get HTML for cards.
+	 *
+	 * @since 1.11.2
+	 *
+	 * @return array List of cards.
+	 */
+	protected function getCards() {
+		$premium = new Card\Premium();
+		$premium->init();
+
+		$editor = new Card\Editor();
+		$editor->init();
+
+		return [
+			'premium' => $premium->printCard( false ),
+			'editor' => $editor->printCard( false ),
+		];
 	}
 }

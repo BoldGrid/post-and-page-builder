@@ -30,12 +30,11 @@ export class Page {
 		this.$page.find( 'bgppb-settings-view' ).replaceWith( `
 			${this.banner.getHTML( this.title, this.description ) }
 			<div class="bgppb-page__body">
-				<div class="card">
-					<default-editor/>
-				</div>
+				${BoldgridEditor.cards.premium}
+				${BoldgridEditor.cards.editor}
 			</div>
 		` );
 
-		this.$page.find( 'default-editor' ).replaceWith( this.defaultEditor.getForm() );
+		this.$page.find( '#bgppb_preferred_editor .bglib-card-footer' ).html( this.defaultEditor.getForm() );
 	}
 }

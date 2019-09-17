@@ -64,7 +64,7 @@ export class Form {
 					<h4>Custom Post Types</h4>
 					${ this._getCPTInputs() }
 				</div>
-				<div>
+				<div class="action-buttons">
 					<button class="button-primary">Submit</button>
 				</div>
 			</form>

@@ -1,9 +1,38 @@
 .bgppb-page--settings {
-	.card {
-		padding: 2.5em;
+	.bglib-card {
+		margin: 10px;
+		margin-top: 20px;
+	}
+
+	#bgppb_get_premium .bglib-card-icon {
+		color: #f95b26;
+		border-top-color: #f95b26;
+	}
+
+	#bgppb_preferred_editor .bglib-card-icon {
+		color: #0073aa;
+		border-top-color: #0073aa;
+	}
+
+	.bglib-card {
+		position: relative;
+		width: 440px;
+		border: 1px solid #e5e5e5;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+		background: #fff;
+		box-sizing: border-box;
+	}
+
+	.action-buttons {
+		text-align: right;
+	}
+
+	#bgppb_preferred_editor .bglib-card-footer h2 {
+		display: none;
 	}
 }
 
 .bgppb-page__body {
 	padding: 0 10px;
+	display: flex;
 }
