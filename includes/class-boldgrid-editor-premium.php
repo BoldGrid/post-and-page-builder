@@ -46,7 +46,7 @@ class Boldgrid_Editor_Premium {
 
 		add_action( 'admin_init', function () {
 			$config = \Boldgrid_Editor_Service::get( 'config' );
-			if ( empty( $config['is_premium'] ) ) {
+			if ( empty( $config['premium']['is_premium'] ) ) {
 				$this->add_submenu_item();
 			}
 		} );
