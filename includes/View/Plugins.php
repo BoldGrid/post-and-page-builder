@@ -52,7 +52,7 @@ class Plugins {
 				esc_html__( 'Settings', 'boldgrid-editor' ) . '</a>',
 		];
 
-		if ( empty( $config['is_premium'] ) ) {
+		if ( empty( $config['premium']['is_premium'] ) ) {
 			$row_actions[] = '<a href="' . esc_url( $config['urls']['premium_key'] . '?source=bgppb-plugins-list' ) .
 				 '" target="_blank">' . esc_html__( 'Get Premium', 'boldgrid-editor' ) . '</a>';
 		}
