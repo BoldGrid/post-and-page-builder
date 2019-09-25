@@ -110,6 +110,7 @@ class Boldgrid_Editor_MCE {
 		$file = $file . '?ver=' . BOLDGRID_EDITOR_VERSION;
 		$editor_js_file = plugins_url( $file, BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
 
+		$plugin_array = (array) $plugin_array;
 		$plugin_array['monitor_view_imhwpb'] = $editor_js_file;
 		$plugin_array['tablet_view_imhwpb'] = $editor_js_file;
 		$plugin_array['phone_view_imhwpb'] = $editor_js_file;
