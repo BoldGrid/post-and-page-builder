@@ -16,7 +16,7 @@ Post and Page Builder is a standalone plugin which adds functionality to the exi
 
 The Post and Page Builder is an intuitive drag and drop editor plugin and the easiest way to create and edit pages for any theme. Whether you are new to WordPress or consider yourself a pro, BoldGrid solutions will make your WordPress life better. Stop dealing with site-breaking shortcodes and theme restricted editors. You are going to love just how fast and easily you can create beautiful websites now.
 
-Try out the [BoldGrid Demo](https://www.boldgrid.com/central/get-it-now?redirect_url=wp-admin%2Fpost-new.php%3Fpost_type%3Dpage&plugins=post-and-page-builder) on Cloud WordPress to see for yourself!
+Try out the [BoldGrid Demo](https://www.boldgrid.com/central/get-it-now?redirect_url=wp-admin%2Fpost-new.php%3Fpost_type%3Dpage&plugins=post-and-page-builder&utm_source=ppb-wp-repo&utm_medium=readme&utm_campaign=ppb) on Cloud WordPress to see for yourself!
 
 [youtube https://youtu.be/QoIb7OhV9ys?rel=0]
 
@@ -51,7 +51,7 @@ Additional Features when used with other BoldGrid plugins:
 * Contact Forms
 * On-page SEO recommendations for targeted search phrase
 
-Visit our website to learn more about additional [BoldGrid plugins](https://www.boldgrid.com/wordpress-plugins/) to further improve your WordPress experience!
+Visit our website to learn more about additional [BoldGrid plugins](https://www.boldgrid.com/wordpress-plugins/?utm_source=ppb-wp-repo&utm_medium=demo-uri&utm_campaign=ppb) to further improve your WordPress experience!
 
 = People Love BoldGrid =
 
@@ -89,7 +89,7 @@ Choose your brand's colors and we'll help your design stay unified. Our unique c
 
 = Where can I find documentation and user guides? =
 
-If you have any questions on getting started with the BoldGrid Post and Page Builder, please visit our [Getting Started Guide](https://www.boldgrid.com/support/boldgrid-post-and-page-builder/).
+If you have any questions on getting started with the BoldGrid Post and Page Builder, please visit our [Getting Started Guide](https://www.boldgrid.com/support/boldgrid-post-and-page-builder/?utm_source=ppb-wp-repo&utm_medium=readme&utm_campaign=ppb).
 We also suggest joining our [Team Orange User Group community](https://www.facebook.com/groups/BGTeamOrange) for free support, tips and tricks.
 
 = Will the Post and Page Builder work with my theme? =
@@ -97,7 +97,7 @@ We also suggest joining our [Team Orange User Group community](https://www.faceb
 Yes; the Post and Page Builder is compatible with any theme. We recommend using BoldGrid themes which provide additional features and are optimized for use with the Post and Page Builder.
 
 = Where can I report issues or ask questions? =
-Bugs can be reported either in the [WordPress support forum](https://wordpress.org/support/plugin/post-and-page-builder) or in the [BoldGrid Support Center](https://www.boldgrid.com/support/questions/).
+Bugs can be reported either in the [WordPress support forum](https://wordpress.org/support/plugin/post-and-page-builder) or in the [BoldGrid Support Center](https://www.boldgrid.com/support/questions/?utm_source=ppb-wp-repo&utm_medium=readme&utm_campaign=ppb).
 
 = How can I contribute? =
 
