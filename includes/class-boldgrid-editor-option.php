@@ -47,6 +47,7 @@ class Boldgrid_Editor_Option {
 	 */
 	public static function update( $key, $value ) {
 		$boldgrid_editor = get_option( self::OPTION_NAMESPACE, array() );
+		$boldgrid_editor = is_array( $boldgrid_editor ) ? $boldgrid_editor : array();
 		$boldgrid_editor[ $key ] = $value;
 		update_option( self::OPTION_NAMESPACE, $boldgrid_editor );
 	}
