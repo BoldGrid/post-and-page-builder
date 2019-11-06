@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.12.0 =
+
+Release Date: TBA
+
+* Update: Horizontal lines now use div tag to prevent conflicts with themes.
+
 = 1.11.2 =
 
 Release Date: September 18th, 2019
