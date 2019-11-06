@@ -65,10 +65,10 @@
   resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.2.tgz#e32bf1a600dfeba53a409705911d2a2a35fbf9ac"
   integrity sha512-VVLcMmFgEC05HcF/18+H+E26apv2m8DLidOSIkLvQTtfwb+RyGIgS2tzBcHiGwdyHUaCwZ/8SaLkd6EqNZrR7Q==
 
-"@boldgrid/components@^2.16.1":
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.1.tgz#fd414662f37c19314c7f94252ffdb085d85b285e"
-  integrity sha512-Kp1U6JxLr9i92B1173WcLvQTu41pPXFkqw2N8YviubA6yyQb66ipLXbmPEudjv4TCKITVEjDoSctjBENrUU7Bw==
+"@boldgrid/components@^2.16.2":
+  version "2.16.2"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.2.tgz#8a0fcac9d14093fb72bca09bb9e72d8ff9033c1a"
+  integrity sha512-SAvoySS7JwX9S63sJW83D9A8LG2P67IJyrVtLDseeZnQ4eoxOBTzU5I5W2kZObse4hhjlgwqBUINooXiCmICSg==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
   version "0.13.1"
