@@ -284,6 +284,8 @@ class Boldgrid_Editor_MCE {
 	 * @return string.
 	 */
 	public function add_cache_busting( $css ) {
+		global $wp_styles;
+
 		if ( empty( $css ) ) {
 			return $css;
 		}
@@ -315,6 +317,20 @@ class Boldgrid_Editor_MCE {
 
 		$styles[] = plugins_url( '/assets/css/animate.min.css',
 			BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
+
+		$gutenberg_styles = [
+			'wp-block-library',
+			'wp-block-library-theme'
+		];
+
+		foreach ( $gutenberg_styles as $style ) {
+			if ( ! empty( $wp_styles->registered[ $style ]->src ) ) {
+				$styles[] = $wp_styles->_css_href(
+					$wp_styles->registered[ $style ]->src,
+					$wp_styles->default_version,
+					$style );
+			}
+		}
 
 		$styles[] = Boldgrid_Editor_Assets::editor_css_url();
 

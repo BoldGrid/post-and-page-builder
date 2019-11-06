@@ -42,17 +42,17 @@ export class Width {
 			$postContainer = $contents.find( 'body' ),
 			$article = $contents.find( '.post-' + BoldgridEditor.post_id + ', article' ).first(),
 			$entryContent = $article.find( '.entry-content' ),
-			$siteContent = $contents.find( '.site-content' ),
+			$siteContent = $contents.find( '.site-content, #site-content' ),
 			$existingSection = $article.find( '.boldgrid-section:first' );
 
 		if ( $existingSection.length ) {
 			$postContainer = $existingSection;
-		} else if ( $entryContent.length ) {
-			$postContainer = $entryContent;
-		} else if ( $article.length ) {
-			$postContainer = $article;
 		} else if ( $siteContent.length ) {
 			$postContainer = $siteContent;
+		} else if ( $article.length ) {
+			$postContainer = $article;
+		} else if ( $entryContent.length ) {
+			$postContainer = $entryContent;
 		}
 
 		return $postContainer;
