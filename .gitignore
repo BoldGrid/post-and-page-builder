@@ -7,7 +7,7 @@ package-lock.json
 node_modules
 bower_components
 coverage
-dist/*
+assets/dist/*
 assets/css/editor.min.css
 assets/css/editor.css
 assets/css/components.css
