@@ -26,7 +26,7 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 
 		bind: function() {
 			var $el = BG.Menu.getCurrentTarget(),
-				currentAlignment = $el.is( 'hr' ) ? 'center' : 'left',
+				currentAlignment = $el.is( 'hr,.bg-hr' ) ? 'center' : 'left',
 				$inputs = BG.Panel.$element.find( '.section.horizontal-block-alignment input' ),
 				marginLeft = parseInt( $el.css( 'margin-left' ) ),
 				marginRight = parseInt( $el.css( 'margin-right' ) );

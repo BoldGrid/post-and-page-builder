@@ -86,7 +86,7 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 		getTemplate() {
 			return `<div class="row bg-editor-hr-wrap">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<p><hr class="bg-hr bg-hr-16"></p>
+							<p><div class="bg-hr bg-hr-16"></div></p>
 						</div>
 					</div>`;
 		},
@@ -111,7 +111,7 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 			var panel = BG.Panel;
 
 			// Remove all content from the panel.
-			self.$currentTarget = BOLDGRID.EDITOR.Menu.getTarget( self ).find( 'hr:first' );
+			self.$currentTarget = BOLDGRID.EDITOR.Menu.getTarget( self ).find( '.bg-hr:first' );
 			self.userDesigns._update();
 			panel.clear();
 
