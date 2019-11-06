@@ -10,8 +10,9 @@ coverage
 assets/dist/*
 assets/css/editor.min.css
 assets/css/editor.css
-assets/css/components.css
-assets/css/components.min.css
 assets/css/animate.min.css
 assets/css/bundle.min.css
 assets/css/buttons.min.css
+assets/css/mce-fe.*
+assets/css/components.*
+assets/css/editor-fe.*
