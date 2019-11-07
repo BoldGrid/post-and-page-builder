@@ -297,6 +297,7 @@ class Boldgrid_Editor_Assets {
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
 			'shortcodes' => array_keys( $shortcode_tags ) ?: [],
+			'current_theme' => get_stylesheet(),
 
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,

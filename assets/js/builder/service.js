@@ -21,6 +21,7 @@ import { EventEmitter } from 'eventemitter3';
 import { Generate } from '@boldgrid/controls/src/controls/color';
 import { Sanitize } from './sanitize';
 import { EditorSelect } from '../forms/editor-select';
+import Compatibility from './compatibility/loader';
 
 export class Service {
 	init() {
@@ -69,6 +70,7 @@ export class Service {
 			this.popover.row = new RowPopover().init();
 			this.popover.section = new SectionPopover().init();
 			this.connectKey = new ConnectKey();
+			new Compatibility().init();
 
 			BOLDGRID.EDITOR.CONTROLS.Section.init( BOLDGRID.EDITOR.Controls.$container );
 
