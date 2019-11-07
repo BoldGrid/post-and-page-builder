@@ -31,6 +31,10 @@
 		margin: 0;
 	}
 
+	.panel-selection > * {
+		max-width: 100%;
+	}
+
 	.presets .selected {
 		position: relative;
 
