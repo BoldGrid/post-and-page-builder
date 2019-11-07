@@ -402,10 +402,45 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_setupCustomization: function() {
 			var panel = BG.Panel;
 
-			panel.$element.on( 'click', '.current-selection .settings .panel-button', function( e ) {
+			panel.$element.on( 'click', '.current-selection .settings .panel-button.customizer', function(
+				e
+			) {
 				e.preventDefault();
 				self.openCustomization();
 			} );
+
+			panel.$element.on(
+				'click',
+				'.current-selection .settings .panel-button.remove-background',
+				function( e ) {
+					e.preventDefault();
+					self._removeImage();
+				}
+			);
+		},
+
+		/**
+		 * Button to remove an image.
+		 *
+		 * @since 1.12.0
+		 */
+		_removeImage() {
+			const $target = self.getTarget();
+			self.removeColorClasses( $target );
+			BG.Controls.addStyle( $target, 'background', '' );
+			$target.removeAttr( 'data-image-url' );
+
+			BG.Panel.$element.find( '.presets .selected' ).removeClass( 'selected' );
+
+			// Reset Gradient attributes.
+			$target
+				.removeAttr( 'data-bg-color-1' )
+				.removeAttr( 'data-image-url' )
+				.removeAttr( 'data-bg-color-2' )
+				.removeAttr( 'data-bg-overlaycolor' )
+				.removeAttr( 'data-bg-direction' );
+
+			self.setImageSelection( 'color' );
 		},
 
 		/**

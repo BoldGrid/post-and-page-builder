@@ -8,7 +8,8 @@
 				<a href="#" data-type='["pattern"]' data-label="Patterns" class='filter'><i class="fa fa-wpforms" aria-hidden="true"></i> Pattern</a>
 			</div>
 			<div class='settings'>
-				<a href="#" class='panel-button'><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+				<a href="#" class='panel-button customizer'><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+				<a href="#" class='panel-button remove-background'><i class="fa fa-times" aria-hidden="true"></i> Remove</a>
 			</div>
 		</div>
 		<div class='presets'>

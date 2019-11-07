@@ -140,6 +140,7 @@ Release Date: TBA
 
 * Update: Horizontal lines now use div tag to prevent conflicts with themes.
 * Feature: Default editor styles now applied in post and page builder.
+* Feature: Added button to remove background image.
 
 = 1.11.2 =
 
