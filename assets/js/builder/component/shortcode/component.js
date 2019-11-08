@@ -17,13 +17,14 @@ export class Component {
 			'embed'
 		];
 
-		( this.panel = {
+		this.panel = {
 			title: 'Edit Shortcode',
 			height: '350px',
 			width: '325px',
 			icon: 'dashicons dashicons-editor-code'
-		} ),
-			( this.errorTemplate = _.template( errorTemplate ) );
+		};
+
+		this.errorTemplate = _.template( errorTemplate );
 	}
 
 	/**
