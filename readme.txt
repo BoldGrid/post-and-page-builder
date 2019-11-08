@@ -140,6 +140,7 @@ Release Date: TBA
 
 * Feature: Default editor styles now applied in post and page builder.
 * Feature: Added button to remove background image.
+* Feature: Shortcodes can now be edited from visual mode.
 * Update: Horizontal lines now use div tag to prevent conflicts with themes.
 * Update: Improved support for twentytwenty theme.
 
