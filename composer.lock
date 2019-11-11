@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "boldgrid/library",
-            "version": "2.10.2",
+            "version": "2.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BoldGrid/library.git",
-                "reference": "0cd5492ccc6ac6a0dc4f742c737d4ba7165fca9c"
+                "reference": "c2e12d3bc28bc38e1620060309ed99c918f0ec0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BoldGrid/library/zipball/0cd5492ccc6ac6a0dc4f742c737d4ba7165fca9c",
-                "reference": "0cd5492ccc6ac6a0dc4f742c737d4ba7165fca9c",
+                "url": "https://api.github.com/repos/BoldGrid/library/zipball/c2e12d3bc28bc38e1620060309ed99c918f0ec0c",
+                "reference": "c2e12d3bc28bc38e1620060309ed99c918f0ec0c",
                 "shasum": ""
             },
             "type": "library",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2019-09-17T15:17:16+00:00"
+            "time": "2019-11-11T19:08:13+00:00"
         }
     ],
     "packages-dev": [],
