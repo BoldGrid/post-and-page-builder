@@ -99,7 +99,8 @@ body {
 .centered-section > *:only-of-type {
 	position: absolute;
 	top: 50%;
-	width: 100%;
+	width: 100% !important;
+	max-width: 100% !important;
 	transform: translateY(-50%);
 }
 .redacted-placeholder {
