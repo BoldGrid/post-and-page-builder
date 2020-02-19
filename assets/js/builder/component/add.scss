@@ -171,6 +171,9 @@
 		transform: scale(0.8);
 	}
 
+	[data-name='premium-post-list'],
+	[data-name='premium-section-slider'],
+	[data-name='premium-content-slider'],
 	[data-name='premium'] {
 		background: #32373c !important;
 		color: white;
