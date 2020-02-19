@@ -17,7 +17,7 @@ export class Component {
 				)
 		};
 		this.rowSlider = {
-			name: 'content-sliders',
+			name: 'premium',
 			title: 'Content Sliders',
 			type: 'design',
 			icon: '<span class="dashicons dashicons-images-alt"></span>',
@@ -32,7 +32,7 @@ export class Component {
 		};
 
 		this.sectionSlider = {
-			name: 'section-sliders',
+			name: 'premium',
 			title: 'Section Sliders',
 			type: 'design',
 			icon: '<span class="dashicons dashicons-slides"></span>',
@@ -47,7 +47,7 @@ export class Component {
 		};
 
 		this.postList = {
-			name: 'post-snippet',
+			name: 'premium',
 			title: 'Post Snippet',
 			type: 'widget',
 			icon: '<span class="dashicons dashicons-admin-post"></span>',
