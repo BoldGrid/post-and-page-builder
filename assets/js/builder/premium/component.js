@@ -25,7 +25,8 @@ export class Component {
 			priority: 90,
 			onClick: () =>
 				window.open(
-					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-row-sliders',
+					BoldgridEditor.plugin_configs.urls.premium_key +
+						'?source=plugin-add-component-content-slider',
 					'_blank'
 				)
 		};
@@ -39,7 +40,8 @@ export class Component {
 			priority: 90,
 			onClick: () =>
 				window.open(
-					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-section-sliders',
+					BoldgridEditor.plugin_configs.urls.premium_key +
+						'?source=plugin-add-component-section-slider',
 					'_blank'
 				)
 		};
@@ -53,7 +55,7 @@ export class Component {
 			priority: 95,
 			onClick: () =>
 				window.open(
-					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-premium-post-list',
+					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-add-component-post-list',
 					'_blank'
 				)
 		};
