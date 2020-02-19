@@ -16,6 +16,47 @@ export class Component {
 					'_blank'
 				)
 		};
+		this.rowSlider = {
+			name: 'content-sliders',
+			title: 'Content Sliders',
+			type: 'design',
+			icon: '<span class="dashicons dashicons-images-alt"></span>',
+			insertType: 'popup',
+			priority: 90,
+			onClick: () =>
+				window.open(
+					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-row-sliders',
+					'_blank'
+				)
+		};
+
+		this.sectionSlider = {
+			name: 'section-sliders',
+			title: 'Section Sliders',
+			type: 'design',
+			icon: '<span class="dashicons dashicons-slides"></span>',
+			insertType: 'popup',
+			priority: 90,
+			onClick: () =>
+				window.open(
+					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-section-sliders',
+					'_blank'
+				)
+		};
+
+		this.postList = {
+			name: 'post-snippet',
+			title: 'Post Snippet',
+			type: 'widget',
+			icon: '<span class="dashicons dashicons-admin-post"></span>',
+			insertType: 'popup',
+			priority: 95,
+			onClick: () =>
+				window.open(
+					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-premium-post-list',
+					'_blank'
+				)
+		};
 	}
 
 	/**
@@ -24,6 +65,11 @@ export class Component {
 	 * @since 1.0.0
 	 */
 	init() {
-		BG.$window.on( 'boldgrid_editor_loaded', () => BG.Service.component.register( this.config ) );
+		BG.$window.on( 'boldgrid_editor_loaded', () => {
+			BG.Service.component.register( this.config );
+			BG.Service.component.register( this.rowSlider );
+			BG.Service.component.register( this.sectionSlider );
+			BG.Service.component.register( this.postList );
+		} );
 	}
 }
