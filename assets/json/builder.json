@@ -140,6 +140,7 @@
     },
      "templateContainers": {
          "template/page/fullwidth.php": "container",
+         "template/page/content-only.php": "container",
          "template/page/left-sidebar.php": "container",
          "template/page/right-sidebar.php": "container"
     },
