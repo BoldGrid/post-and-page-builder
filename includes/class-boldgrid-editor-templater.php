@@ -32,7 +32,8 @@ class Boldgrid_Editor_Templater {
 	public $templates = array(
 		'template/page/fullwidth.php' => 'BoldGrid - Full Width',
 		'template/page/left-sidebar.php' => 'BoldGrid - Left Sidebar',
-		'template/page/right-sidebar.php' => 'BoldGrid - Right Sidebar'
+		'template/page/right-sidebar.php' => 'BoldGrid - Right Sidebar',
+		'template/page/content-only.php' => 'Content Only'
 	);
 
 	/**
