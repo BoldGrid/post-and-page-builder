@@ -1,3 +1,3 @@
 <?php get_header(); ?>
-<?php include( __DIR__ . '/content-only.php' ); ?>
+<?php include( __DIR__ . '/body.php' ); ?>
 <?php get_footer(); ?>

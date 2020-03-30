@@ -1,27 +1,16 @@
-<main class="main bg-custom-template <?php print ! empty( $sidebar_location ) ? $sidebar_location : ''?>"
-	role="main">
-	<div class="bge-content-main">
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-page-article' ); ?>>
-			<?php
-			the_post();
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
 
-			if ( Boldgrid_Editor_Service::get( 'page_title' )->has_title_displayed() && get_the_title() ) { ?>
-				<header class="container entry-header">
-					<h1 class="entry-title"><?php the_title(); ?></h1>
-				</header>
-			<?php } ?>
+	<?php wp_head(); ?>
+</head>
 
-			<div class="bge-entry-content">
-				<?php the_content(); ?>
-			</div>
-			<?php include( __DIR__ . '/entry-footer.php' ); ?>
-		</article>
-
-		<?php include( __DIR__ . '/wp-link-pages.php' ); ?>
-	</div>
-	<?php if ( ! empty( $sidebar_location ) ) { ?>
-	<div class="bge-sidebar">
-		<?php do_action( 'boldgrid_editor_sidebar' ); ?>
-	</div>
-	<?php } ?>
-</main>
+<body <?php body_class(); ?>>
+	<?php do_action( 'wp_body_open' ); ?>
+	<?php include( __DIR__ . '/body.php' ); ?>
+	<?php wp_footer(); ?>
+</body>
+</html>
