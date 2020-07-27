@@ -441,11 +441,8 @@ class Boldgrid_Editor_Assets {
 		 *
 		 * This is only needed until the wp-color-picker-alpha repo has been updated.
 		 * @see https://github.com/kallookoo/wp-color-picker-alpha/issues/35
-		 *
-		 * The preg_replace is needed to change 5.5-beta3-48571 to 5.5-3-48571 so that the version_compare
-		 * will work properly during the beta phase.
 		 */
-		if ( version_compare( preg_replace( "/[^0-9.-]/", "", $wp_version ), '5.5', '>=' ) ) {
+		if ( version_compare( $wp_version, '5.4.99', '>=' ) ) {
 			wp_localize_script(
 				'wp-color-picker',
 				'wpColorPickerL10n',
