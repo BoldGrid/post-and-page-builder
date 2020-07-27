@@ -400,8 +400,12 @@ class Boldgrid_Editor_Assets {
 	 * Enqueue scripts to be used on the page and post editor.
 	 *
 	 * @since 1.2.3
+	 *
+	 * @global string $wp_version Current WordPress version.
 	 */
 	public function enqueue_drag_scripts() {
+		global $wp_version;
+
 		$plugin_file = BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php';
 
 		// Dependencies.
@@ -428,6 +432,29 @@ class Boldgrid_Editor_Assets {
 			'BoldgridEditor = BoldgridEditor || {}; BoldgridEditor',
 			$this->get_js_vars()
 		);
+
+		/*
+		 * Localize wp-color-picker.
+		 *
+		 * This is only needed in WordPress >= 5.5 because wpColorPickerL10n has been removed.
+		 * @see https://github.com/WordPress/WordPress/commit/7e7b70cd1ae5772229abb769d0823411112c748b
+		 *
+		 * This is only needed until the wp-color-picker-alpha repo has been updated.
+		 * @see https://github.com/kallookoo/wp-color-picker-alpha/issues/35
+		 */
+		if ( version_compare( $wp_version, '5.4.99', '>=' ) ) {
+			wp_localize_script(
+				'wp-color-picker',
+				'wpColorPickerL10n',
+				array(
+					'clear'            => __( 'Clear' ),
+					'clearAriaLabel'   => __( 'Clear color' ),
+					'defaultString'    => __( 'Default' ),
+					'defaultAriaLabel' => __( 'Select default color' ),
+					'pick'             => __( 'Select Color' ),
+					'defaultLabel'     => __( 'Color value' ),
+			) );
+		}
 
 		wp_enqueue_script( 'boldgrid-editor-drag' );
 
