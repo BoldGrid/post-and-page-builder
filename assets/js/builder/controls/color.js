@@ -447,6 +447,7 @@ import { Palette } from './color/palette';
 					if ( self.$currentInput ) {
 						self.$currentInput.attr( 'data-type', type );
 						self.$currentInput.attr( 'value', cssColor );
+						self.$currentInput.val( cssColor );
 						self.$currentInput.change();
 					}
 				},

@@ -656,6 +656,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		if ( ! BoldgridEditor.is_boldgrid_theme || BG.Controls.hasThemeFeature( 'variable-containers' ) ) {
 			BG.VALIDATION.Section.updateContent( self.$body );
 			self.$validatedInput.attr( 'value', 1 );
+			self.$validatedInput.val( 1 );
 		}
 
 		self.wrap_hr_tags();

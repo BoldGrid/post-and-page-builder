@@ -826,7 +826,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				overlayColor = $target.attr( 'data-bg-overlaycolor' );
 
 			if ( overlayColor ) {
-				$overlayColorSection.find( 'input' ).attr( 'value', overlayColor );
+				$overlayColorSection
+					.find( 'input' )
+					.val( overlayColor )
+					.attr( 'value', overlayColor );
 			}
 		},
 
@@ -891,15 +894,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			if ( self.backgroundIsGradient( $target.css( 'background-image' ) ) ) {
 				BG.Panel.$element
 					.find( 'input[name="gradient-color-1"]' )
+					.val( $target.attr( 'data-bg-color-1' ) )
 					.attr( 'value', $target.attr( 'data-bg-color-1' ) );
 				BG.Panel.$element
 					.find( 'input[name="gradient-color-2"]' )
+					.val( $target.attr( 'data-bg-color-2' ) )
 					.attr( 'value', $target.attr( 'data-bg-color-2' ) );
 			} else {
 				bgColor = BG.CONTROLS.Color.findAncestorColor( $target, 'background-color' );
 				$bgControlColor = BG.Panel.$element.find( 'input[name="section-background-color"]' );
 				$bgControlColor.prev( 'label' ).css( 'background-color', bgColor );
-				$bgControlColor.attr( 'value', bgColor );
+				$bgControlColor.val( bgColor ).attr( 'value', bgColor );
 			}
 		},
 

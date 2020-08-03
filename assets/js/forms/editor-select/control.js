@@ -64,6 +64,7 @@ export class Control {
 		$input
 			.attr( 'type', 'hidden' )
 			.attr( 'name', 'bgppb_default_editor_post' )
+			.val( BoldgridEditor.editor_override )
 			.attr( 'value', BoldgridEditor.editor_override );
 
 		$form.append( $input );

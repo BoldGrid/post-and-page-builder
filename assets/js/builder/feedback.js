@@ -29,6 +29,7 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			val = JSON.parse( val );
 			val.push( options );
 			self.$input.attr( 'value', JSON.stringify( val ) );
+			self.$input.val( JSON.stringify( val ) );
 		},
 
 		/**
