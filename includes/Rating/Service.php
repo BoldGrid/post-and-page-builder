@@ -43,7 +43,8 @@ class Service {
 			new Library\RatingPrompt();
 			$this->activity = new Library\Activity( BOLDGRID_EDITOR_KEY );
 
-			$this->check_version_status();
+			// Disable this check needs, testing inconsistant rating requests
+			// $this->check_version_status();
 		}
 	}
 
