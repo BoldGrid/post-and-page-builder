@@ -136,7 +136,7 @@ WordPress Editor.
 
 = 1.13.3 =
 
-Release Date: August 8th, 2020
+Release Date: August 10th, 2020
 
 * Fix: WP 5.5 - Issue with causing color picker to fail updating after selecting class color
 
