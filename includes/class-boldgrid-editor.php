@@ -123,6 +123,8 @@ class Boldgrid_Editor {
 	public function setup_components() {
 		$shortcode = new Boldgrid_Components_Shortcode();
 		$shortcode->init();
+
+		register_widget( '\\Boldgrid\\PPB\\Widget\\Menu' );
 	}
 
 	/**

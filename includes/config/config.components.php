@@ -14,6 +14,11 @@
 		array( 'name' => 'widget', 'title' => 'Widgets' ),
 	),
 	'components' => array(
+		'wp_boldgrid_component_menu' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>'
+			),
+		),
 		'wp_archives' => array(
 			'js_control' => array(
 				'icon' => '<span class="dashicons dashicons-archive"></span>'
