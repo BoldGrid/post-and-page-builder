@@ -71,8 +71,6 @@ class Menu extends \WP_Widget {
 	 * @return array               Updated instance config.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		error_log( 'Old Instance: ' . json_encode( $old_instance ) );
-		error_log( 'New Instance: ' . json_encode( $old_instance ) );
 		$instance = $new_instance;
 
 		return $instance;
@@ -87,15 +85,21 @@ class Menu extends \WP_Widget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance )  {
-		error_log( '$this::widget $instance: ' . json_encode( $instance ) );
-		error_log( '$this::widget $args: ' . json_encode( $args ) );
-		$class = 'sm bgc-header-template-menu';
-		if ( 'vertical' === $instance->bgc_menu_direction ) {
+		$class = 'sm bgc-header-template-menu color3-border-color';
+
+		if ( 'vertical' === $instance['bgc_menu_direction'] ) {
 			$class .= ' vertical';
 		} else {
 			$class .= ' horizontal';
 		}
-		$menu_id = (int) $instance->bgc_menu;
+
+		$menu_id = (int) $instance['bgc_menu'];
+
+		$align = ' align-' . explode( ' ', $instance['bgc_menu_align'] )[0];
+		$just  = ' just-' . explode( ' ', $instance['bgc_menu_align'] )[1];
+
+		$class .= $align . $just;
+
 		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
 	}
 
@@ -108,25 +112,100 @@ class Menu extends \WP_Widget {
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
+		error_log( 'Form Instance: ' . json_encode( $instance ) );
 		?>
-		<p>
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
-		</p>
 		<p>
 			<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
 			<option value="0">Select a Menu</option>
 		<?php
 		foreach ( wp_get_nav_menus() as $menu ) {
-			echo '<option value="' . $menu->term_id . '">' . $menu->name . '</option>';
+			$selected = ( ! empty( $instance['bgc_menu'] ) && $menu->term_id === (int) $instance['bgc_menu'] ) ? 'selected' : '';
+			echo '<option value="' . $menu->term_id . '" ' . $selected . '>' . $menu->name . '</option>';
 		}
 		?>
+			</select>
 		</p>
+		<h4>Choose Menu Type</h4>
 		<p>
-			<input type="radio" id="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>" value="horizontal" checked>
+			<input type="radio"
+				id="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>"
+				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
+				value="horizontal"
+				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'horizontal' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
+			>
 			<label for="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>">Horizontal</label>
-			<input type="radio" id="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>" value="vertical">
+			<input type="radio"
+				id="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>"
+				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
+				value="vertical"
+				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'vertical' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
+			>
 			<label for="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>">Vertical</label>
-		<?php
+		</p>
+		<h4>Menu Alignment</h4>
+		<style>
+			.bgc-menu-align-control td {
+				border-spacing: 3px;
+				border:1px solid #000;
+				border-radius: 1px;
+			}
+			.bgc-menu-align-control tr {
+				border-spacing: 3px;
+			}
+
+			.bgc-menu-align-control .dashicons-arrow-up.r,
+			.bgc-menu-align-control .dashicons-arrow-down.l {
+				transform: rotate(45deg);
+			}
+
+			.bgc-menu-align-control .dashicons-arrow-up.l,
+			.bgc-menu-align-control .dashicons-arrow-down.r {
+				transform: rotate(315deg);
+			}
+
+			.bgc-menu-align-control input {
+				opacity: 0;
+				position: absolute;
+				z-index: 99;
+				width:20px;
+				height:20px;
+			}
+			.bgc-menu-align-control td:hover input ~ .dashicons::before {
+  				color: #ccc;
+			}
+
+			.bgc-menu-align-control td input:checked ~ .dashicons::before {
+  				color: rgb(249,91,38);
+			}
+
+		</style>
+		<table class="bgc-menu-align-control">
+			<?php
+				$align = ( ! empty( $instance['bgc_menu_align'] ) ) ? $instance['bgc_menu_align'] : 'c c';
+				$options = array(
+					't' => array( 'l' => 'arrow-up', 'c' => 'arrow-up', 'r' => 'arrow-up' ),
+					'c' => array( 'l' => 'arrow-left', 'c' => 'move', 'r' => 'arrow-right' ),
+					'b' => array( 'l' => 'arrow-down', 'c' => 'arrow-down', 'r' => 'arrow-down' ),
+				);
+
+				foreach( $options as $row => $cols ) {
+					?><tr><?php
+					foreach( $cols as $col => $icon ) {
+						?>
+						<td>
+							<input type="radio"
+								id="<?php echo $this->get_field_id( 'bgc_menu_align_' . $row . $col ); ?>"
+								name="<?php echo $this->get_field_name( 'bgc_menu_align' ); ?>"
+								value="<?php echo $row . ' ' . $col;?>"
+								<?php echo $row . ' ' . $col === $align ? 'checked' : ''; ?>
+							>
+							<span class="dashicons dashicons-<?php echo $icon . ' ' . $col; ?>"></span>
+						</td>
+						<?php
+					}
+					?></tr><?php
+				}
 	}
 
 }
