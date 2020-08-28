@@ -33,6 +33,7 @@ class Menu extends \WP_Widget {
 		'after_title' => '',
 		'before_widget' => '<div class="widget">',
 		'after_widget' => '</div>',
+		'bgc_menu' => 0,
 	);
 
 	/**
@@ -70,6 +71,8 @@ class Menu extends \WP_Widget {
 	 * @return array               Updated instance config.
 	 */
 	public function update( $new_instance, $old_instance ) {
+		error_log( 'Old Instance: ' . json_encode( $old_instance ) );
+		error_log( 'New Instance: ' . json_encode( $old_instance ) );
 		$instance = $new_instance;
 
 		return $instance;
@@ -84,7 +87,16 @@ class Menu extends \WP_Widget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance )  {
-		echo "based on your configiguration your menu looks like this";
+		error_log( '$this::widget $instance: ' . json_encode( $instance ) );
+		error_log( '$this::widget $args: ' . json_encode( $args ) );
+		$class = 'sm bgc-header-template-menu';
+		if ( 'vertical' === $instance->bgc_menu_direction ) {
+			$class .= ' vertical';
+		} else {
+			$class .= ' horizontal';
+		}
+		$menu_id = (int) $instance->bgc_menu;
+		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
 	}
 
 
@@ -98,9 +110,23 @@ class Menu extends \WP_Widget {
 	public function form( $instance ) {
 		?>
 		<p>
-			<h4><?php _e( 'Create a custom menu control set here:', 'boldgrid-editor' ) ?></h4>
+			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 		</p>
-	<?php
+		<p>
+			<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
+			<option value="0">Select a Menu</option>
+		<?php
+		foreach ( wp_get_nav_menus() as $menu ) {
+			echo '<option value="' . $menu->term_id . '">' . $menu->name . '</option>';
+		}
+		?>
+		</p>
+		<p>
+			<input type="radio" id="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>" value="horizontal" checked>
+			<label for="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>">Horizontal</label>
+			<input type="radio" id="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>" value="vertical">
+			<label for="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>">Vertical</label>
+		<?php
 	}
 
 }
