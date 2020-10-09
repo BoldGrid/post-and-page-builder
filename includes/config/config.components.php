@@ -9,6 +9,7 @@
 	),
 	'types' => array(
 		array( 'name' => 'structure', 'title' => 'Layout & Formatting' ),
+		array( 'name' => 'header', 'title' => 'Headers' ),
 		array( 'name' => 'design', 'title' => 'Design' ),
 		array( 'name' => 'media', 'title' => 'Media' ),
 		array( 'name' => 'widget', 'title' => 'Widgets' ),
@@ -16,7 +17,8 @@
 	'components' => array(
 		'wp_boldgrid_component_menu' => array(
 			'js_control' => array(
-				'icon' => '<span class="dashicons dashicons-admin-page"></span>'
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>',
+				'type' => 'header',
 			),
 		),
 		'wp_archives' => array(

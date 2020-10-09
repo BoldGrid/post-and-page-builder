@@ -66,7 +66,7 @@ class Boldgrid_Components_Shortcode {
 				$widget->widget_options['classname'] : '';
 
 			$widget_config = array_merge( array(
-				'widget_id' => null,
+				'widget_id' => isset( $component['js_control']['unique_id'] ) ? $component['js_control']['unique_id'] : null,
 				'before_title' => '<h4 class="widget-title">',
 				'after_title' => '</h4>',
 				'before_widget' => sprintf( '<div class="widget %s">', $classname ),
@@ -74,6 +74,11 @@ class Boldgrid_Components_Shortcode {
 			), $args );
 
 			ob_start();
+
+			if( isset( $widget_config['widget_id'] ) ) {
+				$attrs['widget_id'] = $widget_config['widget_id'];
+			}
+
 			$widget->widget( $widget_config, $attrs );
 			$markup = ob_get_clean();
 
@@ -99,6 +104,7 @@ class Boldgrid_Components_Shortcode {
 			'shortcode' => 'boldgrid_wp_' . preg_replace( "/[^a-z0-9_]/", '', strtolower( $widget->id_base ) ),
 			'widget' => $classname,
 			'js_control' => array(),
+			'widget_id' => $widget->widget_id
 		);
 
 		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) ) {
@@ -155,7 +161,6 @@ class Boldgrid_Components_Shortcode {
 			if ( empty( $attrs['type'] ) ) {
 				return;
 			}
-
 			$component = ! empty( $this->config['components'][ $attrs['type'] ] ) ?
 				$this->config['components'][ $attrs['type'] ] : null;
 
@@ -164,7 +169,6 @@ class Boldgrid_Components_Shortcode {
 				return $this->get_content( $component, $attrs );
 			}
 		} );
-
 		foreach ( $this->config['components'] as $component ) {
 			if ( current_user_can( 'edit_pages' ) ) {
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
@@ -180,9 +184,9 @@ class Boldgrid_Components_Shortcode {
 
 	/**
 	 * Bind all generic shortcode api calls to a do shortcode event.
-	 * 
+	 *
 	 * @since 1.11.0
-	 * 
+	 *
 	 * @global $shortcode_tags.
 	 */
 	public function register_shortcodes() {
@@ -193,7 +197,7 @@ class Boldgrid_Components_Shortcode {
 		foreach ( array_keys( $tags ) as $tag ) {
 			add_action( 'wp_ajax_boldgrid_shortcode_' . $tag , function () {
 				Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
-	
+
 				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : null;
 				$html = do_shortcode( $text );
 
