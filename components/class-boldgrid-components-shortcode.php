@@ -104,7 +104,6 @@ class Boldgrid_Components_Shortcode {
 			'shortcode' => 'boldgrid_wp_' . preg_replace( "/[^a-z0-9_]/", '', strtolower( $widget->id_base ) ),
 			'widget' => $classname,
 			'js_control' => array(),
-			'widget_id' => $widget->widget_id
 		);
 
 		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) ) {
