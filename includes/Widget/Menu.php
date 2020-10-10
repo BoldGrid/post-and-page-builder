@@ -68,8 +68,6 @@ class Menu extends \WP_Widget {
 				'description' => __( 'A customizable menu for use in Crio Premium Header Templates.', 'boldgrid-editor' ),
 			)
 		);
-
-		$this->widget_id = $this->get_unique_id();
 	}
 
 	/**
@@ -83,7 +81,6 @@ class Menu extends \WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $new_instance;
-		error_log( json_encode( $instance ) );
 		return $instance;
 	}
 
@@ -98,22 +95,26 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
-		if ( 'vertical' === $instance['bgc_menu_direction'] ) {
+		if ( isset( $instance['bgc_menu_direction'] ) && 'vertical' === $instance['bgc_menu_direction'] ) {
 			$class .= ' vertical';
 		} else {
 			$class .= ' horizontal';
 		}
 
-		$menu_id = (int) $instance['bgc_menu'];
+		$menu_id = isset( $instance['bgc_menu'] ) ? (int) $instance['bgc_menu'] : 0;
 
-		$align = ' align-' . explode( ' ', $instance['bgc_menu_align'] )[0];
-		$just  = ' just-' . explode( ' ', $instance['bgc_menu_align'] )[1];
+		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
+
+		$align = ' align-' . explode( ' ', $bgc_menu_align )[0];
+		$just  = ' just-' . explode( ' ', $bgc_menu_align )[1];
 
 		$class .= $align . $just;
 
 		$this->_register();
 
 		$this->update_post_meta( $instance['bgc_menu_id'] );
+
+		do_action( 'boldgrid_menu_' . $instance['bgc_menu_id'], [ 'menu_class' => 'flex-row ' . $class ] );
 
 		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
 	}
