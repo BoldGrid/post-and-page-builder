@@ -248,7 +248,6 @@ class Boldgrid_Editor_Setting {
 			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
 
 		$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
-
 		if ( ! $default_editor_override && $post ) {
 			$default_editor = get_post_meta( $post->ID, '_bgppb_default_editor', true ) ?: $default_editor;
 		}
@@ -264,7 +263,7 @@ class Boldgrid_Editor_Setting {
 	 * @return array Custom Post Type names.
 	 */
 	protected function get_all_cpts() {
-		return array_merge( [ 'post', 'page', 'crio_page_header' ], get_post_types( [
+		return array_merge( [ 'post', 'page' ], get_post_types( [
 			'public'   => true,
 			'_builtin' => false,
 		], 'names' ) );
