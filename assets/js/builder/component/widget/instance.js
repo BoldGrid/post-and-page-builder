@@ -280,11 +280,11 @@ export class Instance {
 			$button.attr( 'disabled', true );
 			$spinner.toggleClass( 'is-active' );
 			locationId = this.getUniqueId( $locationInput.val() );
+			console.log( $nonce );
 			$.post( ajaxurl, {
 				action: 'crio_premium_register_menu_location',
 				location_name: $locationInput.val(),
-				location_id: locationId,
-				nonce: $nonce.text()
+				location_id: locationId
 			} )
 				.done( function( data ) {
 					console.log( 'success' );

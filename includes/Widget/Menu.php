@@ -189,7 +189,7 @@ class Menu extends \WP_Widget {
 				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
 				value="<?php echo $instance['bgc_menu_location'] ?>">
 			<p>
-				<span class="hidden register_menu_nonce"><?php wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
+				<span class="hidden register_menu_nonce"><?php echo wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
 				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
 				<span class="spinner" style="float: none"></span>
 			</p>
