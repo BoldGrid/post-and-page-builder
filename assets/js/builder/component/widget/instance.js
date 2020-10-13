@@ -79,6 +79,13 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
+		if ( 'wp_boldgrid_component_menu' === this.component.name ) {
+			return `
+			<div class="boldgrid-component-menu boldgrid-shortcode" data-imhwpb-draggable="true">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+			`;
+		}
 		return `
 			<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
@@ -275,22 +282,25 @@ export class Instance {
 			$locationInput = $button.parent().siblings( 'input.bgc_menu_location' ),
 			$spinner = $button.siblings( 'span.spinner' ),
 			$nonce = $button.siblings( 'span.register_menu_nonce' ),
-			locationId;
+			locationId,
+			$locationIdInput = $button.siblings( 'input' );
 		if ( $locationInput.val() ) {
 			$button.attr( 'disabled', true );
 			$spinner.toggleClass( 'is-active' );
 			locationId = this.getUniqueId( $locationInput.val() );
-			console.log( $nonce );
 			$.post( ajaxurl, {
 				action: 'crio_premium_register_menu_location',
 				location_name: $locationInput.val(),
-				location_id: locationId
+				location_id: locationId,
+				nonce: $nonce.text(),
+				template_id: $( '#post_ID' ).val()
 			} )
 				.done( function( data ) {
 					console.log( 'success' );
 					if ( data.registered ) {
 						$button.html( 'Menu Location Registered' );
 						$locationInput.attr( 'disabled' );
+						$locationIdInput.val( data.locationId );
 					} else {
 						$button.attr( 'disabled', false );
 					}
@@ -318,8 +328,8 @@ export class Instance {
 	 */
 	getUniqueId( locationName ) {
 		locationName = locationName.toLowerCase();
-		locationName = locationName.replace( ' ', '-' );
-		locationName = locationName.replace( '_', '-' );
+		locationName = locationName.replace( /\s/g, '-' );
+		locationName = locationName.replace( /_/g, '-' );
 		locationName = locationName + '_' + Math.floor( Math.random() * 999 + 1 ).toString();
 
 		return locationName;

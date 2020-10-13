@@ -112,44 +112,9 @@ class Menu extends \WP_Widget {
 
 		$this->_register();
 
-		$this->update_post_meta( $instance['bgc_menu_id'] );
-
 		do_action( 'boldgrid_menu_' . $instance['bgc_menu_id'], [ 'menu_class' => 'flex-row ' . $class ] );
 
 		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
-	}
-
-	/**
-	 * Update Post Meta
-	 *
-	 * Adds new nav menus to post_meta field.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param string $menu_id Menu Id.
-	 */
-	public function update_post_meta( $menu_id ) {
-		$referer  = wp_get_referer();
-		$matches  = array();
-		preg_match( '/post=(\d+)/', $referer, $matches );
-
-		$page_header = get_post( $matches[1] );
-
-		$page_header_menus = get_post_meta( $page_header->ID, 'crio-premium-menus', true );
-
-		if( is_string( $page_header_menus ) ) {
-			$page_header_menus = array( $menu_id );
-		}
-
-		if( is_array( $page_header_menus ) && ! in_array( $menu_id, $page_header_menus ) ) {
-			$page_header_menus[] = $menu_id;
-		}
-
-		update_post_meta(
-			$page_header->ID,
-			'crio-premium-menus',
-			$page_header_menus
-		);
 	}
 
 	/**
@@ -182,6 +147,7 @@ class Menu extends \WP_Widget {
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
+		error_log( json_encode( $instance ) );
 		?>
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
 			<input type="text" required class="bgc_menu_location"
@@ -192,6 +158,11 @@ class Menu extends \WP_Widget {
 				<span class="hidden register_menu_nonce"><?php echo wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
 				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
 				<span class="spinner" style="float: none"></span>
+
+				<input id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ) ?>" type="hidden" required class="bgc_menu_location_id"
+				id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ); ?>"
+				name="<?php echo $this->get_field_name( 'bgc_menu_location_id' ); ?>"
+				value="<?php echo $instance['bgc_menu_location_id'] ?>">
 			</p>
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 			<p>
