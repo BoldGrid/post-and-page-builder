@@ -183,13 +183,18 @@ class Menu extends \WP_Widget {
 	 */
 	public function form( $instance ) {
 		?>
+			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
+			<input type="text" required class="bgc_menu_location"
+				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
+				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
+				value="<?php echo $instance['bgc_menu_location'] ?>">
+			<p>
+				<span class="hidden register_menu_nonce"><?php wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
+				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
+				<span class="spinner" style="float: none"></span>
+			</p>
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
-			<p>Menu Location: <?php echo $instance['bgc_menu_id'] ?></p>
-			<input type="hidden"
-				   id="<?php echo $this->get_field_id( 'bgc_menu_id' ); ?>"
-				   name="<?php echo $this->get_field_name( 'bgc_menu_id' ); ?>"
-				   value="<?php echo $instance['bgc_menu_id'] ?>">
-		<p>
+			<p>
 			<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
 			<option value="0">Select a Menu</option>
 		<?php

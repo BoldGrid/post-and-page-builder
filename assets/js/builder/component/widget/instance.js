@@ -79,64 +79,11 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
-		var widgetId;
-		if ( 'wp_boldgrid_component_menu' === this.component.name ) {
-			widgetId = this.getUniqueId( BoldgridEditor.post['post_name'] );
-			return `
-			<div id="${
-				widgetId
-			}" class="boldgrid-component-menu boldgrid-shortcode" data-imhwpb-draggable="true">
-				[boldgrid_component type="${
-					this.component.name
-				}" opts="%7B%22widget-boldgrid_component_menu%5B%5D%5Bbgc_menu_id%5D%22%3A%22${
-				widgetId
-			}%22%7D"]
-			</div>
-			`;
-		}
 		return `
 			<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 		`;
-	}
-
-	/**
-	 * get Unique Id
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param {string} templateName
-	 *
-	 * @return {string} Unique Id
-	 */
-	getUniqueId( templateName ) {
-		var existingMenus = $( tinyMCE.activeEditor.dom.doc ).find( '.boldgrid-component-menu' ),
-			existingIdNumbers = [],
-			idNumber = 1,
-			isUnique = false;
-
-		existingMenus.each( function() {
-			existingIdNumbers.push(
-				parseInt(
-					$( this )
-						.attr( 'id' )
-						.split( '_' )[1]
-				)
-			);
-		} );
-
-		console.log( existingIdNumbers );
-
-		while ( false === isUnique ) {
-			if ( -1 < $.inArray( idNumber, existingIdNumbers ) ) {
-				idNumber++;
-			} else {
-				isUnique = true;
-			}
-		}
-
-		return templateName + '-menu_' + idNumber;
 	}
 
 	/**
@@ -312,6 +259,8 @@ export class Instance {
 			this._updateShortcode();
 		}, 1500 );
 
+		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
+
 		this.$form.on( 'change', () => debounced() );
 		this.$form.on( 'input', () => debounced() );
 
@@ -319,5 +268,60 @@ export class Instance {
 			e.preventDefault();
 			this._updateShortcode();
 		} );
+	}
+
+	registerMenuLocation( event ) {
+		let $button = $( event.currentTarget ),
+			$locationInput = $button.parent().siblings( 'input.bgc_menu_location' ),
+			$spinner = $button.siblings( 'span.spinner' ),
+			$nonce = $button.siblings( 'span.register_menu_nonce' ),
+			locationId;
+		if ( $locationInput.val() ) {
+			$button.attr( 'disabled', true );
+			$spinner.toggleClass( 'is-active' );
+			locationId = this.getUniqueId( $locationInput.val() );
+			$.post( ajaxurl, {
+				action: 'crio_premium_register_menu_location',
+				location_name: $locationInput.val(),
+				location_id: locationId,
+				nonce: $nonce.text()
+			} )
+				.done( function( data ) {
+					console.log( 'success' );
+					if ( data.registered ) {
+						$button.html( 'Menu Location Registered' );
+						$locationInput.attr( 'disabled' );
+					} else {
+						$button.attr( 'disabled', false );
+					}
+					console.log( data );
+				} )
+				.fail( function( data ) {
+					console.log( 'fail' );
+					console.log( data );
+					$button.attr( 'disabled', false );
+				} )
+				.always( function( data ) {
+					$spinner.toggleClass( 'is-active' );
+				} );
+		}
+	}
+
+	/**
+	 * get Unique Id
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param {string} locationName
+	 *
+	 * @return {string} Unique Id
+	 */
+	getUniqueId( locationName ) {
+		locationName = locationName.toLowerCase();
+		locationName = locationName.replace( ' ', '-' );
+		locationName = locationName.replace( '_', '-' );
+		locationName = locationName + '_' + Math.floor( Math.random() * 999 + 1 ).toString();
+
+		return locationName;
 	}
 }
