@@ -9,23 +9,31 @@ export class Instance {
 		this.component = component;
 		this.insertedNode = false;
 		this.controlTemplate = _.template( controlTemplate );
-
-		this.panelConfig = {
-			height: '650px',
-			width: '450px',
-			customizeCallback: true,
-			customizeSupport: [
-				'margin',
-				'padding',
-				'border',
-				'box-shadow',
-				'border-radius',
-				'animation',
-				'background-color',
-				'device-visibility',
-				'customClasses'
-			]
-		};
+		if ( 'wp_boldgrid_component_menu' === component.name ) {
+			this.panelConfig = {
+				height: '650px',
+				width: '450px',
+				customizeCallback: true,
+				customizeSupport: []
+			};
+		} else {
+			this.panelConfig = {
+				height: '650px',
+				width: '450px',
+				customizeCallback: true,
+				customizeSupport: [
+					'margin',
+					'padding',
+					'border',
+					'box-shadow',
+					'border-radius',
+					'animation',
+					'background-color',
+					'device-visibility',
+					'customClasses'
+				]
+			};
+		}
 	}
 
 	/**

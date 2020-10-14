@@ -95,26 +95,53 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
-		if ( isset( $instance['bgc_menu_direction'] ) && 'vertical' === $instance['bgc_menu_direction'] ) {
-			$class .= ' vertical';
-		} else {
-			$class .= ' horizontal';
-		}
-
 		$menu_id = isset( $instance['bgc_menu'] ) ? (int) $instance['bgc_menu'] : 0;
 
 		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
 
-		$align = ' align-' . explode( ' ', $bgc_menu_align )[0];
-		$just  = ' just-' . explode( ' ', $bgc_menu_align )[1];
+		$align = $this->get_align_class( $bgc_menu_align );
 
-		$class .= $align . $just;
+		$class .= ' ' . $align;
 
 		$this->_register();
 
-		do_action( 'boldgrid_menu_' . $instance['bgc_menu_id'], [ 'menu_class' => 'flex-row ' . $class ] );
+		$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
-		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
+		echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
+		do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+		echo '</div>';
+
+		//echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
+	}
+
+	/**
+	 * Get Alignment Class
+	 *
+	 * This takes the alignment information passed from the form
+	 * and converts it into a usable class name for bgtfw.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $align_value Value passed from form.
+	 * @return string Alignment class.
+	 */
+	public function get_align_class( $align_value ) {
+		$align   = explode( ' ', $align_value )[0];
+		$justify = explode( ' ', $align_value )[1];
+
+		$align_class = '';
+
+		if ( 'c' === $align && 'c' !== $justify ) {
+			$align_class = $justify;
+		} elseif (  'c' !== $align && 'c' === $justify ) {
+			$align_class = $align;
+		} elseif ( 'c' === $align && 'c' === $justify ) {
+			$align_class = 'c';
+		} else {
+			$align_class = $align . $justify;
+		}
+
+		return $align_class;
 	}
 
 	/**
@@ -147,7 +174,6 @@ class Menu extends \WP_Widget {
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
-		error_log( json_encode( $instance ) );
 		?>
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
 			<input type="text" required class="bgc_menu_location"
@@ -176,23 +202,6 @@ class Menu extends \WP_Widget {
 		?>
 			</select>
 		</p>
-		<h4>Choose Menu Type</h4>
-		<p>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
-				value="horizontal"
-				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'horizontal' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>">Horizontal</label>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
-				value="vertical"
-				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'vertical' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>">Vertical</label>
-		</p>
 		<h4>Menu Alignment</h4>
 		<style>
 			.bgc-menu-align-control td {
@@ -204,13 +213,13 @@ class Menu extends \WP_Widget {
 				border-spacing: 3px;
 			}
 
-			.bgc-menu-align-control .dashicons-arrow-up.r,
-			.bgc-menu-align-control .dashicons-arrow-down.l {
+			.bgc-menu-align-control .dashicons-arrow-up.e,
+			.bgc-menu-align-control .dashicons-arrow-down.w {
 				transform: rotate(45deg);
 			}
 
-			.bgc-menu-align-control .dashicons-arrow-up.l,
-			.bgc-menu-align-control .dashicons-arrow-down.r {
+			.bgc-menu-align-control .dashicons-arrow-up.w,
+			.bgc-menu-align-control .dashicons-arrow-down.e {
 				transform: rotate(315deg);
 			}
 
@@ -234,9 +243,9 @@ class Menu extends \WP_Widget {
 			<?php
 				$align = ( ! empty( $instance['bgc_menu_align'] ) ) ? $instance['bgc_menu_align'] : 'c c';
 				$options = array(
-					't' => array( 'l' => 'arrow-up', 'c' => 'arrow-up', 'r' => 'arrow-up' ),
-					'c' => array( 'l' => 'arrow-left', 'c' => 'move', 'r' => 'arrow-right' ),
-					'b' => array( 'l' => 'arrow-down', 'c' => 'arrow-down', 'r' => 'arrow-down' ),
+					'n' => array( 'w' => 'arrow-up', 'c' => 'arrow-up', 'e' => 'arrow-up' ),
+					'c' => array( 'w' => 'arrow-left', 'c' => 'move', 'e' => 'arrow-right' ),
+					's' => array( 'w' => 'arrow-down', 'c' => 'arrow-down', 'e' => 'arrow-down' ),
 				);
 
 				foreach( $options as $row => $cols ) {
