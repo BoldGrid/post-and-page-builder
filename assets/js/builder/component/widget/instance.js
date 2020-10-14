@@ -16,6 +16,29 @@ export class Instance {
 				customizeCallback: true,
 				customizeSupport: []
 			};
+		} else if (
+			'wp_boldgrid_component_page_title' === component.name ||
+			'wp_boldgrid_component_site_title' === component.name ||
+			'wp_boldgrid_component_site_description' === component.name
+		) {
+			this.panelConfig = {
+				height: '775px',
+				width: '450px',
+				customizeCallback: true,
+				customizeSupport: [
+					'fontSize',
+					'fontColor',
+					'margin',
+					'padding',
+					'border',
+					'box-shadow',
+					'border-radius',
+					'animation',
+					'background-color',
+					'device-visibility',
+					'customClasses'
+				]
+			};
 		} else {
 			this.panelConfig = {
 				height: '650px',

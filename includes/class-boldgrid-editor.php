@@ -125,6 +125,10 @@ class Boldgrid_Editor {
 		$shortcode->init();
 
 		register_widget( '\\Boldgrid\\PPB\\Widget\\Menu' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PageTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteDescription' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\Logo' );
 	}
 
 	/**

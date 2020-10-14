@@ -21,6 +21,30 @@
 				'type' => 'header',
 			),
 		),
+		'wp_boldgrid_component_page_title' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_site_title' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_site_description' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_logo' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-page"></span>',
+				'type' => 'header',
+			),
+		),
 		'wp_archives' => array(
 			'js_control' => array(
 				'icon' => '<span class="dashicons dashicons-archive"></span>'
