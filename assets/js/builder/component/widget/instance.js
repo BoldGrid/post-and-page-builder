@@ -327,7 +327,6 @@ export class Instance {
 				template_id: $( '#post_ID' ).val()
 			} )
 				.done( function( data ) {
-					console.log( 'success' );
 					if ( data.registered ) {
 						$button.html( 'Menu Location Registered' );
 						$locationInput.attr( 'disabled' );
@@ -335,11 +334,8 @@ export class Instance {
 					} else {
 						$button.attr( 'disabled', false );
 					}
-					console.log( data );
 				} )
 				.fail( function( data ) {
-					console.log( 'fail' );
-					console.log( data );
 					$button.attr( 'disabled', false );
 				} )
 				.always( function( data ) {
