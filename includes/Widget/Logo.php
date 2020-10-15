@@ -84,7 +84,12 @@ class Logo extends \WP_Widget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance )  {
-		the_custom_logo();
+		$logo_id = get_theme_mod( 'custom_logo' );
+
+		echo wp_get_attachment_image(
+			$logo_id,
+			'full'
+		);
 	}
 
 

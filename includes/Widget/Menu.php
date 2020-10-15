@@ -95,7 +95,7 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
-		$menu_id = isset( $instance['bgc_menu'] ) ? (int) $instance['bgc_menu'] : 0;
+		$menu_id = isset( $instance['bgc_menu'] ) ? (int) $instance['bgc_menu'] : 1;
 
 		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
 
@@ -104,14 +104,18 @@ class Menu extends \WP_Widget {
 		$class .= ' ' . $align;
 
 		$this->_register();
+		if ( isset( $instance['bgc_menu_location_id'] ) ) {
+			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
-		$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
 
-		echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
-		do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
-		echo '</div>';
-
-		//echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			echo '</div>';
+		} else {
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('You must register a menu location for this component to render', 'boldgrid-editor' ) ?></p>
+			<?php
+		}
 	}
 
 	/**
@@ -179,7 +183,7 @@ class Menu extends \WP_Widget {
 			<input type="text" required class="bgc_menu_location"
 				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
 				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
-				value="<?php echo $instance['bgc_menu_location'] ?>">
+				value="<?php echo isset( $instance['bgc_menu_location'] ) ? $instance['bgc_menu_location'] : '' ?>">
 			<p>
 				<span class="hidden register_menu_nonce"><?php echo wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
 				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
@@ -188,7 +192,7 @@ class Menu extends \WP_Widget {
 				<input id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ) ?>" type="hidden" required class="bgc_menu_location_id"
 				id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ); ?>"
 				name="<?php echo $this->get_field_name( 'bgc_menu_location_id' ); ?>"
-				value="<?php echo $instance['bgc_menu_location_id'] ?>">
+				value="<?php echo isset( $instance['bgc_menu_location_id'] ) ? $instance['bgc_menu_location_id'] : '' ?>">
 			</p>
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 			<p>

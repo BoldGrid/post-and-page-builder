@@ -86,13 +86,18 @@ class PageTitle extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		global $post;
 
-		error_log( json_encode( $instance ) );
+		if ( ! is_front_page() && is_home() ) {
+			$blog_page = get_post( get_option( 'page_for_posts' ) );
+			$title     = $blog_page->post_title;
+		} else {
+			$title     = $post->post_title;
+		}
 
 		$alignment = isset( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
 		if ( $post && $post->post_title ) {
-			echo '<h1 class="page_title" style="font-size: inherit; color: inherit; text-align: ' . $alignment . ';">' . $post->post_title . '</h1>';
+			echo '<h1 class="page_title" style="font-size: inherit; color: inherit; text-align: ' . $alignment . ';">' . $title . '</h1>';
 		} else {
-			echo '<h1 class="page_title placeholder" style="font-size: inherit; color: inherit; text-align: ' . $alignment . ';">[ PAGE TITLE ]</h1>';
+			echo '<h1 class="page_title placeholder" style="font-size: inherit; color: inherit; white-space: nowrap; text-align: ' . $alignment . ';">[ PAGE TITLE ]</h1>';
 		}
 	}
 
