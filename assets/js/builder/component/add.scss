@@ -112,10 +112,16 @@
 				opacity: 1;
 			}
 
-			.component-icon,
-			.component-icon svg,
+			// Fixes hover styles for SVG icons.
+			.component-icon {
+				color: #f95b26;
+			}
+			.component-icon .dashicons,
 			.component-icon path {
 				color: #f95b26;
+			}
+
+			.component-icon svg {
 				fill: #f95b26;
 			}
 
