@@ -1,10 +1,10 @@
 <?php
 /**
-* File: Single.php
+* File: Menu.php
 *
-* Create a post component.
+* Create a menu component widget.
 *
-* @since      1.0.0
+* @since      1.14.0
 * @package    Boldgrid_Components
 * @subpackage Boldgrid_Components_Shortcode
 * @author     BoldGrid <support@boldgrid.com>
@@ -14,18 +14,18 @@
 namespace Boldgrid\PPB\Widget;
 
 /**
-* Class: Single
+* Class: Menu
 *
-* Create a post component.
+* Create a menu component widget.
 *
-* @since 1.0.0
+* @since 1.14.0
 */
 class Menu extends \WP_Widget {
 
 	/**
 	 * Default widget wrappers.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array
 	 */
 	public static $widgetArgs = array(
@@ -39,7 +39,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Default values.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array Default values.
 	 */
 	public $defaults = [
@@ -48,16 +48,16 @@ class Menu extends \WP_Widget {
 	/**
 	 * Widget Id
 	 *
-	 * @since 1.1.0
+	 * @since 1.14.0
 	 * @var string
 	 */
 	public $widget_id;
 
 
-		/**
+	/**
 	 * Setup the widget configurations.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 */
 	public function __construct() {
 		parent::__construct(
@@ -73,7 +73,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Update a widget with a new configuration.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $new_instance New instance configuration.
 	 * @param  array $old_instance Old instance configuration.
@@ -87,7 +87,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Render a widget.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $args     General widget configurations.
 	 * @param  array $instance Widget instance arguments.
@@ -124,25 +124,23 @@ class Menu extends \WP_Widget {
 	 * This takes the alignment information passed from the form
 	 * and converts it into a usable class name for bgtfw.
 	 *
-	 * @since 1.1.0
+	 * @since 1.14.0
 	 *
 	 * @param string $align_value Value passed from form.
 	 * @return string Alignment class.
 	 */
 	public function get_align_class( $align_value ) {
-		$align   = explode( ' ', $align_value )[0];
-		$justify = explode( ' ', $align_value )[1];
-
-		$align_class = '';
-
-		if ( 'c' === $align && 'c' !== $justify ) {
-			$align_class = $justify;
-		} elseif (  'c' !== $align && 'c' === $justify ) {
-			$align_class = $align;
-		} elseif ( 'c' === $align && 'c' === $justify ) {
-			$align_class = 'c';
-		} else {
-			$align_class = $align . $justify;
+		$align_class = 'c';
+		switch ( $align_value ) {
+			case ( 'left' ):
+				$align_class = 'w';
+				break;
+			case ( 'right' ):
+				$align_class = 'e';
+				break;
+			default:
+				$align_class = 'c';
+				break;
 		}
 
 		return $align_class;
@@ -151,7 +149,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Get Unique Id.
 	 *
-	 * @since 1.1.0
+	 * @since 1.14.0
 	 *
 	 * @return string Unique ID for this nav menu.
 	 */
@@ -171,104 +169,157 @@ class Menu extends \WP_Widget {
 	}
 
 	/**
-	 * Print our a form that allowing the widget configs to be updated.
+	 * Print Menu Registration Controls
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
-	 * @param  array $instance Widget instance configs.
+	 * @param array $instance Widget instance configs.
 	 */
-	public function form( $instance ) {
+	public function menu_registration_controls( $instance ) {
 		?>
+		<div class="bgc_menu_registration_container">
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
+			<p><?php _e( 'In order to customize this menu, a menu location must be registered. To do so, you must enter a location name and click "Register this Menu Location"', 'boldgrid-editor' ); ?></p>
 			<input type="text" required class="bgc_menu_location"
 				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
 				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
-				value="<?php echo isset( $instance['bgc_menu_location'] ) ? $instance['bgc_menu_location'] : '' ?>">
+				value="<?php echo isset( $instance['bgc_menu_location'] ) ? $instance['bgc_menu_location'] : '' ?>"
+			>
 			<p>
 				<span class="hidden register_menu_nonce"><?php echo wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
 				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
 				<span class="spinner" style="float: none"></span>
 
 				<input id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ) ?>" type="hidden" required class="bgc_menu_location_id"
-				id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_menu_location_id' ); ?>"
-				value="<?php echo isset( $instance['bgc_menu_location_id'] ) ? $instance['bgc_menu_location_id'] : '' ?>">
+					id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ); ?>"
+					name="<?php echo $this->get_field_name( 'bgc_menu_location_id' ); ?>"
+					value="<?php echo isset( $instance['bgc_menu_location_id'] ) ? $instance['bgc_menu_location_id'] : '' ?>"
+				>
 			</p>
+
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 			<p>
-			<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
-			<option value="0">Select a Menu</option>
+				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
+					<option value="0">Select a Menu</option>
+					<?php
+						foreach ( wp_get_nav_menus() as $menu ) {
+							$selected = ( ! empty( $instance['bgc_menu'] ) && $menu->term_id === (int) $instance['bgc_menu'] ) ? 'selected' : '';
+							echo '<option value="' . $menu->term_id . '" ' . $selected . '>' . $menu->name . '</option>';
+						}
+					?>
+				</select>
+			</p>
+		</div>
 		<?php
-		foreach ( wp_get_nav_menus() as $menu ) {
-			$selected = ( ! empty( $instance['bgc_menu'] ) && $menu->term_id === (int) $instance['bgc_menu'] ) ? 'selected' : '';
-			echo '<option value="' . $menu->term_id . '" ' . $selected . '>' . $menu->name . '</option>';
-		}
-		?>
-			</select>
-		</p>
-		<h4>Menu Alignment</h4>
-		<style>
-			.bgc-menu-align-control td {
-				border-spacing: 3px;
-				border:1px solid #000;
-				border-radius: 1px;
-			}
-			.bgc-menu-align-control tr {
-				border-spacing: 3px;
-			}
-
-			.bgc-menu-align-control .dashicons-arrow-up.e,
-			.bgc-menu-align-control .dashicons-arrow-down.w {
-				transform: rotate(45deg);
-			}
-
-			.bgc-menu-align-control .dashicons-arrow-up.w,
-			.bgc-menu-align-control .dashicons-arrow-down.e {
-				transform: rotate(315deg);
-			}
-
-			.bgc-menu-align-control input {
-				opacity: 0;
-				position: absolute;
-				z-index: 99;
-				width:20px;
-				height:20px;
-			}
-			.bgc-menu-align-control td:hover input ~ .dashicons::before {
-  				color: #ccc;
-			}
-
-			.bgc-menu-align-control td input:checked ~ .dashicons::before {
-  				color: rgb(249,91,38);
-			}
-
-		</style>
-		<table class="bgc-menu-align-control">
-			<?php
-				$align = ( ! empty( $instance['bgc_menu_align'] ) ) ? $instance['bgc_menu_align'] : 'c c';
-				$options = array(
-					'n' => array( 'w' => 'arrow-up', 'c' => 'arrow-up', 'e' => 'arrow-up' ),
-					'c' => array( 'w' => 'arrow-left', 'c' => 'move', 'e' => 'arrow-right' ),
-					's' => array( 'w' => 'arrow-down', 'c' => 'arrow-down', 'e' => 'arrow-down' ),
-				);
-
-				foreach( $options as $row => $cols ) {
-					?><tr><?php
-					foreach( $cols as $col => $icon ) {
-						?>
-						<td>
-							<input type="radio"
-								id="<?php echo $this->get_field_id( 'bgc_menu_align_' . $row . $col ); ?>"
-								name="<?php echo $this->get_field_name( 'bgc_menu_align' ); ?>"
-								value="<?php echo $row . ' ' . $col;?>"
-								<?php echo $row . ' ' . $col === $align ? 'checked' : ''; ?>
-							>
-							<span class="dashicons dashicons-<?php echo $icon . ' ' . $col; ?>"></span>
-						</td>
-						<?php
-					}
-					?></tr><?php
-				}
 	}
 
+	/**
+	 * Print Menu Alignment Controls
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function menu_alignment_controls( $instance ) {
+		$field_name     = $this->get_field_name( 'bgc_menu_align' );
+		$selected_align = ! empty( $instance['bgc_menu_align'] ) ? $instance['bgc_menu_align'] : 'center';
+		?>
+		<div class="bgc_menu_container">
+			<h4><?php _e( 'Choose Menu Alignment', 'boldgrid-editor' ); ?></h4>
+			<div class="buttonset bgc">
+				<input class="switch-input screen-reader-text bgc" type="radio" value="left"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_left' ); ?>"
+					<?php echo 'left' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_menu_align_left' ); ?>"><span class="dashicons dashicons-editor-alignleft"></span>Left</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="center"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_center' ); ?>"
+					<?php echo 'center' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_align_center' ); ?>"><span class="dashicons dashicons-editor-aligncenter"></span>Center</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="right"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_right' ); ?>"
+					<?php echo 'right' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_align_right' ); ?>"><span class="dashicons dashicons-editor-alignright"></span>Right</label>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Customizer Button.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance An array of widget configs.
+	 */
+	public function print_customizer_button( $instance ) {
+		?>
+			<div class="bgc_menu_container">
+				<h4><?php _e( 'Additional Customization', 'boldgrid-editor' ); ?></h4>
+				<p><?php _e( 'There are additioncal customization options available for this menu in the Customizer.', 'boldgrid-editor' ); ?></p>
+				<button class="button bgc_goto_customizer" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Go To Customizer', 'boldgrid-editor' ); ?></button>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Print form styles
+	 *
+	 * @since 1.14.0
+	 */
+	public function print_form_styles() {
+		?>
+		<style>
+		.bgc.buttonset {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.bgc.buttonset .switch-label {
+			background: rgba(0, 0, 0, 0.1);
+			border: 1px rgba(0, 0, 0, 0.1);
+			color: #555d66;
+			margin: 0;
+			text-align: center;
+			padding: 0.5em 1em;
+			flex-grow: 1;
+			display: -ms-flexbox;
+			display: flex;
+			-ms-flex-align: center;
+			align-items: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			justify-items: center;
+			-ms-flex-line-pack: center;
+			align-content: center;
+			cursor: pointer;
+		}
+
+		.bgc.buttonset .switch-input:checked + .switch-label {
+			background-color: #00a0d2;
+			color: rgba(255, 255, 255, 0.8);
+		}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Print form to adjust menu configs.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param  array $instance Widget instance configs.
+	 */
+	public function form( $instance ) {
+		$this->menu_registration_controls( $instance );
+		$this->menu_alignment_controls( $instance );
+		$this->print_customizer_button( $instance );
+		$this->print_form_styles( $instance );
+	}
 }

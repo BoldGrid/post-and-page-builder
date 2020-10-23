@@ -184,7 +184,7 @@ class HeadingWidget extends \WP_Widget {
 		$selected_align = ! empty( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
 		?>
 		<h4><?php _e( 'Choose Heading Alignment', 'boldgrid-editor' ); ?></h4>
-		<div id="input_bgtfw_blog_post_header_title_position" class="buttonset bgc">
+		<div class="buttonset bgc">
 
 			<input class="switch-input screen-reader-text bgc" type="radio" value="left"
 				name="<?php echo $field_name; ?>"

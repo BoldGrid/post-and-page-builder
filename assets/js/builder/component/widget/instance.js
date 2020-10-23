@@ -20,7 +20,7 @@ export class Instance {
 		 */
 		if ( 'wp_boldgrid_component_menu' === component.name ) {
 			this.panelConfig = {
-				height: '650px',
+				height: '775px',
 				width: '450px',
 				customizeCallback: true,
 				customizeSupport: []
@@ -337,7 +337,9 @@ export class Instance {
 			this._updateShortcode();
 		}, 1500 );
 
+		this.maybeShowOptions();
 		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
+		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 
 		this.$form.on( 'change', () => debounced() );
 		this.$form.on( 'input', () => debounced() );
@@ -348,13 +350,46 @@ export class Instance {
 		} );
 	}
 
+	maybeShowOptions() {
+		let $optionsToShow = this.$form.find( '.bgc_menu_container' ),
+			menuLocationId = this.$form.find( 'input.bgc_menu_location_id' ).val();
+		if ( menuLocationId ) {
+			$optionsToShow.show();
+		} else {
+			$optionsToShow.hide();
+		}
+	}
+
+	goToCustomizer( event ) {
+		let win,
+			$button = $( event.currentTarget ),
+			$customizeUrl = $button[0].dataset.customize,
+			$formContainer = $button.parents( '.widget-inputs' ),
+			$locationIdInput = $formContainer.find( 'input.bgc_menu_location_id' ),
+			$locationId = $locationIdInput.val(),
+			gotoUrl = $customizeUrl + '?autofocus[panel]=bgtfw_menu_location_' + $locationId;
+		console.log( $customizeUrl + '?autofocus[panel]=bgtfw_menu_location_' + $locationId );
+
+		win = window.open( gotoUrl, '_blank' );
+
+		if ( win ) {
+			win.focus();
+		} else {
+			alert(
+				'Unable to automatically open Customizer. Your browser may be blocking popups. Either enable popups, or manually go to: ' +
+					gotoUrl
+			);
+		}
+	}
+
 	registerMenuLocation( event ) {
 		let $button = $( event.currentTarget ),
 			$locationInput = $button.parent().siblings( 'input.bgc_menu_location' ),
 			$spinner = $button.siblings( 'span.spinner' ),
 			$nonce = $button.siblings( 'span.register_menu_nonce' ),
 			locationId,
-			$locationIdInput = $button.siblings( 'input' );
+			$locationIdInput = $button.siblings( 'input' ),
+			instance = this;
 		if ( $locationInput.val() ) {
 			$button.attr( 'disabled', true );
 			$spinner.toggleClass( 'is-active' );
@@ -371,6 +406,7 @@ export class Instance {
 						$button.html( 'Menu Location Registered' );
 						$locationInput.attr( 'disabled' );
 						$locationIdInput.val( data.locationId );
+						instance.maybeShowOptions();
 					} else {
 						$button.attr( 'disabled', false );
 					}
