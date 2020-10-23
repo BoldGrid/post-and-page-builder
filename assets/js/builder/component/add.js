@@ -71,6 +71,52 @@ export class Add {
 	 * @return {jQuery} jQuery Control object.
 	 */
 	createUI() {
+		let post_type = $( '#post_type' ).val();
+
+		if ( 'crio_page_header' === post_type ) {
+
+			// Remove 'Layout & Structuring' from crio_page_header post types.
+			BoldgridEditor.plugin_configs.component_controls.types = [
+				{
+					name: 'header',
+					title: 'Headers'
+				},
+				{
+					name: 'design',
+					title: 'Design'
+				},
+				{
+					name: 'media',
+					title: 'Media'
+				},
+				{
+					name: 'widget',
+					title: 'Widgets'
+				}
+			];
+		} else {
+
+			// Remove 'Headers' from non crio_page_header post types.
+			BoldgridEditor.plugin_configs.component_controls.types = [
+				{
+					name: 'structure',
+					title: 'Layout & Formatting'
+				},
+				{
+					name: 'design',
+					title: 'Design'
+				},
+				{
+					name: 'media',
+					title: 'Media'
+				},
+				{
+					name: 'widget',
+					title: 'Widgets'
+				}
+			];
+		}
+
 		if ( this.$ui ) {
 			return this.$ui;
 		}
