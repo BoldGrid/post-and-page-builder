@@ -82,10 +82,18 @@ export class Instance {
 			this.insertedNode = true;
 			let $sampleElement = $( '<p></p>' );
 
-			BG.Controls.$container
-				.find( '[class*="col-md-"]' )
-				.first()
-				.prepend( $sampleElement );
+			/*
+			 * If this is a Menu widget, then we need to insert the sampleElement into the current
+			 * selection, rather than the first available column.
+			 */
+			if ( 'wp_boldgrid_component_menu' === this.component.name ) {
+				$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
+			} else {
+				BG.Controls.$container
+					.find( '[class*="col-md-"]' )
+					.first()
+					.prepend( $sampleElement );
+			}
 
 			BG.Service.component.scrollToElement( $sampleElement, 200 );
 			BOLDGRID.EDITOR.mce.selection.select( $sampleElement[0] );
