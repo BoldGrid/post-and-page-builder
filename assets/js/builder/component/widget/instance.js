@@ -9,6 +9,15 @@ export class Instance {
 		this.component = component;
 		this.insertedNode = false;
 		this.controlTemplate = _.template( controlTemplate );
+
+		/*
+		 * The following conditionals were added for 1.14.0 to
+		 * provide different functionality for different widgets.
+		 * For Menu widgets, we want to restrict use of PPB functionality,
+		 * and send the user to the customizer. For Heading widgets
+		 * we want to provide all the possible functionality available
+		 * within PPB.
+		 */
 		if ( 'wp_boldgrid_component_menu' === component.name ) {
 			this.panelConfig = {
 				height: '650px',
@@ -110,12 +119,35 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
+		var headingWidgetNames = [
+			'wp_boldgrid_component_page_title',
+			'wp_boldgrid_component_site_title',
+			'wp_boldgrid_component_site_description'
+		];
+
+		/*
+		 * Menu component shortcodes need to have the boldgrid-component-menu added
+		 * to ensure proper styling, and detection when validating that menu locations
+		 * have been set properly
+		 */
 		if ( 'wp_boldgrid_component_menu' === this.component.name ) {
 			return `
 			<div class="boldgrid-component-menu boldgrid-shortcode" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 			`;
+		}
+
+		/*
+		 * Adding the bgc-heading class to heading widgets ensures that when they use the
+		 * default font-family in PPB, that they inherit the default heading font, not body font.
+		 */
+		if ( headingWidgetNames.includes( this.component.name ) ) {
+			return `
+			<div class="boldgrid-shortcode bgc-heading" data-imhwpb-draggable="true">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+		`;
 		}
 		return `
 			<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
