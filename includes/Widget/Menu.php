@@ -257,7 +257,7 @@ class Menu extends \WP_Widget {
 	 *
 	 * @since 1.14.0
 	 *
-	 * @param array $instance An array of widget configs.
+	 * @param array $instance An array of widget coni
 	 */
 	public function print_customizer_button( $instance ) {
 		?>
@@ -312,7 +312,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Print form to adjust menu configs.
 	 *
-	 * @since 1.14.0
+	 * @since 1.0.0
 	 *
 	 * @param  array $instance Widget instance configs.
 	 */

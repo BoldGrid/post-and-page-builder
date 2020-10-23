@@ -146,6 +146,14 @@ export class Instance {
 			`;
 		}
 
+		if ( 'wp_boldgrid_component_logo' === this.component.name ) {
+			return `
+			<div class="boldgrid-component-logo boldgrid-shortcode" data-imhwpb-draggable="true">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+			`;
+		}
+
 		/*
 		 * Adding the bgc-heading class to heading widgets ensures that when they use the
 		 * default font-family in PPB, that they inherit the default heading font, not body font.

@@ -86,10 +86,119 @@ class Logo extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$logo_id = get_theme_mod( 'custom_logo' );
 
+		$align_class = ! empty( $instance['bgc_logo_alignment'] ) ? $this->get_align_class( $instance['bgc_logo_alignment'] ) : 'center';
+
+		echo '<div class="bgc_header_logo" style="display:flex;justify-content:' . $align_class . ';">';
 		echo wp_get_attachment_image(
 			$logo_id,
 			'full'
 		);
+		echo '</div>';
+	}
+
+	/**
+	 * Get Alignment Class
+	 *
+	 * This takes the alignment information passed from the form
+	 * and converts it into a usable class name for bgtfw.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param string $align_value Value passed from form.
+	 * @return string Alignment class.
+	 */
+	public function get_align_class( $align_value ) {
+		$align_class = 'c';
+		switch ( $align_value ) {
+			case ( 'left' ):
+				$align_class = 'flex-start';
+				break;
+			case ( 'right' ):
+				$align_class = 'flex-end';
+				break;
+			default:
+				$align_class = 'center';
+				break;
+		}
+
+		return $align_class;
+	}
+
+	/**
+	 * Print form styles
+	 *
+	 * @since 1.14.0
+	 */
+	public function print_form_styles() {
+		?>
+		<style>
+		.bgc.buttonset {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.bgc.buttonset .switch-label {
+			background: rgba(0, 0, 0, 0.1);
+			border: 1px rgba(0, 0, 0, 0.1);
+			color: #555d66;
+			margin: 0;
+			text-align: center;
+			padding: 0.5em 1em;
+			flex-grow: 1;
+			display: -ms-flexbox;
+			display: flex;
+			-ms-flex-align: center;
+			align-items: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			justify-items: center;
+			-ms-flex-line-pack: center;
+			align-content: center;
+			cursor: pointer;
+		}
+
+		.bgc.buttonset .switch-input:checked + .switch-label {
+			background-color: #00a0d2;
+			color: rgba(255, 255, 255, 0.8);
+		}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Prints Alignment Control
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function print_alignment_control( $instance ) {
+		$field_name     = $this->get_field_name( 'bgc_logo_alignment' );
+		$selected_align = ! empty( $instance['bgc_logo_alignment'] ) ? $instance['bgc_logo_alignment'] : 'center';
+		?>
+		<h4><?php _e( 'Choose Logo Alignment', 'boldgrid-editor' ); ?></h4>
+		<div class="buttonset bgc">
+			<input class="switch-input screen-reader-text bgc" type="radio" value="left"
+				name="<?php echo $field_name; ?>"
+				id="<?php echo $this->get_field_id( 'bgc_logo_align_left' ); ?>"
+				<?php echo 'left' === $selected_align ? 'checked' : '';?>
+			>
+				<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_logo_align_left' ); ?>"><span class="dashicons dashicons-editor-alignleft"></span>Left</label>
+
+			<input class="switch-input screen-reader-text bgc" type="radio" value="center"
+				name="<?php echo $field_name; ?>"
+				id="<?php echo $this->get_field_id( 'bgc_logo_align_center' ); ?>"
+				<?php echo 'center' === $selected_align ? 'checked' : '';?>
+			>
+				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_logo_align_center' ); ?>"><span class="dashicons dashicons-editor-aligncenter"></span>Center</label>
+
+			<input class="switch-input screen-reader-text bgc" type="radio" value="right"
+				name="<?php echo $field_name; ?>"
+				id="<?php echo $this->get_field_id( 'bgc_logo_align_right' ); ?>"
+				<?php echo 'right' === $selected_align ? 'checked' : '';?>
+			>
+				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_logo_align_right' ); ?>"><span class="dashicons dashicons-editor-alignright"></span>Right</label>
+		</div>
+		<?php
 	}
 
 
@@ -101,32 +210,8 @@ class Logo extends \WP_Widget {
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
-		?>
-		<h4><?php _e( 'Choose Logo Alignment', 'boldgrid-editor' ); ?></h4>
-		<p>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_title_left_align' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_title_alignment' ); ?>"
-				value="left"
-				<?php echo ( ! empty( $instance['bgc_title_alignment'] ) && 'left' === $instance['bgc_title_alignment'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_title_left_align' ); ?>">Left</label>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_title_center_align' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_title_alignment' ); ?>"
-				value="center"
-				<?php echo ( ! empty( $instance['bgc_title_alignment'] ) && 'center' === $instance['bgc_title_alignment'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_title_center_align' ); ?>">Center</label>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_title_right_align' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_title_alignment' ); ?>"
-				value="right"
-				<?php echo ( ! empty( $instance['bgc_title_alignment'] ) && 'right' === $instance['bgc_title_alignment'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_title_right_align' ); ?>">Right</label>
-		</p>
-	<?php
+		$this->print_alignment_control( $instance );
+		$this->print_form_styles();
 	}
 
 }
