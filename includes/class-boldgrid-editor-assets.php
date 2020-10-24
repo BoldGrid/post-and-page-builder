@@ -268,6 +268,16 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
+		/*
+		 * Since we are removing the 'Add Block' functionality from Crio Page Headers,
+		 * we need to make sure to also bypass the 'display_gridblock_lead' on Crio Page Header
+		 * post types
+		 */
+		$display_gridblock_lead = 'post-new.php' === $pagenow && 'tinymce' === $default_tab;
+		$screen = get_current_screen();
+		if ( $screen && isset( $screen->post_type ) && 'crio_page_header' === $screen->post_type ) {
+			$display_gridblock_lead = false;
+		}
 		$vars = array(
 			'is_boldgrid_theme' => $is_bg_theme,
 			'is_add_new' => 'post-new.php' === $pagenow,
@@ -301,7 +311,7 @@ class Boldgrid_Editor_Assets {
 
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
-			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,
+			'display_gridblock_lead' => $display_gridblock_lead,
 			'notices' => Boldgrid_Editor_Setup::get_notice_status(),
 			'setup_settings' => Boldgrid_Editor_Option::get( 'setup' ),
 			'control_styles' => ! $is_bg_theme ? Boldgrid_Editor_Builder_Styles::get_option() : array(),
