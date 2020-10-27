@@ -360,11 +360,16 @@ export class Instance {
 
 	maybeShowOptions() {
 		let $optionsToShow = this.$form.find( '.bgc_menu_container' ),
-			menuLocationId = this.$form.find( 'input.bgc_menu_location_id' ).val();
+			menuLocationId = this.$form.find( 'input.bgc_menu_location_id' ).val(),
+			menuId = this.$form.find( 'input.bgc_menu' ).val();
 		if ( menuLocationId ) {
 			$optionsToShow.show();
 		} else {
 			$optionsToShow.hide();
+		}
+
+		if ( menuLocationId && menuId ) {
+			$( '.bgc_menu_warning' ).hide();
 		}
 	}
 

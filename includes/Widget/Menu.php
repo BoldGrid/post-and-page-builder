@@ -95,7 +95,7 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
-		$menu_id = isset( $instance['bgc_menu'] ) ? (int) $instance['bgc_menu'] : 1;
+		$menu_id = isset( $instance['bgc_menu'] ) && 0 !== (int) $instance['bgc_menu'] ? (int) $instance['bgc_menu'] : null;
 
 		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
 
@@ -104,14 +104,21 @@ class Menu extends \WP_Widget {
 		$class .= ' ' . $align;
 
 		$this->_register();
-		if ( isset( $instance['bgc_menu_location_id'] ) ) {
+		if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
+			error_log( json_encode( 'both menu and location id are set: ' . json_encode( $menu_id ) ) );
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
 
 			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
 			echo '</div>';
+		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
+			error_log( json_encode( 'menu location is set, but menu is not: ' . json_encode( $menu_id ) ) );
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('You must choose a menu to display in this location', 'boldgrid-editor' ) ?></p>
+			<?php
 		} else {
+			error_log( json_encode( 'menu location is not set: ' . json_encode( $menu_id ) ) );
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('You must register a menu location for this component to render', 'boldgrid-editor' ) ?></p>
 			<?php
@@ -199,7 +206,7 @@ class Menu extends \WP_Widget {
 
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 			<p>
-				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
+				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" class="bgc_menu" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
 					<option value="0">Select a Menu</option>
 					<?php
 						foreach ( wp_get_nav_menus() as $menu ) {
