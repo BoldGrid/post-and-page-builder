@@ -105,7 +105,6 @@ class Menu extends \WP_Widget {
 
 		$this->_register();
 		if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
-			error_log( json_encode( 'both menu and location id are set: ' . json_encode( $menu_id ) ) );
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
@@ -113,12 +112,10 @@ class Menu extends \WP_Widget {
 			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
-			error_log( json_encode( 'menu location is set, but menu is not: ' . json_encode( $menu_id ) ) );
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('You must choose a menu to display in this location', 'boldgrid-editor' ) ?></p>
 			<?php
 		} else {
-			error_log( json_encode( 'menu location is not set: ' . json_encode( $menu_id ) ) );
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('You must register a menu location for this component to render', 'boldgrid-editor' ) ?></p>
 			<?php
