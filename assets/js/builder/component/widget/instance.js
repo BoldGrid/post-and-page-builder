@@ -381,7 +381,6 @@ export class Instance {
 			$locationIdInput = $formContainer.find( 'input.bgc_menu_location_id' ),
 			$locationId = $locationIdInput.val(),
 			gotoUrl = $customizeUrl + '?autofocus[panel]=bgtfw_menu_location_' + $locationId;
-		console.log( $customizeUrl + '?autofocus[panel]=bgtfw_menu_location_' + $locationId );
 
 		win = window.open( gotoUrl, '_blank' );
 
