@@ -140,7 +140,7 @@ export class Instance {
 		 */
 		if ( 'wp_boldgrid_component_menu' === this.component.name ) {
 			return `
-			<div class="boldgrid-component-menu boldgrid-shortcode" data-imhwpb-draggable="true">
+			<div class="boldgrid-component-menu boldgrid-shortcode standard-menu-enabled header-top" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 			`;
