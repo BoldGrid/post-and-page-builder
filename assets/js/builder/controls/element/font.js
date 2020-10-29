@@ -25,7 +25,7 @@ import { Typography } from '@boldgrid/controls';
 
 		// Ignore images clicked in paragraphs.
 		exceptionSelector:
-			'.boldgrid-component-menu, .boldgrid-component-logo, img, .draggable-tools-imhwpb *',
+			'.boldgrid-component-menu *, .bgc-header-template-menu, .menu-item a, .boldgrid-component-logo, img, .draggable-tools-imhwpb *',
 
 		templateMarkup: null,
 
