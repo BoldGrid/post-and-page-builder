@@ -35,8 +35,6 @@ export class Instance {
 				width: '450px',
 				customizeCallback: true,
 				customizeSupport: [
-					'fontSize',
-					'fontColor',
 					'margin',
 					'padding',
 					'border',
@@ -348,6 +346,8 @@ export class Instance {
 		this.maybeShowOptions();
 		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
 		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
+		this.$form.find( 'a.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
+		this.$form.find( 'a.bgc_open_font_control' ).on( 'click', e => this.openFontControl( e ) );
 
 		this.$form.on( 'change', () => debounced() );
 		this.$form.on( 'input', () => debounced() );
@@ -356,6 +356,10 @@ export class Instance {
 			e.preventDefault();
 			this._updateShortcode();
 		} );
+	}
+
+	openFontControl( e ) {
+		$( '.boldgrid-instance-menu li[data-action=menu-font]' ).trigger( 'click' );
 	}
 
 	maybeShowOptions() {
@@ -375,6 +379,9 @@ export class Instance {
 
 	goToCustomizer( event ) {
 		let win,
+			title,
+			id,
+			returnUrl,
 			$button = $( event.currentTarget ),
 			$customizeUrl = $button[0].dataset.customize,
 			$formContainer = $button.parents( '.widget-inputs' ),
@@ -382,7 +389,28 @@ export class Instance {
 			$locationId = $locationIdInput.val(),
 			gotoUrl = $customizeUrl + '?autofocus[panel]=bgtfw_menu_location_' + $locationId;
 
-		win = window.open( gotoUrl, '_blank' );
+		if ( $button[0].dataset.section && 'headings' === $button[0].dataset.section ) {
+			gotoUrl = $customizeUrl + '?autofocus[section]=headings_typography';
+		}
+
+		title = wp.autosave.getPostData().post_title;
+		id = wp.autosave.getPostData().post_id;
+		returnUrl = '"/wp-admin/post.php?post=' + id + '&action=edit"';
+
+		if ( ! title ) {
+			alert( 'You Must Enter a Title First.' );
+			return;
+		}
+
+		event.preventDefault();
+
+		wp.autosave.server.triggerSave();
+
+		$( window ).off( 'beforeunload.edit-post' );
+
+		gotoUrl = gotoUrl + '&return=' + encodeURIComponent( returnUrl );
+
+		win = window.open( gotoUrl, '_self' );
 
 		if ( win ) {
 			win.focus();

@@ -211,11 +211,44 @@ class HeadingWidget extends \WP_Widget {
 	}
 
 	/**
+	 * Prints Default Font Notice
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function print_default_font( $instance ) {
+		$default_typography = get_theme_mod( 'bgtfw_headings_typography' );
+		?>
+		<div class="bgc default-font-notice">
+			<h4><?php esc_html_e( 'Default Heading', 'boldgrid-editor' ); ?></h4>
+			<p><?php esc_html_e( 'The default typography styles used for this component are:', 'boldgrid-editor' ); ?>
+			<?php
+				foreach( $default_typography as $key => $value ) {
+					?>
+					<span class="bgc-default-style label"><?php echo esc_attr( $key ); ?>: </span>
+					<span class="bgc-default-style <?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $value ); ?></span><br/>
+					<?php
+				}
+			?>
+			</p>
+			<p><?php esc_html_e( 'You can change the default font styles for your headings in the customizer under Fonts > Headings, or by ', 'boldgrid-editor' ); ?>
+				<a class="bgc_goto_customizer" data-section="headings" data-customize="<?php echo admin_url( '/customize.php' ); ?>" href="#"><?php esc_html_e( 'clicking here', 'boldgrid-editor' ); ?></a>
+			</p>
+
+			<p> <?php esc_html_e( 'To change the font styling of this specific item, ', 'boldgrid-editor' ); ?>
+				<a class="bgc_open_font_control" href="#"><?php esc_html_e( 'click here', 'boldgrid-editor' ); ?></a>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Print form styles
 	 *
 	 * @since 1.14.0
 	 */
 	public function print_form_styles() {
+		$default_typography = get_theme_mod( 'bgtfw_headings_typography' );
 		?>
 		<style>
 		.bgc.buttonset {
@@ -246,6 +279,16 @@ class HeadingWidget extends \WP_Widget {
 			background-color: #00a0d2;
 			color: rgba(255, 255, 255, 0.8);
 		}
+
+		.bgc-default-style.label {
+			padding-left: 5px;
+			font-weight: 600;
+		}
+
+		.bgc-default-style.font-family {
+			font-size: 20px;
+			font-family: <?php echo esc_attr( $default_typography['font-family'] ); ?>;
+		}
 		</style>
 		<?php
 	}
@@ -260,6 +303,7 @@ class HeadingWidget extends \WP_Widget {
 	public function form( $instance ) {
 		$this->print_alignment_control( $instance );
 		$this->heading_type_control( $instance );
+		$this->print_default_font( $instance );
 		$this->print_form_styles();
 	}
 }

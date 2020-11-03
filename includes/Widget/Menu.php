@@ -268,7 +268,7 @@ class Menu extends \WP_Widget {
 			<div class="bgc_menu_container">
 				<h4><?php _e( 'Additional Customization', 'boldgrid-editor' ); ?></h4>
 				<p><?php _e( 'There are additioncal customization options available for this menu in the Customizer.', 'boldgrid-editor' ); ?></p>
-				<button class="button bgc_goto_customizer" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Go To Customizer', 'boldgrid-editor' ); ?></button>
+				<button class="button bgc_goto_customizer" data-panel="headings" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Go To Customizer', 'boldgrid-editor' ); ?></button>
 			</div>
 		<?php
 	}
