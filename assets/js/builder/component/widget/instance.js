@@ -84,7 +84,13 @@ export class Instance {
 			 * If this is a Menu widget, then we need to insert the sampleElement into the current
 			 * selection, rather than the first available column.
 			 */
-			if ( 'wp_boldgrid_component_menu' === this.component.name ) {
+			if (
+				'wp_boldgrid_component_menu' === this.component.name ||
+				'wp_boldgrid_component_page_title' === this.component.name ||
+				'wp_boldgrid_component_site_title' === this.component.name ||
+				'wp_boldgrid_component_logo' === this.component.name ||
+				'wp_boldgrid_component_site_description' === component.name
+			) {
 				$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
 			} else {
 				BG.Controls.$container
