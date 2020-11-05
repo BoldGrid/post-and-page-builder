@@ -103,12 +103,24 @@ class Menu extends \WP_Widget {
 
 		$class .= ' ' . $align;
 
+		$registered_locations = get_nav_menu_locations();
+
 		$this->_register();
 		if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
+
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
 
+			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			echo '</div>';
+		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
+			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
+
+			$menu_id = $registered_locations[ $instance['bgc_menu_location_id'] ];
 			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
@@ -180,6 +192,18 @@ class Menu extends \WP_Widget {
 	 * @param array $instance Widget instance configs.
 	 */
 	public function menu_registration_controls( $instance ) {
+		$registered_locations = get_nav_menu_locations();
+		$location_managed_elsewhere = false;
+		if ( isset( $instance ['bgc_menu_location'] ) ) {
+			$location_managed_elsewhere = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] );
+		}
+
+		if ( isset( $instance['bgc_menu'] ) ) {
+			$instance['bgc_menu'] = $location_managed_elsewhere ? $registered_locations[ $instance['bgc_menu_location_id'] ] : $instance['bgc_menu'];
+		} else {
+			$instance['bgc_menu'] = $location_managed_elsewhere ? $registered_locations[ $instance['bgc_menu_location_id'] ] : 0;
+		}
+
 		?>
 		<div class="bgc_menu_registration_container">
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
@@ -202,8 +226,14 @@ class Menu extends \WP_Widget {
 			</p>
 
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
+			<p class="<?php echo ( $location_managed_elsewhere ) ? 'menu_location_notice' : 'menu_location_notice hidden'; ?>">
+				<?php esc_html_e( 'A menu has been assigned to this location elsewhere. ', 'boldgrid-editor' ); ?>
+				<a class="button" href="<?php echo admin_url( 'nav-menus.php?action=locations'); ?>"><?php esc_html_e( 'Go To Menu Assignment', 'boldgrid-editor' ); ?></a>
+			</p>
 			<p>
-				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" class="bgc_menu" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
+				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" class="bgc_menu"
+					name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>"
+					<?php echo ( $location_managed_elsewhere ) ? 'disabled' : ''; ?>>
 					<option value="0">Select a Menu</option>
 					<?php
 						foreach ( wp_get_nav_menus() as $menu ) {
