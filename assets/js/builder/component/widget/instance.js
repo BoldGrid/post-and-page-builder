@@ -350,10 +350,14 @@ export class Instance {
 		}, 1500 );
 
 		this.maybeShowOptions();
+		this.switchLogoSelector( this.$form );
 		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
 		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 		this.$form.find( 'a.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 		this.$form.find( 'a.bgc_open_font_control' ).on( 'click', e => this.openFontControl( e ) );
+		this.$form
+			.find( '.bgc.logo_switch input' )
+			.on( 'change', () => this.switchLogoSelector( this.$form ) );
 
 		this.$form.on( 'change', () => debounced() );
 		this.$form.on( 'input', () => debounced() );
@@ -364,6 +368,19 @@ export class Instance {
 		} );
 	}
 
+	switchLogoSelector( $form ) {
+		var $siteLogoDiv = $form.find( '.bgc.site_logo_selection' ),
+			$altLogoDiv = $form.find( '.bgc.alt_logo_selection' ),
+			switchVal = $form.find( '.bgc.logo_switch input:checked' ).val();
+
+		if ( 'site_logo' === switchVal ) {
+			$siteLogoDiv.show();
+			$altLogoDiv.hide();
+		} else {
+			$siteLogoDiv.hide();
+			$altLogoDiv.show();
+		}
+	}
 	openFontControl( e ) {
 		$( '.boldgrid-instance-menu li[data-action=menu-font]' ).trigger( 'click' );
 	}

@@ -83,17 +83,24 @@ class Logo extends \WP_Widget {
 	 * @param  array $args     General widget configurations.
 	 * @param  array $instance Widget instance arguments.
 	 */
-	public function widget( $args, $instance )  {
-		$logo_id = get_theme_mod( 'custom_logo' );
+	public function widget( $args, $instance ) {
+		$logo_switch_val = isset( $instance['bgc_logo_switch'] ) ? $instance['bgc_logo_switch'] : 'site_logo';
+		if ( 'site_logo' === $logo_switch_val ) {
+			$logo_id = get_theme_mod( 'custom_logo' );
+		} else {
+			$logo_id = isset( $instance['bgc_alt_logo'] ) ? $instance['bgc_alt_logo'] : '';
+		}
 
 		$align_class = ! empty( $instance['bgc_logo_alignment'] ) ? $this->get_align_class( $instance['bgc_logo_alignment'] ) : 'center';
 
 		echo '<div class="bgc_header_logo" style="display:flex;justify-content:' . $align_class . ';">';
-		echo wp_get_attachment_image(
-			$logo_id,
-			'full'
-		);
-		echo '</div>';
+		if ( wp_get_attachment_image( $logo_id, 'full' ) ) {
+			echo wp_get_attachment_image( $logo_id, 'full' );
+		} else {
+			echo '<p class="bgc_logo_placeholder"><span class="dashicons dashicons-format-image"></span><span class="placeholder_text">';
+			esc_html_e( '[Site Logo]', 'boldgrid-editor' );
+		}
+		echo '</span></p></div>';
 	}
 
 	/**
@@ -165,6 +172,132 @@ class Logo extends \WP_Widget {
 	}
 
 	/**
+	 * Prints Logo Switch Control
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function print_logo_switch( $instance ) {
+		$field_name      = $this->get_field_name( 'bgc_logo_switch' );
+		$selected_switch = ! empty( $instance['bgc_logo_switch'] ) ? $instance['bgc_logo_switch'] : 'site_logo';
+		?>
+		<h4><?php _e( 'Choose Logo', 'boldgrid-editor' ); ?></h4>
+		<div class="buttonset bgc logo_switch">
+			<input class="switch-input screen-reader-text bgc" type="radio" value="site_logo"
+				name="<?php echo $field_name; ?>"
+				id="<?php echo $this->get_field_id( 'bgc_logo_switch_site_logo' ); ?>"
+				<?php echo 'site_logo' === $selected_switch ? 'checked' : '';?>
+			>
+				<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_logo_switch_site_logo' ); ?>">Use Site Logo</label>
+
+			<input class="switch-input screen-reader-text bgc" type="radio" value="alt_logo"
+				name="<?php echo $field_name; ?>"
+				id="<?php echo $this->get_field_id( 'bgc_logo_switch_alt_logo' ); ?>"
+				<?php echo 'alt_logo' === $selected_switch ? 'checked' : '';?>
+			>
+				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_logo_switch_alt_logo' ); ?>">Use Alternate Logo</label>
+
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Site Logo selector / previewer
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function print_site_logo( $instance ) {
+		$name             = 'crio-premium-site-logo-preview';
+		$value            = get_theme_mod( 'custom_logo' );
+		$image_size       = 'full';
+		$image_attributes = wp_get_attachment_image_src( $value, $image_size );
+		?>
+		<div class="bgc site_logo_selection">
+			<div class="bgtfw-custom-meta__description">
+				<p class="description">
+					<?php esc_html_e( 'Site Logo', 'boldgrid-editor' ); ?>
+				</p>
+			</div>
+		<?php
+
+		if ( $image_attributes ) {
+			?>
+			<div>
+				<a href="#" class="crio_premium_image_button"><img src="<?php echo esc_attr( $image_attributes[0] ); ?>" style="max-width:95%;display:block;" /></a>
+				<?php wp_nonce_field( 'crio_premium_update_site_logo', 'crio_premium_update_site_logo_nonce' ); ?>
+				<input type="hidden" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+				<p class="crio_premium_image_desc" style="display:inline-block"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
+				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:inline-block"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
+			</div>
+			<?php
+
+		} else {
+			?>
+			<div>
+				<a href="#" class="crio_premium_image_button button"><?php esc_html_e( 'Upload Image', 'boldgrid-editor' ); ?></a>
+				<?php wp_nonce_field( 'crio_premium_update_site_logo', 'crio_premium_update_site_logo_nonce' ); ?>
+				<input type="hidden" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+				<p class="crio_premium_image_desc" style="display:none"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
+				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:none"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
+			</div>
+			<?php
+		}
+		?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Alt Logo selector / previewer
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function print_alt_logo( $instance ) {
+		$name              = 'crio-premium-alt-logo-preview';
+		$field_name        = $this->get_field_name( 'bgc_alt_logo' );
+		$selected_alt_logo = ! empty( $instance['bgc_alt_logo'] ) ? $instance['bgc_alt_logo'] : '';
+		$image_size        = 'full';
+		$image_attributes  = wp_get_attachment_image_src( $selected_alt_logo, $image_size );
+		?>
+		<div class="bgc alt_logo_selection">
+			<div class="bgtfw-custom-meta__description">
+				<p class="description">
+					<?php esc_html_e( 'Alternate Logo', 'boldgrid-editor' ); ?>
+				</p>
+			</div>
+		<?php
+
+		if ( $image_attributes ) {
+			?>
+			<div>
+				<a href="#" class="crio_premium_image_button"><img src="<?php echo esc_attr( $image_attributes[0] ); ?>" style="max-width:95%;display:block;" /></a>
+				<input type="hidden" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" value="<?php echo esc_attr( $selected_alt_logo ); ?>" />
+				<p class="crio_premium_image_desc" style="display:inline-block"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
+				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:inline-block"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
+			</div>
+			<?php
+
+		} else {
+			?>
+			<div>
+				<a href="#" class="crio_premium_image_button button"><?php esc_html_e( 'Upload Image', 'boldgrid-editor' ); ?></a>
+				<input type="hidden" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" value="<?php echo esc_attr( $selected_alt_logo ); ?>" />
+				<p class="crio_premium_image_desc" style="display:none"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
+				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:none"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
+			</div>
+			<?php
+		}
+		?>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Prints Alignment Control
 	 *
 	 * @since 1.14.0
@@ -210,6 +343,9 @@ class Logo extends \WP_Widget {
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
+		$this->print_logo_switch( $instance );
+		$this->print_site_logo( $instance );
+		$this->print_alt_logo( $instance );
 		$this->print_alignment_control( $instance );
 		$this->print_form_styles();
 	}
