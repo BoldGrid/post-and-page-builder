@@ -56,6 +56,12 @@ return array(
 				'type' => 'header',
 			),
 		),
+		'wp_boldgrid_component_author_meta' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-post"></span>',
+				'type' => 'header',
+			),
+		),
 		'wp_archives' => array(
 			'js_control' => array(
 				'icon' => '<span class="dashicons dashicons-archive"></span>'
