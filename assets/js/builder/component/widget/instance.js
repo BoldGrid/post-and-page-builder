@@ -152,7 +152,7 @@ export class Instance {
 
 		if ( 'wp_boldgrid_component_logo' === this.component.name ) {
 			return `
-			<div class="boldgrid-component-logo boldgrid-shortcode" data-imhwpb-draggable="true">
+			<div class="boldgrid-component-logo boldgrid-shortcode" data-imhwpb-draggable="true" style="margin:15px 0px">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 			`;
@@ -164,7 +164,7 @@ export class Instance {
 		 */
 		if ( headingWidgetNames.includes( this.component.name ) ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading" data-imhwpb-draggable="true">
+			<div class="boldgrid-shortcode bgc-heading" data-imhwpb-draggable="true" style="font-size:40px">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 		`;
@@ -382,6 +382,7 @@ export class Instance {
 		}
 	}
 	openFontControl( e ) {
+		e.preventDefault();
 		$( '.boldgrid-instance-menu li[data-action=menu-font]' ).trigger( 'click' );
 	}
 

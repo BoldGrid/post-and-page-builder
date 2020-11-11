@@ -235,9 +235,6 @@ class HeadingWidget extends \WP_Widget {
 			<p><?php esc_html_e( 'You can change the default font styles for your headings in the customizer under Fonts > Headings, or by ', 'boldgrid-editor' ); ?>
 				<a class="bgc_goto_customizer" data-section="headings" data-customize="<?php echo admin_url( '/customize.php' ); ?>" href="#"><?php esc_html_e( 'clicking here', 'boldgrid-editor' ); ?></a>
 			</p>
-
-			<p> <?php esc_html_e( 'To change the font styling of this specific item, ', 'boldgrid-editor' ); ?>
-				<a class="bgc_open_font_control" href="#"><?php esc_html_e( 'click here', 'boldgrid-editor' ); ?></a>
 		</div>
 		<?php
 	}
