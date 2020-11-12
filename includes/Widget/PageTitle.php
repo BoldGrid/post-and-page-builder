@@ -46,7 +46,7 @@ class PageTitle extends HeadingWidget {
 		 * So we have to display the placeholder instead
 		 */
 		if ( $post && $post->post_title ) {
-			$title = $post->post_title;
+			$title = $this_post->post_title;
 		} else {
 			$title = '[ Page Title ]';
 		}
