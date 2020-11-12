@@ -112,7 +112,10 @@ class Menu extends \WP_Widget {
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
 
-			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
+			// Make sure that if there is a registerd location already, that it is used.
+			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
+				&& 0 !== $registered_locations[ $instance['bgc_menu_location_id'] ]
+				? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
 			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
@@ -297,7 +300,7 @@ class Menu extends \WP_Widget {
 		?>
 			<div class="bgc_menu_container">
 				<h4><?php _e( 'Additional Customization', 'boldgrid-editor' ); ?></h4>
-				<p><?php _e( 'There are additioncal customization options available for this menu in the Customizer.', 'boldgrid-editor' ); ?></p>
+				<p><?php _e( 'There are additional customization options available for this menu in the Customizer.', 'boldgrid-editor' ); ?></p>
 				<button class="button bgc_goto_customizer" data-panel="headings" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Go To Customizer', 'boldgrid-editor' ); ?></button>
 			</div>
 		<?php
