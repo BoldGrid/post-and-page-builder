@@ -180,6 +180,6 @@ class SiteTitle extends HeadingWidget {
 		$home_link_markup   = '<a href ="' . get_home_url() . '" style="' . $styles . '">' . $this->text_string . '</a>';
 		$site_title         = $link_to_home ? $home_link_markup : $this->text_string;
 
-		echo '<' . $htag . ' class="bgc_site_title" style="' . $styles . '">' . $site_title . '</' . $htag . '>';
+		echo '<' . $htag . ' class="bgc_site_title site-title" style="' . $styles . '">' . $site_title . '</' . $htag . '>';
 	}
 }
