@@ -85,22 +85,23 @@ class Logo extends \WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$logo_switch_val = isset( $instance['bgc_logo_switch'] ) ? $instance['bgc_logo_switch'] : 'site_logo';
+		$alt_logo = isset( $instance['bgc_alt_logo'] );
 		if ( 'site_logo' === $logo_switch_val ) {
 			$logo_id = get_theme_mod( 'custom_logo' );
 		} else {
-			$logo_id = isset( $instance['bgc_alt_logo'] ) ? $instance['bgc_alt_logo'] : '';
+			$logo_id = $alt_logo ? $instance['bgc_alt_logo'] : '';
 		}
 
 		$align_class = ! empty( $instance['bgc_logo_alignment'] ) ? $this->get_align_class( $instance['bgc_logo_alignment'] ) : 'center';
 
-		echo '<div class="bgc_header_logo" style="display:flex;justify-content:' . $align_class . ';">';
+		echo '<a class="bgc_logo' . ( $alt_logo ? '' : ' custom-logo-link' ) . '" style="display:flex;justify-content:' . $align_class . ';" href="'. get_home_url() . '">';
 		if ( wp_get_attachment_image( $logo_id, 'full' ) ) {
-			echo wp_get_attachment_image( $logo_id, 'full' );
+			echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo' ) );
 		} else {
-			echo '<p class="bgc_logo_placeholder"><span class="dashicons dashicons-format-image"></span><span class="placeholder_text">';
+			echo '<p class="bgc_logo_placeholder custom-logo"><span class="dashicons dashicons-format-image"></span><span class="placeholder_text">';
 			esc_html_e( '[Site Logo]', 'boldgrid-editor' );
 		}
-		echo '</span></p></div>';
+		echo '</span></p></a>';
 	}
 
 	/**

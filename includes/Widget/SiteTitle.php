@@ -95,7 +95,6 @@ class SiteTitle extends HeadingWidget {
 		$alignment    = ! empty( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
 		$htag         = ! empty( $instance['bgc_heading_type'] ) ? $instance['bgc_heading_type'] : 'h1';
 		$link_to_home = isset( $instance['bgc_link_to_home'] ) && '0' === $instance['bgc_link_to_home'] ? false : true;
-		error_log( json_encode( $link_to_home ) );
 		$styles = 'font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . $alignment . ';';
 		$home_link_markup   = '<a href ="' . get_home_url() . '" style="' . $styles . '">' . $this->text_string . '</a>';
 		$site_title         = $link_to_home ? $home_link_markup : $this->text_string;
