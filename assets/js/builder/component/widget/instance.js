@@ -131,11 +131,6 @@ export class Instance {
 	 * @return {string} Shortcode.
 	 */
 	getShortcode() {
-		var headingWidgetNames = [
-			'wp_boldgrid_component_page_title',
-			'wp_boldgrid_component_site_title',
-			'wp_boldgrid_component_site_description'
-		];
 
 		/*
 		 * Menu component shortcodes need to have the boldgrid-component-menu added
@@ -158,17 +153,34 @@ export class Instance {
 			`;
 		}
 
+		if ( 'wp_boldgrid_component_site_title' === this.component.name ) {
+			return `
+			<div class="boldgrid-shortcode bgc-heading bgc-site-title" data-imhwpb-draggable="true" style="font-size:40px">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+			`;
+		}
+
+		if ( 'wp_boldgrid_component_site_description' === this.component.name ) {
+			return `
+			<div class="boldgrid-shortcode bgc-heading bgc-tagline" data-imhwpb-draggable="true" style="font-size:40px">
+				[boldgrid_component type="${this.component.name}"]
+			</div>
+			`;
+		}
+
 		/*
 		 * Adding the bgc-heading class to heading widgets ensures that when they use the
 		 * default font-family in PPB, that they inherit the default heading font, not body font.
 		 */
-		if ( headingWidgetNames.includes( this.component.name ) ) {
+		if ( 'wp_boldgrid_component_page_title' === this.component.name ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading" data-imhwpb-draggable="true" style="font-size:40px">
+			<div class="boldgrid-shortcode bgc-heading bgc-page-title" data-imhwpb-draggable="true" style="font-size:40px">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 		`;
 		}
+
 		return `
 			<div class="boldgrid-shortcode" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
@@ -415,6 +427,14 @@ export class Instance {
 
 		if ( $button[0].dataset.section && 'headings' === $button[0].dataset.section ) {
 			gotoUrl = $customizeUrl + '?autofocus[section]=headings_typography';
+		}
+
+		if ( $button[0].dataset.section && 'site_title' === $button[0].dataset.section ) {
+			gotoUrl = $customizeUrl + '?autofocus[section]=bgtfw_site_title';
+		}
+
+		if ( $button[0].dataset.section && 'tagline' === $button[0].dataset.section ) {
+			gotoUrl = $customizeUrl + '?autofocus[section]=bgtfw_tagline';
 		}
 
 		title = wp.autosave.getPostData().post_title;

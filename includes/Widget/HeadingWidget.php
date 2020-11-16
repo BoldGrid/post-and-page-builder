@@ -107,7 +107,7 @@ class HeadingWidget extends \WP_Widget {
 
 		$styles = 'font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . $alignment . ';';
 
-		echo '<' . $htag . ' class="bgc_site_description" style="' . $styles . '">' . $this->text_string . '</' . $htag . '>';
+		echo '<' . $htag . ' class="bgc_page_title" style="' . $styles . '">' . $this->text_string . '</' . $htag . '>';
 	}
 
 
