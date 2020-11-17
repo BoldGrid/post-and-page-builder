@@ -15,14 +15,6 @@ export class Component {
 				icon: '<span class="dashicons dashicons-format-image"></span>'
 			},
 			{
-				name: 'image',
-				title: 'Alternate Logo',
-				type: 'header',
-				insertType: 'popup',
-				frameState: 'insert',
-				icon: '<span class="dashicons dashicons-format-image"></span>'
-			},
-			{
 				name: 'gallery',
 				title: 'Gallery',
 				type: 'media',

@@ -448,22 +448,10 @@ export class Instance {
 
 		event.preventDefault();
 
-		wp.autosave.server.triggerSave();
-
-		$( window ).off( 'beforeunload.edit-post' );
-
 		gotoUrl = gotoUrl + '&return=' + encodeURIComponent( returnUrl );
 
-		win = window.open( gotoUrl, '_self' );
-
-		if ( win ) {
-			win.focus();
-		} else {
-			alert(
-				'Unable to automatically open Customizer. Your browser may be blocking popups. Either enable popups, or manually go to: ' +
-					gotoUrl
-			);
-		}
+		$( 'form#post' ).append( '<input type="hidden" name="go-to-customizer" value="' + gotoUrl + '">' );
+		$( '#publish' ).trigger( 'click' );
 	}
 
 	registerMenuLocation( event ) {

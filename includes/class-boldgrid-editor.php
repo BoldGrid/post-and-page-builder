@@ -129,7 +129,7 @@ class Boldgrid_Editor {
 		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteTitle' );
 		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteDescription' );
 		register_widget( '\\Boldgrid\\PPB\\Widget\\Logo' );
-		register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
+		//register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
 	}
 
 	/**
