@@ -106,7 +106,11 @@ class Menu extends \WP_Widget {
 		$registered_locations = get_nav_menu_locations();
 
 		$this->_register();
-		if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
+		if ( isset( $instance['bgc_menu_location'] ) && ! $this->location_is_valid( $instance['bgc_menu_location'] ) ) {
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('Menu Location ID must only contain letters, numbers, and spaces.', 'boldgrid-editor' ) ?></p>
+			<?php
+		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
 
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
@@ -134,6 +138,14 @@ class Menu extends \WP_Widget {
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('You must register a menu location for this component to render', 'boldgrid-editor' ) ?></p>
 			<?php
+		}
+	}
+
+	public function location_is_valid( $id ) {
+		if ( preg_match( '/^[a-z][a-z\s0-9]*$/i', $id ) ) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -211,6 +223,7 @@ class Menu extends \WP_Widget {
 		<div class="bgc_menu_registration_container">
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
 			<p><?php _e( 'In order to customize this menu, a menu location must be registered. To do so, you must enter a location name and click "Register this Menu Location"', 'boldgrid-editor' ); ?></p>
+			<p class="invalid_characters" style="display:none" ><?php _e( 'Location menu ID must only contain letters, numbers, and spaces', 'boldgrid-editor' ); ?></p>
 			<input type="text" required class="bgc_menu_location"
 				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
 				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
@@ -307,6 +320,23 @@ class Menu extends \WP_Widget {
 	}
 
 	/**
+	 * Print Return to Editor Button.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance An array of widget coni
+	 */
+	public function return_to_editor( $instance ) {
+		?>
+			<div class="bgc_menu_container">
+				<h4><?php _e( 'What\'s Next?', 'boldgrid-editor' ); ?></h4>
+				<p><?php _e( 'If you wish to continue editing your header layout, that can be done within the editor.', 'boldgrid-editor' ); ?></p>
+				<button class="button bgc_return_to_editor" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Return to Editor', 'boldgrid-editor' ); ?></button>
+			</div>
+		<?php
+	}
+
+	/**
 	 * Print form styles
 	 *
 	 * @since 1.14.0
@@ -357,6 +387,7 @@ class Menu extends \WP_Widget {
 		$this->menu_registration_controls( $instance );
 		$this->menu_alignment_controls( $instance );
 		$this->print_customizer_button( $instance );
+		$this->return_to_editor( $instance );
 		$this->print_form_styles( $instance );
 	}
 }
