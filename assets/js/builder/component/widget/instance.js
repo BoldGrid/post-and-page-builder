@@ -402,9 +402,7 @@ export class Instance {
 			this.$form.find( 'p.invalid_characters' ).show();
 		}
 
-		this.$form
-			.find( '#widget-boldgrid_component_menu--bgc_menu_location' )
-			.on( 'keyup', e => this.validateLocationId( e ) );
+		this.$form.find( 'input.bgc_menu_location' ).on( 'keyup', e => this.validateLocationId( e ) );
 
 		this.$form.on( 'change', () => debounced() );
 		this.$form.on( 'input:not( .bgc_menu_location )', () => debounced() );
