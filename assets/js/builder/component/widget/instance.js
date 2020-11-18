@@ -388,6 +388,7 @@ export class Instance {
 		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
 		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 		this.$form.find( 'button.bgc_return_to_editor' ).on( 'click', e => this.returnToEditor( e ) );
+		this.$form.find( 'a.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 		this.$form
 			.find( '.bgc.logo_switch input' )
 			.on( 'change', () => this.switchLogoSelector( this.$form ) );

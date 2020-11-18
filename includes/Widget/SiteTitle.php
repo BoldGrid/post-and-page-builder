@@ -92,7 +92,6 @@ class SiteTitle extends HeadingWidget {
 	 */
 	public function print_default_font( $instance ) {
 		$default_typography = get_theme_mod( 'bgtfw_site_title_typography' );
-		error_log( json_encode( ))
 		?>
 		<div class="bgc default-font-notice">
 			<h4><?php esc_html_e( 'Default Heading', 'boldgrid-editor' ); ?></h4>
