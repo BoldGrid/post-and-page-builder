@@ -20,7 +20,7 @@ export class Instance {
 		 */
 		if ( 'wp_boldgrid_component_menu' === component.name ) {
 			this.panelConfig = {
-				height: '775px',
+				height: '650px',
 				width: '450px',
 				customizeCallback: true,
 				customizeSupport: []
@@ -31,7 +31,7 @@ export class Instance {
 			'wp_boldgrid_component_site_description' === component.name
 		) {
 			this.panelConfig = {
-				height: '775px',
+				height: '650px',
 				width: '450px',
 				customizeCallback: true,
 				customizeSupport: [
@@ -75,6 +75,9 @@ export class Instance {
 
 		// When the user clicks the add button.
 		this.component.js_control.onClick = () => {
+			var before = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">',
+				after = '</div></div>';
+
 			BG.Panel.showLoading();
 
 			this.insertedNode = true;
@@ -100,8 +103,17 @@ export class Instance {
 			}
 
 			BG.Service.component.scrollToElement( $sampleElement, 200 );
-			BOLDGRID.EDITOR.mce.selection.select( $sampleElement[0] );
-			BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
+
+			let $currentNestedColumn = $( $sampleElement[0] ).closest( '.row [class*="col-md-"]' );
+
+			if ( ! $currentNestedColumn.length ) {
+				BOLDGRID.EDITOR.mce.selection.select( $sampleElement[0] );
+				BOLDGRID.EDITOR.mce.selection.setContent( before + this.getShortcode() + after );
+			} else {
+				BOLDGRID.EDITOR.mce.selection.select( $sampleElement[0] );
+				BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
+			}
+
 			BOLDGRID.EDITOR.mce.undoManager.add();
 		};
 
@@ -115,9 +127,19 @@ export class Instance {
 
 		// When the shortcode is dropped.
 		this.component.js_control.onDragDrop = ( component, $target ) => {
+			var before = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">',
+				after = '</div></div>';
 			this.insertedNode = true;
-			BOLDGRID.EDITOR.mce.selection.select( $target[0] );
-			BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
+
+			let $currentNestedColumn = $( $target[0] ).closest( '.row [class*="col-md-"]' );
+
+			if ( ! $currentNestedColumn.length ) {
+				BOLDGRID.EDITOR.mce.selection.select( $target[0] );
+				BOLDGRID.EDITOR.mce.selection.setContent( before + this.getShortcode() + after );
+			} else {
+				BOLDGRID.EDITOR.mce.selection.select( $target[0] );
+				BOLDGRID.EDITOR.mce.selection.setContent( this.getShortcode() );
+			}
 		};
 
 		BG.Service.component.register( this.component.js_control );
@@ -365,19 +387,52 @@ export class Instance {
 		this.switchLogoSelector( this.$form );
 		this.$form.find( 'button.bgc_register_location' ).on( 'click', e => this.registerMenuLocation( e ) );
 		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
-		this.$form.find( 'a.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
-		this.$form.find( 'a.bgc_open_font_control' ).on( 'click', e => this.openFontControl( e ) );
+		this.$form.find( 'button.bgc_return_to_editor' ).on( 'click', e => this.returnToEditor( e ) );
 		this.$form
 			.find( '.bgc.logo_switch input' )
 			.on( 'change', () => this.switchLogoSelector( this.$form ) );
 
+		if (
+			this.$form.find( '#widget-boldgrid_component_menu--bgc_menu_location' ).val() &&
+			! this.isAlphaNumeric(
+				this.$form.find( '#widget-boldgrid_component_menu--bgc_menu_location' ).val()
+			)
+		) {
+			this.$form.find( 'button.bgc_register_location' ).prop( 'disabled', true );
+			this.$form.find( 'p.invalid_characters' ).show();
+		}
+
+		this.$form
+			.find( '#widget-boldgrid_component_menu--bgc_menu_location' )
+			.on( 'keyup', e => this.validateLocationId( e ) );
+
 		this.$form.on( 'change', () => debounced() );
-		this.$form.on( 'input', () => debounced() );
+		this.$form.on( 'input:not( .bgc_menu_location )', () => debounced() );
 
 		this.$form.on( 'submit', e => {
 			e.preventDefault();
 			this._updateShortcode();
 		} );
+	}
+
+	validateLocationId( event ) {
+		var $input = $( event.currentTarget );
+		if ( this.isAlphaNumeric( $input.val() ) ) {
+			this.$form.find( 'button.bgc_register_location' ).prop( 'disabled', false );
+			this.$form.find( 'p.invalid_characters' ).hide();
+		} else {
+			this.$form.find( 'button.bgc_register_location' ).prop( 'disabled', true );
+			this.$form.find( 'p.invalid_characters' ).show();
+		}
+	}
+
+	isAlphaNumeric( value ) {
+		return /^[a-z][a-z\s0-9]*$/i.test( value );
+	}
+
+	returnToEditor( event ) {
+		event.preventDefault();
+		BG.Panel.closePanel();
 	}
 
 	switchLogoSelector( $form ) {
@@ -393,6 +448,7 @@ export class Instance {
 			$altLogoDiv.show();
 		}
 	}
+
 	openFontControl( e ) {
 		e.preventDefault();
 		$( '.boldgrid-instance-menu li[data-action=menu-font]' ).trigger( 'click' );
@@ -479,6 +535,7 @@ export class Instance {
 						$locationInput.attr( 'disabled' );
 						$locationIdInput.val( data.locationId );
 						instance.maybeShowOptions();
+						instance.$form.trigger( 'submit' );
 					} else {
 						$button.attr( 'disabled', false );
 					}
