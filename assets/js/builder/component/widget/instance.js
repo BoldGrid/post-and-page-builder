@@ -92,7 +92,7 @@ export class Instance {
 				'wp_boldgrid_component_page_title' === this.component.name ||
 				'wp_boldgrid_component_site_title' === this.component.name ||
 				'wp_boldgrid_component_logo' === this.component.name ||
-				'wp_boldgrid_component_site_description' === component.name
+				'wp_boldgrid_component_site_description' === this.component.name
 			) {
 				$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
 			} else {
