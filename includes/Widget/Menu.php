@@ -108,7 +108,7 @@ class Menu extends \WP_Widget {
 		$this->_register();
 		if ( isset( $instance['bgc_menu_location'] ) && ! $this->location_is_valid( $instance['bgc_menu_location'] ) ) {
 			?>
-			<p class="bgc_no_menu_notice"><?php echo __('Menu Location ID must only contain letters, numbers, and spaces.', 'boldgrid-editor' ) ?></p>
+			<p class="bgc_no_menu_notice"><?php echo __('Menu Location Name can only contain letters, numbers, and spaces.', 'boldgrid-editor' ) ?></p>
 			<?php
 		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
 
@@ -142,7 +142,7 @@ class Menu extends \WP_Widget {
 	}
 
 	public function location_is_valid( $id ) {
-		if ( preg_match( '/^[a-z][a-z\s0-9]*$/i', $id ) ) {
+		if ( preg_match( '/^[a-z\s0-9][a-z\s0-9]*$/i', $id ) ) {
 			return true;
 		} else {
 			return false;
@@ -223,7 +223,7 @@ class Menu extends \WP_Widget {
 		<div class="bgc_menu_registration_container">
 			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
 			<p><?php _e( 'In order to customize this menu, a menu location must be registered. To do so, you must enter a location name and click "Register this Menu Location"', 'boldgrid-editor' ); ?></p>
-			<p class="invalid_characters" style="display:none" ><?php _e( 'Location menu ID must only contain letters, numbers, and spaces', 'boldgrid-editor' ); ?></p>
+			<p class="invalid_characters" style="display:none" ><?php _e( 'Menu Location Name can only contain letters, numbers, and spaces', 'boldgrid-editor' ); ?></p>
 			<input type="text" required class="bgc_menu_location"
 				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
 				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
