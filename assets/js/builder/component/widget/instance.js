@@ -426,7 +426,7 @@ export class Instance {
 	}
 
 	isAlphaNumeric( value ) {
-		return /^[a-z][a-z\s0-9]*$/i.test( value );
+		return /^[a-z\s0-9][a-z\s0-9]*$/i.test( value );
 	}
 
 	returnToEditor( event ) {
