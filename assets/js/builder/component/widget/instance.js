@@ -177,7 +177,7 @@ export class Instance {
 
 		if ( 'wp_boldgrid_component_site_title' === this.component.name ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading bgc-site-title" data-imhwpb-draggable="true" style="font-size:40px">
+			<div class="boldgrid-shortcode bgc-heading bgc-site-title" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 			`;
@@ -185,7 +185,7 @@ export class Instance {
 
 		if ( 'wp_boldgrid_component_site_description' === this.component.name ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading bgc-tagline" data-imhwpb-draggable="true" style="font-size:40px">
+			<div class="boldgrid-shortcode bgc-heading bgc-tagline" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 			`;
@@ -197,7 +197,7 @@ export class Instance {
 		 */
 		if ( 'wp_boldgrid_component_page_title' === this.component.name ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading bgc-page-title" data-imhwpb-draggable="true" style="font-size:40px">
+			<div class="boldgrid-shortcode bgc-heading bgc-page-title" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 		`;

@@ -61,7 +61,7 @@ class SiteTitle extends HeadingWidget {
 	 */
 	public function print_link_control( $instance ) {
 		$field_name      = $this->get_field_name( 'bgc_link_to_home' );
-		$link_to_home = ! empty( $instance['bgc_link_to_home'] ) ? $instance['bgc_link_to_home'] : '1';
+		$link_to_home    = isset( $instance['bgc_link_to_home'] ) ? $instance['bgc_link_to_home'] : '1';
 		?>
 		<h4><?php _e( 'Link to Home?', 'boldgrid-editor' ); ?></h4>
 		<div class="buttonset bgc">
@@ -179,6 +179,6 @@ class SiteTitle extends HeadingWidget {
 		$home_link_markup   = '<a href ="' . get_home_url() . '" style="' . $styles . '">' . $this->text_string . '</a>';
 		$site_title         = $link_to_home ? $home_link_markup : $this->text_string;
 
-		echo '<' . $htag . ' class="bgc_site_title site-title" style="' . $styles . '">' . $site_title . '</' . $htag . '>';
+		echo '<' . $htag . ' class="bgc_site_title ' . ( $link_to_home ? 'site-title' : '' ) . '" style="' . $styles . '">' . $site_title . '</' . $htag . '>';
 	}
 }
