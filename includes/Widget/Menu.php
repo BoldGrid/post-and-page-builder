@@ -258,6 +258,13 @@ class Menu extends \WP_Widget {
 						}
 					?>
 				</select>
+				<?php
+				if ( 0 === count( wp_get_nav_menus() ) ) {
+					?>
+					<a class="button" href="<?php echo admin_url( 'nav-menus.php' ) ?>"><?php esc_html_e( 'Create a Menu', 'boldgrid-editor' ); ?></a>
+					<?php
+				}
+				?>
 			</p>
 		</div>
 		<?php
