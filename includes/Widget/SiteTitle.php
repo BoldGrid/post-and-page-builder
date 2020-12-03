@@ -22,7 +22,7 @@ namespace Boldgrid\PPB\Widget;
 */
 class SiteTitle extends HeadingWidget {
 
-		/**
+	/**
 	 * Setup the widget configurations.
 	 *
 	 * @since 1.14.0

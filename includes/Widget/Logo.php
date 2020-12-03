@@ -1,10 +1,10 @@
 <?php
 /**
-* File: PageTitle.php
+* File: Logo.php
 *
 * Create a post component.
 *
-* @since      1.0.0
+* @since      1.14.0
 * @package    Boldgrid_Components
 * @subpackage Boldgrid_Components_Shortcode
 * @author     BoldGrid <support@boldgrid.com>
@@ -14,18 +14,18 @@
 namespace Boldgrid\PPB\Widget;
 
 /**
-* Class: Single
+* Class: Logo
 *
-* Create a post component.
+* Create a logo component.
 *
-* @since 1.0.0
+* @since 1.14.0
 */
 class Logo extends \WP_Widget {
 
 	/**
 	 * Default widget wrappers.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array
 	 */
 	public static $widgetArgs = array(
@@ -38,16 +38,16 @@ class Logo extends \WP_Widget {
 	/**
 	 * Default values.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array Default values.
 	 */
 	public $defaults = [
 	];
 
-		/**
+	/**
 	 * Setup the widget configurations.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 */
 	public function __construct() {
 		parent::__construct(
@@ -63,7 +63,7 @@ class Logo extends \WP_Widget {
 	/**
 	 * Update a widget with a new configuration.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $new_instance New instance configuration.
 	 * @param  array $old_instance Old instance configuration.
@@ -78,7 +78,7 @@ class Logo extends \WP_Widget {
 	/**
 	 * Render a widget.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $args     General widget configurations.
 	 * @param  array $instance Widget instance arguments.
@@ -339,7 +339,7 @@ class Logo extends \WP_Widget {
 	/**
 	 * Print our a form that allowing the widget configs to be updated.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $instance Widget instance configs.
 	 */

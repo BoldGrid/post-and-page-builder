@@ -141,6 +141,18 @@ class Menu extends \WP_Widget {
 		}
 	}
 
+	/**
+	 * Location is Valid
+	 *
+	 * Validates location id to be sure it contains
+	 * alphanumeric characters only.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param string $id Location ID to validate
+	 *
+	 * @return bool True if valid, False if not.
+	 */
 	public function location_is_valid( $id ) {
 		if ( preg_match( '/^[a-z\s0-9][a-z\s0-9]*$/i', $id ) ) {
 			return true;
