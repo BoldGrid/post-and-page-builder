@@ -414,6 +414,16 @@ export class Instance {
 		} );
 	}
 
+	/**
+	 * Validate Location Id
+	 *
+	 * This is used to disable the register menu locations option
+	 * if the location id does not alphanumeric.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} event Event Object.
+	 */
 	validateLocationId( event ) {
 		var $input = $( event.currentTarget );
 		if ( this.isAlphaNumeric( $input.val() ) ) {
@@ -425,15 +435,49 @@ export class Instance {
 		}
 	}
 
+	/**
+	 * Is AlphaNumeric
+	 *
+	 * Determines if the given value is alphanumeric or not.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {string} value
+	 *
+	 * @return {boolean} True if alphanumeric, False if not.
+	 */
 	isAlphaNumeric( value ) {
 		return /^[a-z\s0-9][a-z\s0-9]*$/i.test( value );
 	}
 
+	/**
+	 * Return to Editor
+	 *
+	 * This is used to return the user to the editor when clicking a button in the
+	 * panel. While this seems redundant due to the big X in the corner, certain people
+	 * felt that it was necessary to make the user journey more fluid for the Navigation Menu
+	 * component.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} event Event object.
+	 */
 	returnToEditor( event ) {
 		event.preventDefault();
 		BG.Panel.closePanel();
 	}
 
+	/**
+	 * Switch Logo Selector
+	 *
+	 * This is used to change the form to display the image upload
+	 * controls for either the site logo, or alternative logo based
+	 * on the user's choice.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {object} $form jQuery object.
+	 */
 	switchLogoSelector( $form ) {
 		var $siteLogoDiv = $form.find( '.bgc.site_logo_selection' ),
 			$altLogoDiv = $form.find( '.bgc.alt_logo_selection' ),
@@ -448,11 +492,36 @@ export class Instance {
 		}
 	}
 
+	/**
+	 * Open FOnt Control.
+	 *
+	 * This is meant to open the font control when the user clicks on a button
+	 * in the Customization panel.
+	 *
+	 * #TODO: This is currently not working properly so it has been removed from the form.
+	 *        When the user adds a component, and is open to the initial customizer panel,
+	 *        The font control is not enabled, and then it causes an error when the button
+	 *        is clicked in the panel. Need to find out why.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} e Event Object.
+	 */
 	openFontControl( e ) {
 		e.preventDefault();
 		$( '.boldgrid-instance-menu li[data-action=menu-font]' ).trigger( 'click' );
 	}
 
+	/**
+	 * Maybe Show Options
+	 *
+	 * This conditionally shows or hides controls on the Navigation Menu
+	 * Customization panel, based on whether or not the menuLocationId has
+	 * been entered, to help prevent users from overlooking the importance
+	 * of entering and registering the menu location.
+	 *
+	 * @since 1.14.0
+	 */
 	maybeShowOptions() {
 		let $optionsToShow = this.$form.find( '.bgc_menu_container' ),
 			menuLocationId = this.$form.find( 'input.bgc_menu_location_id' ).val(),
@@ -468,6 +537,17 @@ export class Instance {
 		}
 	}
 
+	/**
+	 * Go To Customizer.
+	 *
+	 * This is used to save the current template, and then
+	 * redirect the user to the WordPress customizer panel
+	 * that cooresponds to the nav menu location.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} event Event
+	 */
 	goToCustomizer( event ) {
 		let win,
 			title,
@@ -509,6 +589,18 @@ export class Instance {
 		$( '#publish' ).trigger( 'click' );
 	}
 
+	/**
+	 * Register Menu Location
+	 *
+	 * This is used to send an AJAX call to the
+	 * crio_premium_register_menu_locations admin_ajax
+	 * action. This action registers the menu location in
+	 * Crio Pro's options, as well as adds it to the BGTFW configs.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} event Event.
+	 */
 	registerMenuLocation( event ) {
 		let $button = $( event.currentTarget ),
 			$locationInput = $button.parent().siblings( 'input.bgc_menu_location' ),
@@ -551,7 +643,7 @@ export class Instance {
 	/**
 	 * get Unique Id
 	 *
-	 * @since 1.1.0
+	 * @since 1.14.0
 	 *
 	 * @param {string} locationName
 	 *
