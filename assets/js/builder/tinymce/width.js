@@ -84,7 +84,7 @@ export class Width {
 		this.$postContainer = this._findPostContainer();
 		this.resizable = this.$postContainer.length && this.$postContainer.width() ? true : false;
 
-		if ( IMHWPB.WP_MCE_Draggable.instance ) {
+		if ( IMHWPB.WP_MCE_Draggable.instance && IMHWPB.WP_MCE_Draggable.instance.$window ) {
 			IMHWPB.WP_MCE_Draggable.instance.resize_done_event();
 		}
 
