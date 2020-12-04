@@ -2,7 +2,7 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.4
 Stable tag: 1.13.4
 License: GPLv2 or later
@@ -133,6 +133,12 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.13.5 =
+
+Release Date: December 7th, 2020
+
+* Fix: WordPress 5.6 compatibility issues.
 
 = 1.13.4 =
 
