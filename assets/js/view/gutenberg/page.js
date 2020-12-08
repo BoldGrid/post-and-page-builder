@@ -13,6 +13,11 @@ export class Page {
 	}
 
 	init() {
+		const currentSidebar = wp.data.select( 'core/edit-post' ).getActiveGeneralSidebarName();
+		if ( [ 'bgppb-classic/bgppb-classic', 'bgppb/bgppb' ].includes( currentSidebar ) ) {
+			wp.data.dispatch( 'core/edit-post' ).closeGeneralSidebar();
+		}
+
 		$( () => this._onload() );
 	}
 
@@ -31,7 +36,8 @@ export class Page {
 			icon: el(
 				'img',
 				{
-					src: BoldgridEditor.plugin_url + '/assets/image/boldgrid-logo.svg'
+					src: BoldgridEditor.plugin_url + '/assets/image/boldgrid-logo.svg',
+					width: '24px'
 				}
 			)
 		} );

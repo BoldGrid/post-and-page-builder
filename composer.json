@@ -1,6 +1,6 @@
 {
     "require": {
-        "boldgrid/library": "^2.4"
+        "boldgrid/library": "^2.13"
     },
     "scripts": {
         "post-autoload-dump": [

@@ -172,7 +172,7 @@ class Boldgrid_Editor_Wpforms {
 	public function mce_css( $stylehsheets ) {
 		$stylehsheets = explode( ',', $stylehsheets );
 		$stylehsheets[] = self::get_stylesheet();
-		return implode( $stylehsheets, ',' );
+		return implode( ',', $stylehsheets );
 	}
 
 	/**
