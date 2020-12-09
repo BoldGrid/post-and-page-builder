@@ -45,7 +45,9 @@ class PageTitle extends HeadingWidget {
 		 * When we are in the post editor, we won't have a post title to display here
 		 * So we have to display the placeholder instead
 		 */
-		if ( $post && $post->post_title ) {
+		if ( is_front_page() && is_home() ) {
+			$title = 'Home';
+		} elseif ( $post && $post->post_title ) {
 			$title = $this_post->post_title;
 		} else {
 			$title = '[ Page Title ]';
