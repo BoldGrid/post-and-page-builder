@@ -47,6 +47,12 @@ class PageTitle extends HeadingWidget {
 		 */
 		if ( is_front_page() && is_home() ) {
 			$title = 'Home';
+		} elseif ( function_exists( 'is_shop' ) && is_shop() ) {
+			$this_post = get_post( get_option( 'woocommerce_shop_page_id' ) );
+			$title = $this_post->post_title;
+		} elseif ( is_archive() ) {
+			$title = single_cat_title( '', false );
+			error_log( $title );
 		} elseif ( $post && $post->post_title ) {
 			$title = $this_post->post_title;
 		} else {
