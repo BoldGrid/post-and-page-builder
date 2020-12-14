@@ -52,7 +52,6 @@ class PageTitle extends HeadingWidget {
 			$title = $this_post->post_title;
 		} elseif ( is_archive() ) {
 			$title = single_cat_title( '', false );
-			error_log( $title );
 		} elseif ( $post && $post->post_title ) {
 			$title = $this_post->post_title;
 		} else {
