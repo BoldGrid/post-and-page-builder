@@ -47,6 +47,10 @@ class Boldgrid_Editor_Builder_Components {
 	public function parse_post( $html ) {
 		$components = array();
 
+		if ( ! $html ) {
+			return $components;
+		}
+
 		$dom = new DOMDocument();
 
 		@$dom->loadHTML( $html );
