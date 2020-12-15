@@ -389,6 +389,7 @@ export class Instance {
 		this.$form.find( 'button.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
 		this.$form.find( 'button.bgc_return_to_editor' ).on( 'click', e => this.returnToEditor( e ) );
 		this.$form.find( 'a.bgc_goto_customizer' ).on( 'click', e => this.goToCustomizer( e ) );
+		this.$form.find( 'a.bgc_goto_menu_assignment' ).on( 'click', e => this.goToMenuAssigmnet( e ) );
 		this.$form
 			.find( '.bgc.logo_switch input' )
 			.on( 'change', () => this.switchLogoSelector( this.$form ) );
@@ -535,6 +536,21 @@ export class Instance {
 		if ( menuLocationId && menuId ) {
 			$( '.bgc_menu_warning' ).hide();
 		}
+	}
+
+	/** Go To Menu Assignment
+	 *
+	 * This is used to save the current template, and then
+	 * redirect the user to the WordPress Menu Assignment page.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param {Event} event Event
+	*/
+	goToMenuAssigmnet( event ) {
+		var gotoUrl = '/wp-admin/nav-menus.php?action=locations';
+		$( 'form#post' ).append( '<input type="hidden" name="go-to-menu-assignment" value="' + gotoUrl + '">' );
+		$( '#publish' ).trigger( 'click' );
 	}
 
 	/**

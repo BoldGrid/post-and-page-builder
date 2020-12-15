@@ -256,7 +256,7 @@ class Menu extends \WP_Widget {
 			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
 			<p class="<?php echo ( $location_managed_elsewhere ) ? 'menu_location_notice' : 'menu_location_notice hidden'; ?>">
 				<?php esc_html_e( 'A menu has been assigned to this location elsewhere. ', 'boldgrid-editor' ); ?>
-				<a class="button" href="<?php echo admin_url( 'nav-menus.php?action=locations'); ?>"><?php esc_html_e( 'Go To Menu Assignment', 'boldgrid-editor' ); ?></a>
+				<a class="button bgc_goto_menu_assignment" href="<?php echo admin_url( 'nav-menus.php?action=locations'); ?>"><?php esc_html_e( 'Go To Menu Assignment', 'boldgrid-editor' ); ?></a>
 			</p>
 			<p>
 				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" class="bgc_menu"
