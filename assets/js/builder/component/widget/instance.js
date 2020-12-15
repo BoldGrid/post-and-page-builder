@@ -94,7 +94,15 @@ export class Instance {
 				'wp_boldgrid_component_logo' === this.component.name ||
 				'wp_boldgrid_component_site_description' === this.component.name
 			) {
-				$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
+				if ( $( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).parents( '.boldgrid-section' ).length ) {
+					$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
+				} else {
+					BG.Controls.$container
+					.find( '[class*="boldgrid-section"]' )
+					.first()
+					.find( '[class*="container"]' )
+					.prepend( $sampleElement );
+				}
 			} else {
 				BG.Controls.$container
 					.find( '[class*="col-md-"]' )
