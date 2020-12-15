@@ -11,7 +11,7 @@ Official Download Link:
 
 # Post and Page Builder
 
-**Contributors:** boldgrid, rramo012, imh_brad, timph, joemoto
+**Contributors:** boldgrid, rramo012, imh_brad, timph, joemoto, jamesros161
 
 **Tags:** page builder, drag and drop, tinymce, editor, landing page
 

@@ -1,5 +1,5 @@
 === Post and Page Builder by BoldGrid - Visual Drag and Drop Editor ===
-Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen
+Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.6
@@ -133,6 +133,12 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.14.0 =
+
+Release Date: TBD
+
+* New Feature: Added new components to support Crio Pro's Custom Page Headers.
 
 = 1.13.5 =
 
