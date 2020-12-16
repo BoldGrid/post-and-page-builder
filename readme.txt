@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.13.4
+Stable tag: 1.13.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,15 +134,23 @@ WordPress Editor.
 
 == Changelog ==
 
+
 = 1.14.0 =
 
 Release Date: TBD
 
 * New Feature: Added new components to support Crio Pro's Custom Page Headers.
 
+= 1.13.6 =
+
+Release Date: December 8th, 2020
+
+* Fix: BoldGrid library loading issue.
+
+
 = 1.13.5 =
 
-Release Date: December 7th, 2020
+Release Date: December 8th, 2020
 
 * Fix: WordPress 5.6 compatibility issues.
 
