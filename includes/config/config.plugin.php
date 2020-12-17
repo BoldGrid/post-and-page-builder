@@ -34,7 +34,7 @@ return array (
 	),
 	'main_file_path'        => BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php',
 	'plugin_transient_name' => 'boldgrid_editor_version_data',
-	'allowed_post_types'    => array( 'page', 'post', 'bg_block' ),
+	'allowed_post_types'    => array( 'page', 'post', 'bg_block', 'crio_page_header' ),
 	'controls'              => array(
 		'page_title' => array(
 			'visible_by_default' => false

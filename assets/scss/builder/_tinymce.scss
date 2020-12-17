@@ -2,6 +2,10 @@
 	outline: none;
 }
 
+.mce-content-body .bgc-heading .bgc_site_title a:hover {
+	text-decoration: inherit;
+}
+
 .mce-widget[aria-label="BoldGrid Editing"] {
 	display: none;
 }

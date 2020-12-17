@@ -158,6 +158,14 @@ class Boldgrid_Editor_Setting {
 			}
 		}
 
+		// Add Crio Page headers to the Settings list.
+		if ( post_type_exists( 'crio_page_header' ) ) {
+			$formatted[] = array(
+				'value' => 'crio_page_header',
+				'label' => 'Crio Page Headers'
+			);
+		}
+
 		usort( $formatted, function ( $a, $b ) {
 			return strcmp( $a['label'], $b['label'] );
 		} );
@@ -263,9 +271,26 @@ class Boldgrid_Editor_Setting {
 	 * @return array Custom Post Type names.
 	 */
 	protected function get_all_cpts() {
-		return array_merge( [ 'post', 'page' ], get_post_types( [
-			'public'   => true,
-			'_builtin' => false,
-		], 'names' ) );
+		/*
+		 * As of 1.14.0 this is broken down into multiple statements
+		 * to make it easier to add other custom post types to the list that
+		 * may not be public, such as the 'crio_page_headers'.
+		 */
+		$wp_post_types = array( 'post', 'page' );
+		$cpts          = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'names'
+		);
+
+		$all_cpts = array_merge( $wp_post_types, $cpts );
+
+		if ( post_type_exists( 'crio_page_header' ) ) {
+			$page_headers  = array( 'crio_page_header' => 'crio_page_header' );
+			$all_cpts = array_merge( $all_cpts, $page_headers );
+		}
+		return $all_cpts;
 	}
 }

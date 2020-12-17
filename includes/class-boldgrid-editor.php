@@ -123,6 +123,20 @@ class Boldgrid_Editor {
 	public function setup_components() {
 		$shortcode = new Boldgrid_Components_Shortcode();
 		$shortcode->init();
+
+		register_widget( '\\Boldgrid\\PPB\\Widget\\Menu' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PageTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteDescription' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\Logo' );
+
+		/*
+		 * This widget is currently disabled, because I need to create
+		 * additional widgets to go with it, such as AuthorAvatar, PostDate,
+		 * PostTime, Tags, etc.
+		 *
+		 * register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
+		 */
 	}
 
 	/**
