@@ -137,7 +137,7 @@ WordPress Editor.
 
 = 1.14.0 =
 
-Release Date: TBD
+Release Date: December 17th, 2020
 
 * New Feature: Added new components to support Crio Pro's Custom Page Headers.
 
