@@ -81,7 +81,7 @@
 		"boldgrid-theme-framework": "https://github.com/BoldGrid/boldgrid-theme-framework.git#dev",
 		"bootstrap-sass": "^3.3.7",
 		"copy-webpack-plugin": "^4.5.1",
-		"eslint": "^4.6.1",
+		"eslint": "^4.19.1",
 		"eslint-config-wordpress": "^2.0.0",
 		"eslint-loader": "^2.0.0",
 		"eslint-plugin-html": "^4.0.1",
