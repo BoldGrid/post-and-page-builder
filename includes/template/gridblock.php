@@ -31,7 +31,7 @@
 <div class="boldgrid-zoomout-section zoom-gridblocks-section">
 	<div class="gridblocks">
 		<div class="my-gridblocks-500">
-			We experienced an issue retrieving your saved Blocks. We're sorry for the inconvinence.
+			We experienced an issue retrieving your saved Blocks. We're sorry for the inconvenience.
 			Please try again later.
 		</div>
 		<div class="my-gridblocks-404 saved">
