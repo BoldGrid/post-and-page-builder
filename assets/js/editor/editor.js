@@ -104,7 +104,13 @@ IMHWPB.Editor = function( $ ) {
 	 * Carry over the height width and classes of the images when replacing images with images
 	 */
 	this.override_insert_media = function() {
-		var original_send_to_editor = send_to_editor;
+		var original_send_to_editor;
+
+		// When a user is a 'contributor', the 'send_to_editor' function is not available.
+		if ( ! _.isUndefined( window.send_to_editor ) ) {
+			original_send_to_editor = send_to_editor;
+		}
+
 		send_to_editor = function( attachments ) {
 			var args = [];
 
@@ -193,7 +199,9 @@ IMHWPB.Editor = function( $ ) {
 				args.push( attachments );
 			}
 
-			original_send_to_editor.apply( this, args );
+			if ( original_send_to_editor ) {
+				original_send_to_editor.apply( this, args );
+			}
 		};
 	};
 
@@ -279,7 +287,7 @@ IMHWPB.Editor = function( $ ) {
 
 		editor.addButton( 'toggle_draggable_imhwpb', {
 			title: 'BoldGrid Editing',
-			icon: 'icon genericon genericon-move',
+			icon: 'icon dashicons dashicons-move',
 			classes: 'widget btn',
 			onclick: self.toggle_draggable_plugin
 		} );
@@ -807,6 +815,10 @@ IMHWPB.Editor = function( $ ) {
 	 * Check is dragging is set to active by the user
 	 */
 	this.dragging_is_active = function() {
+		// if ( _.isUndefined( IMHWPB.WP_MCE_Draggable ) ) {
+		// 	return false;
+		// }
+
 		return (
 			'undefined' != typeof IMHWPB.WP_MCE_Draggable.instance &&
 			false == IMHWPB.WP_MCE_Draggable.instance.draggable_inactive

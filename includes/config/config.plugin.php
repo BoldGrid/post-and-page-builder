@@ -15,7 +15,7 @@ return array (
 		'gridblock_industries' => '/v1/gridblocks/industries',
 	),
 	'asset_server'          => 'https://wp-assets.boldgrid.com',
-	'development_server'    => 'http://localhost:4000',
+	'development_server'    => 'https://' . $_SERVER['SERVER_NAME'],
 	'plugin_name'           => 'boldgrid-editor',
 	'plugin_key_code'       => 'editor',
 	'templates' => array(
