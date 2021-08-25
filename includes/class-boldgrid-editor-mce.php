@@ -348,6 +348,11 @@ class Boldgrid_Editor_MCE {
 		// Add styles that could conflict.
 		$styles = $this->add_styles_conflict( $styles );
 
+		// Add WeForms CSS.
+		if ( defined( 'WEFORMS_ASSET_URI' ) ) {
+			$styles[] = WEFORMS_ASSET_URI . '/wpuf/css/frontend-forms.css';
+		}
+
 		// Add Query Args.
 		$mce_css = array ();
 		foreach ( $styles as $editor_style ) {
