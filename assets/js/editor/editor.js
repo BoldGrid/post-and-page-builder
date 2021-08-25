@@ -815,10 +815,6 @@ IMHWPB.Editor = function( $ ) {
 	 * Check is dragging is set to active by the user
 	 */
 	this.dragging_is_active = function() {
-		if ( _.isUndefined( IMHWPB.WP_MCE_Draggable ) ) {
-			return false;
-		}
-
 		return (
 			'undefined' != typeof IMHWPB.WP_MCE_Draggable.instance &&
 			false == IMHWPB.WP_MCE_Draggable.instance.draggable_inactive
