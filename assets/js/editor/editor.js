@@ -287,7 +287,7 @@ IMHWPB.Editor = function( $ ) {
 
 		editor.addButton( 'toggle_draggable_imhwpb', {
 			title: 'BoldGrid Editing',
-			icon: 'icon dashicons dashicons-move',
+			icon: 'icon genericon genericon-move',
 			classes: 'widget btn',
 			onclick: self.toggle_draggable_plugin
 		} );
@@ -815,9 +815,9 @@ IMHWPB.Editor = function( $ ) {
 	 * Check is dragging is set to active by the user
 	 */
 	this.dragging_is_active = function() {
-		// if ( _.isUndefined( IMHWPB.WP_MCE_Draggable ) ) {
-		// 	return false;
-		// }
+		if ( _.isUndefined( IMHWPB.WP_MCE_Draggable ) ) {
+			return false;
+		}
 
 		return (
 			'undefined' != typeof IMHWPB.WP_MCE_Draggable.instance &&
