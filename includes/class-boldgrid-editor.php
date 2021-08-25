@@ -110,7 +110,7 @@ class Boldgrid_Editor {
 		$this->setup_components();
 		$this->setup_page_title();
 
-		if ( is_admin() && current_user_can( 'edit_pages' ) ) {
+		if ( is_admin() && current_user_can( 'edit_posts' ) ) {
 			$this->add_admin_hooks();
 		}
 
@@ -269,7 +269,7 @@ class Boldgrid_Editor {
 				add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2 );
 
 				add_action( 'media_buttons', array( $boldgrid_editor_mce, 'load_editor_hooks' ) );
-				add_action( 'media_buttons', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
+				add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
 
 				// Display and save admin notice state.
 				add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );
