@@ -279,6 +279,15 @@ class Boldgrid_Editor_Assets {
 			$display_gridblock_lead = false;
 		}
 
+		/*
+		 * Contributors are not able to see the Add Block button.
+		 * due to a wp_core bug. Until that gets fixed, we need to bypass the
+		 * 'display_gridblock_lead' for contributors.
+		 */
+		if ( ! current_user_can( 'upload_files' ) ) {
+			$display_gridblock_lead = false;
+		}
+
 		$shortcode_keys = array_keys( $shortcode_tags );
 
 		if ( ! in_array( 'weforms', $shortcode_keys ) ) {
