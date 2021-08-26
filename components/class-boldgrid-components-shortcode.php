@@ -169,7 +169,8 @@ class Boldgrid_Components_Shortcode {
 			}
 		} );
 		foreach ( $this->config['components'] as $component ) {
-			if ( current_user_can( 'edit_pages' ) ) {
+			// This has been changed to 'edit_posts' to allow Authors and Contributors to use the editor.
+			if ( current_user_can( 'edit_posts' ) ) {
 				add_action( 'wp_ajax_boldgrid_component_' . $component['name'], function () use ( $component ) {
 					$this->ajax_shortcode( $component, 'content' );
 				} );
