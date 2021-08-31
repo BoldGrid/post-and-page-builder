@@ -22,14 +22,21 @@ body#wpview-iframe-sandbox {
 	border-color: transparent;
 }
 
-.mce-container .mce-toolbar .mce-btn.mce-gridblock-icon {
-	.dashicons {
-		font-family: dashicons;
+.mce-container .mce-toolbar {
+	.mce-btn.mce-gridblock-icon {
+		.dashicons {
+			font-family: dashicons;
+		}
+		.dashicons:before {
+			font-family: dashicons;
+		}
 	}
-	.dashicons:before {
-		font-family: dashicons;
+	.mce-i-fullscreen:before {
+		content: "\f188";
 	}
 }
+
+
 
 .mce-container .mce-toolbar .mce-btn.mce-gridblock-icon button.gridblock-icon {
 	display: inline-block;

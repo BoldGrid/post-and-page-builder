@@ -134,6 +134,10 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.15.0 =
+Release Date: TBD
+* New Feature: Full Screen Editing.
+
 = 1.14.1 =
 Release Date: August 26th, 2021
 
