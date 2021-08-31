@@ -17,3 +17,58 @@ body#wpview-iframe-sandbox {
 #post-body-content #insert-gridblocks-button {
 	display: inline-block;
 }
+.mce-container .mce-toolbar .mce-btn.mce-gridblock-icon:active,
+.mce-container .mce-toolbar .mce-btn.mce-gridblock-icon:hover {
+	border-color: transparent;
+}
+
+.mce-container .mce-toolbar .mce-btn.mce-gridblock-icon {
+	.dashicons {
+		font-family: dashicons;
+	}
+	.dashicons:before {
+		font-family: dashicons;
+	}
+}
+
+.mce-container .mce-toolbar .mce-btn.mce-gridblock-icon button.gridblock-icon {
+	display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 2.15384615;
+    min-height: 30px;
+    margin: 0;
+    padding: 0 10px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
+	background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+	&:hover {
+		background-color: #135e96;
+		border-color: #135e96;
+		span {
+			transform: rotate(120deg);
+		}
+	}
+	span {
+		background: url(../image/gridblock-icon-white.svg);
+		background-repeat: no-repeat;
+		background-size: 18px 18px;
+		transition-duration: .8s;
+		transition-property: transform;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		line-height: 1;
+		vertical-align: middle;
+		margin: 0 2px;
+	}
+}

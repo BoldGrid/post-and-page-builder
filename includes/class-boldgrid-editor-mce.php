@@ -115,6 +115,8 @@ class Boldgrid_Editor_MCE {
 		$plugin_array['tablet_view_imhwpb'] = $editor_js_file;
 		$plugin_array['phone_view_imhwpb'] = $editor_js_file;
 		$plugin_array['toggle_draggable_imhwpb'] = $editor_js_file;
+		$plugin_array['fullscreen'] = $editor_js_file;
+		$plugin_array['add_block_imhwpb'] = $editor_js_file;
 
 		return $plugin_array;
 	}
@@ -133,6 +135,8 @@ class Boldgrid_Editor_MCE {
 		array_push( $buttons, 'tablet_view_imhwpb' );
 		array_push( $buttons, 'phone_view_imhwpb' );
 		array_push( $buttons, 'toggle_draggable_imhwpb' );
+		array_push( $buttons, 'fullscreen' );
+		array_push( $buttons, 'add_block_imhwpb' );
 
 		return $buttons;
 	}

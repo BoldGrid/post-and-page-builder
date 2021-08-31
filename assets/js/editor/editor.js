@@ -218,6 +218,20 @@ IMHWPB.Editor = function( $ ) {
 	/**
 	 * Adding three new buttons
 	 */
+	tinymce.PluginManager.add( 'add_block_imhwpb', function( editor, url ) {
+		if ( 'content' !== editor.id ) {
+			return;
+		}
+
+		editor.addButton( 'add_block_imhwpb', {
+			title: 'Add Block',
+			classes: 'button-primary gridblock-icon'
+		} );
+	} );
+
+	/**
+	 * Adding three new buttons
+	 */
 	tinymce.PluginManager.add( 'monitor_view_imhwpb', function( editor, url ) {
 		if ( 'content' !== editor.id ) {
 			return;
@@ -333,6 +347,12 @@ IMHWPB.Editor = function( $ ) {
 		editor.on( 'KeyDown', function( e ) {
 			if ( ! self.draggable ) {
 				return true;
+			}
+
+			console.log( e.key );
+			if ( 'Escape' === e.key ) {
+				console.log( 'Escape Key Pressed' );
+				$( '.mce-active #mceu_18-button' ).trigger( 'click' );
 			}
 
 			var $structure,
@@ -714,6 +734,10 @@ IMHWPB.Editor = function( $ ) {
 					}
 				}
 			} );
+
+			// Moves media buttons to the toolbar.
+			$( '.mce-gridblock-icon' ).children().remove();
+			$( '#wp-content-media-buttons' ).appendTo( '.mce-gridblock-icon' );
 		} );
 
 		/*
