@@ -1,6 +1,6 @@
 {
     "require": {
-        "boldgrid/library": "^2.13"
+        "boldgrid/library": "dev-branch-2.13.5"
     },
     "scripts": {
         "post-autoload-dump": [
