@@ -349,7 +349,6 @@ IMHWPB.Editor = function( $ ) {
 				return true;
 			}
 
-			console.log( e.key );
 			if ( 'Escape' === e.key ) {
 				console.log( 'Escape Key Pressed' );
 				$( '.mce-active #mceu_18-button' ).trigger( 'click' );
@@ -738,6 +737,9 @@ IMHWPB.Editor = function( $ ) {
 			// Moves media buttons to the toolbar.
 			$( '.mce-gridblock-icon' ).children().remove();
 			$( '#wp-content-media-buttons' ).appendTo( '.mce-gridblock-icon' );
+			$( '#mceu_18-button' ).on( 'click', function() {
+				$( window ).trigger( 'resize' );
+			} );
 		} );
 
 		/*
@@ -890,7 +892,7 @@ IMHWPB.Editor = function( $ ) {
 	 * Remove applied classes
 	 */
 	this.remove_editor_styles = function() {
-		$( '#wp-content-editor-container' ).removeClass(
+		$( '#content_ifr' ).removeClass(
 			'mce-viewsize-phone-imhwpb mce-viewsize-tablet-imhwpb mce-viewsize-monitor-imhwpb'
 		);
 	};
@@ -900,7 +902,7 @@ IMHWPB.Editor = function( $ ) {
 	 */
 	this.set_width = function( style ) {
 		self.remove_editor_styles();
-		$( '#wp-content-editor-container' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
+		$( '#content_ifr' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
 	};
 };
 
