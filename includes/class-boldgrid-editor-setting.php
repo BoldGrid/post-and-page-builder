@@ -261,7 +261,7 @@ class Boldgrid_Editor_Setting {
 			$default_editor = get_post_meta( $post->ID, '_bgppb_default_editor', true ) ?: $default_editor;
 		} elseif ( ! $default_editor_override && ! $post && isset( $_GET['post_id'] ) ) {
 			// When loading iFrames in the add media tabs, the $post variable is not set, so we have to obtain the ID from the $_GET array.
-			$default_editor = get_post_meta( $_GET['post_id'], '_bgppb_default_editor', true ) ?: $default_editor;
+			$default_editor = get_post_meta( intval( $_GET['post_id'] ), '_bgppb_default_editor', true ) ?: $default_editor;
 		}
 
 		return $default_editor;
