@@ -22,6 +22,20 @@ body#wpview-iframe-sandbox {
 	border-color: transparent;
 }
 
+.mce-btn.mce-gridblock-icon {
+	display: none;
+}
+
+.mce-fullscreen .mce-btn.mce-gridblock-icon {
+	display: inline-block;
+	margin: 0 2px;
+	.wp-media-buttons {
+		> * {
+			min-height: unset;
+		}
+	}
+}
+
 .mce-container .mce-toolbar {
 	.mce-btn.mce-gridblock-icon {
 		.dashicons {
@@ -42,8 +56,8 @@ body#wpview-iframe-sandbox {
 	display: inline-block;
     text-decoration: none;
     font-size: 13px;
-    line-height: 2.15384615;
-    min-height: 30px;
+    line-height: 1;
+    min-height: 27px;
     margin: 0;
     padding: 0 10px;
     cursor: pointer;
