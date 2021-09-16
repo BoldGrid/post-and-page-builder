@@ -26,12 +26,19 @@ body#wpview-iframe-sandbox {
 	display: none;
 }
 
+.boldgrid-zoomout .mce-fullscreen {
+	position: relative;
+	overflow: visible;
+	z-index: auto;
+}
+
 .mce-fullscreen .mce-btn.mce-gridblock-icon {
 	display: inline-block;
 	margin: 0 2px;
 	.wp-media-buttons {
 		> * {
 			min-height: unset;
+			height: 27px;
 		}
 	}
 }
