@@ -94,6 +94,13 @@ class Boldgrid_Editor_MCE {
 				'register_mce_button'
 			) );
 		}
+
+		// Shows keybinding in fullscreen button tooltip.
+		add_filter( 'wp_mce_translation', function( $translation, $mce_locale ) {
+			$translation['Fullscreen'] = __( 'Fullscreen (Ctrl+Shift+F)', 'boldgrid_editor' );
+			return $translation;
+		}, 10, 2 );
+
 	}
 
 	/**
