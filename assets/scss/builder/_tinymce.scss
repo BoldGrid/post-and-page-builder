@@ -35,8 +35,97 @@ body#wpview-iframe-sandbox {
 		content: "\f188";
 	}
 }
+.mce-fullscreen div.mce-publish-buttons {
+	display: flex;
+}
+div.mce-publish-buttons {
+    float: right;
+    display: none;
+	margin-top: 4px;
+	div#mce-major-publishing-actions {
+		display: flex;
+	}
+	#save-post {
+		float: none;
+	}
+	.mce-close-fullscreen {
+		border: 1px solid #007cba;
+		cursor: pointer;
+		.dashicons {
+			font-family: dashicons;
+			font-size: 24px;
+			color: #007cba;
+			margin: 2px 5px;
+		}
+	}
+	.screen-reader-text {
+		display: none;
+	}
+	> div {
+		> * {
+			margin-right: 12px;
+		}
 
-
+		> div {
+			background: transparent;
+			color: #006ba1;
+			a, .button {
+				font-size: 13px;
+				line-height: 2.15384615;
+			}
+			&#publishing-action {
+				> input {
+					white-space: nowrap;
+					background: #007cba;
+					color: #fff;
+					text-decoration: none;
+					text-shadow: none;
+					outline: 1px solid transparent;
+					&:hover {
+						background: #006ba1;
+   						color: #fff;
+					}
+				}
+			}
+			&#delete-action {
+				padding: 0 10px;
+				box-shadow: inset 0 0 0 1px #cc1818;
+				border-radius: 0;
+				> a {
+					color: #cc1818;
+				}
+				&:hover:not(:disabled) {
+					border: none;
+    				box-shadow: inset 0 0 0 1px #710d0d;
+				}
+				a:hover:not(:disabled) {
+					color: #710d0d;
+					text-decoration: none;
+				}
+				&:active:not(:disabled) {
+					background: #ccc;
+				}
+			}
+			> .button {
+				border: none;
+				white-space: nowrap;
+				padding: 0 10px;
+				border-radius: 0;
+				&:hover:not(:disabled) {
+					color: #006ba1;
+					border: none;
+					text-decoration: none;
+					box-shadow: inset 0 0 0 1px #006ba1;
+				}
+				&:active:not(:disabled) {
+					background: #ddd;
+					color: #006ba1;
+					box-shadow: none;
+				}
+			}
+		}
+	}
+}
 
 .mce-container .mce-toolbar .mce-btn.mce-gridblock-icon button.gridblock-icon {
 	display: inline-block;

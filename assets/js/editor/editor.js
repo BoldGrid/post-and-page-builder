@@ -738,6 +738,19 @@ IMHWPB.Editor = function( $ ) {
 			// Moves media buttons to the toolbar.
 			$( '.mce-gridblock-icon' ).children().remove();
 			$( '#wp-content-media-buttons' ).appendTo( '.mce-gridblock-icon' );
+
+			// Add Publish Buttons to the toolbar.
+			$( '#mceu_34-body' ).append( '<div class="mce-publish-buttons"></div>' );
+			$( '.mce-publish-buttons' ).append(
+				$( '#minor-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
+			);
+			$( '.mce-publish-buttons' ).append(
+				$( '#major-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
+			);
+			$( '.mce-publish-buttons' ).append( '<div class="mce-close-fullscreen"><span class="dashicons dashicons-no-alt"></span></div>' );
+			$( '.mce-close-fullscreen' ).on( 'click', function() {
+				editor.execCommand( 'mceFullScreen' );
+			} );
 		} );
 
 		/*
