@@ -227,6 +227,8 @@ IMHWPB.Editor = function( $ ) {
 			title: 'Add Block',
 			classes: 'button-primary gridblock-icon'
 		} );
+
+		editor.buttons.fullscreen.tooltip = 'Fullscreen (Ctrl+Shift+F)';
 	} );
 
 	/**
@@ -349,7 +351,6 @@ IMHWPB.Editor = function( $ ) {
 				return true;
 			}
 
-			console.log( e.key );
 			if ( 'Escape' === e.key ) {
 				console.log( 'Escape Key Pressed' );
 				$( '.mce-active #mceu_18-button' ).trigger( 'click' );
@@ -681,6 +682,11 @@ IMHWPB.Editor = function( $ ) {
 
 			var $body = $( editor.getBody() );
 			var $tinymce_iframe = $( event.target.iframeElement ).contents();
+			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
+
+			if ( 'on' === userFullscreenSetting ) {
+				editor.execCommand( 'mceFullScreen' );
+			}
 
 			if ( BoldgridEditor.body_class ) {
 				$body.addClass( BoldgridEditor.body_class );
@@ -735,10 +741,21 @@ IMHWPB.Editor = function( $ ) {
 				}
 			} );
 
+			tinymce.activeEditor.on( 'FullscreenStateChanged', function( event ) {
+				console.log( 'Full Screen Change Fired' );
+				console.log( event );
+				if ( event.state ) {
+					window.setUserSetting( 'editor_fullscreen', 'on' );
+				} else {
+					window.setUserSetting( 'editor_fullscreen', 'off' );
+				}
+			} );
+
 			// Moves media buttons to the toolbar.
 			$( '.mce-gridblock-icon' ).children().remove();
-			$( '#wp-content-media-buttons' ).appendTo( '.mce-gridblock-icon' );
 
+			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
+      
 			// Add Publish Buttons to the toolbar.
 			$( '#mceu_34-body' ).append( '<div class="mce-publish-buttons"></div>' );
 			$( '.mce-publish-buttons' ).append(
@@ -750,6 +767,12 @@ IMHWPB.Editor = function( $ ) {
 			$( '.mce-publish-buttons' ).append( '<div class="mce-close-fullscreen"><span class="dashicons dashicons-no-alt"></span></div>' );
 			$( '.mce-close-fullscreen' ).on( 'click', function() {
 				editor.execCommand( 'mceFullScreen' );
+      } );
+			$( '#mceu_18-button' ).on( 'click', function() {
+				var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
+					PostBodyContentZIndex = adminBarZIndex + 1;
+				$( window ).trigger( 'resize' );
+				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 			} );
 		} );
 
@@ -903,7 +926,7 @@ IMHWPB.Editor = function( $ ) {
 	 * Remove applied classes
 	 */
 	this.remove_editor_styles = function() {
-		$( '#wp-content-editor-container' ).removeClass(
+		$( '#content_ifr' ).removeClass(
 			'mce-viewsize-phone-imhwpb mce-viewsize-tablet-imhwpb mce-viewsize-monitor-imhwpb'
 		);
 	};
@@ -913,7 +936,7 @@ IMHWPB.Editor = function( $ ) {
 	 */
 	this.set_width = function( style ) {
 		self.remove_editor_styles();
-		$( '#wp-content-editor-container' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
+		$( '#content_ifr' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
 	};
 };
 

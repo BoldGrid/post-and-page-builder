@@ -184,21 +184,22 @@ class Boldgrid_Editor {
 		global $wp_customize;
 
 		$editor = false;
-		$boldgrid_editor_ajax      = new Boldgrid_Editor_Ajax();
-		$boldgrid_editor_crop      = new Boldgrid_Editor_Crop();
-		$boldgrid_editor_builder   = new Boldgrid_Editor_Builder();
-		$builder_styles            = new Boldgrid_Editor_Builder_Styles();
-		$boldgrid_editor_mce       = new Boldgrid_Editor_MCE( $this->config );
-		$boldgrid_editor_media     = new Boldgrid_Editor_Media();
-		$boldgrid_editor_theme     = new Boldgrid_Editor_Theme();
-		$boldgrid_editor_version   = new Boldgrid_Editor_Version();
-		$boldgrid_editor_wpforms   = new Boldgrid_Editor_Wpforms();
-		$boldgrid_editor_setup     = new Boldgrid_Editor_Setup();
-		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
-		$setting_view              = new PPB\View\Settings();
-		$gutenberg_view            = new PPB\View\Gutenberg();
-		$rating_service            = new PPB\Rating\Service();
-		$plugins_view              = new PPB\View\Plugins();
+		$boldgrid_editor_ajax           = new Boldgrid_Editor_Ajax();
+		$boldgrid_editor_crop           = new Boldgrid_Editor_Crop();
+		$boldgrid_editor_builder        = new Boldgrid_Editor_Builder();
+		$builder_styles                 = new Boldgrid_Editor_Builder_Styles();
+		$boldgrid_editor_mce            = new Boldgrid_Editor_MCE( $this->config );
+		$boldgrid_editor_media          = new Boldgrid_Editor_Media();
+		$boldgrid_editor_theme          = new Boldgrid_Editor_Theme();
+		$boldgrid_editor_version        = new Boldgrid_Editor_Version();
+		$boldgrid_editor_wpforms        = new Boldgrid_Editor_Wpforms();
+		$boldgrid_editor_setup          = new Boldgrid_Editor_Setup();
+		$boldgrid_editor_premium        = new Boldgrid_Editor_Premium();
+		$boldgrid_editor_admin_pointers = new Boldgrid_Editor_Admin_Pointers();
+		$setting_view                   = new PPB\View\Settings();
+		$gutenberg_view                 = new PPB\View\Gutenberg();
+		$rating_service                 = new PPB\Rating\Service();
+		$plugins_view                   = new PPB\View\Plugins();
 
 		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
