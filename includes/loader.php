@@ -4,6 +4,7 @@ if ( ! class_exists( 'Boldgrid_Editor_Media_Tab' ) ) {
 }
 
 require_once BOLDGRID_EDITOR_PATH . '/autoload.php';
+require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-admin-pointers.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-config.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-crop.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-ajax.php';
