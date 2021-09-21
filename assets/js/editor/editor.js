@@ -755,23 +755,33 @@ IMHWPB.Editor = function( $ ) {
 			$( '.mce-gridblock-icon' ).children().remove();
 
 			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
-      
+
 			// Add Publish Buttons to the toolbar.
 			$( '#mceu_34-body' ).append( '<div class="mce-publish-buttons"></div>' );
 			$( '.mce-publish-buttons' ).append(
 				$( '#minor-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
 			);
+
 			$( '.mce-publish-buttons' ).append(
 				$( '#major-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
 			);
+
 			$( '.mce-publish-buttons' ).append( '<div class="mce-close-fullscreen"><span class="dashicons dashicons-no-alt"></span></div>' );
+
+			// Handle Fullscreen Close button.
 			$( '.mce-close-fullscreen' ).on( 'click', function() {
 				editor.execCommand( 'mceFullScreen' );
-      } );
+			} );
+
+			// Handle events on fullscreen mce button.
 			$( '#mceu_18-button' ).on( 'click', function() {
 				var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
 					PostBodyContentZIndex = adminBarZIndex + 1;
+
+				// Ensures that the iFrame resizes when going from standard to fullscreen
 				$( window ).trigger( 'resize' );
+
+				// Fixes z-index issue with admin bar when going from DFW to FullScreen.
 				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 			} );
 		} );
