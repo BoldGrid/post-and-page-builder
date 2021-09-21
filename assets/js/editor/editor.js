@@ -736,7 +736,8 @@ IMHWPB.Editor = function( $ ) {
 
 			// Moves media buttons to the toolbar.
 			$( '.mce-gridblock-icon' ).children().remove();
-			$( '#wp-content-media-buttons' ).appendTo( '.mce-gridblock-icon' );
+			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
+
 			$( '#mceu_18-button' ).on( 'click', function() {
 				$( window ).trigger( 'resize' );
 			} );
