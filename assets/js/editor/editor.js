@@ -756,7 +756,7 @@ IMHWPB.Editor = function( $ ) {
 			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
 
 			$( '#mceu_18-button' ).on( 'click', function() {
-				var adminBarZIndex        = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
+				var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
 					PostBodyContentZIndex = adminBarZIndex + 1;
 				$( window ).trigger( 'resize' );
 				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
