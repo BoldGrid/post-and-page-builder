@@ -227,6 +227,8 @@ IMHWPB.Editor = function( $ ) {
 			title: 'Add Block',
 			classes: 'button-primary gridblock-icon'
 		} );
+
+		editor.buttons.fullscreen.tooltip = 'Fullscreen (Ctrl+Shift+F)';
 	} );
 
 	/**
@@ -680,6 +682,11 @@ IMHWPB.Editor = function( $ ) {
 
 			var $body = $( editor.getBody() );
 			var $tinymce_iframe = $( event.target.iframeElement ).contents();
+			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
+
+			if ( 'on' === userFullscreenSetting ) {
+				editor.execCommand( 'mceFullScreen' );
+			}
 
 			if ( BoldgridEditor.body_class ) {
 				$body.addClass( BoldgridEditor.body_class );
@@ -734,12 +741,25 @@ IMHWPB.Editor = function( $ ) {
 				}
 			} );
 
+			tinymce.activeEditor.on( 'FullscreenStateChanged', function( event ) {
+				console.log( 'Full Screen Change Fired' );
+				console.log( event );
+				if ( event.state ) {
+					window.setUserSetting( 'editor_fullscreen', 'on' );
+				} else {
+					window.setUserSetting( 'editor_fullscreen', 'off' );
+				}
+			} );
+
 			// Moves media buttons to the toolbar.
 			$( '.mce-gridblock-icon' ).children().remove();
 			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
 
 			$( '#mceu_18-button' ).on( 'click', function() {
+				var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
+					PostBodyContentZIndex = adminBarZIndex + 1;
 				$( window ).trigger( 'resize' );
+				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 			} );
 		} );
 
