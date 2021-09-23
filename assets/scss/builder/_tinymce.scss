@@ -137,12 +137,15 @@ div#mce_fullscreen_actions {
 	}
 }
 
-#mceu_36 {
-	display: inline-block;
-	width: fit-content;
-	#mceu_36-body {
+
+@media screen and (min-width: 1355px) {
+	#mceu_36 {
 		display: inline-block;
 		width: fit-content;
+		#mceu_36-body {
+			display: inline-block;
+			width: fit-content;
+		}
 	}
 }
 .mce-container .mce-toolbar .mce-btn.mce-gridblock-icon button.gridblock-icon {
