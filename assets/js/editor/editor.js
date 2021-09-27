@@ -751,15 +751,20 @@ IMHWPB.Editor = function( $ ) {
 				}
 			} );
 
-			// Moves media buttons to the toolbar.
-			$( '.mce-gridblock-icon' ).children().remove();
+			// Add Dividers to mce toolbasr
+			$( '#mceu_0, #mceu_3, #mceu_6, #mceu_9, #mceu_12, #mceu_16' ).each( function() {
+				$( '<div class="mce-divider"></div>' ).insertAfter( $( this ) );
+			} );
 
-			$( '.mce-gridblock-icon' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
+			// Moves media buttons to the toolbar.
+			$( '#mceu_32-body' ).prepend( '<div id="mce_fullscreen_actions"></div>' );
+
+			$( '#mce_fullscreen_actions' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
 
 			// Add Publish Buttons to the toolbar.
-			$( '#mceu_34-body' ).append( '<div class="mce-publish-buttons"></div>' );
+			$( '#mce_fullscreen_actions' ).append( '<div class="mce-publish-buttons"></div>' );
 			$( '.mce-publish-buttons' ).append(
-				$( '#minor-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
+				$( '#minor-publishing-actions' ).clone( true ).prop( 'id', 'mce-minor-publishing-actions' )
 			);
 
 			$( '.mce-publish-buttons' ).append(
@@ -781,7 +786,7 @@ IMHWPB.Editor = function( $ ) {
 				// Ensures that the iFrame resizes when going from standard to fullscreen
 				$( window ).trigger( 'resize' );
 
-				// Fixes z-index issue with admin bar when going from DFW to FullScreen.
+				// Fixes z-index issue with admin bar when going from DFW to F
 				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 			} );
 		} );
