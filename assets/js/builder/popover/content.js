@@ -79,17 +79,32 @@ export class Content extends Base {
 	 * @return {object}            Css for positioning.
 	 */
 	getPositionCss( clientRect ) {
+		var fullscreen = window.getUserSetting( 'editor_fullscreen' ),
+			isFullScreen = 'on' === fullscreen ? true : false;
+
 		let offset = 40;
 
-		// 80 is double the default offset.
 		if ( 80 > clientRect.height ) {
 			offset = clientRect.height / 2;
 		}
 
-		return {
-			top: clientRect.top + offset,
-			left: clientRect.left
-		};
+		/*
+		 * Fullscreen mode requires the use of jQuery offset
+		 * instead of boundingRect and absolute positioning.
+		 */
+		if ( isFullScreen ) {
+			return {
+				position: 'absolute',
+				top: this.$target.$wrapTarget.offset().top + offset,
+				left: clientRect.left
+			};
+		} else {
+			return {
+				position: 'fixed',
+				top: clientRect.top + offset,
+				left: clientRect.left
+			};
+		}
 	}
 
 	/**
