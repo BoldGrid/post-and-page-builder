@@ -189,3 +189,13 @@ div#mce_fullscreen_actions {
 		margin: 0 2px;
 	}
 }
+
+body.mce-fullscreen.boldgrid-zoomout {
+	#wpadminbar {
+		display: block;
+	}
+	#mce_fullscreen_actions {
+		display: none;
+	}
+}
+
