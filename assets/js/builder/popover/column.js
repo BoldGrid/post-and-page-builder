@@ -24,10 +24,26 @@ export class Column extends Base {
 	 * @return {object}            Css for positioning.
 	 */
 	getPositionCss( clientRect ) {
-		return {
-			top: clientRect.top,
-			left: clientRect.left
-		};
+		var fullscreen = window.getUserSetting( 'editor_fullscreen' ),
+			isFullScreen = 'on' === fullscreen ? true : false;
+
+		/*
+		 * Fullscreen mode requires the use of jQuery offset
+		 * instead of boundingRect and absolute positioning.
+		 */
+		if ( isFullScreen ) {
+			return {
+				position: 'absolute',
+				top: this.$target.$wrapTarget.offset().top,
+				left: clientRect.left
+			};
+		} else {
+			return {
+				position: 'fixed',
+				top: clientRect.top,
+				left: clientRect.left
+			};
+		}
 	}
 
 	/**
