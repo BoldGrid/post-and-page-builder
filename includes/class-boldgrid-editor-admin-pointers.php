@@ -71,7 +71,6 @@ class Boldgrid_Editor_Admin_Pointers {
 	 * @param string $hook_suffix The current admin page.
 	 */
 	public function pointer_load( $hook_suffix ) {
-		error_log( json_encode( $hook_suffix ) );
 		// Don't run on WP < 3.3
 		if ( get_bloginfo( 'version' ) < '3.3' ) {
 			return;
@@ -81,11 +80,9 @@ class Boldgrid_Editor_Admin_Pointers {
 		$screen    = get_current_screen();
 		$screen_id = $screen->id;
 
-		error_log( json_encode( $screen ) );
 		// Get pointers for this screen
 		$pointers = apply_filters( 'boldgrid_editor_admin_pointers-' . $screen_id, array() ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 
-		error_log( json_encode( $pointers ) );
 		// No pointers? Then we stop.
 		if ( ! $pointers || ! is_array( $pointers ) ) {
 			return;
@@ -125,13 +122,10 @@ class Boldgrid_Editor_Admin_Pointers {
 			return;
 		}
 
-		error_log( json_encode( $valid_pointers ) );
-
 		// Add pointers style to queue.
 		wp_enqueue_script( 'wp-pointer' );
 		wp_enqueue_style( 'wp-pointer' );
 
-		error_log( plugins_url( '/assets/js/pointers.js', BOLDGRID_EDITOR_ENTRY ) );
 		// Add pointers script to queue. Add custom script.
 		wp_register_script(
 			'boldgrid-editor-pointers',

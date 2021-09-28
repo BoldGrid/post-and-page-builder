@@ -352,8 +352,7 @@ IMHWPB.Editor = function( $ ) {
 			}
 
 			if ( 'Escape' === e.key ) {
-				console.log( 'Escape Key Pressed' );
-				$( '.mce-active #mceu_18-button' ).trigger( 'click' );
+				editor.execCommand( 'mceFullScreen' );
 			}
 
 			var $structure,
@@ -742,8 +741,6 @@ IMHWPB.Editor = function( $ ) {
 			} );
 
 			tinymce.activeEditor.on( 'FullscreenStateChanged', function( event ) {
-				console.log( 'Full Screen Change Fired' );
-				console.log( event );
 				if ( event.state ) {
 					window.setUserSetting( 'editor_fullscreen', 'on' );
 					var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
