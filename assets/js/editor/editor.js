@@ -746,8 +746,17 @@ IMHWPB.Editor = function( $ ) {
 				console.log( event );
 				if ( event.state ) {
 					window.setUserSetting( 'editor_fullscreen', 'on' );
+					var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
+					PostBodyContentZIndex = adminBarZIndex + 1;
+
+					// Ensures that the iFrame resizes when going from standard to fullscreen
+					$( window ).trigger( 'resize' );
+
+					// Fixes z-index issue with admin bar when going from DFW to F
+					$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 				} else {
 					window.setUserSetting( 'editor_fullscreen', 'off' );
+					$( '#post-body-content' ).attr( 'style', 'position:relative;' );
 				}
 			} );
 
@@ -780,14 +789,7 @@ IMHWPB.Editor = function( $ ) {
 
 			// Handle events on fullscreen mce button.
 			$( '#mceu_18-button' ).on( 'click', function() {
-				var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
-					PostBodyContentZIndex = adminBarZIndex + 1;
 
-				// Ensures that the iFrame resizes when going from standard to fullscreen
-				$( window ).trigger( 'resize' );
-
-				// Fixes z-index issue with admin bar when going from DFW to F
-				$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
 			} );
 		} );
 
