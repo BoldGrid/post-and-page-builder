@@ -1,9 +1,14 @@
 .wp-admin {
+	.mce-fullscreen {
+		.editing-blocker {
+			margin-top: 83px;
+		}
+	}
 	.editing-blocker {
 		position: absolute;
 		z-index: 999;
 		background: #f7f7f7;
-		margin-top: 67px;
+		margin-top: 40px;
 		left: 0;
 		right: 0;
 		bottom: 0;
@@ -33,6 +38,9 @@
 
 				a {
 					text-decoration: none;
+					&:first-child {
+						margin-right: -3px;
+					}
 				}
 
 				.wp-media-buttons-icon {
