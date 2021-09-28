@@ -45,7 +45,7 @@ class Boldgrid_Editor_Admin_Pointers {
 	 */
 	public function editor_pointers( $pointers ) {
 		$pointers['fse1150'] = array(
-			'target'  => '#mceu_18-button',
+			'target'  => '.mce-i-fullscreen',
 			'options' => array(
 				'content'  => sprintf(
 					'<h3> %s </h3> <p> %s </p>',
