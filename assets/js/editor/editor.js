@@ -760,7 +760,9 @@ IMHWPB.Editor = function( $ ) {
 			// Add Dividers to mce toolbasr
 			$( '#mceu_0, #mceu_3, #mceu_6, #mceu_9, #mceu_12, #mceu_16' ).each( function() {
 				$( '<div class="mce-divider"></div>' ).insertAfter( $( this ) );
-				$( '.mce-i-fullscreen' ).pointer( options ).pointer( 'reposition' );
+				if ( window.boldgridEditorPointers ) {
+					$( '.mce-i-fullscreen' ).pointer( options ).pointer( 'reposition' );
+				}
 			} );
 
 			// Moves media buttons to the toolbar.
