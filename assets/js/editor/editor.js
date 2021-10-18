@@ -104,7 +104,13 @@ IMHWPB.Editor = function( $ ) {
 	 * Carry over the height width and classes of the images when replacing images with images
 	 */
 	this.override_insert_media = function() {
-		var original_send_to_editor = send_to_editor;
+		var original_send_to_editor;
+
+		// When a user is a 'contributor', the 'send_to_editor' function is not available.
+		if ( ! _.isUndefined( window.send_to_editor ) ) {
+			original_send_to_editor = send_to_editor;
+		}
+
 		send_to_editor = function( attachments ) {
 			var args = [];
 
@@ -193,7 +199,9 @@ IMHWPB.Editor = function( $ ) {
 				args.push( attachments );
 			}
 
-			original_send_to_editor.apply( this, args );
+			if ( original_send_to_editor ) {
+				original_send_to_editor.apply( this, args );
+			}
 		};
 	};
 
@@ -306,7 +314,9 @@ IMHWPB.Editor = function( $ ) {
 
 		//When content is added to editor
 		editor.on( 'SetContent', function( e ) {
-			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), true );
+
+			// Setting this to false because we no longer want the extra spaces around links.
+			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), false );
 
 			if ( $.fourpan && $.fourpan.refresh ) {
 				$.fourpan.refresh();

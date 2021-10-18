@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.14.0
+Stable tag: 1.14.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,21 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.14.2 =
+Release Date: September 14th, 2021
+
+* Bug Fix: Visual bug when adding links to text [#139](https://github.com/BoldGrid/post-and-page-builder/issues/139)
+* Bug Fix: Review prompt prevents admins from deleting other user accounts [#192](https://github.com/BoldGrid/post-and-page-builder/issues/192)
+* Bug Fix: Google Map option in Add Media [#198](https://github.com/BoldGrid/post-and-page-builder/issues/198)
+
+= 1.14.1 =
+Release Date: August 26th, 2021
+
+* Bug Fix: Allow PPB visual editing tools to load for Author and Contributor level user roles [#197](https://github.com/BoldGrid/post-and-page-builder/issues/197)
+* Bug Fix: Render the weForms form in the editor [#199](https://github.com/BoldGrid/post-and-page-builder/issues/199)
+* Bug Fix: Fatal Error fetching Saved Blocks [#195](https://github.com/BoldGrid/post-and-page-builder/issues/195)
+* Bug Fix: Gray background on panels is same as gray in default palette [#200](https://github.com/BoldGrid/post-and-page-builder/issues/200)
+* Bug Fix: Update 'Add Block' buttons to pass accessibility contrast [#183](https://github.com/BoldGrid/post-and-page-builder/issues/183)
 
 = 1.14.0 =
 

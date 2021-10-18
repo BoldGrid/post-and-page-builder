@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "514ccd415e8b5d0499adbf8f4e73b846",
+    "content-hash": "103a066d6bc13549c6cdff3e240bb26e",
     "packages": [
         {
             "name": "boldgrid/library",
-            "version": "2.13.3",
+            "version": "2.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BoldGrid/library.git",
-                "reference": "066c8b68f7ca7ecf1f8769c3904dc85cb76fd7f4"
+                "reference": "eae54a8ad7383f9927564420e03e2fcfc40536e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BoldGrid/library/zipball/066c8b68f7ca7ecf1f8769c3904dc85cb76fd7f4",
-                "reference": "066c8b68f7ca7ecf1f8769c3904dc85cb76fd7f4",
+                "url": "https://api.github.com/repos/BoldGrid/library/zipball/eae54a8ad7383f9927564420e03e2fcfc40536e6",
+                "reference": "eae54a8ad7383f9927564420e03e2fcfc40536e6",
                 "shasum": ""
             },
             "type": "library",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2020-10-13T17:55:32+00:00"
+            "time": "2021-09-14T14:10:37+00:00"
         }
     ],
     "packages-dev": [],
