@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.8.1
 Requires PHP: 5.4
-Stable tag: 1.14.2
+Stable tag: 1.14.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,14 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.14.3 =
+Release Date: October 20th, 2021
+
+* Update: Upgrade postcss-loader from 2.0.8 to 2.1.6 [#180](https://github.com/BoldGrid/post-and-page-builder/pull/180)
+* Update: Upgrade babel-eslint from 8.0.2 to 8.2.6 [#179](https://github.com/BoldGrid/post-and-page-builder/pull/179)
+* Update: Upgrade eslint from 4.11.0 to 4.19.1 [#178](https://github.com/BoldGrid/post-and-page-builder/pull/178)
+* Update: Upgrade webpack-dev-server from 3.1.1 to 3.11.2 [#177](https://github.com/BoldGrid/post-and-page-builder/pull/177)
 
 = 1.14.2 =
 Release Date: September 14th, 2021
