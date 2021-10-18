@@ -100,7 +100,7 @@
 		"jquery.stellar": "^0.6.2",
 		"karma-es6-shim": "^1.0.0",
 		"npm-run-all": "^4.1.1",
-		"postcss-loader": "^2.0.6",
+		"postcss-loader": "^2.1.6",
 		"resolve-url-loader": "^2.1.0",
 		"sass-loader": "^6.0.7",
 		"stylelint-config-standard": "^18.1.0",
