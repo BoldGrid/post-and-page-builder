@@ -278,6 +278,22 @@ class Boldgrid_Editor_Assets {
 		if ( $screen && isset( $screen->post_type ) && 'crio_page_header' === $screen->post_type ) {
 			$display_gridblock_lead = false;
 		}
+
+		/*
+		 * Contributors are not able to see the Add Block button.
+		 * due to a wp_core bug. Until that gets fixed, we need to bypass the
+		 * 'display_gridblock_lead' for contributors.
+		 */
+		if ( ! current_user_can( 'upload_files' ) ) {
+			$display_gridblock_lead = false;
+		}
+
+		$shortcode_keys = array_keys( $shortcode_tags );
+
+		if ( ! in_array( 'weforms', $shortcode_keys ) ) {
+			$shortcode_keys[] = 'weforms';
+		}
+
 		$vars = array(
 			'is_boldgrid_theme' => $is_bg_theme,
 			'is_add_new' => 'post-new.php' === $pagenow,
@@ -306,7 +322,7 @@ class Boldgrid_Editor_Assets {
 			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings' => $boldgrid_settings,
 			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
-			'shortcodes' => array_keys( $shortcode_tags ) ?: [],
+			'shortcodes' => $shortcode_keys,
 			'current_theme' => get_stylesheet(),
 
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),

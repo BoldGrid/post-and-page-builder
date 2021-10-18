@@ -172,7 +172,7 @@ class Boldgrid_Editor_Gridblock_Post {
 	public function restrict_public_access() {
 		global $post;
 		$post_type = ! empty( $post->post_type ) ? $post->post_type : false;
-		if ( 'bg_block' ===  $post_type && ! current_user_can( 'edit_pages' ) ) {
+		if ( 'bg_block' === $post_type && ! current_user_can( 'edit_posts' ) ) {
 			wp_redirect( home_url(), 301 );
 			exit;
 		}

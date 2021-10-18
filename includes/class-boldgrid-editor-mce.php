@@ -51,7 +51,7 @@ class Boldgrid_Editor_MCE {
 	 * @since 1.1.
 	 */
 	public function load_editor_hooks() {
-		echo '<button type="button" id="insert-gridblocks-button" class="button gridblock-icon boldgrid-color hidden">' .
+		echo '<button type="button" id="insert-gridblocks-button" class="button-primary gridblock-icon hidden">' .
 			'<span class="wp-media-buttons-icon"></span> Add Block</button>';
 	}
 
@@ -347,6 +347,11 @@ class Boldgrid_Editor_MCE {
 
 		// Add styles that could conflict.
 		$styles = $this->add_styles_conflict( $styles );
+
+		// Add WeForms CSS.
+		if ( defined( 'WEFORMS_ASSET_URI' ) ) {
+			$styles[] = WEFORMS_ASSET_URI . '/wpuf/css/frontend-forms.css';
+		}
 
 		// Add Query Args.
 		$mce_css = array ();

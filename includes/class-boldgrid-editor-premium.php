@@ -65,11 +65,12 @@ class Boldgrid_Editor_Premium {
 
 		$menu_slug = 'edit.php?post_type=bg_block';
 
+		// This chas been changed to 'edit_posts' to allow Authors and Contributors to use the editor.
 		add_submenu_page(
 			$menu_slug,
 			__( 'Get Premium', 'boldgrid-editor' ),
 			'<span class="dashicons dashicons-dashboard"></span> <span class="get-premium">' . __( 'Get Premium', 'boldgrid-editor' ) . '</span>',
-			'edit_pages',
+			'edit_posts',
 			'ppb-get-premium'
 		);
 
