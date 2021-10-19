@@ -786,11 +786,6 @@ IMHWPB.Editor = function( $ ) {
 			$( '.mce-close-fullscreen' ).on( 'click', function() {
 				editor.execCommand( 'mceFullScreen' );
 			} );
-
-			// Handle events on fullscreen mce button.
-			$( '#mceu_18-button' ).on( 'click', function() {
-
-			} );
 		} );
 
 		/*

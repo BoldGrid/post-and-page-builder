@@ -1894,7 +1894,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 
 		if ( 1061 < width ) {
 			column_type = 'col-md';
-		} else if ( 837 < width ) {
+		} else if ( 820 < width ) {
 			column_type = 'col-sm';
 		} else {
 			column_type = 'col-xs';
