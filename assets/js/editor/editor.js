@@ -218,6 +218,22 @@ IMHWPB.Editor = function( $ ) {
 	/**
 	 * Adding three new buttons
 	 */
+	tinymce.PluginManager.add( 'add_block_imhwpb', function( editor, url ) {
+		if ( 'content' !== editor.id ) {
+			return;
+		}
+
+		editor.addButton( 'add_block_imhwpb', {
+			title: 'Add Block',
+			classes: 'button-primary gridblock-icon'
+		} );
+
+		editor.buttons.fullscreen.tooltip = 'Fullscreen (Ctrl+Shift+F)';
+	} );
+
+	/**
+	 * Adding three new buttons
+	 */
 	tinymce.PluginManager.add( 'monitor_view_imhwpb', function( editor, url ) {
 		if ( 'content' !== editor.id ) {
 			return;
@@ -335,6 +351,10 @@ IMHWPB.Editor = function( $ ) {
 		editor.on( 'KeyDown', function( e ) {
 			if ( ! self.draggable ) {
 				return true;
+			}
+
+			if ( 'Escape' === e.key ) {
+				editor.execCommand( 'mceFullScreen' );
 			}
 
 			var $structure,
@@ -663,6 +683,11 @@ IMHWPB.Editor = function( $ ) {
 
 			var $body = $( editor.getBody() );
 			var $tinymce_iframe = $( event.target.iframeElement ).contents();
+			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
+
+			if ( 'on' === userFullscreenSetting ) {
+				editor.execCommand( 'mceFullScreen' );
+			}
 
 			if ( BoldgridEditor.body_class ) {
 				$body.addClass( BoldgridEditor.body_class );
@@ -715,6 +740,53 @@ IMHWPB.Editor = function( $ ) {
 						toolbar.reposition();
 					}
 				}
+			} );
+
+			tinymce.activeEditor.on( 'FullscreenStateChanged', function( event ) {
+				if ( event.state ) {
+					window.setUserSetting( 'editor_fullscreen', 'on' );
+					var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
+					PostBodyContentZIndex = adminBarZIndex + 1;
+
+					// Ensures that the iFrame resizes when going from standard to fullscreen
+					$( window ).trigger( 'resize' );
+
+					// Fixes z-index issue with admin bar when going from DFW to F
+					$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
+				} else {
+					window.setUserSetting( 'editor_fullscreen', 'off' );
+					$( '#post-body-content' ).attr( 'style', 'position:relative;' );
+				}
+			} );
+
+			// Add Dividers to mce toolbasr
+			$( '#mceu_0, #mceu_3, #mceu_6, #mceu_9, #mceu_12, #mceu_16' ).each( function() {
+				$( '<div class="mce-divider"></div>' ).insertAfter( $( this ) );
+				if ( window.boldgridEditorPointers ) {
+					$( '.mce-i-fullscreen' ).pointer( options ).pointer( 'reposition' );
+				}
+			} );
+
+			// Moves media buttons to the toolbar.
+			$( '#mceu_32-body' ).prepend( '<div id="mce_fullscreen_actions"></div>' );
+
+			$( '#mce_fullscreen_actions' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
+
+			// Add Publish Buttons to the toolbar.
+			$( '#mce_fullscreen_actions' ).append( '<div class="mce-publish-buttons"></div>' );
+			$( '.mce-publish-buttons' ).append(
+				$( '#minor-publishing-actions' ).clone( true ).prop( 'id', 'mce-minor-publishing-actions' )
+			);
+
+			$( '.mce-publish-buttons' ).append(
+				$( '#major-publishing-actions' ).clone( true ).prop( 'id', 'mce-major-publishing-actions' )
+			);
+
+			$( '.mce-publish-buttons' ).append( '<div class="mce-close-fullscreen"><span class="dashicons dashicons-no-alt"></span></div>' );
+
+			// Handle Fullscreen Close button.
+			$( '.mce-close-fullscreen' ).on( 'click', function() {
+				editor.execCommand( 'mceFullScreen' );
 			} );
 		} );
 
@@ -868,7 +940,7 @@ IMHWPB.Editor = function( $ ) {
 	 * Remove applied classes
 	 */
 	this.remove_editor_styles = function() {
-		$( '#wp-content-editor-container' ).removeClass(
+		$( '#content_ifr' ).removeClass(
 			'mce-viewsize-phone-imhwpb mce-viewsize-tablet-imhwpb mce-viewsize-monitor-imhwpb'
 		);
 	};
@@ -878,7 +950,7 @@ IMHWPB.Editor = function( $ ) {
 	 */
 	this.set_width = function( style ) {
 		self.remove_editor_styles();
-		$( '#wp-content-editor-container' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
+		$( '#content_ifr' ).addClass( 'mce-viewsize-' + style + '-imhwpb' );
 	};
 };
 

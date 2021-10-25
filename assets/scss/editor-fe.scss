@@ -8,3 +8,7 @@
 @import './bootstrap/bootstrap';
 @import "node_modules/boldgrid-theme-framework/src/assets/scss/boldgrid/bootstrap-additions";
 @import './bootstrap/additions';
+
+#content .boldgrid-section {
+	max-width: 100%;
+}

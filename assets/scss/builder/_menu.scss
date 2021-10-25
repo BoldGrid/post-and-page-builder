@@ -241,16 +241,19 @@
 }
 
 .mce-viewsize-tablet-imhwpb {
-	width:845px;
+	width:845px !important;
+	margin: 0 auto !important;
 }
 
 .mce-viewsize-monitor-imhwpb {
-	min-width:1065px;
+	min-width:1065px !important;
+	margin: 0 auto !important;
 	z-index: 10;
 }
 
 .mce-viewsize-phone-imhwpb {
-	width:480px;
+	width:480px !important;
+	margin: 0 auto !important;
 }
 
 #resizer-iframe {
