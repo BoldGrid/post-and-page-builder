@@ -79,7 +79,7 @@ class Boldgrid_Editor_Wpforms_Media extends Boldgrid_Editor_Media_Tab {
 	 * @return array
 	 */
 	public function format_form_data() {
-		$form_data = array ();
+		$form_data = array();
 
 		$forms = Boldgrid_Editor_Wpforms::get_forms();
 
