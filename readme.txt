@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 1.14.1
+Stable tag: 1.14.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,6 +137,10 @@ WordPress Editor.
 = 1.15.0 =
 Release Date: TBD
 * New Feature: Full Screen Editing.
+* Bug Fix: Visual bug when adding links to text [#139](https://github.com/BoldGrid/post-and-page-builder/issues/139)
+* Bug Fix: Review prompt prevents admins from deleting other user accounts [#192](https://github.com/BoldGrid/post-and-page-builder/issues/192)
+* Bug Fix: Google Map option in Add Media [#198](https://github.com/BoldGrid/post-and-page-builder/issues/198)
+
 
 = 1.14.1 =
 Release Date: August 26th, 2021

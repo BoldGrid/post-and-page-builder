@@ -330,7 +330,9 @@ IMHWPB.Editor = function( $ ) {
 
 		//When content is added to editor
 		editor.on( 'SetContent', function( e ) {
-			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), true );
+
+			// Setting this to false because we no longer want the extra spaces around links.
+			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), false );
 
 			if ( $.fourpan && $.fourpan.refresh ) {
 				$.fourpan.refresh();
