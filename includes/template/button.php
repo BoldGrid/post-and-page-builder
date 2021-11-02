@@ -6,12 +6,11 @@
 			</div>
 			<div class='presets theme-designs {{BoldgridEditor.body_class}}'>
 				<ul>
-					<li data-preset="button-primary" class="panel-selection">
-						<a class='{{BoldgridEditor.builder_config.theme_buttons.primary}}'>Primary</a>
+				<# for ( var theme_button in BoldgridEditor.builder_config.theme_buttons ) { #>
+					<li data-preset="{{BoldgridEditor.builder_config.theme_buttons[theme_button]}}" class="panel-selection">
+						<a class='{{BoldgridEditor.builder_config.theme_buttons[theme_button]}}'>{{theme_button}}</a>
 					</li>
-					<li data-preset="button-secondary" class="panel-selection">
-						<a class='{{BoldgridEditor.builder_config.theme_buttons.secondary}}'>Secondary</a>
-					</li>
+				<# } #>
 				</ul>
 			</div>
 		<# } #>
