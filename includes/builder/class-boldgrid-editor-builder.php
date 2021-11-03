@@ -142,19 +142,14 @@ class Boldgrid_Editor_Builder {
 		$button_vars = ! empty( $configs['components']['buttons']['variables'] ) ?
 			$configs['components']['buttons']['variables'] : array();
 
-		$button_primary_classes = ! empty( $button_vars['button-primary-classes'] ) ?
-			$button_vars['button-primary-classes'] : 'button-primary button-overrides';
-		$button_secondary_classes = ! empty( $button_vars['button-secondary-classes'] ) ?
-			$button_vars['button-secondary-classes'] : 'button-secondary button-overrides';
-
-		$regex_string = '(\.|,)';
-		$button_primary_classes = preg_replace( $regex_string, '', $button_primary_classes );
-		$button_secondary_classes = preg_replace( $regex_string, '', $button_secondary_classes );
-
-		return array(
-			'primary' => $button_primary_classes,
-			'secondary' => $button_secondary_classes,
-		);
+			$theme_buttons = array();
+			$regex_string = '(\.|,)';
+			foreach ( $button_vars as $key => $value ){
+				if ( preg_match( '/^button-([[:alnum:]]*\w)-classes/', $key, $button_names ) ) {
+					$theme_buttons[$button_names[1]] = preg_replace( $regex_string, '', $value );
+				}
+			}
+			return $theme_buttons;
 	}
 
 	/**

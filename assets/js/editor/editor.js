@@ -332,7 +332,7 @@ IMHWPB.Editor = function( $ ) {
 		editor.on( 'SetContent', function( e ) {
 
 			// Setting this to false because we no longer want the extra spaces around links.
-			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), false );
+			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), true );
 
 			if ( $.fourpan && $.fourpan.refresh ) {
 				$.fourpan.refresh();
@@ -874,9 +874,10 @@ IMHWPB.Editor = function( $ ) {
 			}
 
 			if ( add_spaces ) {
-
-				//Wrap all anchors in spaces
-				$this.html( '&nbsp;' + html + '&nbsp;' );
+				if ( $this.hasClass( 'btn' ) || $this.hasClass( 'button' ) ) {
+					// Wrap all buttons in spaces to make it easier for the user to target.
+					$this.html( '&nbsp;' + html + '&nbsp;' );
+				}
 			} else {
 				$this.html( html );
 			}
