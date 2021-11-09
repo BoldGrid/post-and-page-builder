@@ -59,6 +59,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$container.addClass( 'container' );
 				$container.removeClass( 'container-fluid' );
 			}
+			$( window ).trigger( 'resize' );
 		}
 	};
 
