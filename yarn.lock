@@ -138,6 +138,11 @@
     title-case "^2.1.1"
     webpack-cli "^2.0.12"
 
+"@boldgrid/fourpan@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@boldgrid/fourpan/-/fourpan-1.1.0.tgz#b028af4649a4647500c9b80b50d9c17d926dca04"
+  integrity sha512-6a4gk7Hj85iD8EDAAYmf9zWQCHbfBQAkf/6TVVdCS8x3q5Y2RL7B+PN01wFoOGl17XsSl2OJMiHT14HVr8hOVw==
+
 "@boldgrid/wordpress-tag-sync@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@boldgrid/wordpress-tag-sync/-/wordpress-tag-sync-1.3.0.tgz#c3e2a14d65bc611df4d6d90e87940a83a0831399"
@@ -5517,11 +5522,6 @@ forwarded@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
-
-fourpan@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fourpan/-/fourpan-1.0.0.tgz#0c9cad7fefbcd0b08f7e72dd192cdd21f29d5268"
-  integrity sha512-xY77b4ERWBdNqQBb6A/0lp7EuEtWtO7wu6yuzYCbT+7NHEIbR2z9TqL5Noifbhge1xg50ew8GBLKD1zwnXBSJQ==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
