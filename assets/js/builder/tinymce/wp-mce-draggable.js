@@ -310,7 +310,18 @@ IMHWPB.WP_MCE_Draggable = function() {
 			 * editor to the same width.
 			 */
 			BG.Service.editorWidth.$resizeiframe.attr( 'width', BG.Controls.$container.$html.width() );
-			BG.Controls.$container.$body.css( 'width', BG.Service.editorWidth.getWidth() );
+			BG.Controls.$container.$body.css( 'width', 'auto' );
+
+			let style = BG.Controls.$container.$body.attr( 'style' );
+
+			// replace max-width: attribute with max-width:100%!important;
+			if ( style.includes( 'max-width:' ) ) {
+				style = style.replace( /max-width:.*?;/, 'max-width:100%!important;' );
+			} else {
+				style += 'max-width:100%!important;';
+			}
+
+			BG.Controls.$container.$body.attr( 'style', style );
 		}
 	};
 
