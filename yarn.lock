@@ -138,10 +138,10 @@
     title-case "^2.1.1"
     webpack-cli "^2.0.12"
 
-"@boldgrid/fourpan@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@boldgrid/fourpan/-/fourpan-1.1.0.tgz#b028af4649a4647500c9b80b50d9c17d926dca04"
-  integrity sha512-6a4gk7Hj85iD8EDAAYmf9zWQCHbfBQAkf/6TVVdCS8x3q5Y2RL7B+PN01wFoOGl17XsSl2OJMiHT14HVr8hOVw==
+"@boldgrid/fourpan@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@boldgrid/fourpan/-/fourpan-1.1.1.tgz#28397c4f1f76c482e60dbb000db4f28987fd8008"
+  integrity sha512-dTCA5yJ2u9PocoIaxVntCvjuWp2FFTDL7gUtGFmzyA53SBpYBOpkqHuyAuTkZ8y4O4fauveLgLt/VDKXmBXGrg==
 
 "@boldgrid/wordpress-tag-sync@^1.3.0":
   version "1.3.0"
