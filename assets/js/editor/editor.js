@@ -656,9 +656,15 @@ IMHWPB.Editor = function( $ ) {
 		 * that we wrapped around anchors as well as any other cleanup
 		 */
 		editor.on( 'GetContent', function( e ) {
+			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
 			if ( e.content ) {
 				e.content = self.reset_anchor_spaces( '<div>' + e.content + '</div>', false );
 				e.content = BG.Service.sanitize.cleanup( e.content );
+
+				if ( 'on' === userFullscreenSetting ) {
+					console.log( $( '#post-status-info' ) );
+					$( '#post-status-info' ).css( { 'position': 'fixed', 'bottom': -10000 } );
+				}
 			}
 		} );
 
@@ -743,6 +749,7 @@ IMHWPB.Editor = function( $ ) {
 			} );
 
 			tinymce.activeEditor.on( 'FullscreenStateChanged', function( event ) {
+				$wpStatusbar = $( '#post-status-info' );
 				if ( event.state ) {
 					window.setUserSetting( 'editor_fullscreen', 'on' );
 					var adminBarZIndex      = parseInt( $( '#wpadminbar' ).css( 'z-index' ) ),
@@ -753,9 +760,11 @@ IMHWPB.Editor = function( $ ) {
 
 					// Fixes z-index issue with admin bar when going from DFW to F
 					$( '#post-body-content' ).attr( 'style', 'position:relative;z-index:' + PostBodyContentZIndex + ' !important;' );
+					$wpStatusbar.css( { 'position': 'fixed', 'bottom': -10000 } );
 				} else {
 					window.setUserSetting( 'editor_fullscreen', 'off' );
 					$( '#post-body-content' ).attr( 'style', 'position:relative;' );
+					$wpStatusbar.css( { 'position': 'unset', 'bottom': 'unset' } );
 				}
 			} );
 
