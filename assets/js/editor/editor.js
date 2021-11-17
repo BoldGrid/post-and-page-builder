@@ -662,7 +662,6 @@ IMHWPB.Editor = function( $ ) {
 				e.content = BG.Service.sanitize.cleanup( e.content );
 
 				if ( 'on' === userFullscreenSetting ) {
-					console.log( $( '#post-status-info' ) );
 					$( '#post-status-info' ).css( { 'position': 'fixed', 'bottom': -10000 } );
 				}
 			}
