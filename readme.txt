@@ -135,7 +135,7 @@ WordPress Editor.
 == Changelog ==
 
 = 1.15.0 =
-Release Date: TBD
+Release Date: November 17, 2021
 * New Feature: Full Screen Editing.
 * Bug Fix: Visual bug when adding links to text [#139](https://github.com/BoldGrid/post-and-page-builder/issues/139)
 * Bug Fix: Review prompt prevents admins from deleting other user accounts [#192](https://github.com/BoldGrid/post-and-page-builder/issues/192)
