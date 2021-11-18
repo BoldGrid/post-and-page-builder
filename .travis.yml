@@ -1,18 +1,14 @@
 language: php
-
 dist: trusty
-
 notifications:
   email:
     on_success: never
     on_failure: change
   slack:
     secure: U0C7obTxqgI1blt1RIhIY+M3mU94CgSVMCP3oWtPyVaXrDwYdlSZvqXGCdezJXqVzFOcMEytDlKMJxo1zM6fnXlpqvUllBGm2IJkpQj6ijUr+uQy6bVqMWQiIWDho8XRKH3GoYa812XSsNJOROX+let9JiXiO5qz0DWSs3FQ4gl+Ti+E/Znck9yE32AfY5rHEhtkbN2ih/Agx7o+8PkdGG2BGr6hqfn/Gf1sHiUA6KifdoD6lZRR/nym/1osEMlkuavbY4tOf+RBvUTpSpyBDthPXmgXCPJZ8iGGTKySic7KF367AXITWNWdZxX0ChzNB6WcmJWvdvghbxRnIZXN3nML+gtXclmNnH8GOO4iLyXtUbyh7JpoZh/5KVnqP2hmgjPzBGNm84JBmZuqB7jIKHAZwWh66u9k03uteM5wrYNxQBYvDHvTaeeP7TnOBDWhUkjvEacx61TpxmUCb6VGHahSv/MuqaAEpvolcj83BPBC4fjrLA3dj6u+WjYxTqRZeA9A35eW6qT3182beKHCj+GfN1PfsMRGCyqebxcj6CMLgGti0UMgFUBBp1w30z54vKq/lpIRCgMYXQWbETJPLhez76u9MqVCc1j9JoxD6o7we3BsvYtOhngnCbKLcpDzsQK8q/TTtVB/etfQcYdir6lkJn4wAQbvoM5US8uPQ7w=
-
 php:
 - 7.1
 - 5.6
-
 before_script:
 - nvm install 10
 - nvm use 10
@@ -22,7 +18,6 @@ before_script:
 - yarn install
 - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 script:
-- phpunit
 - npm run build
 deploy:
 - provider: script
@@ -38,3 +33,6 @@ deploy:
   on:
     tags: true
     php: '5.6'
+env:
+  global:
+    secure: Nx5fCiB5e3mr+mCd6OEMEiIs2Mya8aJUI3SniBX1GwhEyjb+86ti2bC77m9mpmU7CiY84DifoX0i1toOkvT58d+zgHZuixWqO8J29KXxYao6N9tli0zbpEZQSw9rxm9/+YRjwwQLuMKTLIKE8nxoVFJuWmrWamG6hXtz+VMuIYg/EPBAJslvygWce68Otdes229bF65kfy04ONzFymP93czcNPktRuDJ+wj9ZTag2zGQ4vDekbm1IIMhlkqMLqfW3vmLVoyxu5aGi4Ap9vEBzNeBLI2S6wKVCu2XeSHbdvTMDp84JL/ujE9NjjQxXbcL1vzF1veQNNo0RRpQpTq81FNZzdII5Ri3w7bhAwe6b0/8TDTkoFWxbZwg0PaNu+p4Rgrn6KZmvihl+Jbmz3IfECRakNYg1XtY3ykDyJpHRwDrkBGjOwpkDfl7TWkk95bY/ghfAVd+G+HuZHiHaaGvG30d6NphdjeQsZ4Pys9wpxGC8N3uLnB4gtlsFq8Nl1biybGsT/nh2dzCQ2Sm28sNpKn0519zHJJaShfonl2eBM67w5WTmoSAWoSra80XX8lB0HI9Dj5pUTLomJ4VW3yJPAEKDKKqonQ5C7crmsPdf1eVLIR02EJaA7Aen4icDkYoWi0LSv2YF/OykLoUXoiWQTk0QPyKoNARIUrFbCM6eww=

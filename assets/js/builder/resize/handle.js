@@ -64,16 +64,40 @@ export class Handle {
 	 * @param  {object} cords   Row bounding rect.
 	 */
 	updatePosition( cords ) {
-		let pos = cords ? cords : this.rowResize.$currentRow[0].getBoundingClientRect(),
-			rightOffset = pos.right - this.rowResize.rightOffset,
-			top = this.$element.hasClass( 'top' ) ? pos.top - 1 : pos.bottom + 1;
+		var fullscreen = window.getUserSetting( 'editor_fullscreen' ),
+			isFullScreen = 'on' === fullscreen ? true : false;
 
-		this.$element.css( {
-			top: top,
-			left: rightOffset
-		} );
+		/*
+		 * Fullscreen mode requires the use of jQuery offset
+		 * instead of boundingRect and absolute positioning.
+		 */
+		if ( isFullScreen ) {
+			let pos = this.rowResize.$currentRow.offset(),
+				width = this.rowResize.$currentRow.width(),
+				bottom = pos.top + this.rowResize.$currentRow.outerHeight(),
+				rightOffset = pos.left + width - this.rowResize.rightOffset,
+				top = this.$element.hasClass( 'top' ) ? pos.top - 1 : bottom + 1;
 
-		this._setOverlayPosition( pos );
+			this.$element.css( {
+				top: top,
+				left: rightOffset,
+				position: 'absolute'
+			} );
+
+			this._setOverlayPosition( { width: width } );
+		} else {
+			let pos = cords ? cords : this.rowResize.$currentRow[0].getBoundingClientRect(),
+				rightOffset = pos.right - this.rowResize.rightOffset,
+				top = this.$element.hasClass( 'top' ) ? pos.top - 1 : pos.bottom + 1;
+
+			this.$element.css( {
+				top: top,
+				left: rightOffset,
+				position: 'fixed'
+			} );
+
+			this._setOverlayPosition( pos );
+		}
 	}
 
 	/**

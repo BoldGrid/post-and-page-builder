@@ -90,11 +90,28 @@ export class Section extends Base {
 	 * @return {object}            Css for positioning.
 	 */
 	getPositionCss( clientRect ) {
-		return {
-			top: clientRect.bottom + 35,
-			left: 'calc(50% - 38px)',
-			transform: 'translateX(-50%)'
-		};
+		var fullscreen = window.getUserSetting( 'editor_fullscreen' ),
+			isFullScreen = 'on' === fullscreen ? true : false;
+
+		/*
+		 * Fullscreen mode requires the use of jQuery offset
+		 * instead of boundingRect and absolute positioning.
+		 */
+		if ( isFullScreen ) {
+			return {
+				position: 'absolute',
+				top: this.$target.$wrapTarget.offset().top + this.$target.$wrapTarget.height() + 35,
+				left: 'calc(50% - 38px)',
+				transform: 'translateX(-50%)'
+			};
+		} else {
+			return {
+				position: 'fixed',
+				top: clientRect.bottom + 35,
+				left: 'calc(50% - 38px)',
+				transform: 'translateX(-50%)'
+			};
+		}
 	}
 
 	/**

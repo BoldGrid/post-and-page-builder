@@ -94,14 +94,16 @@ export class Instance {
 				'wp_boldgrid_component_logo' === this.component.name ||
 				'wp_boldgrid_component_site_description' === this.component.name
 			) {
-				if ( $( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).parents( '.boldgrid-section' ).length ) {
+				if (
+					$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).parents( '.boldgrid-section' ).length
+				) {
 					$( BOLDGRID.EDITOR.mce.selection.getSel().anchorNode ).prepend( $sampleElement );
 				} else {
 					BG.Controls.$container
-					.find( '[class*="boldgrid-section"]' )
-					.first()
-					.find( '[class*="container"]' )
-					.prepend( $sampleElement );
+						.find( '[class*="boldgrid-section"]' )
+						.first()
+						.find( '[class*="container"]' )
+						.prepend( $sampleElement );
 				}
 			} else {
 				BG.Controls.$container
@@ -554,10 +556,12 @@ export class Instance {
 	 * @since 1.14.0
 	 *
 	 * @param {Event} event Event
-	*/
+	 */
 	goToMenuAssigmnet( event ) {
 		var gotoUrl = '/wp-admin/nav-menus.php?action=locations';
-		$( 'form#post' ).append( '<input type="hidden" name="go-to-menu-assignment" value="' + gotoUrl + '">' );
+		$( 'form#post' ).append(
+			'<input type="hidden" name="go-to-menu-assignment" value="' + gotoUrl + '">'
+		);
 		$( '#publish' ).trigger( 'click' );
 	}
 

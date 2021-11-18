@@ -1,6 +1,6 @@
 {
 	"name": "boldgrid-editor",
-	"version": "1.14.2",
+	"version": "1.15.0",
 	"description": "Post and Page Builder is a standalone plugin which adds functionality to the existing TinyMCE Editor.",
 	"main": "assets/js/editor.js",
 	"scripts": {
@@ -72,8 +72,9 @@
 	"dependencies": {
 		"@boldgrid/components": "^2.16.2",
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#typography",
+		"@boldgrid/fourpan": "^1.1.1",
 		"animate.css": "^3.7.0",
-		"babel-eslint": "^8.0.2",
+		"babel-eslint": "^8.2.6",
 		"babel-loader": "^7.1.2",
 		"babel-minify-webpack-plugin": "^0.3.0",
 		"babel-preset-es2015": "^6.24.1",
@@ -81,7 +82,7 @@
 		"boldgrid-theme-framework": "https://github.com/BoldGrid/boldgrid-theme-framework.git#dev",
 		"bootstrap-sass": "^3.3.7",
 		"copy-webpack-plugin": "^4.5.1",
-		"eslint": "^4.6.1",
+		"eslint": "^4.19.1",
 		"eslint-config-wordpress": "^2.0.0",
 		"eslint-loader": "^2.0.0",
 		"eslint-plugin-html": "^4.0.1",
@@ -90,7 +91,6 @@
 		"extract-text-webpack-plugin": "4.0.0-beta.0",
 		"file-loader": "^1.1.5",
 		"font-awesome": "^4.7.0",
-		"fourpan": "^1.0.0",
 		"html-webpack-plugin": "^3.0.0",
 		"imports-loader": "^0.8.0",
 		"istyping": "^1.0.0",
@@ -100,7 +100,7 @@
 		"jquery.stellar": "^0.6.2",
 		"karma-es6-shim": "^1.0.0",
 		"npm-run-all": "^4.1.1",
-		"postcss-loader": "^2.0.6",
+		"postcss-loader": "^2.1.6",
 		"resolve-url-loader": "^2.1.0",
 		"sass-loader": "^6.0.7",
 		"stylelint-config-standard": "^18.1.0",
@@ -108,7 +108,7 @@
 		"url-loader": "^1.0.0",
 		"webpack": "^4.0.0",
 		"webpack-cli": "^2.0.12",
-		"webpack-dev-server": "^3.0.0",
+		"webpack-dev-server": "^3.11.2",
 		"wowjs": "^1.1.3",
 		"wp-color-picker-alpha": "git+https://github.com/rramo012/wp-color-picker-alpha.git#master"
 	},

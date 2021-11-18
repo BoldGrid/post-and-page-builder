@@ -2,8 +2,9 @@ html, body {
     height: auto;
 }
 
-html.boldgrid-editor-fullscreen {
+html {
 	overflow: auto !important;
+	position: relative;
 }
 
 .hidden {
@@ -773,7 +774,7 @@ iframe[src^="https://maps.google.com"] {
 
 html {
 	background-color: #f1f1f1;
-	padding:30px 45px 200px 45px;
+	padding:30px 55px 200px 55px;
 }
 
 html #tinymce.mceContentBody  {

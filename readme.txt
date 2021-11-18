@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.14.2
+Stable tag: 1.15.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.15.0 =
+Release Date: November 17, 2021
+* New Feature: Full Screen Editing.
 
 = 1.14.2 =
 Release Date: September 14th, 2021
