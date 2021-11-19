@@ -513,8 +513,9 @@ IMHWPB.Editor = function( $ ) {
 						//If the first character is a space, set the cursor to the second character
 						//to preserve the buffer
 						if (
+							e.element.firstChild.data && (
 							'&nbsp;' == e.element.firstChild.data.substr( 0, 6 ) ||
-							/\s/.test( e.element.firstChild.data.substr( 0, 1 ) )
+							/\s/.test( e.element.firstChild.data.substr( 0, 1 ) ) )
 						) {
 							position = 1;
 						}
@@ -527,8 +528,9 @@ IMHWPB.Editor = function( $ ) {
 						//If the last character is a space, set the cursor to the second to last
 						//character to preserve the buffer
 						if (
+							e.element.firstChild.data && (
 							'&nbsp;' == e.element.firstChild.data.substr( -6 ) ||
-							/\s/.test( e.element.firstChild.data.substr( -1 ) )
+							/\s/.test( e.element.firstChild.data.substr( -1 ) ) )
 						) {
 							final_pos_offset = -1;
 						}
