@@ -234,6 +234,9 @@ class Boldgrid_Editor_Theme {
 	public static function theme_body_class() {
 		$post_id = ! empty( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : null;
 
+		$post_type = get_post_type( $post_id ) ? get_post_type( $post_id ) : 'blog_post';
+		$post_type = 'post' === $post_type ? 'blog_post' : $post_type;
+
 		$stylesheet = get_stylesheet();
 
 		$staging_theme_stylesheet = get_option( 'boldgrid_staging_stylesheet' );
@@ -256,6 +259,14 @@ class Boldgrid_Editor_Theme {
 			$theme_mods['boldgrid_palette_class'] : 'palette-primary';
 
 		$boldgrid_palette_class .= ' ' . self::$plugin_body_class;
+
+		$content_container = get_theme_mod( 'bgtfw_' . $post_type . 's_container' );
+		
+		if ( 'fw-contained' === $content_container ) {
+			$boldgrid_palette_class .= ' max-full-width';
+		} elseif ( 'container' === $content_container ) {
+			$boldgrid_palette_class .= ' container';
+		}
 
 		return $boldgrid_palette_class;
 	}
