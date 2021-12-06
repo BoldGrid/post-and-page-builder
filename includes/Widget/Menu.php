@@ -95,6 +95,9 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
+		$menu_direction = isset( $instance['bgc_menu_direction'] ) ? $instance['bgc_menu_direction'] : '';
+		$menu_direction = 'flex-column' === $menu_direction ? $menu_direction . ' sm-vertical' : 'flex-row';
+
 		$menu_id = isset( $instance['bgc_menu'] ) && 0 !== (int) $instance['bgc_menu'] ? (int) $instance['bgc_menu'] : null;
 
 		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
@@ -120,7 +123,7 @@ class Menu extends \WP_Widget {
 			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
 				&& 0 !== $registered_locations[ $instance['bgc_menu_location_id'] ]
 				? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
-			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
@@ -322,6 +325,38 @@ class Menu extends \WP_Widget {
 	}
 
 	/**
+	 * Print Menu Alignment Controls
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function menu_direction_controls( $instance ) {
+		$field_name         = $this->get_field_name( 'bgc_menu_direction' );
+		$selected_direction = ! empty( $instance['bgc_menu_direction'] ) ? $instance['bgc_menu_direction'] : 'horizontal';
+		?>
+		<div class="bgc_menu_direction_container">
+			<h4><?php _e( 'Choose Menu Direction', 'boldgrid-editor' ); ?></h4>
+			<div class="buttonset bgc">
+				<input class="switch-input screen-reader-text bgc" type="radio" value="flex-row"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_direction_horizontal' ); ?>"
+					<?php echo 'flex-row' === $selected_direction ? 'checked' : ''; ?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_direction_horizontal' ); ?>"><span class="dashicons dashicons-leftright"></span>Horizontal</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="flex-column"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_direction_vertical' ); ?>"
+					<?php echo 'flex-column' === $selected_direction ? 'checked' : ''; ?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_direction_vertical' ); ?>"><span class="dashicons dashicons-leftright"></span>Vertical</label>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Print Customizer Button.
 	 *
 	 * @since 1.14.0
@@ -405,6 +440,7 @@ class Menu extends \WP_Widget {
 	public function form( $instance ) {
 		$this->menu_registration_controls( $instance );
 		$this->menu_alignment_controls( $instance );
+		$this->menu_direction_controls( $instance );
 		$this->print_customizer_button( $instance );
 		$this->return_to_editor( $instance );
 		$this->print_form_styles( $instance );
