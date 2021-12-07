@@ -234,6 +234,9 @@ class Boldgrid_Editor_Theme {
 	public static function theme_body_class() {
 		$post_id = ! empty( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : null;
 
+		$post_type = get_post_type( $post_id ) ? get_post_type( $post_id ) : 'blog_post';
+		$post_type = 'post' === $post_type ? 'blog_post' : $post_type;
+
 		$stylesheet = get_stylesheet();
 
 		$staging_theme_stylesheet = get_option( 'boldgrid_staging_stylesheet' );
@@ -257,9 +260,58 @@ class Boldgrid_Editor_Theme {
 
 		$boldgrid_palette_class .= ' ' . self::$plugin_body_class;
 
+		if ( self::is_editing_boldgrid_theme() ) {
+			$background_classes      = self::body_background_classes();
+			$boldgrid_palette_class .= ' ' . implode( ' ', $background_classes );
+		}
+
+		$content_container = get_theme_mod( 'bgtfw_' . $post_type . 's_container' );
+
+		if ( 'fw-contained' === $content_container ) {
+			$boldgrid_palette_class .= ' max-full-width';
+		} elseif ( 'container' === $content_container ) {
+			$boldgrid_palette_class .= ' container';
+		}
+
+		error_log( $boldgrid_palette_class );
+
 		return $boldgrid_palette_class;
 	}
 
+	public static function body_background_classes() {
+		$classes = [];
+		$background_theme_mod = 'boldgrid_background_color';
+		$background_image     = get_theme_mod( 'background_image' );
+
+		// Add class for parallax background option.
+		if ( 'parallax' === get_theme_mod( 'background_attachment' ) ) {
+			$classes[] = 'boldgrid-customizer-parallax';
+		} else {
+			if (
+				'pattern' !== get_theme_mod( 'boldgrid_background_type' ) &&
+				! empty( $background_image ) &&
+				true === get_theme_mod( 'bgtfw_background_overlay' )
+			) {
+				$background_theme_mod = 'bgtfw_background_overlay_color';
+			}
+		}
+
+		$background_color = get_theme_mod( $background_theme_mod );
+		$background_color = explode( ':', $background_color );
+		$background_color = array_shift( $background_color );
+
+		if ( ! empty( $background_color ) ) {
+			if ( strpos( $background_color, 'neutral' ) !== false ) {
+				$classes[] = $background_color . '-background-color';
+				$classes[] = $background_color . '-text-default';
+			} else {
+				$classes[] = str_replace( '-', '', $background_color ) . '-background-color';
+				$classes[] = str_replace( '-', '', $background_color ) . '-text-default';
+			}
+		}
+
+		return $classes;
+	}
 
 	/**
 	 * Check to see if we are editing a boldgrid theme page
