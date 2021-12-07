@@ -273,8 +273,6 @@ class Boldgrid_Editor_Theme {
 			$boldgrid_palette_class .= ' container';
 		}
 
-		error_log( $boldgrid_palette_class );
-
 		return $boldgrid_palette_class;
 	}
 
