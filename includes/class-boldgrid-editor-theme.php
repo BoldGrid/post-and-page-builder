@@ -261,7 +261,19 @@ class Boldgrid_Editor_Theme {
 		$boldgrid_palette_class .= ' ' . self::$plugin_body_class;
 
 		if ( self::is_editing_boldgrid_theme() ) {
-			$background_classes      = self::body_background_classes();
+			$type = 'body';
+			if ( 'crio_page_header' === $post_type ) {
+				$template_type = get_the_terms( $post_id, 'template_locations' );
+				if ( 'footer' === $template_type[0]->slug ) {
+					$type = 'footer';
+				} elseif ( 'header' === $template_type[0]->slug || 'sticky-header' === $template_type[0]->slug ) {
+					$type = 'header';
+				} else {
+					$type = 'body';
+				}
+			}
+
+			$background_classes      = self::get_background_classes( $type );
 			$boldgrid_palette_class .= ' ' . implode( ' ', $background_classes );
 		}
 
@@ -276,39 +288,58 @@ class Boldgrid_Editor_Theme {
 		return $boldgrid_palette_class;
 	}
 
-	public static function body_background_classes() {
-		$classes = [];
-		$background_theme_mod = 'boldgrid_background_color';
-		$background_image     = get_theme_mod( 'background_image' );
+	public static function get_background_classes( $type ) {
+		$body_classes              = [];
+		$footer_classes            = [];
+		$body_background_theme_mod = 'boldgrid_background_color';
+		$body_background_image     = get_theme_mod( 'background_image' );
 
-		// Add class for parallax background option.
+		// Add class for body parallax background option.
 		if ( 'parallax' === get_theme_mod( 'background_attachment' ) ) {
 			$classes[] = 'boldgrid-customizer-parallax';
 		} else {
 			if (
 				'pattern' !== get_theme_mod( 'boldgrid_background_type' ) &&
-				! empty( $background_image ) &&
+				! empty( $body_background_image ) &&
 				true === get_theme_mod( 'bgtfw_background_overlay' )
 			) {
-				$background_theme_mod = 'bgtfw_background_overlay_color';
+				$body_background_theme_mod = 'bgtfw_background_overlay_color';
 			}
 		}
 
-		$background_color = get_theme_mod( $background_theme_mod );
-		$background_color = explode( ':', $background_color );
-		$background_color = array_shift( $background_color );
+		$body_background_color = get_theme_mod( $body_background_theme_mod );
+		$body_background_color = explode( ':', $body_background_color );
+		$body_background_color = array_shift( $body_background_color );
 
-		if ( ! empty( $background_color ) ) {
-			if ( strpos( $background_color, 'neutral' ) !== false ) {
-				$classes[] = $background_color . '-background-color';
-				$classes[] = $background_color . '-text-default';
+		if ( ! empty( $body_background_color ) ) {
+			if ( strpos( $body_background_color, 'neutral' ) !== false ) {
+				$body_classes[] = $body_background_color . '-background-color';
+				$body_classes[] = $body_background_color . '-text-default';
 			} else {
-				$classes[] = str_replace( '-', '', $background_color ) . '-background-color';
-				$classes[] = str_replace( '-', '', $background_color ) . '-text-default';
+				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-background-color';
+				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-text-default';
 			}
 		}
 
-		return $classes;
+		if ( 'footer' === $type ) {
+			$footer_background_color = get_theme_mod( 'bgtfw_footer_color' );
+			$footer_background_color = explode( ':', $footer_background_color );
+			$footer_background_color = array_shift( $footer_background_color );
+			if ( ! empty( $footer_background_color ) ) {
+				if ( strpos( $footer_background_color, 'neutral' ) !== false ) {
+					$footer_classes[] = $footer_background_color . '-background-color';
+					$footer_classes[] = $footer_background_color . '-text-default';
+				} else {
+					$footer_classes[] = str_replace( '-', '', $footer_background_color ) . '-background-color';
+					$footer_classes[] = str_replace( '-', '', $footer_background_color ) . '-text-default';
+				}
+				return $footer_classes;
+			} else {
+				return $body_classes;
+			}
+		} else {
+			return $body_classes;
+		}
 	}
 
 	/**
