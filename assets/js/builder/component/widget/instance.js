@@ -207,7 +207,7 @@ export class Instance {
 		 */
 		if ( 'wp_boldgrid_component_page_title' === this.component.name ) {
 			return `
-			<div class="boldgrid-shortcode bgc-heading bgc-page-title" data-imhwpb-draggable="true">
+			<div class="boldgrid-shortcode bgc-heading bgc-page-title h1" data-imhwpb-draggable="true">
 				[boldgrid_component type="${this.component.name}"]
 			</div>
 		`;
@@ -377,6 +377,19 @@ export class Instance {
 
 		let values = encodeURIComponent( JSON.stringify( data ) );
 		this.panelEdit = true;
+
+		// Adds 'h' class to the parent shortcode wrapper.
+		if ( data.hasOwnProperty( 'widget-boldgrid_component_page_title[][bgc_heading_type]' ) ) {
+			let $shortcodeWrapper = $( BOLDGRID.EDITOR.mce.getBody() ).find( '.bg-control-element' ),
+				headingType = data['widget-boldgrid_component_page_title[][bgc_heading_type]'];
+
+			$shortcodeWrapper.removeClass( function( index, className ) {
+				return ( className.match( /(^|\s)h\S+/g ) || [] ).join( ' ' );
+			} );
+
+			$shortcodeWrapper.addClass( headingType );
+		}
+
 		this.update( `[boldgrid_component type="${this.component.name}" opts="${values}"]` );
 	}
 
