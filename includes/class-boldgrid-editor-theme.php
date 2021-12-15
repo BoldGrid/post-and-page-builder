@@ -264,7 +264,9 @@ class Boldgrid_Editor_Theme {
 			$type = 'body';
 			if ( 'crio_page_header' === $post_type ) {
 				$template_type = get_the_terms( $post_id, 'template_locations' );
-				if ( 'footer' === $template_type[0]->slug ) {
+				if ( ! $template_type || is_wp_error( $template_type ) ) {
+					$type = 'body';
+				} elseif ( 'footer' === $template_type[0]->slug ) {
 					$type = 'footer';
 				} elseif ( 'header' === $template_type[0]->slug || 'sticky-header' === $template_type[0]->slug ) {
 					$type = 'header';
