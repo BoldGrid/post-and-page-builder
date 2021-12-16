@@ -264,7 +264,9 @@ class Boldgrid_Editor_Theme {
 			$type = 'body';
 			if ( 'crio_page_header' === $post_type ) {
 				$template_type = get_the_terms( $post_id, 'template_locations' );
-				if ( 'footer' === $template_type[0]->slug ) {
+				if ( ! $template_type || is_wp_error( $template_type ) ) {
+					$type = 'body';
+				} elseif ( 'footer' === $template_type[0]->slug ) {
 					$type = 'footer';
 				} elseif ( 'header' === $template_type[0]->slug || 'sticky-header' === $template_type[0]->slug ) {
 					$type = 'header';
@@ -289,10 +291,17 @@ class Boldgrid_Editor_Theme {
 	}
 
 	public static function get_background_classes( $type ) {
+		$template_classes          = array();
+		if ( 'footer' === $type || 'header' === $type ) {
+			$template_classes[] = 'color-neutral-text-contrast';
+			$template_classes[] = 'color-neutral-background-color';
+			return $template_classes;
+		}
+
 		$body_classes              = [];
-		$footer_classes            = [];
 		$body_background_theme_mod = 'boldgrid_background_color';
 		$body_background_image     = get_theme_mod( 'background_image' );
+		$pattern                   = get_theme_mod( 'boldgrid_background_pattern' );
 
 		// Add class for body parallax background option.
 		if ( 'parallax' === get_theme_mod( 'background_attachment' ) ) {
@@ -307,9 +316,14 @@ class Boldgrid_Editor_Theme {
 			}
 		}
 
+		if ( 'pattern' === get_theme_mod( 'boldgrid_background_type' ) && ! empty( $pattern ) ) {
+			$mce['body_class'] .= ' custom-background';
+		}
+
 		$body_background_color = get_theme_mod( $body_background_theme_mod );
 		$body_background_color = explode( ':', $body_background_color );
 		$body_background_color = array_shift( $body_background_color );
+
 
 		if ( ! empty( $body_background_color ) ) {
 			if ( strpos( $body_background_color, 'neutral' ) !== false ) {
@@ -319,25 +333,6 @@ class Boldgrid_Editor_Theme {
 				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-background-color';
 				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-text-default';
 			}
-		}
-
-		if ( 'footer' === $type ) {
-			$footer_background_color = get_theme_mod( 'bgtfw_footer_color' );
-			$footer_background_color = explode( ':', $footer_background_color );
-			$footer_background_color = array_shift( $footer_background_color );
-			if ( ! empty( $footer_background_color ) ) {
-				if ( strpos( $footer_background_color, 'neutral' ) !== false ) {
-					$footer_classes[] = $footer_background_color . '-background-color';
-					$footer_classes[] = $footer_background_color . '-text-default';
-				} else {
-					$footer_classes[] = str_replace( '-', '', $footer_background_color ) . '-background-color';
-					$footer_classes[] = str_replace( '-', '', $footer_background_color ) . '-text-default';
-				}
-				return $footer_classes;
-			} else {
-				return $body_classes;
-			}
-		} else {
 			return $body_classes;
 		}
 	}
@@ -353,7 +348,7 @@ class Boldgrid_Editor_Theme {
 		global $boldgrid_theme_framework;
 		$post_id = ! empty( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : null;
 
-		$is_editing_boldgrid_theme = ( bool ) self::get_boldgrid_theme_name( wp_get_theme() );
+		$is_editing_boldgrid_theme = (bool) self::get_boldgrid_theme_name( wp_get_theme() );
 
 		if ( $post_id ) {
 			$post_status = get_post_status( $post_id );
@@ -363,7 +358,7 @@ class Boldgrid_Editor_Theme {
 			$staged_theme = wp_get_theme( $staging_theme_stylesheet );
 
 			if ( 'staging' == $post_status && is_object( $staged_theme ) ) {
-				$is_editing_boldgrid_theme = ( bool ) self::get_boldgrid_theme_name( $staged_theme );
+				$is_editing_boldgrid_theme = (bool) self::get_boldgrid_theme_name( $staged_theme );
 			}
 		}
 
@@ -373,7 +368,7 @@ class Boldgrid_Editor_Theme {
 
 		// Check boldgrid theme.
 		$is_editing_boldgrid_theme = $is_editing_boldgrid_theme ?
-			$is_editing_boldgrid_theme : ( bool ) get_theme_mod( 'boldgrid_color_palette' );
+			$is_editing_boldgrid_theme : (bool) get_theme_mod( 'boldgrid_color_palette' );
 
 		/**
 		 * Allow other theme developers to indicate that they would like all BG edit tools enabled.
