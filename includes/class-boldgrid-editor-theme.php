@@ -290,6 +290,15 @@ class Boldgrid_Editor_Theme {
 		return $boldgrid_palette_class;
 	}
 
+	/**
+	 * Get the background classes for the current page / post.
+	 *
+	 * @param string $type The type of background to get.
+	 *
+	 * @return array An array of background classes.
+	 *
+	 * @since 1.15.1
+	 */
 	public static function get_background_classes( $type ) {
 		$template_classes          = array();
 		if ( 'footer' === $type || 'header' === $type ) {

@@ -327,7 +327,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Print Menu Alignment Controls
 	 *
-	 * @since 1.14.0
+	 * @since 1.15.1
 	 *
 	 * @param array $instance Widget instance configs.
 	 */

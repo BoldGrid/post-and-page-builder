@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.15.1 =
+Release Date: December 22, 2021
+* Bug Fix: MCE is "squished" when additional controls are added [#305](https://github.com/BoldGrid/post-and-page-builder/issues/305)
+* Bug Fix: fixed console warning in PPB when loading submenus in Custom Page Headers.[#303](https://github.com/BoldGrid/post-and-page-builder/issues/303)
+* Enhancement: Add Menu Direction options.[#313](https://github.com/BoldGrid/post-and-page-builder/issues/313)
+
 = 1.15.0 =
 Release Date: November 17, 2021
 * New Feature: Full Screen Editing.
