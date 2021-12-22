@@ -234,6 +234,9 @@ class Boldgrid_Editor_Theme {
 	public static function theme_body_class() {
 		$post_id = ! empty( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : null;
 
+		$post_type = get_post_type( $post_id ) ? get_post_type( $post_id ) : 'blog_post';
+		$post_type = 'post' === $post_type ? 'blog_post' : $post_type;
+
 		$stylesheet = get_stylesheet();
 
 		$staging_theme_stylesheet = get_option( 'boldgrid_staging_stylesheet' );
@@ -257,9 +260,91 @@ class Boldgrid_Editor_Theme {
 
 		$boldgrid_palette_class .= ' ' . self::$plugin_body_class;
 
+		if ( self::is_editing_boldgrid_theme() ) {
+			$type = 'body';
+			if ( 'crio_page_header' === $post_type ) {
+				$template_type = get_the_terms( $post_id, 'template_locations' );
+				if ( ! $template_type || is_wp_error( $template_type ) ) {
+					$type = 'body';
+				} elseif ( 'footer' === $template_type[0]->slug ) {
+					$type = 'footer';
+				} elseif ( 'header' === $template_type[0]->slug || 'sticky-header' === $template_type[0]->slug ) {
+					$type = 'header';
+				} else {
+					$type = 'body';
+				}
+			}
+
+			$background_classes      = self::get_background_classes( $type );
+			$boldgrid_palette_class .= ' ' . implode( ' ', $background_classes );
+		}
+
+		$content_container = get_theme_mod( 'bgtfw_' . $post_type . 's_container' );
+
+		if ( 'fw-contained' === $content_container ) {
+			$boldgrid_palette_class .= ' max-full-width';
+		} elseif ( 'container' === $content_container ) {
+			$boldgrid_palette_class .= ' container';
+		}
+
 		return $boldgrid_palette_class;
 	}
 
+	/**
+	 * Get the background classes for the current page / post.
+	 *
+	 * @param string $type The type of background to get.
+	 *
+	 * @return array An array of background classes.
+	 *
+	 * @since 1.15.1
+	 */
+	public static function get_background_classes( $type ) {
+		$template_classes          = array();
+		if ( 'footer' === $type || 'header' === $type ) {
+			$template_classes[] = 'color-neutral-text-contrast';
+			$template_classes[] = 'color-neutral-background-color';
+			return $template_classes;
+		}
+
+		$body_classes              = [];
+		$body_background_theme_mod = 'boldgrid_background_color';
+		$body_background_image     = get_theme_mod( 'background_image' );
+		$pattern                   = get_theme_mod( 'boldgrid_background_pattern' );
+
+		// Add class for body parallax background option.
+		if ( 'parallax' === get_theme_mod( 'background_attachment' ) ) {
+			$classes[] = 'boldgrid-customizer-parallax';
+		} else {
+			if (
+				'pattern' !== get_theme_mod( 'boldgrid_background_type' ) &&
+				! empty( $body_background_image ) &&
+				true === get_theme_mod( 'bgtfw_background_overlay' )
+			) {
+				$body_background_theme_mod = 'bgtfw_background_overlay_color';
+			}
+		}
+
+		if ( 'pattern' === get_theme_mod( 'boldgrid_background_type' ) && ! empty( $pattern ) ) {
+			$mce['body_class'] .= ' custom-background';
+		}
+
+		$body_background_color = get_theme_mod( $body_background_theme_mod );
+		$body_background_color = explode( ':', $body_background_color );
+		$body_background_color = array_shift( $body_background_color );
+
+
+		if ( ! empty( $body_background_color ) ) {
+			if ( strpos( $body_background_color, 'neutral' ) !== false ) {
+				$body_classes[] = $body_background_color . '-background-color';
+				$body_classes[] = $body_background_color . '-text-default';
+			} else {
+				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-background-color';
+				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-text-default';
+			}
+			return $body_classes;
+		}
+	}
 
 	/**
 	 * Check to see if we are editing a boldgrid theme page
@@ -272,7 +357,7 @@ class Boldgrid_Editor_Theme {
 		global $boldgrid_theme_framework;
 		$post_id = ! empty( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : null;
 
-		$is_editing_boldgrid_theme = ( bool ) self::get_boldgrid_theme_name( wp_get_theme() );
+		$is_editing_boldgrid_theme = (bool) self::get_boldgrid_theme_name( wp_get_theme() );
 
 		if ( $post_id ) {
 			$post_status = get_post_status( $post_id );
@@ -282,7 +367,7 @@ class Boldgrid_Editor_Theme {
 			$staged_theme = wp_get_theme( $staging_theme_stylesheet );
 
 			if ( 'staging' == $post_status && is_object( $staged_theme ) ) {
-				$is_editing_boldgrid_theme = ( bool ) self::get_boldgrid_theme_name( $staged_theme );
+				$is_editing_boldgrid_theme = (bool) self::get_boldgrid_theme_name( $staged_theme );
 			}
 		}
 
@@ -292,7 +377,7 @@ class Boldgrid_Editor_Theme {
 
 		// Check boldgrid theme.
 		$is_editing_boldgrid_theme = $is_editing_boldgrid_theme ?
-			$is_editing_boldgrid_theme : ( bool ) get_theme_mod( 'boldgrid_color_palette' );
+			$is_editing_boldgrid_theme : (bool) get_theme_mod( 'boldgrid_color_palette' );
 
 		/**
 		 * Allow other theme developers to indicate that they would like all BG edit tools enabled.

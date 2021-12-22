@@ -513,8 +513,9 @@ IMHWPB.Editor = function( $ ) {
 						//If the first character is a space, set the cursor to the second character
 						//to preserve the buffer
 						if (
+							e.element.firstChild.data && (
 							'&nbsp;' == e.element.firstChild.data.substr( 0, 6 ) ||
-							/\s/.test( e.element.firstChild.data.substr( 0, 1 ) )
+							/\s/.test( e.element.firstChild.data.substr( 0, 1 ) ) )
 						) {
 							position = 1;
 						}
@@ -527,8 +528,9 @@ IMHWPB.Editor = function( $ ) {
 						//If the last character is a space, set the cursor to the second to last
 						//character to preserve the buffer
 						if (
+							e.element.firstChild.data && (
 							'&nbsp;' == e.element.firstChild.data.substr( -6 ) ||
-							/\s/.test( e.element.firstChild.data.substr( -1 ) )
+							/\s/.test( e.element.firstChild.data.substr( -1 ) ) )
 						) {
 							final_pos_offset = -1;
 						}
@@ -765,16 +767,23 @@ IMHWPB.Editor = function( $ ) {
 				}
 			} );
 
-			// Add Dividers to mce toolbasr
-			$( '#mceu_0, #mceu_3, #mceu_6, #mceu_9, #mceu_12, #mceu_16' ).each( function() {
-				$( '<div class="mce-divider"></div>' ).insertAfter( $( this ) );
+			// Add Dividers to mce toolbar
+			[
+				$( 'i.mce-i-bold' ).parent( 'button' ).parent( '.mce-widget' ),
+				$( 'i.mce-i-bullist' ).parent( 'button' ).parent( '.mce-widget' ),
+				$( 'i.mce-i-alignleft' ).parent( 'button' ).parent( '.mce-widget' ),
+				$( 'i.mce-i-link' ).parent( 'button' ).parent( '.mce-widget' ),
+				$( 'i.mce-i-icon.dashicons-desktop' ).parent( 'button' ).parent( '.mce-widget' ),
+				$( 'i.mce-i-strikethrough' ).parent( 'button' ).parent( '.mce-widget' )
+			].forEach( function( divider ) {
+				$( '<div class="mce-divider"></div>' ).insertBefore( $( divider ) );
 				if ( window.boldgridEditorPointers ) {
 					$( '.mce-i-fullscreen' ).pointer( options ).pointer( 'reposition' );
 				}
 			} );
 
 			// Moves media buttons to the toolbar.
-			$( '#mceu_32-body' ).prepend( '<div id="mce_fullscreen_actions"></div>' );
+			$( '#wp-content-editor-container > .mce-tinymce > .mce-container-body > .mce-top-part > .mce-container-body' ).prepend( '<div id="mce_fullscreen_actions"></div>' );
 
 			$( '#mce_fullscreen_actions' ).append( $( '#wp-content-media-buttons' ).clone( true ) );
 

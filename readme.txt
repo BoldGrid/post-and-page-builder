@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.15.0
+Stable tag: 1.15.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,12 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.15.1 =
+Release Date: December 22, 2021
+* Bug Fix: MCE is "squished" when additional controls are added [#305](https://github.com/BoldGrid/post-and-page-builder/issues/305)
+* Bug Fix: fixed console warning in PPB when loading submenus in Custom Page Headers.[#303](https://github.com/BoldGrid/post-and-page-builder/issues/303)
+* Enhancement: Add Menu Direction options.[#313](https://github.com/BoldGrid/post-and-page-builder/issues/313)
 
 = 1.15.0 =
 Release Date: November 17, 2021

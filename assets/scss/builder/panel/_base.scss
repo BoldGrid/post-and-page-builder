@@ -298,6 +298,10 @@
 		bottom: 0;
 		background-color: rgba(255, 255, 255, 0.7);
 	}
+
+	.bgc_menu_direction_container .buttonset label:last-of-type .dashicons-leftright {
+		transform: rotate(90deg);
+	}
 }
 
 .panel-body ul {
