@@ -333,7 +333,6 @@ class Boldgrid_Editor_Theme {
 		$body_background_color = explode( ':', $body_background_color );
 		$body_background_color = array_shift( $body_background_color );
 
-
 		if ( ! empty( $body_background_color ) ) {
 			if ( strpos( $body_background_color, 'neutral' ) !== false ) {
 				$body_classes[] = $body_background_color . '-background-color';
@@ -342,6 +341,10 @@ class Boldgrid_Editor_Theme {
 				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-background-color';
 				$body_classes[] = str_replace( '-', '', $body_background_color ) . '-text-default';
 			}
+			return $body_classes;
+		} else {
+			$body_classes[] = 'neutral-background-color';
+			$body_classes[] = 'neutral-text-default';
 			return $body_classes;
 		}
 	}
