@@ -258,6 +258,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		getTemplate: function() {
 			let classes = BoldgridEditor.is_boldgrid_theme ? 'button-primary' : 'btn btn-color-1';
+			let isCrio =
+				'crio' === BoldgridEditor.current_theme || 'prime' === BoldgridEditor.current_theme;
+
+			// If this is a Crio theme, we need to add the specific button-primary classes.
+			if ( isCrio && BoldgridEditor.crio_button_classes ) {
+				classes = 'button-primary ' + BoldgridEditor.crio_button_classes['button-primary'];
+			}
+
 			return `<p><a class="${classes}" href="#">Button</a></p>`;
 		},
 
