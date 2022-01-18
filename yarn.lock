@@ -97,9 +97,9 @@
   resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.2.tgz#8a0fcac9d14093fb72bca09bb9e72d8ff9033c1a"
   integrity sha512-SAvoySS7JwX9S63sJW83D9A8LG2P67IJyrVtLDseeZnQ4eoxOBTzU5I5W2kZObse4hhjlgwqBUINooXiCmICSg==
 
-"@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
+"@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#dc39fc404ad1eb53bb937d6760d6c064cabce747"
+  resolved "https://github.com/BoldGrid/controls#0bdba87ef985a8238e45d44e8a09507e2071c8f4"
   dependencies:
     "@boldgrid/components" "^2.15.2"
     Buttons "https://github.com/alexwolfe/Buttons"
