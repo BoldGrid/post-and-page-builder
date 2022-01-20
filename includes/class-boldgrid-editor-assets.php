@@ -344,6 +344,12 @@ class Boldgrid_Editor_Assets {
 			),
 		);
 
+		if ( function_exists( 'wp_enqueue_global_styles' ) ) {
+			$theme_json        = WP_Theme_JSON_Resolver::get_merged_data();
+			$global_inline_styles = $theme_json->get_stylesheet();
+			$vars['global_inline_styles'] = $global_inline_styles;
+		}
+
 		$vars = array_merge( $vars, $this->get_shared_vars() );
 
 		/**
@@ -483,7 +489,6 @@ class Boldgrid_Editor_Assets {
 		}
 
 		wp_enqueue_script( 'boldgrid-editor-drag' );
-
 
 		/*
 		 * Fired after the Post and Page Builder enqueues it's editor scripts.
