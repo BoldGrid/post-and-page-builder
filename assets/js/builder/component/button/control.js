@@ -266,7 +266,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				classes = 'button-primary ' + BoldgridEditor.crio_button_classes['button-primary'];
 			}
 
-			return `<p><a class="${classes}" href="#">Button</a></p>`;
+			return `<p><a class="btn ${classes}" href="#">Button</a></p>`;
 		},
 
 		/**
