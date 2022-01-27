@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.15.2
+Stable tag: 1.16.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.16.0 =
+* New Feature: Include Custom Primary & Secondary buttons in button selector
+* Bug Fix: Block Library blocks do not load "below the fold" [#174](https://github.com/BoldGrid/post-and-page-builder/issues/174)
 
 = 1.15.2 =
 Release Date: December 28, 2021

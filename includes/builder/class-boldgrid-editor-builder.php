@@ -149,7 +149,7 @@ class Boldgrid_Editor_Builder {
 					$theme_buttons[$button_names[1]] = preg_replace( $regex_string, '', $value );
 				}
 			}
-		
+
 			if ( empty( $theme_buttons ) ) {
 				$button_primary_classes = 'button-primary button-overrides';
 				$button_secondary_classes = 'button-secondary button-overrides';
@@ -158,7 +158,21 @@ class Boldgrid_Editor_Builder {
 					'secondary' => $button_secondary_classes,
 				);
 			}
-		
+
+			$custom_theme_buttons = apply_filters( 'bgtfw_button_classes', array() );
+
+			if ( empty( $custom_theme_buttons ) ) {
+				return $theme_buttons;
+			}
+
+			if ( ! empty( $custom_theme_buttons['button-primary'] ) ) {
+				$theme_buttons['primary'] = 'button-primary ' . $custom_theme_buttons['button-primary'];
+			}
+
+			if ( ! empty( $custom_theme_buttons['button-secondary'] ) ) {
+				$theme_buttons['secondary'] = 'button-secondary ' . $custom_theme_buttons['button-secondary'];
+			}
+
 			return $theme_buttons;
 	}
 
