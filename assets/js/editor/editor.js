@@ -690,8 +690,6 @@ IMHWPB.Editor = function( $ ) {
 			var $tinymce_iframe = $( event.target.iframeElement ).contents();
 			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
 
-			console.log( BoldgridEditor );
-
 			if ( BoldgridEditor.global_inline_styles ) {
 				var $globalStyle = $( '<style id="global-inline-styles"></style>' );
 				var globalStyles = BoldgridEditor.global_inline_styles;
