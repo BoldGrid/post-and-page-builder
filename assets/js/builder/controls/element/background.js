@@ -34,7 +34,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		iconClasses: 'genericon genericon-picture',
 
-		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]' ],
+		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]', '.bg-box' ],
 
 		availableEffects: [ 'background-parallax', 'background-fixed' ],
 
@@ -52,6 +52,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				{
 					name: 'Column',
 					class: 'action column-background'
+				},
+				{
+					name: 'Column Shape',
+					class: 'action column-shape-background'
 				}
 			]
 		},
@@ -210,6 +214,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Menu.$element
 				.find( '.bg-editor-menu-dropdown' )
 				.on( 'click', '.action.column-background', () => self.open( '[class*="col-md"]' ) )
+				.on( 'click', '.action.column-shape-background', () => self.open( '.bg-box' ) )
 				.on( 'click', '.action.row-background', () => self.open( '.row' ) )
 				.on( 'click', '.action.section-background', () => self.open( '.boldgrid-section' ) );
 		},
