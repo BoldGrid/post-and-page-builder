@@ -194,6 +194,15 @@
 				background-position: 3px 3px;
 			}
 
+			&.column-shape-background::before{
+				content: "\f103";
+				font-family: Genericons;
+				font-size: 20px;
+				text-align: center;
+				line-height: 25px;
+				color: #fff;
+			}
+
 			&.section-background::before {
 				content: "";
 				background-image: url("../image/icons/grid/section.svg");
