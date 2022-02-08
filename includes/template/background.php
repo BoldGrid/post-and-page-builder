@@ -19,6 +19,11 @@
 					<label for="section-background-color" class='color-preview'></label>
 					<input type="text" data-type="" name='section-background-color' class='color-control' value=''>
 				</div>
+				<div class='hover-background-color section color-controls'>
+					<h4>Custom Hover Color</h4>
+					<label for="section-hover-background-color" class='color-preview'></label>
+					<input type="text" data-type="hover" name='section-hover-background-color' class='color-control' value=''>
+				</div>
 				<div class='title'>
 					<h4>Sample Backgrounds</h4>
 				</div>
@@ -138,10 +143,7 @@
 						<input type="radio" checked="checked" name="hover-scroll-effects" value="none">None
 					</label>
 					<label>
-						<input type="radio" name="hover-scroll-effects" value="background-parallax">Parallax
-					</label>
-					<label>
-						<input type="radio" name="hover-scroll-effects" value="background-fixed">Fixed
+						<input type="radio" name="hover-scroll-effects" value="hover-background-fixed">Fixed
 					</label>
 				</div>
 			</div>
