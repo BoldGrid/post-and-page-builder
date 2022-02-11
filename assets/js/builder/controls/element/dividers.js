@@ -8,7 +8,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 	var self,
 		BG = BOLDGRID.EDITOR;
 
-	BOLDGRID.EDITOR.CONTROLS.Background = {
+	BOLDGRID.EDITOR.CONTROLS.SectionDividers = {
 		name: 'dividers',
 
 		tooltip: 'Shape Dividers',
@@ -56,6 +56,151 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			width: '450px',
 			scrollTarget: '.divider-shapes',
 			sizeOffset: -300
+		},
+
+		detectFillColors: function() {
+			var $body = $( BOLDGRID.EDITOR.mce.iframeElement )
+					.contents()
+					.find( 'body' ),
+				$dividers = $body.find( '.boldgrid-section-divider' );
+
+			$dividers.each( function() {
+				var $this = $( this ),
+					position = $this.attr( 'data-position' ),
+					$sibling = self.getSibling( $this, position ),
+					color;
+
+				if ( 0 !== $sibling.length ) {
+					color = self.getElementBg( $sibling );
+				} else {
+					color = self.getElementBg( $body );
+				}
+
+				console.log( {
+					divider: $this,
+					sibling: $sibling,
+					detectFillColors: color,
+					BOLDGRID: BOLDGRID,
+					BoldgridEditor: BoldgridEditor
+				} );
+
+				color = false === color ? self.getElementBg( $body ) : color;
+
+				$this.find( '.boldgrid-shape-fill' ).each( function() {
+					var style = $( this ).attr( 'style' ),
+						matches = style.match( /(.*)(fill:\s\S*;)(.*)/ );
+
+					console.log( {
+						matches: matches,
+						length: matches.length,
+						'fill path': $( this )
+					} );
+					if ( matches && 4 === matches.length ) {
+						$( this ).attr( 'style', `${matches[1]}fill: ${color};${matches[3]}` );
+					}
+				} );
+			} );
+		},
+
+		getColorFromPalette: function( color ) {
+			var paletteColors = BoldgridEditor.colors,
+				isPaletteColor = false,
+				isNeutralColor;
+
+			console.log( {
+				Modify: BOLDGRID.COLOR_PALETTE.Modify
+			} );
+
+			isNeutralColor = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColors.neutral );
+
+			if ( false !== isNeutralColor ) {
+				return 'var( --color-neutral )';
+			}
+
+			paletteColors.defaults.forEach( function( paletteColor, index ) {
+				var isMatch = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColor );
+				if ( isMatch ) {
+					isPaletteColor = `var(--color-${index + 1} )`;
+				}
+			} );
+
+			return false !== isPaletteColor ? isPaletteColor : color;
+		},
+
+		getElementBg: function( $element ) {
+			var color,
+				colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
+
+			console.log( {
+				$element: $element,
+				'$element class': $element.attr( 'class' ),
+				colorClass: colorClass
+			} );
+
+			if ( colorClass && 0 !== colorClass.length ) {
+				color = colorClass[1];
+				color =
+					'color-neutral' === color ?
+						`var(--${color})` :
+						`var(--${color.replace( 'color', 'color-' )})`;
+			} else {
+				color = $element.css( 'background-color' );
+			}
+
+			return self.isTransparent( color ) ? false : color;
+		},
+
+		getSibling: function( $divider, position ) {
+			var $boldgridSection = $divider.parent(),
+				$sibling =
+					'top' === position ?
+						$boldgridSection.prev( '.boldgrid-section' ) :
+						$boldgridSection.next( '.boldgrid-section' ),
+				siteMarkup = BOLDGRID.EDITOR.STYLE.Remote.siteMarkup,
+				footerMarkup = siteMarkup.split( '<footer id="colophon"' ),
+				footerMarkup =
+					footerMarkup && 0 !== footerMarkup.length ?
+						footerMarkup[1].split( '</footer>' )[0] :
+						footerMarkup,
+				$footer = $( `<footer id="colophon" ${footerMarkup}</footer>` ),
+				$header = $( siteMarkup ).find( '#masthead' ),
+				hasBgColor;
+
+			console.log( {
+				siteMarkup: siteMarkup,
+				$header: $header,
+				$footer: $footer,
+				footerMarkup: footerMarkup,
+				$sibling: $sibling
+			} );
+
+			if ( 0 === $sibling.length && 'top' === position ) {
+				hasBgColor = false;
+				hasBgColor = $header
+					.find( '.boldgrid-section' )
+					.last()
+					.css( 'background-color' );
+				hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
+				$sibling = false !== hasBgColor ? $header.find( '.boldgrid-section' ).last() : $header;
+				console.log( {
+					position: position,
+					$sibling: $sibling
+				} );
+			} else if ( 0 === $sibling.length && 'bottom' === position ) {
+				hasBgColor = false;
+				hasBgColor = $footer
+					.find( '.boldgrid-section' )
+					.first()
+					.css( 'background-color' );
+				hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
+				$sibling = false !== hasBgColor ? $footer.find( '.boldgrid-section' ).first() : $footer;
+				console.log( {
+					position: position,
+					$sibling: $sibling
+				} );
+			}
+
+			return $sibling;
 		},
 
 		/**
@@ -117,6 +262,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-section-dividers"]' );
 
+			BOLDGRID.EDITOR.STYLE.Remote.getStyles( BoldgridEditor.site_url );
+			$( window ).on( 'boldgrid_page_html', function() {
+				console.log( 'boldgrid_page_html event' );
+				self.detectFillColors();
+			} );
 			self._setupMenuReactivate();
 		},
 
@@ -293,13 +443,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					position = $this.hasClass( 'section-divider-top' ) ? 'top' : 'bottom',
 					flip = $this.attr( 'data-flip' );
 
-				console.log( {
-					flip: flip,
-					svg: $svg,
-					position: position,
-					select: panel.$element.find( `select[name=section-divider-${position}-flip]` )
-				} );
-
 				if ( 'yes' === flip ) {
 					panel.$element
 						.find( `select[name=section-divider-${position}-flip]` )
@@ -380,34 +523,36 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		getFillStyle: function( position ) {
 			var $target = self.getTarget(),
-				$sibling = 'top' === position ? $target.prev() : $target.next(),
+				$sibling = self.getSibling( $target, position ),
 				$body = $target.parents( 'body' ),
 				color = self.defaults.fillColor;
 
-			if ( $sibling.length && $sibling.css( 'background-color' ) ) {
-				color = $sibling.css( 'background-color' );
-			} else if ( $body.css( 'background-color' ) ) {
-				color = $body.css( 'background-color' );
+			if ( $sibling.length ) {
+				color = self.getElementBg( $sibling );
+			} else {
+				color = self.getElementBg( $body );
 			}
 
-			color = self.isTransparent( color ) ? $body.css( 'background-color' ) : color;
+			color = false === color ? self.getElementBg( $body ) : color;
 
 			return `fill: ${color};`;
 		},
 
 		isTransparent: function( color ) {
-			if ( color.includes( 'rgba' ) ) {
+			if ( 'string' === typeof color && color.includes( 'rgba' ) ) {
 				color = color
 					.replace( 'rgba(', '' )
 					.replace( ')', '' )
 					.split( ',' );
 				return 4 === color.length && 0 === parseInt( color[3] ) ? true : false;
-			} else if ( color.includes( '#' ) ) {
+			} else if ( 'string' === typeof color && color.includes( '#' ) ) {
 				color = color.replace( '#', '' );
 				return 8 === color.length && '00' === color.slice( -2 ) ? true : false;
+			} else if ( 'string' === typeof color && color.includes( 'color' ) ) {
+				return false;
 			}
 
-			return false;
+			return true;
 		},
 
 		getFlip: function( position ) {
@@ -503,12 +648,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 							)}); transform-origin:center`
 						);
 
-					console.log( {
-						position: position,
-						$target: self.getTarget(),
-						existingDivider: self.getTarget().find( `.section-divider-${position}` )
-					} );
-
 					if ( 0 !== self.getTarget().find( `.section-divider-${position}` ).length ) {
 						self
 							.getTarget()
@@ -552,6 +691,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		}
 	};
 
-	BOLDGRID.EDITOR.CONTROLS.Background.init();
-	self = BOLDGRID.EDITOR.CONTROLS.Background;
+	BOLDGRID.EDITOR.CONTROLS.SectionDividers.init();
+	self = BOLDGRID.EDITOR.CONTROLS.SectionDividers;
 } )( jQuery );
