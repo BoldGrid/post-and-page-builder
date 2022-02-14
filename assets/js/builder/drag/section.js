@@ -131,7 +131,7 @@ BOLDGRID.EDITOR.DRAG = BOLDGRID.EDITOR.DRAG || {};
 		 * @param Event e.
 		 */
 		drag: function( e ) {
-			var mousePosition = e.originalEvent.pageY,
+			var mousePosition = e.originalEvent.offsetY,
 				insertAfter = null;
 
 			if ( ! self.sectionLocations.length ) {
@@ -201,7 +201,7 @@ BOLDGRID.EDITOR.DRAG = BOLDGRID.EDITOR.DRAG || {};
 
 			// 15 is the offset from the cursor.
 			$dragHelper.css( {
-				top: e.pageY - 15,
+				top: e.offsetY - 15,
 				left: e.pageX - 15
 			} );
 		},

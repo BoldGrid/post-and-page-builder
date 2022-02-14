@@ -43,12 +43,13 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 				mouseEnter: function() {
 					var $this = $( this ),
 						$wrap = $this.closest( '.boldgrid-section-wrap' ),
-						rect = this.getBoundingClientRect();
+						rect = this.getBoundingClientRect(),
+						offset = $this.offset();
 
 					self.$deleteIcon.css( {
 						left: rect.right,
 						display: 'block',
-						top: rect.top + rect.height / 2
+						top: offset.top + rect.height / 2
 					} );
 
 					self.$deleteIcon.$section = $wrap.length ? $wrap : $this;
