@@ -117,7 +117,14 @@ class Menu extends \WP_Widget {
 
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
-			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
+
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone' ) ) );
+			$class    .= ' ' . $ham_class;
+
+
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . ' ' . $align . '">';
 
 			// Make sure that if there is a registerd location already, that it is used.
 			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
@@ -128,7 +135,13 @@ class Menu extends \WP_Widget {
 		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
 
-			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap">';
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
+
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone' ) ) );
+			$class    .= ' ' . $ham_class;
+
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . '">';
 
 			$menu_id = $registered_locations[ $instance['bgc_menu_location_id'] ];
 			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
