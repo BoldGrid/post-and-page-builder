@@ -34,7 +34,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		iconClasses: 'genericon genericon-picture',
 
-		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]', '.bg-box' ],
+		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]' ],
 
 		availableEffects: [ 'background-parallax', 'background-fixed' ],
 
@@ -54,10 +54,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				{
 					name: 'Column',
 					class: 'action column-background'
-				},
-				{
-					name: 'Column Shape',
-					class: 'action column-shape-background'
 				}
 			]
 		},
@@ -281,7 +277,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Menu.$element
 				.find( '.bg-editor-menu-dropdown' )
 				.on( 'click', '.action.column-background', () => self.open( '[class*="col-md"]' ) )
-				.on( 'click', '.action.column-shape-background', () => self.open( '.bg-box' ) )
 				.on( 'click', '.action.row-background', () => self.open( '.row' ) )
 				.on( 'click', '.action.section-background', () => self.open( '.boldgrid-section' ) );
 		},
@@ -310,6 +305,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self._setupCustomization();
 			self._setupAddImage();
 			self._setupHoverImage();
+			self._setupElementVisibility();
 		},
 
 		_setupHoverImage: function() {
@@ -398,7 +394,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					}
 
 					self.setImageSelection( selectionType, $target.css( 'background' ) );
-					BOLDGRID.EDITOR.CONTROLS.SectionDividers.detectFillColors();
 				}
 			);
 
@@ -412,6 +407,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						type = $this.attr( 'data-type' ),
 						hoverClass = $target.attr( 'data-hover-bg-class' ),
 						css = '';
+
+					if ( '' === value ) {
+						$target.attr( 'data-hover-bg-color', 'unset' );
+						css = `.${hoverClass}:hover {background-color: ${$target.attr(
+							'data-hover-bg-color'
+						)} !important;}`;
+						self._addHeadingStyle( hoverClass + '-bg-color', css );
+						return;
+					}
 
 					if ( ! hoverClass ) {
 						hoverClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
@@ -429,7 +433,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					)} !important;}`;
 					self._addHeadingStyle( hoverClass + '-bg-color', css );
 
-					if ( ! $target.attr( 'data-hover-bg-image-url' ) ) {
+					if ( ! $target.attr( 'data-hover-image-url' ) ) {
 						css = `.${hoverClass}:hover {background-image: none !important;}`;
 						self._addHeadingStyle( hoverClass + '-image', css );
 					}
@@ -622,6 +626,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target.removeAttr( 'data-hover-bg-overlaycolor' );
 				$target.removeClass( bgHoverClass );
 				BG.Panel.$element.find( '.add-hover-image-controls' ).removeAttr( 'style' );
+				self.setImageSelection( 'hover-color' );
 			} else {
 				self.removeColorClasses( $target );
 				BG.Controls.addStyle( $target, 'background', '' );
@@ -636,8 +641,38 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.removeAttr( 'data-bg-color-2' )
 					.removeAttr( 'data-bg-overlaycolor' )
 					.removeAttr( 'data-bg-direction' );
+				self.setImageSelection( 'color' );
 			}
-			self.setImageSelection( 'color' );
+		},
+
+		_setupElementVisibility: function() {
+			var panel = BG.Panel;
+			panel.$element.on(
+				'change',
+				'.background-design input[name="child-elements-visibility"]',
+				function() {
+					var $this = $( this ),
+						$target = self.getTarget(),
+						classes = [ 'show-children-on-hover', 'hide-children-on-hover' ];
+
+					switch ( $this.val() ) {
+						case 'show':
+							$target.removeClass( classes );
+							$target.addClass( 'show-children-on-hover' );
+							break;
+						case 'hide':
+							$target.removeClass( classes );
+							$target.addClass( 'hide-children-on-hover' );
+							break;
+						case 'always':
+							$target.removeClass( classes );
+							break;
+						default:
+							$target.removeClass( classes );
+							break;
+					}
+				}
+			);
 		},
 
 		/**
@@ -967,8 +1002,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $currentSelection = BG.Panel.$element.find( '.current-selection' ),
 				$target = self.getTarget(),
 				bgImageUrl = $target.attr( 'data-image-url' ),
+				bgColor = $target.css( 'background-color' ),
 				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
-				hoverBgImageUrl = $target.attr( 'data-hover-image-url' );
+				hoverBgImageUrl = $target.attr( 'data-hover-image-url' ),
+				hoverColor = $target.attr( 'data-hover-bg-color' );
 
 			$currentSelection.css( 'background', '' );
 
@@ -986,8 +1023,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} else if ( bgImageUrl ) {
 					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
 				}
+			} else if ( 'hover-color' === type ) {
+				if ( hoverColor && ! hoverBgImageUrl ) {
+					$currentSelection.css( 'background-color', hoverColor );
+				} else if ( ! hoverColor && ! hoverBgImageUrl ) {
+					$currentSelection.css( 'background-color', bgColor );
+				}
 			} else {
-				$currentSelection.css( 'background-color', prop );
+				$currentSelection.css( 'background-color', bgColor );
 				if ( bgImageUrl ) {
 					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
 				}
@@ -1396,6 +1439,21 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
 		},
 
+		setElementVisibility() {
+			var $target = self.getTarget(),
+				visibility = $target.hasClass( 'show-on-hover' ) ? 'show' : 'always',
+				visibility = $target.hasClass( 'hide-on-hover' ) ? 'hide' : visibility,
+				$radios = BG.Panel.$element.find( '.child-elements-visibility input' );
+
+			$radios.each( function() {
+				if ( $( this ).val() === visibility ) {
+					$( this ).attr( 'checked', true );
+				} else {
+					$( this ).attr( 'checked', false );
+				}
+			} );
+		},
+
 		/**
 		 * Determine the element type supported by this control.
 		 *
@@ -1446,6 +1504,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self.preselectBackground();
 			self.setDefaultBackgroundColors();
 			self.setElementType();
+			self.setElementVisibility();
 
 			// Open Panel.
 			panel.open( self );
