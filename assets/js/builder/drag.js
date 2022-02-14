@@ -309,7 +309,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'.wpview',
 		'blockquote',
 		'code',
-		'abbr'
+		'abbr',
+		'span'
 	];
 
 	/**
@@ -327,6 +328,13 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'h5:not(.row .row h5)',
 		'h6:not(.row .row h6)',
 		'h7:not(.row .row h7)',
+		'span',
+		'h1 span',
+		'h2 span',
+		'h3 span',
+		'h4 span',
+		'h5 span',
+		'h6 span',
 
 		'a:not(.row .row a):not(p a)',
 
@@ -382,6 +390,13 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'.row .row h7',
 
 		'.row .row a',
+
+		'h1 span',
+		'h2 span',
+		'h3 span',
+		'h4 span',
+		'h5 span',
+		'h6 span',
 
 		// Common Drag Content.
 		'.row .row img:not(p img):not(a img)',
