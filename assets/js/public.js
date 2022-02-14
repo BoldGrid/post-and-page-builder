@@ -1,4 +1,5 @@
 var $ = window.jQuery;
+var self;
 
 import 'imports-loader?this=>window!wowjs';
 
@@ -11,9 +12,11 @@ class Public {
 	 */
 	init() {
 		$( () => {
+			self = this;
 			this.setupParallax();
 			this.initWowJs();
 			this.setupHoverBoxes();
+			this.detectFillColors();
 		} );
 
 		return this;
@@ -53,6 +56,121 @@ class Public {
 			css += '}';
 		} );
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
+  }
+
+	detectFillColors() {
+		var $body     = $('body' ),
+			$dividers = $body.find( '.boldgrid-section-divider' );
+
+		$dividers.each( function() {
+			var $this    = $( this ),
+				position = $this.attr( 'data-position' ),
+				$sibling = self.getSibling( $this, position ),
+				color;
+
+				if ( 0 !== $sibling.length ) {
+					color = self.getElementBg( $sibling );
+				} else {
+					color = self.getElementBg( $body );
+				}
+
+				console.log( {
+					'divider': $this,
+					'sibling': $sibling,
+					'detectFillColors': color
+				} );
+
+				color = false === color ? self.getElementBg( $body ) : color;
+
+				$this.find( '.boldgrid-shape-fill' ).each( function() {
+					var style   = $( this ).attr( 'style' ),
+						matches = style.match( /(.*)(fill:\s\S*;)(.*)/ );
+
+					console.log( {
+						'matches': matches,
+						'length': matches.length,
+						'fill path': $( this )
+					} );
+					if ( matches && 4 === matches.length ) {
+						$( this ).attr( 'style', `${matches[ 1 ]}fill: ${color};${matches[ 3 ]}` );
+					}
+				} );
+		} );
+	}
+
+	getSibling( $divider, position ) {
+		var $boldgridSection = $divider.parent(),
+			$sibling         = 'top' === position ? $boldgridSection.prev( '.boldgrid-section' ) : $boldgridSection.next( '.boldgrid-section' ),
+			$header          = $( '#masthead' ),
+			$footer          = $( 'footer#colophon' ),
+			hasBgColor;
+
+			console.log( {
+				'$header': $header,
+				'$footer': $footer,
+				'position': position,
+				'$sibling': $sibling
+			} );
+
+		if ( 0 === $sibling.length && 'top' === position ) {
+			hasBgColor = false;
+			hasBgColor = $header.find( '.boldgrid-section' ).last().css( 'background-color' );
+			hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
+			$sibling   = false !== hasBgColor ? $header.find( '.boldgrid-section' ) : $header;
+			console.log( {
+				'position': position,
+				'$sibling': $sibling
+			} );
+
+		} else if ( 0 === $sibling.length && 'bottom' === position ) {
+			hasBgColor = false;
+			hasBgColor = $footer.find( '.boldgrid-section' ).first().css( 'background-color' );
+			hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
+			$sibling   = false !== hasBgColor ? $footer.find( '.boldgrid-section' ) : $footer;
+			console.log( {
+				'position': position,
+				'$sibling': $sibling
+			} );
+		}
+
+		return $sibling;
+	}
+
+	isTransparent( color ) {
+		if ( 'string' === typeof color && color.includes( 'rgba' ) ) {
+			color = color
+				.replace( 'rgba(', '' )
+				.replace( ')', '' )
+				.split( ',' );
+			return 4 === color.length && 0 === parseInt( color[3] ) ? true : false;
+		} else if ( 'string' === typeof color && color.includes( '#' ) ) {
+			color = color.replace( '#', '' );
+			return 8 === color.length && '00' === color.slice( -2 ) ? true : false;
+		} else if ( 'string' === typeof color && color.includes( 'color' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	getElementBg( $element ) {
+		var color,
+			colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
+
+		console.log( {
+			'$element': $element,
+			'$element class': $element.attr( 'class' ),
+			'colorClass': colorClass
+		} );
+
+		if ( colorClass && 0 !== colorClass.length ) {
+			color = colorClass[1];
+			color = 'color-neutral' === color ? `var(--${color})` : `var(--${color.replace( 'color', 'color-' ) })`;
+		} else {
+			color = $element.css( 'background-color' );
+		}
+
+		return self.isTransparent( color ) ? false : color;
 	}
 
 	/**
@@ -94,3 +212,4 @@ class Public {
 
 window.BOLDGRID = window.BOLDGRID || {};
 window.BOLDGRID.PPB = new Public().init();
+

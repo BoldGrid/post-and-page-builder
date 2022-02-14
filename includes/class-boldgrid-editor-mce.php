@@ -161,6 +161,9 @@ class Boldgrid_Editor_MCE {
 		$extra_tags = array (
 			'div[*]',
 			'i[*]',
+			'svg[*]',
+			'path[*]',
+			'span[*]',
 		);
 
 		$extended_valid_elements = ! empty( $init['extended_valid_elements'] ) ?
@@ -173,7 +176,7 @@ class Boldgrid_Editor_MCE {
 		// Note: Using .= here can trigger a fatal error.
 		$extended_valid_elements = array_merge( $extended_valid_elements, $extra_tags );
 		$init['extended_valid_elements'] = implode( ',', $extended_valid_elements );
-
+		error_log( $init['extended_valid_elements'] );
 		// Always show wordpress 2 toolbar.
 		$init['wordpress_adv_hidden'] = false;
 

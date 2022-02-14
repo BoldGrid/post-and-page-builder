@@ -393,6 +393,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					}
 
 					self.setImageSelection( selectionType, $target.css( 'background' ) );
+					BOLDGRID.EDITOR.CONTROLS.SectionDividers.detectFillColors();
 				}
 			);
 

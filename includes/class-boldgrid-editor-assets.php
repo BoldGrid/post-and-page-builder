@@ -319,6 +319,7 @@ class Boldgrid_Editor_Assets {
 			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
 			'internalPageTemplates'  => Boldgrid_Editor_Service::get( 'templater' )->templates,
 			'sample_backgrounds'     => Boldgrid_Editor_Builder::get_background_data(),
+			'divider_shapes'         => Boldgrid_Editor_Builder::get_divider_shapes(),
 			'builder_config'         => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings'      => $boldgrid_settings,
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
