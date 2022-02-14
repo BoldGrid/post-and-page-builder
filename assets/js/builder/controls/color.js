@@ -140,7 +140,14 @@ import { Palette } from './color/palette';
 				e.preventDefault();
 				e.stopPropagation();
 				self.$currentInput.attr( 'data-type', 'color' );
-				self.$currentInput.val( '' ).change();
+				self.$currentInput
+					.val( '' )
+					.attr( 'value', '' )
+					.change();
+				console.log( {
+					'self.$currentInput': self.$currentInput,
+					val: self.$currentInput.val()
+				} );
 				self.$colorPanel.find( '.selected' ).removeClass( 'selected' );
 				self.$currentInput
 					.parent()

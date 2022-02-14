@@ -20,9 +20,29 @@
 					<input type="text" data-type="" name='section-background-color' class='color-control' value=''>
 				</div>
 				<div class='hover-background-color section color-controls'>
-					<h4>Custom Hover Color</h4>
+					<h4>Hover Color</h4>
 					<label for="section-hover-background-color" class='color-preview'></label>
 					<input type="text" data-type="hover" name='section-hover-background-color' class='color-control' value=''>
+				</div>
+				<div class='hover-background-image section hover-image-controls'>
+					<h4>Hover Background Image</h4>
+					<ul>
+						<li data-type="hover" class='section add-hover-image-controls'>
+							<a class="add-media"><span class="dashicons dashicons-images-alt"></span>Add Background Image</a>
+						</li>
+					</ul>
+				</div>
+				<div class='child-elements-visibility section' data-tooltip-id='child-elements-visibility'>
+					<h4>Child Element Visibility</h4>
+					<label>
+						<input type="radio" checked="checked" name="child-elements-visibility" value="always">Always
+					</label>
+					<label>
+						<input type="radio" name="child-elements-visibility" value="show">Show on Hover
+					</label>
+					<label>
+						<input type="radio" name="child-elements-visibility" value="hide">Hide on Hover
+					</label>
 				</div>
 				<div class='title'>
 					<h4>Sample Backgrounds</h4>
@@ -30,9 +50,6 @@
 				<ul>
 					<li data-type="image" class='section add-image-controls'>
 						<a class="add-media"><span class="dashicons dashicons-images-alt"></span> Add Media</a>
-					</li>
-					<li data-type="hover" class='section add-hover-image-controls'>
-						<a class="add-media"><span class="dashicons dashicons-images-alt"></span> Background Image</a>
 					</li>
 				<# _.each( data.images, function ( typeSet, type ) { #>
 					<# _.each( typeSet, function ( image, index ) { #>
