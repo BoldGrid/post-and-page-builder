@@ -38,6 +38,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		availableEffects: [ 'background-parallax', 'background-fixed' ],
 
+		availableHoverEffects: [ 'background-hover-fixed' ],
+
 		menuDropDown: {
 			title: 'Background',
 			options: [
@@ -63,7 +65,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		panel: {
 			title: 'Background',
 			height: '625px',
-			width: '325px',
+			width: '450px',
 			scrollTarget: '.presets',
 			customizeSupport: [
 				'margin',
@@ -78,6 +80,66 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				'customClasses'
 			],
 			sizeOffset: -230
+		},
+
+		_setupHoverBoxes() {
+			var css = '',
+				$head = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				$body = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'body' ),
+				$hoverBoxes = $body.find( '.has-hover-bg' );
+
+			$hoverBoxes.each( ( index, hoverBox ) => {
+				var $hoverBox = $( hoverBox ),
+					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
+					hoverBgUrl = $hoverBox.attr( 'data-hover-image-url' ),
+					hoverOverlay = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgSize = $hoverBox.attr( 'data-hover-bg-size' ),
+					hoverBgSize = hoverBgSize ? hoverBgSize : 'cover',
+					hoverBgPos = $hoverBox.attr( 'data-hover-bg-position' ),
+					hoverBgPos = hoverBgPos ? hoverBgPos : '50',
+					hoverColor = $hoverBox.attr( 'data-hover-bg-color' );
+
+				if ( 'cover' === hoverBgSize ) {
+					hoverBgSize =
+						'background-size: cover !important; background-repeat: "unset  !important";';
+				} else {
+					hoverBgSize =
+						'background-size: auto auto !important; background-repeat: repeat  !important;';
+				}
+
+				if ( hoverOverlay && hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover {`;
+					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
+						hoverOverlay
+					} ), url('${hoverBgUrl}') !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+				} else if ( hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover {`;
+					css += `background-image: url('${hoverBgUrl}') !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+				}
+
+				if ( hoverColor ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverColor} !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+				}
+			} );
 		},
 
 		/**
@@ -128,8 +190,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @since 1.2.7
 		 */
-		_setupAddImage: function() {
-			BG.Panel.$element.on( 'click', '.background-design .add-image-controls', function() {
+		_setupAddImage: function( isHoverImage = false ) {
+			var addMediaClass = isHoverImage ? '.add-hover-image-controls' : '.add-image-controls';
+			BG.Panel.$element.on( 'click', '.background-design ' + addMediaClass, function() {
 
 				// If the media frame already exists, reopen it.
 				if ( self.uploadFrame ) {
@@ -160,8 +223,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						.toJSON();
 
 					// Set As current selection and apply to background.
-					self.setImageBackground( attachment.url );
-					self.setImageSelection( 'image' );
+					self.setImageBackground( attachment.url, isHoverImage );
+					if ( isHoverImage ) {
+						self.setImageSelection( 'hover-image', attachment.url, isHoverImage );
+					} else {
+						self.setImageSelection( 'image', attachment.url, isHoverImage );
+					}
 				} );
 
 				// Finally, open the modal on click.
@@ -222,6 +289,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-background"]' );
 
+			self._setupHoverBoxes();
 			self._setupMenuReactivate();
 			self._setupMenuClick();
 			self._setupBackgroundClick();
@@ -236,6 +304,50 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self._setupGradientDirection();
 			self._setupCustomization();
 			self._setupAddImage();
+			self._setupHoverImage();
+		},
+
+		_setupHoverImage: function() {
+			self._setupAddImage( true );
+		},
+
+		_addHeadingStyle: function( styleId, css ) {
+			var $target = self.getTarget(),
+				$body = $target.parents( 'body' ),
+				$head = $body.parent().find( 'head' );
+
+			if ( $head.find( '#' + styleId ).length ) {
+				$head.find( '#' + styleId ).remove();
+			}
+
+			$head.append( '<style id="' + styleId + '">' + css + '</style>' );
+		},
+
+		_addHoverEffects: function() {
+			var $target = self.getTarget(),
+				$body = $target.parents( 'body' ),
+				$hoverBgs = $body.find( '.has-hover-bg' ),
+				css = '';
+
+			$hoverBgs.each( function() {
+				var hoverBgClassName = $( this ).attr( 'data-hover-bg-class' ),
+					hoverBgUrl = $( this ).attr( 'data-hover-image-url' ),
+					hoverOverlay = $( this ).attr( 'data-hover-bg-overlaycolor' );
+
+				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
+					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
+					css = `.${hoverBgClassName}:hover {background-image: ${hoverCss} !important; }`;
+					self._addHeadingStyle( hoverBgClassName + '-image', css );
+				} else {
+					css = `.${hoverBgClassName}:hover {background-image: url('${hoverBgUrl}') !important; }`;
+					self._addHeadingStyle( hoverBgClassName + '-image', css );
+				}
+
+				css = `.${
+					hoverBgClassName
+				}:hover {background-size: cover !important; background-position: 50%, 50% !important;}`;
+				self._addHeadingStyle( hoverBgClassName + '-bg-size', css );
+			} );
 		},
 
 		/**
@@ -282,6 +394,40 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 					self.setImageSelection( selectionType, $target.css( 'background' ) );
 					BOLDGRID.EDITOR.CONTROLS.SectionDividers.detectFillColors();
+				}
+			);
+
+			panel.$element.on(
+				'change',
+				'.background-design [name="section-hover-background-color"]',
+				function() {
+					var $this = $( this ),
+						$target = self.getTarget(),
+						value = $this.val(),
+						type = $this.attr( 'data-type' ),
+						hoverClass = $target.attr( 'data-hover-bg-class' ),
+						css = '';
+
+					if ( ! hoverClass ) {
+						hoverClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
+						$target.attr( 'data-hover-bg-class', hoverClass );
+						$target.addClass( hoverClass );
+					}
+					if ( 'class' === type ) {
+						$target.attr( 'data-hover-bg-color', 'var(--color-' + value + ')' );
+					} else {
+						$target.attr( 'data-hover-bg-color', value );
+					}
+
+					css = `.${hoverClass}:hover {background-color: ${$target.attr(
+						'data-hover-bg-color'
+					)} !important;}`;
+					self._addHeadingStyle( hoverClass + '-bg-color', css );
+
+					if ( ! $target.attr( 'data-hover-bg-image-url' ) ) {
+						css = `.${hoverClass}:hover {background-image: none !important;}`;
+						self._addHeadingStyle( hoverClass + '-image', css );
+					}
 				}
 			);
 		},
@@ -332,6 +478,21 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 				self.updateBackgroundImage();
 			} );
+
+			panel.$element.on( 'change', '.background-design [name="hover-overlay-color"]', function() {
+				var $this = $( this ),
+					type = $this.attr( 'data-type' ),
+					value = $this.val(),
+					$target = self.getTarget();
+
+				if ( 'class' === type ) {
+					value = 'var(--color-' + value + ')';
+				}
+
+				$target.attr( 'data-hover-bg-overlaycolor', value );
+
+				self.updateBackgroundImage();
+			} );
 		},
 
 		/**
@@ -342,6 +503,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		updateBackgroundImage: function() {
 			var $target = self.getTarget(),
 				overlay = $target.attr( 'data-bg-overlaycolor' ),
+				hoverOverlay = $target.attr( 'data-hover-bg-overlaycolor' ),
 				image = $target.attr( 'data-image-url' );
 
 			if ( overlay && image ) {
@@ -353,6 +515,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} else if ( image ) {
 				BG.Controls.addStyle( $target, 'background-image', 'url("' + image + '")' );
 			}
+
+			self._addHoverEffects();
 		},
 
 		/**
@@ -412,10 +576,18 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			panel.$element.on(
 				'click',
-				'.current-selection .settings .panel-button.remove-background',
+				'.current-selection:not( [data-type=hover-image] ) .settings .panel-button.remove-background',
 				function( e ) {
 					e.preventDefault();
 					self._removeImage();
+				}
+			);
+			panel.$element.on(
+				'click',
+				'.current-selection[data-type=hover-image] .settings .panel-button.remove-background',
+				function( e ) {
+					e.preventDefault();
+					self._removeImage( e, 'hover-image' );
 				}
 			);
 		},
@@ -425,22 +597,41 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @since 1.12.0
 		 */
-		_removeImage() {
-			const $target = self.getTarget();
-			self.removeColorClasses( $target );
-			BG.Controls.addStyle( $target, 'background', '' );
-			$target.removeAttr( 'data-image-url' );
+		_removeImage( e, type ) {
+			var $target = self.getTarget(),
+				bgHoverClass = $target.attr( 'data-hover-bg-class' );
 
-			BG.Panel.$element.find( '.presets .selected' ).removeClass( 'selected' );
+			if ( 'hover-image' === type ) {
+				$target.removeAttr( 'data-hover-image-url' );
+				$target
+					.parents( 'html' )
+					.find( 'head' )
+					.find( `#${bgHoverClass}-image` )
+					.remove();
+				$target
+					.parents( 'html' )
+					.find( 'head' )
+					.find( `#${bgHoverClass}-bg-size` )
+					.remove();
+				$target.removeAttr( 'data-hover-bg-class' );
+				$target.removeAttr( 'data-hover-bg-overlaycolor' );
+				$target.removeClass( bgHoverClass );
+				BG.Panel.$element.find( '.add-hover-image-controls' ).removeAttr( 'style' );
+			} else {
+				self.removeColorClasses( $target );
+				BG.Controls.addStyle( $target, 'background', '' );
+				$target.removeAttr( 'data-image-url' );
 
-			// Reset Gradient attributes.
-			$target
-				.removeAttr( 'data-bg-color-1' )
-				.removeAttr( 'data-image-url' )
-				.removeAttr( 'data-bg-color-2' )
-				.removeAttr( 'data-bg-overlaycolor' )
-				.removeAttr( 'data-bg-direction' );
+				BG.Panel.$element.find( '.presets .selected' ).removeClass( 'selected' );
 
+				// Reset Gradient attributes.
+				$target
+					.removeAttr( 'data-bg-color-1' )
+					.removeAttr( 'data-image-url' )
+					.removeAttr( 'data-bg-color-2' )
+					.removeAttr( 'data-bg-overlaycolor' )
+					.removeAttr( 'data-bg-direction' );
+			}
 			self.setImageSelection( 'color' );
 		},
 
@@ -463,6 +654,22 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					$target.addClass( $this.val() );
 				}
 			} );
+
+			panel.$element.on(
+				'change',
+				'.background-design input[name="hover-scroll-effects"]',
+				function() {
+					var $this = $( this ),
+						$target = self.getTarget();
+
+					if ( 'none' === $this.val() ) {
+						$target.removeClass( self.availableHoverEffects.join( ' ' ) );
+					} else {
+						$target.removeClass( self.availableHoverEffects.join( ' ' ) );
+						$target.addClass( $this.val() );
+					}
+				}
+			);
 		},
 
 		/**
@@ -505,8 +712,35 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @since 1.2.7
 		 */
-		_setupBackgroundSize: function() {
+		_setupBackgroundSize: function( isHoverImage ) {
 			var panel = BG.Panel;
+
+			panel.$element.on(
+				'change',
+				'.background-design input[name="hover-background-size"]',
+				function() {
+					var $this = $( this ),
+						$target = self.getTarget(),
+						hoverBgId = $target.attr( 'data-hover-bg-class' ),
+						css = '';
+
+					if ( 'tiled' === $this.val() ) {
+						css =
+							'.' +
+							hoverBgId +
+							':hover { background-size: auto auto  !important; background-repeat: repeat  !important; }';
+						self._addHeadingStyle( hoverBgId + '-bg-size', css );
+						$target.attr( 'data-hover-bg-size', 'tiled' );
+					} else if ( 'cover' == $this.val() ) {
+						css =
+							'.' +
+							hoverBgId +
+							':hover { background-size: cover  !important; background-repeat: "unset  !important"; }';
+						self._addHeadingStyle( hoverBgId + '-bg-size', css );
+						$target.attr( 'data-hover-bg-size', 'cover' );
+					}
+				}
+			);
 
 			panel.$element.on( 'change', '.background-design input[name="background-size"]', function() {
 				var $this = $( this ),
@@ -517,7 +751,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					BG.Controls.addStyle( $target, 'background-repeat', 'repeat' );
 				} else if ( 'cover' === $this.val() ) {
 					BG.Controls.addStyle( $target, 'background-size', 'cover' );
-					BG.Controls.addStyle( $target, 'background-repeat', '' );
+					BG.Controls.addStyle( $target, 'background-repeat', 'unset' );
 				}
 			} );
 		},
@@ -557,7 +791,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					type = $this.data( 'type' ),
 					label = $this.data( 'label' ),
 					$currentSelection = panel.$element.find( '.current-selection' ),
-					$presetsBackgroundColor = panel.$element.find( '.presets .background-color.section' );
+					$presetsBackgroundColor = panel.$element.find( '.presets .background-color.section' ),
+					$target = self.getTarget(),
+					bgColor = $target.css( 'background-color' );
 
 				panel.$element.find( '.filter' ).removeClass( 'selected' );
 				$this.addClass( 'selected' );
@@ -571,7 +807,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				panel.$element.find( '.presets' ).attr( 'data-filter', type );
 				$currentSelection.attr( 'data-filter', type );
 
-				if ( type.length && -1 !== type.indexOf( 'image' ) ) {
+				if ( type.length && type.includes( 'hover' ) ) {
+					let selectionType = $target.attr( 'data-hover-image-url' ) ? 'hover-image' : 'color';
+					$currentSelection.attr( 'data-type', selectionType );
+					self.setImageSelection( selectionType, bgColor );
+				}
+
+				if (
+					type.length &&
+					( type.includes( 'image' ) || type.includes( 'color' ) || type.includes( 'pattern' ) )
+				) {
+					let selectionType = $target.attr( 'data-image-url' ) ? 'image' : 'color';
+					$currentSelection.attr( 'data-type', selectionType );
+					self.setImageSelection( selectionType, bgColor );
+				}
+
+				if (
+					( type.length && -1 !== type.indexOf( 'image' ) ) ||
+					( type.length && -1 !== type.indexOf( 'hover' ) )
+				) {
 					$presetsBackgroundColor.hide();
 				} else {
 					$presetsBackgroundColor.show();
@@ -704,19 +958,34 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param string type.
 		 * @param string prop.
 		 */
-		setImageSelection: function( type, prop ) {
+		setImageSelection: function( type, prop, isHoverImage ) {
 			var $currentSelection = BG.Panel.$element.find( '.current-selection' ),
-				$target = self.getTarget();
+				$target = self.getTarget(),
+				bgImageUrl = $target.attr( 'data-image-url' ),
+				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
+				hoverBgImageUrl = $target.attr( 'data-hover-image-url' );
 
 			$currentSelection.css( 'background', '' );
 
 			if ( 'color' === type ) {
 				$currentSelection.css( 'background-color', prop );
+			} else if ( 'hover-image' === type ) {
+				$currentSelection.css( 'background-color', prop );
+				if ( hoverBgImageUrl && hoverOverlayColor ) {
+					$currentSelection.css(
+						'background-image',
+						`${self.getOverlayImage( hoverOverlayColor )}, url('${hoverBgImageUrl}')`
+					);
+				} else if ( hoverBgImageUrl ) {
+					$currentSelection.css( 'background-image', `url('${hoverBgImageUrl}')` );
+				} else if ( bgImageUrl ) {
+					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
+				}
 			} else {
-				$currentSelection.css( 'background-color', $target.css( 'background-color' ) );
-
-				// $target[0].style['background-image'] used instead of jQuery.css because of comaptbility issue with FF.
-				$currentSelection.css( 'background-image', $target[0].style['background-image'] );
+				$currentSelection.css( 'background-color', prop );
+				if ( bgImageUrl ) {
+					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
+				}
 			}
 
 			$currentSelection.attr( 'data-type', type );
@@ -727,16 +996,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @since 1.2.7
 		 * @param string url.
+		 * @param isHoverImage Is Hover Image.
 		 */
-		setImageBackground: function( url ) {
-			var $target = self.getTarget();
-
-			$target.attr( 'data-image-url', url );
-
-			BG.Controls.addStyle( $target, 'background', '' );
-			self.updateBackgroundImage();
-			BG.Controls.addStyle( $target, 'background-size', 'cover' );
-			BG.Controls.addStyle( $target, 'background-position', '50% 50%' );
+		setImageBackground: function( url, isHoverImage = false ) {
+			var $target = self.getTarget(),
+				hvrBgClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
+			if ( isHoverImage ) {
+				$target.attr( 'data-hover-image-url', url );
+				$target.addClass( 'has-hover-bg' );
+				$target.addClass( hvrBgClass );
+				$target.attr( 'data-hover-bg-class', hvrBgClass );
+				self._addHoverEffects();
+			} else {
+				$target.attr( 'data-image-url', url );
+				BG.Controls.addStyle( $target, 'background', '' );
+				self.updateBackgroundImage();
+				BG.Controls.addStyle( $target, 'background-size', 'cover' );
+				BG.Controls.addStyle( $target, 'background-position', '50% 50%' );
+			}
 		},
 
 		/**
@@ -780,6 +1057,30 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} )
 				.siblings( '.value' )
 				.html( defaultPosY );
+
+			BG.Panel.$element
+				.find( '.background-design .hover-vertical-position .slider' )
+				.slider( {
+					min: 0,
+					max: 100,
+					value: $target.attr( 'data-hover-bg-position' ) ?
+						$target.attr( 'data-hover-bg-position' ) :
+						defaultPosY,
+					range: 'max',
+					slide: function( event, ui ) {
+						if ( $target.attr( 'data-hover-bg-class' ) ) {
+							self._addHeadingStyle(
+								$target.attr( 'data-hover-bg-class' ) + '-position',
+								`.${$target.attr( 'data-hover-bg-class' )}:hover {
+									background-position: ${defaultPosX + '%'} ${ui.value}% !important;
+								}`
+							);
+							$target.attr( 'data-hover-bg-position', ui.value );
+						}
+					}
+				} )
+				.siblings( '.value' )
+				.html( defaultPosY );
 		},
 
 		/**
@@ -788,11 +1089,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.2.7
 		 */
 		openCustomization: function() {
+			var dataType = BG.Panel.$element.find( '.current-selection' ).attr( 'data-type' );
+
 			BG.Panel.$element.find( '.preset-wrapper' ).hide();
 			BG.Panel.$element.find( '.background-design .customize' ).show();
-			BG.Panel.$element
-				.find( '.preset-wrapper' )
-				.attr( 'data-type', BG.Panel.$element.find( '.current-selection' ).attr( 'data-type' ) );
+			BG.Panel.$element.find( '.preset-wrapper' ).attr( 'data-type', dataType );
 			self._initSliders();
 			self.selectDefaults();
 			BG.Panel.enterCustomization();
@@ -824,6 +1125,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setDefaultOverlayColor: function() {
 			var $target = self.getTarget(),
 				$overlayColorSection = BG.Panel.$element.find( '.overlay-color' ),
+				$hoverOverlayColorSeciont = BG.Panel.$element.find( '.hover-overlay-color' ),
+				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
 				overlayColor = $target.attr( 'data-bg-overlaycolor' );
 
 			if ( overlayColor ) {
@@ -831,6 +1134,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.find( 'input' )
 					.val( overlayColor )
 					.attr( 'value', overlayColor );
+			}
+			if ( hoverOverlayColor ) {
+				$hoverOverlayColorSeciont
+					.find( 'input' )
+					.val( hoverOverlayColor )
+					.attr( 'value', hoverOverlayColor );
 			}
 		},
 
@@ -1001,6 +1310,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = self.getTarget(),
 				backgroundColor = $target.css( 'background-color' ),
 				backgroundUrl = $target.css( 'background-image' ),
+				hoverBackgroundUrl = $target.attr( 'data-hover-image-url' ),
 				$currentSelection = BG.Panel.$element.find( '.current-selection' ),
 				hasGradient = self.backgroundIsGradient( backgroundUrl ),
 				matchFound = false;
