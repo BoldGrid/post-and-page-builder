@@ -1304,8 +1304,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					css: 'linear-gradient(' + direction + ',' + color1 + ',' + color2 + ')'
 				} );
 			} );
-
-			console.log( JSON.stringify( gradientData ) );
 		},
 
 		/**

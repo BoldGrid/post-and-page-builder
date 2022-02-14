@@ -74,23 +74,12 @@ class Public {
 					color = self.getElementBg( $body );
 				}
 
-				console.log( {
-					'divider': $this,
-					'sibling': $sibling,
-					'detectFillColors': color
-				} );
-
 				color = false === color ? self.getElementBg( $body ) : color;
 
 				$this.find( '.boldgrid-shape-fill' ).each( function() {
 					var style   = $( this ).attr( 'style' ),
 						matches = style.match( /(.*)(fill:\s\S*;)(.*)/ );
 
-					console.log( {
-						'matches': matches,
-						'length': matches.length,
-						'fill path': $( this )
-					} );
 					if ( matches && 4 === matches.length ) {
 						$( this ).attr( 'style', `${matches[ 1 ]}fill: ${color};${matches[ 3 ]}` );
 					}
@@ -99,38 +88,23 @@ class Public {
 	}
 
 	getSibling( $divider, position ) {
-		var $boldgridSection = $divider.parent(),
+		var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
 			$sibling         = 'top' === position ? $boldgridSection.prev( '.boldgrid-section' ) : $boldgridSection.next( '.boldgrid-section' ),
 			$header          = $( '#masthead' ),
 			$footer          = $( 'footer#colophon' ),
 			hasBgColor;
 
-			console.log( {
-				'$header': $header,
-				'$footer': $footer,
-				'position': position,
-				'$sibling': $sibling
-			} );
 
 		if ( 0 === $sibling.length && 'top' === position ) {
 			hasBgColor = false;
 			hasBgColor = $header.find( '.boldgrid-section' ).last().css( 'background-color' );
 			hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
 			$sibling   = false !== hasBgColor ? $header.find( '.boldgrid-section' ) : $header;
-			console.log( {
-				'position': position,
-				'$sibling': $sibling
-			} );
-
 		} else if ( 0 === $sibling.length && 'bottom' === position ) {
 			hasBgColor = false;
 			hasBgColor = $footer.find( '.boldgrid-section' ).first().css( 'background-color' );
 			hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
 			$sibling   = false !== hasBgColor ? $footer.find( '.boldgrid-section' ) : $footer;
-			console.log( {
-				'position': position,
-				'$sibling': $sibling
-			} );
 		}
 
 		return $sibling;
@@ -148,6 +122,8 @@ class Public {
 			return 8 === color.length && '00' === color.slice( -2 ) ? true : false;
 		} else if ( 'string' === typeof color && color.includes( 'color' ) ) {
 			return false;
+		} else if ( 'string' === typeof color && color.includes( 'rgb' ) ) {
+			return false;
 		}
 
 		return true;
@@ -156,12 +132,6 @@ class Public {
 	getElementBg( $element ) {
 		var color,
 			colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
-
-		console.log( {
-			'$element': $element,
-			'$element class': $element.attr( 'class' ),
-			'colorClass': colorClass
-		} );
 
 		if ( colorClass && 0 !== colorClass.length ) {
 			color = colorClass[1];

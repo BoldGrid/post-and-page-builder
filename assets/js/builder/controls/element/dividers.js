@@ -122,19 +122,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						`var(--${color.replace( 'color', 'color-' )})`;
 			} else {
 				color = $element.css( 'background-color' );
-				console.log( {
-					'css background-color': color
-				} );
 			}
-
-			console.log( {
-				method: 'getElementBg',
-				$element: $element,
-				'$element class': $element.attr( 'class' ),
-				colorClass: colorClass,
-				color: color,
-				isTransparent: self.isTransparent( color )
-			} );
 
 			return self.isTransparent( color ) ? false : color;
 		},
@@ -154,13 +142,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$footer = $( `<footer id="colophon" ${footerMarkup}</footer>` ),
 				$header = $( siteMarkup ).find( '#masthead' ),
 				hasBgColor;
-
-			console.log( {
-				method: 'getSibling',
-				divider: $divider,
-				$boldgridSection: $boldgridSection,
-				$sibling: $sibling
-			} );
 
 			if ( 0 === $sibling.length && 'top' === position ) {
 				hasBgColor = false;
@@ -511,13 +492,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} else {
 				color = self.getElementBg( $body );
 			}
-
-			console.log( {
-				method: 'getFillStyle',
-				color: color,
-				$target: $target,
-				$sibling: $sibling
-			} );
 
 			color = false === color ? self.getElementBg( $body ) : color;
 
