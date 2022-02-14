@@ -161,6 +161,8 @@ class Boldgrid_Editor_MCE {
 		$extra_tags = array (
 			'div[*]',
 			'i[*]',
+			'svg[*]',
+			'path[*]',
 			'span[*]',
 		);
 
