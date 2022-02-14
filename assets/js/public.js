@@ -56,10 +56,10 @@ class Public {
 			css += '}';
 		} );
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
-  }
+	}
 
 	detectFillColors() {
-		var $body     = $('body' ),
+		var $body     = $( 'body' ),
 			$dividers = $body.find( '.boldgrid-section-divider' );
 
 		$dividers.each( function() {

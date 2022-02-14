@@ -76,25 +76,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					color = self.getElementBg( $body );
 				}
 
-				console.log( {
-					divider: $this,
-					sibling: $sibling,
-					detectFillColors: color,
-					BOLDGRID: BOLDGRID,
-					BoldgridEditor: BoldgridEditor
-				} );
-
 				color = false === color ? self.getElementBg( $body ) : color;
 
 				$this.find( '.boldgrid-shape-fill' ).each( function() {
 					var style = $( this ).attr( 'style' ),
 						matches = style.match( /(.*)(fill:\s\S*;)(.*)/ );
 
-					console.log( {
-						matches: matches,
-						length: matches.length,
-						'fill path': $( this )
-					} );
 					if ( matches && 4 === matches.length ) {
 						$( this ).attr( 'style', `${matches[1]}fill: ${color};${matches[3]}` );
 					}
@@ -106,10 +93,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var paletteColors = BoldgridEditor.colors,
 				isPaletteColor = false,
 				isNeutralColor;
-
-			console.log( {
-				Modify: BOLDGRID.COLOR_PALETTE.Modify
-			} );
 
 			isNeutralColor = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColors.neutral );
 
@@ -131,12 +114,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var color,
 				colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
 
-			console.log( {
-				$element: $element,
-				'$element class': $element.attr( 'class' ),
-				colorClass: colorClass
-			} );
-
 			if ( colorClass && 0 !== colorClass.length ) {
 				color = colorClass[1];
 				color =
@@ -145,13 +122,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						`var(--${color.replace( 'color', 'color-' )})`;
 			} else {
 				color = $element.css( 'background-color' );
+				console.log( {
+					'css background-color': color
+				} );
 			}
+
+			console.log( {
+				method: 'getElementBg',
+				$element: $element,
+				'$element class': $element.attr( 'class' ),
+				colorClass: colorClass,
+				color: color,
+				isTransparent: self.isTransparent( color )
+			} );
 
 			return self.isTransparent( color ) ? false : color;
 		},
 
 		getSibling: function( $divider, position ) {
-			var $boldgridSection = $divider.parent(),
+			var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
 				$sibling =
 					'top' === position ?
 						$boldgridSection.prev( '.boldgrid-section' ) :
@@ -167,10 +156,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				hasBgColor;
 
 			console.log( {
-				siteMarkup: siteMarkup,
-				$header: $header,
-				$footer: $footer,
-				footerMarkup: footerMarkup,
+				method: 'getSibling',
+				divider: $divider,
+				$boldgridSection: $boldgridSection,
 				$sibling: $sibling
 			} );
 
@@ -182,10 +170,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.css( 'background-color' );
 				hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
 				$sibling = false !== hasBgColor ? $header.find( '.boldgrid-section' ).last() : $header;
-				console.log( {
-					position: position,
-					$sibling: $sibling
-				} );
 			} else if ( 0 === $sibling.length && 'bottom' === position ) {
 				hasBgColor = false;
 				hasBgColor = $footer
@@ -194,10 +178,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.css( 'background-color' );
 				hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
 				$sibling = false !== hasBgColor ? $footer.find( '.boldgrid-section' ).first() : $footer;
-				console.log( {
-					position: position,
-					$sibling: $sibling
-				} );
 			}
 
 			return $sibling;
@@ -264,7 +244,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			BOLDGRID.EDITOR.STYLE.Remote.getStyles( BoldgridEditor.site_url );
 			$( window ).on( 'boldgrid_page_html', function() {
-				console.log( 'boldgrid_page_html event' );
 				self.detectFillColors();
 			} );
 			self._setupMenuReactivate();
@@ -371,9 +350,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Panel.$element
 				.find( `.section-divider-design .${position}-divider-width .slider` )
 				.slider( {
-					min: 0.1,
+					min: 1,
 					max: 50,
-					step: 0.1,
+					step: 1,
 					value: defaultWidth,
 					range: 'max',
 					slide: function( event, ui ) {
@@ -533,6 +512,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				color = self.getElementBg( $body );
 			}
 
+			console.log( {
+				method: 'getFillStyle',
+				color: color,
+				$target: $target,
+				$sibling: $sibling
+			} );
+
 			color = false === color ? self.getElementBg( $body ) : color;
 
 			return `fill: ${color};`;
@@ -549,6 +535,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				color = color.replace( '#', '' );
 				return 8 === color.length && '00' === color.slice( -2 ) ? true : false;
 			} else if ( 'string' === typeof color && color.includes( 'color' ) ) {
+				return false;
+			} else if ( 'string' === typeof color && color.includes( 'rgb' ) ) {
 				return false;
 			}
 
