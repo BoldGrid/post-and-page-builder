@@ -138,6 +138,10 @@ WordPress Editor.
 * New Feature: Include Custom Primary & Secondary buttons in button selector
 * Bug Fix: Block Library blocks do not load "below the fold" [#174](https://github.com/BoldGrid/post-and-page-builder/issues/174)
 
+= 1.15.3 =
+Release Date: January 24, 2022
+* Bug Fix: WP 5.9 - difficulty dragging and dropping blocks on Add Block screen [#324](https://github.com/BoldGrid/post-and-page-builder/issues/324)
+
 = 1.15.2 =
 Release Date: December 28, 2021
 * Bug Fix: Fatal Error implode(): Argument #1 ($pieces) must be of type array [#322](https://github.com/BoldGrid/post-and-page-builder/issues/322)

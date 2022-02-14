@@ -54,7 +54,7 @@ html:not(.dragging-section) .delete-icon-wrap {
 	cursor: pointer;
 	box-shadow: 0 2px 5px 0 #313131;
 	transition: color 0.5s;
-	position: fixed;
+	position: absolute;
 	display: none;
 
 	&:hover {
