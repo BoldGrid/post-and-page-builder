@@ -132,6 +132,15 @@
 		}
 	}
 
+	.preset-wrapper[data-type="hover-image"] ~ * .customize {
+		.hover-overlay-color,
+		.hover-scroll-effects,
+		.hover-vertical-position,
+		.hover-size {
+			display: block;
+		}
+	}
+
 	.add-image-controls {
 		padding: 0;
 		background-color: $panel-color;
@@ -183,6 +192,18 @@
 			display: block;
 		}
 
+		.add-hover-image-controls,
+		.hover-background-color {
+			display: none;
+		}
+
+		&[data-filter="hover"] {
+			.add-hover-image-controls,
+			.hover-background-color {
+				display: block;
+			}
+		}
+
 		h4 {
 			font-weight: normal;
 			margin: 13px 0 6px;
@@ -232,6 +253,22 @@
 			padding-top: 8px;
 			padding-bottom: 8px;
 		}
+	}
+
+	.add-hover-image-controls {
+			margin: 15px 0;
+			height: 53px;
+			border: 1px solid #bdbcbc;
+			cursor: pointer;
+			padding: 0;
+			background-color: #32373c;
+			a {
+				text-decoration: none;
+				position: relative;
+				top: 17px;
+				color: #fff;
+				font-size: 15px;
+			}
 	}
 
 	.panel-footer {

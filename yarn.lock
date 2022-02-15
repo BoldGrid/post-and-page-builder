@@ -87,15 +87,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.15.2":
-  version "2.15.2"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.2.tgz#e32bf1a600dfeba53a409705911d2a2a35fbf9ac"
-  integrity sha512-VVLcMmFgEC05HcF/18+H+E26apv2m8DLidOSIkLvQTtfwb+RyGIgS2tzBcHiGwdyHUaCwZ/8SaLkd6EqNZrR7Q==
-
-"@boldgrid/components@^2.16.2":
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.2.tgz#8a0fcac9d14093fb72bca09bb9e72d8ff9033c1a"
-  integrity sha512-SAvoySS7JwX9S63sJW83D9A8LG2P67IJyrVtLDseeZnQ4eoxOBTzU5I5W2kZObse4hhjlgwqBUINooXiCmICSg==
+"@boldgrid/components@^2.15.2", "@boldgrid/components@^2.16.7":
+  version "2.16.7"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.7.tgz#6460713cc0347e7ef8a7692260249741b0867d9e"
+  integrity sha512-Yd4ew1PmLr0NiTM3pNqivuZPL/hhZoHDiCNjpNEWZf16hIAoFE4MbgS/Ohfdii9uhDkMGqLlps3D+OdU9i/Z9A==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"

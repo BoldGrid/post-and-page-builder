@@ -319,6 +319,7 @@ class Boldgrid_Editor_Assets {
 			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
 			'internalPageTemplates'  => Boldgrid_Editor_Service::get( 'templater' )->templates,
 			'sample_backgrounds'     => Boldgrid_Editor_Builder::get_background_data(),
+			'divider_shapes'         => Boldgrid_Editor_Builder::get_divider_shapes(),
 			'builder_config'         => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings'      => $boldgrid_settings,
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
@@ -343,6 +344,12 @@ class Boldgrid_Editor_Assets {
 				'button_colors' => ! $builder->requires_deprecated_buttons(),
 			),
 		);
+
+		if ( function_exists( 'wp_enqueue_global_styles' ) ) {
+			$theme_json        = WP_Theme_JSON_Resolver::get_merged_data();
+			$global_inline_styles = $theme_json->get_stylesheet();
+			$vars['global_inline_styles'] = $global_inline_styles;
+		}
 
 		$vars = array_merge( $vars, $this->get_shared_vars() );
 
@@ -483,7 +490,6 @@ class Boldgrid_Editor_Assets {
 		}
 
 		wp_enqueue_script( 'boldgrid-editor-drag' );
-
 
 		/*
 		 * Fired after the Post and Page Builder enqueues it's editor scripts.

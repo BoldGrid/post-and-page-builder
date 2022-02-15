@@ -690,6 +690,14 @@ IMHWPB.Editor = function( $ ) {
 			var $tinymce_iframe = $( event.target.iframeElement ).contents();
 			var userFullscreenSetting = window.getUserSetting( 'editor_fullscreen' );
 
+			if ( BoldgridEditor.global_inline_styles ) {
+				var $globalStyle = $( '<style id="global-inline-styles"></style>' );
+				var globalStyles = BoldgridEditor.global_inline_styles;
+				var $head = $tinymce_iframe.find( 'head' );
+				$globalStyle.html( globalStyles );
+				$head.append( $globalStyle );
+			}
+
 			if ( 'on' === userFullscreenSetting ) {
 				editor.execCommand( 'mceFullScreen' );
 			}

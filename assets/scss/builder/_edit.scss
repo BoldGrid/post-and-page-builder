@@ -25,6 +25,10 @@
 	.background-fixed {
 		background-attachment: scroll !important;
 	}
+
+	.hover-background-fixed:hover {
+		background-attachment: scroll !important;
+	}
 }
 
 .wpview {
