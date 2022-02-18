@@ -32,16 +32,13 @@
 						</li>
 					</ul>
 				</div>
-				<div class='child-elements-visibility section' data-tooltip-id='child-elements-visibility'>
-					<h4>Child Element Visibility</h4>
+				<div class='mobile-only-visibility section' data-tooltip-id='mobile-only-visibility'>
+					<h4>Mobile Visibility</h4>
 					<label>
-						<input type="radio" checked="checked" name="child-elements-visibility" value="always">Always
+						<input type="radio" name="mobile-only-visibility" value="default">Show Standard Background
 					</label>
 					<label>
-						<input type="radio" name="child-elements-visibility" value="show">Show on Hover
-					</label>
-					<label>
-						<input type="radio" name="child-elements-visibility" value="hide">Hide on Hover
+						<input type="radio" name="mobile-only-visibility" value="hover">Show Hover Background
 					</label>
 				</div>
 				<div class='title'>

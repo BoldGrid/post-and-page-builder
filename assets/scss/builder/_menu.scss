@@ -92,7 +92,8 @@
 	[data-action="menu-background"] {
 		&:not([data-available-options*="row"]) .bg-editor-menu-dropdown .row-background,
 		&:not([data-available-options*="column"]) .bg-editor-menu-dropdown .column-background,
-		&:not([data-available-options*="section"]) .bg-editor-menu-dropdown .section-background {
+		&:not([data-available-options*="section"]) .bg-editor-menu-dropdown .section-background,
+		&:not([data-available-options*="bg-box"]) .bg-editor-menu-dropdown .column-shape-background {
 			display: none;
 		}
 	}

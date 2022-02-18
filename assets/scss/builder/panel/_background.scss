@@ -193,14 +193,21 @@
 		}
 
 		.add-hover-image-controls,
-		.hover-background-color {
+		.hover-background-color,
+		.hover-background-image,
+		.mobile-only-visibility {
 			display: none;
 		}
 
 		&[data-filter="hover"] {
 			.add-hover-image-controls,
-			.hover-background-color {
+			.hover-background-color,
+			.hover-background-image,
+			.mobile-only-visibility {
 				display: block;
+			}
+			.title {
+				display: none;
 			}
 		}
 

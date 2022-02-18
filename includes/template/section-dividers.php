@@ -5,8 +5,12 @@
 				<a href="#" data-filter="bottom" data-label="Bottom" class="filter"><i class="fa fa-arrow-down" aria-hidden="true"></i> Bottom</a>
 			</div>
 		<div class="section section-divider">
-			<h4 data-type="top">Top Divider</h4>
-			<h4 data-type="bottom" >Bottom Divider</h4>
+			<p class="description">Section dividers allow you to choose a shaped divider between BoldGrid Sections.
+				The section divider will inherit the color of the adjacent section.
+				When adding section dividers to header templates, the correct color will not show in the editor, but will show
+				the correct color when viewed on the front end.</p>
+			<h3 data-type="top">Top Divider</h4>
+			<h3 data-type="bottom" >Bottom Divider</h4>
 			<div data-type="top" data-tooltip-id='top-divider-width' class='top-divider-width section'>
 					<h4>Divider Width (%)</h4>
 					<div class="slider"></div>

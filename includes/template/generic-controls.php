@@ -44,6 +44,21 @@
 		<input name="css-id" type="text">
 	</div>
 </script>
+<script type="text/html" id="tmpl-boldgrid-editor-hover-visibility">
+	<div class='section hover-visibility' data-tooltip-id='hover-visibility'>
+		<h4>Hover Visibility</h4>
+		<p>Determine how this element will display inside a hover box.</p>
+		<label>Always Show
+			<input type="radio" name="hover-visibility" value="always" checked>
+		</label>
+		<label>Show Only On Hover
+			<input type="radio" name="hover-visibility" value="show">
+		</label>
+		<label>Hide Only On Hover
+			<input type="radio" name="hover-visibility" value="hide">
+		</label>
+	</div>
+</script>
 <script type="text/html" id="tmpl-boldgrid-editor-horizontal-block-alignment">
 	<div class='horizontal-block-alignment section' data-tooltip-id='horizontal-block-alignment'>
 		<h4>Horizontal Alignment</h4>

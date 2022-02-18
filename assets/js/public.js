@@ -34,7 +34,8 @@ class Public {
 				hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
 				hoverBgSize   = hoverBgSize ? hoverBgSize : 'cover',
 				hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
-				hoverBgPos    = hoverBgPos ? hoverBgPos : '50';
+				hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
+				hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
 
 			if ( 'cover' === hoverBgSize ) {
 				hoverBgSize = 'background-size: cover  !important; background-repeat: "unset  !important";';
@@ -53,14 +54,20 @@ class Public {
 				css += `background-position: 50% ${hoverBgPos}% !important;`;
 				css += hoverBgSize;
 			}
+			if ( hoverBgColor ) {
+				css += `background-color: ${hoverBgColor} !important;`;
+			}
 			css += '}';
+
+			css  += '@media (hover: none) {';
+			css += `.${hoverBoxClass} { background-image: url('${hoverBgUrl}') !important; } }`;
 		} );
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
 	}
 
 	detectFillColors() {
 		var $body     = $( 'body' ),
-			$dividers = $body.find( '.boldgrid-section-divider' );
+			$dividers = $( '.boldgrid-section-divider' );
 
 		$dividers.each( function() {
 			var $this    = $( this ),
@@ -94,8 +101,9 @@ class Public {
 			$footer          = $( 'footer#colophon' ),
 			hasBgColor;
 
-
-		if ( 0 === $sibling.length && 'top' === position ) {
+		if ( 'bottom' === position && $boldgridSection.parent().is( '#masthead' ) ) {
+			$sibling = $( '#content' ).find( '.boldgrid-section' ).first();
+		} else if ( 0 === $sibling.length && 'top' === position ) {
 			hasBgColor = false;
 			hasBgColor = $header.find( '.boldgrid-section' ).last().css( 'background-color' );
 			hasBgColor = self.isTransparent( hasBgColor ) ? false : hasBgColor;
@@ -131,9 +139,14 @@ class Public {
 
 	getElementBg( $element ) {
 		var color,
-			colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
+			colorClass      = $element.attr( 'class' ).match( /(color\S*)-background-color/ ),
+			isGridBlock     = $element.hasClass( 'dynamic-gridblock' ),
+			isBoldgridTheme = BoldgridEditorPublic.is_boldgrid_theme;
 
-		if ( colorClass && 0 !== colorClass.length ) {
+		if ( isGridBlock && colorClass && 0 !== colorClass.length && '' === isBoldgridTheme ) {
+			color = 'neutral' === color ? color : parseInt( colorClass[1].replace( 'color', '' ) ) - 1;
+			color = 'neutral' === color ? BoldgridEditorPublic.colors.neutral : BoldgridEditorPublic.colors.defaults[ color ];
+		} else if ( colorClass && 0 !== colorClass.length ) {
 			color = colorClass[1];
 			color = 'color-neutral' === color ? `var(--${color})` : `var(--${color.replace( 'color', 'color-' ) })`;
 		} else {

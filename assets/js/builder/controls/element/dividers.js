@@ -112,9 +112,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		getElementBg: function( $element ) {
 			var color,
-				colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ );
+				colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ ),
+				isGridBlock = $element.hasClass( 'dynamic-gridblock' ),
+				isBoldgridTheme = BoldgridEditor.is_boldgrid_theme;
 
-			if ( colorClass && 0 !== colorClass.length ) {
+			if ( isGridBlock && colorClass && 0 !== colorClass.length && '' === isBoldgridTheme ) {
+				color = 'neutral' === color ? color : parseInt( colorClass[1].replace( 'color', '' ) ) - 1;
+				color =
+					'neutral' === color ?
+						BoldgridEditor.colors.neutral :
+						BoldgridEditor.colors.defaults[color];
+			} else if ( colorClass && 0 !== colorClass.length ) {
 				color = colorClass[1];
 				color =
 					'color-neutral' === color ?
@@ -129,19 +137,22 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		getSibling: function( $divider, position ) {
 			var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
-				$sibling =
-					'top' === position ?
-						$boldgridSection.prev( '.boldgrid-section' ) :
-						$boldgridSection.next( '.boldgrid-section' ),
+				$sibling = $boldgridSection.prev( '.boldgrid-section' ),
 				siteMarkup = BOLDGRID.EDITOR.STYLE.Remote.siteMarkup,
 				footerMarkup = siteMarkup.split( '<footer id="colophon"' ),
-				footerMarkup =
-					footerMarkup && 0 !== footerMarkup.length ?
-						footerMarkup[1].split( '</footer>' )[0] :
-						footerMarkup,
-				$footer = $( `<footer id="colophon" ${footerMarkup}</footer>` ),
 				$header = $( siteMarkup ).find( '#masthead' ),
+				$footer,
 				hasBgColor;
+
+			if ( 'bottom' === position ) {
+				$sibling = $boldgridSection.next( '.boldgrid-section' );
+			}
+
+			if ( footerMarkup && 0 !== footerMarkup.length ) {
+				footerMarkup = footerMarkup[1].split( '</footer>' )[0];
+			}
+
+			$footer = $( `<footer id="colophon" ${footerMarkup}</footer>` );
 
 			if ( 0 === $sibling.length && 'top' === position ) {
 				hasBgColor = false;

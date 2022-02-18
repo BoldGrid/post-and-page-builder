@@ -20,7 +20,7 @@ export class Advanced {
 				'animation',
 				'background-color',
 				'blockAlignment',
-				'device-visibility',
+				'deviceVisibility',
 				'customClasses'
 			]
 		};
@@ -45,8 +45,16 @@ export class Advanced {
 	 * @since 1.6.0
 	 */
 	openPanel( $target, targetType ) {
+		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
+
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
+
+		if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {
+			this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
+		} else if ( -1 === hoverVisibilityIndex ) {
+			this.panel.customizeSupport.push( 'hoverVisibility' );
+		}
 
 		BG.Panel.clear();
 		BG.Panel.showFooter();

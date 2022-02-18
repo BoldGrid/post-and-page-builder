@@ -8,7 +8,8 @@ import {
 	BoxShadow,
 	BorderRadius,
 	Animation,
-	DeviceVisibility
+	DeviceVisibility,
+	HoverVisibility
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
 import { Border } from './generic/border';
@@ -30,9 +31,10 @@ import { Border } from './generic/border';
 			'box-shadow': BoxShadow,
 			'border-radius': BorderRadius,
 			border: Border,
-			'device-visibility': DeviceVisibility,
+			deviceVisibility: DeviceVisibility,
 			animation: Animation,
-			'background-color': BackgroundColor
+			'background-color': BackgroundColor,
+			'hover-visibility': HoverVisibility
 		},
 
 		allControls: [
@@ -45,7 +47,7 @@ import { Border } from './generic/border';
 			'box-shadow',
 			'border-radius',
 			'width',
-			'device-visibility',
+			'deviceVisibility',
 			'blockAlignment',
 			'customClasses'
 		],

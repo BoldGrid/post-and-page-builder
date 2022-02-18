@@ -179,6 +179,15 @@ class Boldgrid_Editor_Assets {
 			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
+		wp_localize_script(
+			'boldgrid-editor-public',
+			'BoldgridEditorPublic',
+			array(
+				'is_boldgrid_theme' => Boldgrid_Editor_Theme::is_editing_boldgrid_theme(),
+				'colors'            => Boldgrid_Editor_Theme::get_color_palettes(),
+			)
+		);
+
 		wp_enqueue_style( 'animatecss',
 			plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
 			array(), BOLDGRID_EDITOR_VERSION );

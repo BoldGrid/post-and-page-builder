@@ -76,4 +76,10 @@
 	.box-design .customize {
 		display: none;
 	}
+
+	&.customize-open {
+		.slimScrollBar {
+			display: none !important;
+		}
+	}
 }

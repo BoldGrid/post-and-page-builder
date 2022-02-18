@@ -37,7 +37,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		panel: {
 			title: 'Column Shape',
 			height: '625px',
-			width: '325px',
+			width: '350px',
 			customizeSupport: [
 				'width',
 				'margin',
