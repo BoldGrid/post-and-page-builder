@@ -87,10 +87,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.15.2", "@boldgrid/components@^2.16.7":
-  version "2.16.7"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.7.tgz#6460713cc0347e7ef8a7692260249741b0867d9e"
-  integrity sha512-Yd4ew1PmLr0NiTM3pNqivuZPL/hhZoHDiCNjpNEWZf16hIAoFE4MbgS/Ohfdii9uhDkMGqLlps3D+OdU9i/Z9A==
+"@boldgrid/components@^2.15.2", "@boldgrid/components@^2.16.8":
+  version "2.16.8"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.8.tgz#c335568e5d791294bb25007aec8f6399487c3acb"
+  integrity sha512-38ubSfrDAG75ia94kAfxL8vKVJs76nJIKgqJOxSsMD5GzP1pnSfgqIFmy3H4dBZLXximc1xyb062pFIMjsehsQ==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"
