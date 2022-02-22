@@ -20,7 +20,7 @@ export class Advanced {
 				'animation',
 				'background-color',
 				'blockAlignment',
-				'deviceVisibility',
+				'device-visibility',
 				'customClasses'
 			]
 		};

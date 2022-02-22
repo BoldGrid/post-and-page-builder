@@ -31,7 +31,7 @@ import { Border } from './generic/border';
 			'box-shadow': BoxShadow,
 			'border-radius': BorderRadius,
 			border: Border,
-			deviceVisibility: DeviceVisibility,
+			'device-visibility': DeviceVisibility,
 			animation: Animation,
 			'background-color': BackgroundColor,
 			'hover-visibility': HoverVisibility
@@ -47,7 +47,7 @@ import { Border } from './generic/border';
 			'box-shadow',
 			'border-radius',
 			'width',
-			'deviceVisibility',
+			'device-visibility',
 			'blockAlignment',
 			'customClasses'
 		],

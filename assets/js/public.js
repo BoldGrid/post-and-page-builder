@@ -143,7 +143,7 @@ class Public {
 			isGridBlock     = $element.hasClass( 'dynamic-gridblock' ),
 			isBoldgridTheme = BoldgridEditorPublic.is_boldgrid_theme;
 
-		if ( isGridBlock && colorClass && 0 !== colorClass.length && '' === isBoldgridTheme ) {
+		if ( colorClass && 0 !== colorClass.length && ( isGridBlock || '' === isBoldgridTheme ) ) {
 			color = 'neutral' === color ? color : parseInt( colorClass[1].replace( 'color', '' ) ) - 1;
 			color = 'neutral' === color ? BoldgridEditorPublic.colors.neutral : BoldgridEditorPublic.colors.defaults[ color ];
 		} else if ( colorClass && 0 !== colorClass.length ) {

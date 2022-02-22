@@ -52,10 +52,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		panel: {
 			title: 'Section Dividers',
-			height: '625px',
+			height: '600px',
 			width: '450px',
 			scrollTarget: '.divider-shapes',
-			sizeOffset: -300
+			sizeOffset: -275
 		},
 
 		detectFillColors: function() {
@@ -116,7 +116,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				isGridBlock = $element.hasClass( 'dynamic-gridblock' ),
 				isBoldgridTheme = BoldgridEditor.is_boldgrid_theme;
 
-			if ( isGridBlock && colorClass && 0 !== colorClass.length && '' === isBoldgridTheme ) {
+			if ( colorClass && 0 !== colorClass.length && ( isGridBlock || '' === isBoldgridTheme ) ) {
 				color = 'neutral' === color ? color : parseInt( colorClass[1].replace( 'color', '' ) ) - 1;
 				color =
 					'neutral' === color ?
@@ -138,21 +138,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		getSibling: function( $divider, position ) {
 			var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
 				$sibling = $boldgridSection.prev( '.boldgrid-section' ),
-				siteMarkup = BOLDGRID.EDITOR.STYLE.Remote.siteMarkup,
-				footerMarkup = siteMarkup.split( '<footer id="colophon"' ),
-				$header = $( siteMarkup ).find( '#masthead' ),
-				$footer,
+				$header = self.getHeader(),
+				$footer = self.getFooter(),
 				hasBgColor;
 
 			if ( 'bottom' === position ) {
 				$sibling = $boldgridSection.next( '.boldgrid-section' );
 			}
-
-			if ( footerMarkup && 0 !== footerMarkup.length ) {
-				footerMarkup = footerMarkup[1].split( '</footer>' )[0];
-			}
-
-			$footer = $( `<footer id="colophon" ${footerMarkup}</footer>` );
 
 			if ( 0 === $sibling.length && 'top' === position ) {
 				hasBgColor = false;
@@ -173,6 +165,57 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 
 			return $sibling;
+		},
+
+		getHeader: function() {
+			var siteMarkup = self.siteMarkup;
+
+			// For BG Themes
+			if ( '' !== BoldgridEditor.is_boldgrid_theme ) {
+				return $( siteMarkup ).find( '#masthead' );
+			}
+
+			// For 2020 & 2021 themes.
+			return $( siteMarkup ).find( '.entry-header' );
+		},
+
+		getFooter: function() {
+			var siteMarkup = self.siteMarkup,
+				$footer,
+				footerMarkup;
+
+			// For BG Sites.
+
+			if ( '' !== BoldgridEditor.is_boldgrid_theme ) {
+				footerMarkup =
+					'string' === typeof siteMarkup ? siteMarkup.split( '<footer id="colophon"' ) : '';
+				footerMarkup = footerMarkup[1].split( '</footer>' )[0];
+				return $( `<footer id="colophon" ${footerMarkup}</footer>` );
+			}
+
+			// For 2020 theme.
+
+			footerMarkup =
+				'string' === typeof siteMarkup ? siteMarkup.split( '<!-- #site-content -->' ) : '';
+			footerMarkup =
+				2 === footerMarkup.length ?
+					footerMarkup[1].split( '<!-- .footer-nav-widgets-wrapper -->' )[0] :
+					false;
+			$footer = footerMarkup ? $( footerMarkup ) : false;
+
+			if ( false !== $footer && 0 !== $footer.length ) {
+				return $footer;
+			}
+
+			// For 2021 theme.
+			footerMarkup = 'string' === typeof siteMarkup ? siteMarkup.split( '<!-- #content -->' ) : '';
+			footerMarkup =
+				2 === footerMarkup.length ? footerMarkup[1].split( '<!-- .widget-area -->' )[0] : false;
+			$footer = footerMarkup ? $( footerMarkup ) : false;
+
+			if ( false !== $footer && 0 !== $footer.length ) {
+				return $footer;
+			}
 		},
 
 		/**
@@ -235,7 +278,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-section-dividers"]' );
 
 			BOLDGRID.EDITOR.STYLE.Remote.getStyles( BoldgridEditor.site_url );
+			self.siteMarkup = BOLDGRID.EDITOR.STYLE.Remote.siteMarkup;
+
 			$( window ).on( 'boldgrid_page_html', function() {
+				self.siteMarkup = BOLDGRID.EDITOR.STYLE.Remote.siteMarkup;
 				self.detectFillColors();
 			} );
 			self._setupMenuReactivate();
