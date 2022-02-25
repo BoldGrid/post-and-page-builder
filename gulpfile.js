@@ -41,10 +41,15 @@ gulp.task( 'fontFamilyCss', () => {
 		index = 0;
 
 	for ( let font in webFonts ) {
-		let position = ( index * -44 ),
-			classname = webFonts[font].family.replace( /\s+/g, '-' ).toLowerCase();
+		position = 0 === index ? 0 : ( index * -41.423841059602649006622516556291 ) - 5,
+		classname = webFonts[font].family.replace( /\s+/g, '-' ).toLowerCase();
 
 		css += '.bgcon-google-font.' + classname + '{background-position:0 ' + position + 'px;}';
+		console.log( {
+			family: webFonts[font].family,
+			index: index,
+			position: position
+		} );
 		index++;
 	}
 

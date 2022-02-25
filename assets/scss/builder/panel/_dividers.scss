@@ -56,14 +56,14 @@
 	}
 	.section-divider-design {
 		&[data-filter=top] {
-			div, ul, li, input, label, h4 {
+			div, ul, li, input, label, h4, h3 {
 				&[data-type=bottom] {
 					display:none;
 				}
 			}
 		}
 		&[data-filter=bottom] {
-			div, ul, li, input, label, h4 {
+			div, ul, li, input, label, h4, h3 {
 				&[data-type=top] {
 					display:none;
 				}

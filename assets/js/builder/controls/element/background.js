@@ -424,8 +424,19 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						hoverClass = $target.attr( 'data-hover-bg-class' ),
 						css = '';
 
+					console.log( {
+						method: '_setupBackgroundColor',
+						value: value
+					} );
+
 					if ( ! $target.hasClass( 'has-hover-bg' ) ) {
 						$target.addClass( 'has-hover-bg' );
+					}
+
+					if ( ! hoverClass ) {
+						hoverClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
+						$target.attr( 'data-hover-bg-class', hoverClass );
+						$target.addClass( hoverClass );
 					}
 
 					if ( '' === value ) {
@@ -434,14 +445,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 							'data-hover-bg-color'
 						)} !important;}`;
 						self._addHeadingStyle( hoverClass + '-bg-color', css );
-						return;
+						$target
+							.parents( 'html' )
+							.find( 'head' )
+							.find( hoverClass + '-bg-color' )
+							.remove();
+
+						if ( ! $target.attr( 'data-hover-image-url' ) ) {
+							$target.removeAttr( 'data-hover-bg-class' );
+							$target.removeClass( 'has-hover-bg' );
+							$target.removeClass( hoverClass );
+							self.setImageSelection( 'hover-color' );
+							return;
+						} else {
+							self.setImageSelection( 'hover-image' );
+							return;
+						}
 					}
 
-					if ( ! hoverClass ) {
-						hoverClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
-						$target.attr( 'data-hover-bg-class', hoverClass );
-						$target.addClass( hoverClass );
-					}
 					if ( 'class' === type ) {
 						$target.attr( 'data-hover-bg-color', 'var(--color-' + value + ')' );
 					} else {
@@ -457,6 +478,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						css = `.${hoverClass}:hover {background-image: none !important;}`;
 						self._addHeadingStyle( hoverClass + '-image', css );
 					}
+
+					self.setImageSelection( 'hover-color' );
 				}
 			);
 		},
@@ -628,28 +651,36 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		_removeImage( e, type ) {
 			var $target = self.getTarget(),
-				bgHoverClass = $target.attr( 'data-hover-bg-class' );
+				bgHoverClass = $target.attr( 'data-hover-bg-class' ),
+				styleIdSuffixes = [ 'image', 'bg-size', 'mobile-image', 'position', 'bg-color' ];
 
 			if ( 'hover-image' === type ) {
-				$target.removeAttr( 'data-hover-image-url' );
-				$target
-					.parents( 'html' )
-					.find( 'head' )
-					.find( `#${bgHoverClass}-image` )
-					.remove();
-				$target
-					.parents( 'html' )
-					.find( 'head' )
-					.find( `#${bgHoverClass}-bg-size` )
-					.remove();
 
+				// Remove Hover Styles from head.
+				styleIdSuffixes.forEach( function( styleIdSuffix ) {
+					$target
+						.parents( 'html' )
+						.find( 'head' )
+						.find( `#${bgHoverClass}-${styleIdSuffix}` )
+						.remove();
+				} );
+
+				// Remove Image and Overlay attributes.
+				$target.removeAttr( 'data-hover-image-url' );
 				$target.removeAttr( 'data-hover-bg-overlaycolor' );
+				$target.removeAttr( 'data-hover-bg-position' );
+				$target.removeAttr( 'data-hover-bg-size' );
+
+				// Remove Hover Color Attributes.
+				$target.removeAttr( 'data-hover-bg-color' );
+
+				// Remove hover class and atribute.
+				$target.removeAttr( 'data-hover-bg-class' );
+				$target.removeClass( 'has-hover-bg' );
 				$target.removeClass( bgHoverClass );
+
 				BG.Panel.$element.find( '.add-hover-image-controls' ).removeAttr( 'style' );
-				if ( ! $target.attr( 'data-hover-bg-color' ) ) {
-					$target.removeAttr( 'data-hover-bg-class' );
-					$target.removeClass( 'has-hover-bg' );
-				}
+
 				self.setImageSelection( 'hover-color' );
 			} else {
 				self.removeColorClasses( $target );
@@ -865,7 +896,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$currentSelection.attr( 'data-filter', type );
 
 				if ( type.length && type.includes( 'hover' ) ) {
-					let selectionType = $target.attr( 'data-hover-image-url' ) ? 'hover-image' : 'color';
+					let selectionType = $target.attr( 'data-hover-image-url' ) ? 'hover-image' : 'hover-color';
 					$currentSelection.attr( 'data-type', selectionType );
 					self.setImageSelection( selectionType, bgColor );
 				}
@@ -1044,7 +1075,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				if ( hoverColor && ! hoverBgImageUrl ) {
 					$currentSelection.css( 'background-color', hoverColor );
 				} else if ( ! hoverColor && ! hoverBgImageUrl ) {
-					$currentSelection.css( 'background-color', bgColor );
+					$currentSelection.css( 'background-color', 'rgba(0,0,0,0)' );
 				}
 			} else {
 				$currentSelection.css( 'background-color', bgColor );
@@ -1065,13 +1096,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setImageBackground: function( url, isHoverImage = false ) {
 			var $target = self.getTarget(),
-				hvrBgClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
+				hvrBgClass = $target.attr( 'data-hover-bg-class' );
 
+			if ( isHoverImage && ! hvrBgClass ) {
+				hvrBgClass = 'hover-bg-' + Math.floor( Math.random() * 999 + 1 ).toString();
+				$target.addClass( hvrBgClass );
+				$target.attr( 'data-hover-bg-class', hvrBgClass );
+			}
 			if ( isHoverImage ) {
 				$target.attr( 'data-hover-image-url', url );
 				$target.addClass( 'has-hover-bg' );
-				$target.addClass( hvrBgClass );
-				$target.attr( 'data-hover-bg-class', hvrBgClass );
 				self._addHoverEffects();
 			} else {
 				$target.attr( 'data-image-url', url );
@@ -1264,7 +1298,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setDefaultBackgroundColors: function() {
 			var bgColor,
+				hoverColor,
 				$bgControlColor,
+				$hoverColorControl,
 				$target = self.getTarget();
 
 			if ( self.backgroundIsGradient( $target.css( 'background-image' ) ) ) {
@@ -1281,6 +1317,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$bgControlColor = BG.Panel.$element.find( 'input[name="section-background-color"]' );
 				$bgControlColor.prev( 'label' ).css( 'background-color', bgColor );
 				$bgControlColor.val( bgColor ).attr( 'value', bgColor );
+			}
+
+			if ( $target.attr( 'data-hover-bg-color' ) ) {
+				hoverColor = $target.attr( 'data-hover-bg-color' );
+				$hoverColorControl = BG.Panel.$element.find( 'input[name="section-hover-background-color"]' );
+				$hoverColorControl.prev( 'label' ).css( 'background-color', hoverColor );
+				$hoverColorControl.val( hoverColor ).attr( 'value', hoverColor );
 			}
 		},
 
