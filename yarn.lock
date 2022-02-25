@@ -94,7 +94,7 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#70f5473746ee3d9e2ca8f44ff013f2f3c7c34290"
+  resolved "https://github.com/BoldGrid/controls#22a820270f89c2590bd0ef0e6d6fe05cdb6df8d6"
   dependencies:
     "@boldgrid/components" "^2.15.8"
     Buttons "https://github.com/alexwolfe/Buttons"
