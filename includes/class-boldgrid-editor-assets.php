@@ -179,12 +179,18 @@ class Boldgrid_Editor_Assets {
 			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
+		$current_theme = wp_get_theme();
+		$theme_name = '';
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+		}
 		wp_localize_script(
 			'boldgrid-editor-public',
 			'BoldgridEditorPublic',
 			array(
 				'is_boldgrid_theme' => Boldgrid_Editor_Theme::is_editing_boldgrid_theme(),
 				'colors'            => Boldgrid_Editor_Theme::get_color_palettes(),
+				'theme'             => $theme_name,
 			)
 		);
 

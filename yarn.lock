@@ -87,16 +87,16 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.15.8", "@boldgrid/components@^2.16.8":
+"@boldgrid/components@^2.16.8":
   version "2.16.8"
   resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.8.tgz#c335568e5d791294bb25007aec8f6399487c3acb"
   integrity sha512-38ubSfrDAG75ia94kAfxL8vKVJs76nJIKgqJOxSsMD5GzP1pnSfgqIFmy3H4dBZLXximc1xyb062pFIMjsehsQ==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#22a820270f89c2590bd0ef0e6d6fe05cdb6df8d6"
+  resolved "https://github.com/BoldGrid/controls#53caa81fb606c7a3824db0151bfc21d25f963134"
   dependencies:
-    "@boldgrid/components" "^2.15.8"
+    "@boldgrid/components" "^2.16.8"
     Buttons "https://github.com/alexwolfe/Buttons"
     Iris "git+https://github.com/Automattic/Iris.git#master"
     animate.css "^3.5.2"

@@ -87,6 +87,8 @@ class Public {
 
 				if ( 0 !== $sibling.length ) {
 					color = self.getElementBg( $sibling );
+				} else if ( 'Astra' === BoldgridEditorPublic.theme ) {
+					color = self.getElementBg( 'article' );
 				} else {
 					color = self.getElementBg( $body );
 				}
