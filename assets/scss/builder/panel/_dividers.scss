@@ -71,3 +71,10 @@
 		}
 	}
 }
+li[data-action=menu-dividers] {
+	span {
+		&:before {
+			transform: rotate(90deg);
+		}
+	}
+}
