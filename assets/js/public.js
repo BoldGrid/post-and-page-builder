@@ -88,11 +88,14 @@ class Public {
 				if ( 0 !== $sibling.length ) {
 					color = self.getElementBg( $sibling );
 				} else if ( 'Astra' === BoldgridEditorPublic.theme ) {
-					color = self.getElementBg( 'article' );
+					color = self.getElementBg( $( 'article' ) );
 				} else {
 					color = self.getElementBg( $body );
 				}
 
+				if ( 'Astra' === BoldgridEditorPublic.theme ) {
+					color = false === color ? self.getElementBg( $( 'article' ) ) : color;
+				}
 				color = false === color ? self.getElementBg( $body ) : color;
 
 				$this.find( '.boldgrid-shape-fill' ).each( function() {
