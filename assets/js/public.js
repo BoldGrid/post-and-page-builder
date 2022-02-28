@@ -22,6 +22,11 @@ class Public {
 		return this;
 	}
 
+	/**
+	 * Setup frontend Hover Box effects.
+	 *
+	 * @since 1.7.0
+	 */
 	setupHoverBoxes() {
 		var $hoverBoxes = $( '.has-hover-bg' ),
 			css         = '';
@@ -65,6 +70,11 @@ class Public {
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
 	}
 
+	/**
+	 * Detect fill colors for shape dividers.
+	 *
+	 * @since 1.17.0
+	 */
 	detectFillColors() {
 		var $body     = $( 'body' ),
 			$dividers = $( '.boldgrid-section-divider' );
@@ -94,6 +104,15 @@ class Public {
 		} );
 	}
 
+	/**
+	 * Determine the correct sibling element
+	 *
+	 * @since 1.17.0
+	 *
+	 * @param {Object} $divider Divider object.
+	 * @param {string} position position of divider
+	 * @returns {Object} Sibling object.
+	 */
 	getSibling( $divider, position ) {
 		var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
 			$sibling         = 'top' === position ? $boldgridSection.prev( '.boldgrid-section' ) : $boldgridSection.next( '.boldgrid-section' ),
@@ -120,6 +139,13 @@ class Public {
 		return $sibling;
 	}
 
+	/**
+	 * Determine if bg color is transparent.
+	 *
+	 * @since 1.17.0
+	 *
+	 * @param {string} color color to check.
+	 */
 	isTransparent( color ) {
 		if ( 'string' === typeof color && color.includes( 'rgba' ) ) {
 			color = color
@@ -139,6 +165,14 @@ class Public {
 		return true;
 	}
 
+	/**
+	 * Determine the background color of a sibling element.
+	 *
+	 * @since 1.17.0
+	 *
+	 * @param {Object} $element Sibling Element.
+	 * @returns {string} Background color.
+	 */
 	getElementBg( $element ) {
 		var color,
 			colorClass      = $element.attr( 'class' ).match( /(color\S*)-background-color/ ),
