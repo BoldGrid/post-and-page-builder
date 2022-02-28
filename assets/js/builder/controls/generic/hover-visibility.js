@@ -15,7 +15,7 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 		/**
 		 * Render the control.
 		 *
-		 * @since 1.5.1
+		 * @since 1.17.0
 		 */
 		render: function() {
 			let $control = $( this.template() );
@@ -49,12 +49,17 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 		/**
 		 * Bind the input event to newly created cnotrol.
 		 *
-		 * @since 1.5.1
+		 * @since 1.17.0
 		 */
 		bind: function() {
 			this.bindHoverVisibility();
 		},
 
+		/**
+		 * binds the hover visibility event.
+		 *
+		 * @since 1.17.0
+		 */
 		bindHoverVisibility() {
 			var panel = BG.Panel,
 				$target = BG.Menu.getCurrentTarget();
