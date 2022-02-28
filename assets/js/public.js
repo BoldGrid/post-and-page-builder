@@ -53,9 +53,9 @@ class Public {
 				css += `background-image: url('${hoverBgUrl}') !important;`;
 				css += `background-position: 50% ${hoverBgPos}% !important;`;
 				css += hoverBgSize;
-			}
-			if ( hoverBgColor ) {
+			} else if ( hoverBgColor ) {
 				css += `background-color: ${hoverBgColor} !important;`;
+				css += 'background-image: none !important; }';
 			}
 			css += '}';
 

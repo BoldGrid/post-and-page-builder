@@ -88,6 +88,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			sizeOffset: -230
 		},
 
+		/**
+		 * Setup Hover Boxes.
+		 *
+		 * @since 1.17.0
+		 */
 		_setupHoverBoxes() {
 			var css = '',
 				$head = $( tinyMCE.activeEditor.iframeElement )
@@ -319,10 +324,23 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self._setupMobileVisibility();
 		},
 
+		/**
+		 * Setup Hover Image.
+		 *
+		 * @since 1.17.0
+		 */
 		_setupHoverImage: function() {
 			self._setupAddImage( true );
 		},
 
+		/**
+		 * Adds hover styles to header.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} styleId Style ID.
+		 * @param {string} css Css to add
+		 */
 		_addHeadingStyle: function( styleId, css ) {
 			var $target = self.getTarget(),
 				$body = $target.parents( 'body' ),
@@ -335,6 +353,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$head.append( '<style id="' + styleId + '">' + css + '</style>' );
 		},
 
+		/**
+		 * Adds Hover Effects
+		 *
+		 * @since 1.17.0
+		 */
 		_addHoverEffects: function() {
 			var $target = self.getTarget(),
 				$body = $target.parents( 'body' ),
@@ -704,6 +727,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 		},
 
+		/**
+		 * Setup mobile visibility controls
+		 *
+		 * @since 1.17.0
+		 */
 		_setupMobileVisibility: function() {
 			var panel = BG.Panel;
 			panel.$element.on(
@@ -1502,6 +1530,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
 		},
 
+		/**
+		 * Set element visibility.
+		 *
+		 * @since 1.17.0
+		 */
 		setElementVisibility() {
 			var $target = self.getTarget(),
 				visibility = $target.hasClass( 'show-on-hover' ) ? 'show' : 'always',
