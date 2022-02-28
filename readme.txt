@@ -134,6 +134,13 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.17.0 =
+* New Feature: Ability to use multiple colors in headings [#260](https://github.com/BoldGrid/post-and-page-builder/issues/260)
+* New Feature: Add wave / swirl designs between sections or as column separators [#306] (https://github.com/BoldGrid/post-and-page-builder/issues/306)
+* New Feature: Add Image Backgrounds on Column Shapes [#304](https://github.com/BoldGrid/post-and-page-builder/issues/304)
+* New Feature: Hover Boxes [#297](https://github.com/BoldGrid/post-and-page-builder/issues/297)
+* Feature Update: Update PPB and Crio Google Fonts [#276](https://github.com/BoldGrid/post-and-page-builder/issues/276)
+
 = 1.16.0 =
 * New Feature: Include Custom Primary & Secondary buttons in button selector
 * Bug Fix: Block Library blocks do not load "below the fold" [#174](https://github.com/BoldGrid/post-and-page-builder/issues/174)
