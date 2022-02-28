@@ -46,6 +46,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			flipSvg: false
 		},
 
+		/**
+		 * Initialize control.
+		 *
+		 * @since 1.17.0
+		 */
 		init: function() {
 			BOLDGRID.EDITOR.Controls.registerControl( this );
 		},
@@ -58,6 +63,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			sizeOffset: -275
 		},
 
+		/**
+		 * Detect Fill Colors when changed.
+		 *
+		 * @since 1.17.0
+		 */
 		detectFillColors: function() {
 			var $body = $( BOLDGRID.EDITOR.mce.iframeElement )
 					.contents()
@@ -89,6 +99,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Get the color from defaults
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} color color value
+		 * @returns color value
+		 */
 		getColorFromPalette: function( color ) {
 			var paletteColors = BoldgridEditor.colors,
 				isPaletteColor = false,
@@ -110,6 +128,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return false !== isPaletteColor ? isPaletteColor : color;
 		},
 
+		/**
+		 * Determine the background color of a sibling element.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {Object} $element Sibling Element.
+		 * @returns {string} Background color.
+		 */
 		getElementBg: function( $element ) {
 			var color,
 				colorClass = $element.attr( 'class' ).match( /(color\S*)-background-color/ ),
@@ -135,6 +161,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return self.isTransparent( color ) ? false : color;
 		},
 
+		/**
+		 * Determine the correct sibling element
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {Object} $divider Divider object.
+		 * @param {string} position position of divider
+		 * @returns {Object} Sibling object.
+		 */
 		getSibling: function( $divider, position ) {
 			var $boldgridSection = $divider.is( '.boldgrid-section' ) ? $divider : $divider.parent(),
 				$sibling = $boldgridSection.prev( '.boldgrid-section' ),
@@ -167,6 +202,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return $sibling;
 		},
 
+		/**
+		 * Obtains header markup from preview.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @returns {Object} Header jQuery object.
+		 */
 		getHeader: function() {
 			var siteMarkup = self.siteMarkup;
 
@@ -179,6 +221,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return $( siteMarkup ).find( '.entry-header' );
 		},
 
+		/**
+		 * Obtains footer markup from preview.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @returns {Object} Footer jQuery object.
+		 */
 		getFooter: function() {
 			var siteMarkup = self.siteMarkup,
 				$footer,
@@ -297,6 +346,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			self.$menuItem.on( 'reactivate', self.updateMenuOptions );
 		},
 
+		/**
+		 * Add style to header.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} styleId style id
+		 * @param {string} css css
+		 */
 		_addHeadingStyle: function( styleId, css ) {
 			var $target = self.getTarget(),
 				$body = $target.parents( 'body' ),
@@ -433,6 +490,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				.html( defaultHeight );
 		},
 
+		/**
+		 * Setup Top / Bottom filters.
+		 *
+		 * @since 1.17.0
+		 */
 		_setupFilters: function() {
 			var panel = BG.Panel,
 				$filters = panel.$element.find( '.section-divider-design .filter' ),
@@ -450,6 +512,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Setup flipping divider vertically
+		 *
+		 * @since 1.17.0
+		 */
 		_setupFlipChange: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget();
@@ -490,6 +557,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Setup changing divider shape.
+		 *
+		 * @since 1.17.0
+		 */
 		_setupChangeShape: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget();
@@ -524,6 +596,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Get Divider Style.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom
+		 * @returns {string} divider style css
+		 */
 		getDividerStyle: function( position ) {
 			var width = self.defaults.dividerWidth,
 				height = self.getHeight( position );
@@ -531,6 +611,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return `width: 100%; height: ${height}; overflow: hidden;`;
 		},
 
+		/**
+		 * Get style for SVG.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom
+		 * @returns divider svg style css
+		 */
 		getSvgStyle: function( position ) {
 			var height = self.getHeight( position ),
 				flip = self.getFlip( position );
@@ -538,6 +626,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return `width: 100%; height: ${height}; display: block; position: relative;${flip}`;
 		},
 
+		/**
+		 * Get fill style for SVG.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom
+		 * @returns {string} svg fill style.
+		 */
 		getFillStyle: function( position ) {
 			var $target = self.getTarget(),
 				$sibling = self.getSibling( $target, position ),
@@ -555,6 +651,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return `fill: ${color};`;
 		},
 
+		/**
+		 * Determine if bg color is transparent.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} color color to check.
+		 */
 		isTransparent: function( color ) {
 			if ( 'string' === typeof color && color.includes( 'rgba' ) ) {
 				color = color
@@ -574,6 +677,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return true;
 		},
 
+		/**
+		 * Get Flip value.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom.
+		 * @returns {string} divider rotation.
+		 */
 		getFlip: function( position ) {
 			var panel = BG.Panel,
 				flip = self.defaults.flipSvg;
@@ -585,6 +696,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return 'yes' === flip ? 'transform: rotate(180deg);' : '';
 		},
 
+		/**
+		 * Get SVG width.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom
+		 * @returns {int} width of divider.
+		 */
 		getWidth: function( position ) {
 			var panel = BG.Panel,
 				width = self.defaults.width;
@@ -596,6 +715,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return width;
 		},
 
+		/**
+		 * Get SVG height.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} position top or bottom
+		 * @returns {int} height of divider.
+		 */
 		getHeight: function( position ) {
 			var panel = BG.Panel,
 				height = self.defaults.height;
@@ -609,6 +736,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return height + 'px';
 		},
 
+		/**
+		 * Get Divider Markup.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {Object} divider divider object.
+		 * @param {string} position top or bottom.
+		 * @param {Object} $target target element.
+		 */
 		getDividerMarkup: function( divider, position, $target ) {
 			var url = self.getDividerUrl( divider ),
 				style = self.getDividerStyle( position );
@@ -626,6 +762,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			);
 		},
 
+		/**
+		 * Get Inline SVG string.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} url URL of divider svg.
+		 * @param {Object} $target target element.
+		 * @param {string} position top or bottom.
+		 * @param {string} openingTag opening tag.
+		 * @param {string} closingTag closing tag.
+		 */
 		getInlineSvg: function( url, $target, position, openingTag, closingTag ) {
 			jQuery.get(
 				url,
@@ -684,6 +831,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			);
 		},
 
+		/**
+		 * Get Variables for use in template.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @returns {array} array of template variables.
+		 */
 		getTemplateVariables: function() {
 			var variables = {
 				states: {},
@@ -701,10 +855,26 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return variables;
 		},
 
+		/**
+		 * Get URL of Divider Shape.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} divider divider shape.
+		 * @returns {string} divider url
+		 */
 		getDividerUrl: function( divider ) {
 			return self.dividers[divider].url;
 		},
 
+		/**
+		 * Get Title of Divider Shape.
+		 *
+		 * @since 1.17.0
+		 *
+		 * @param {string} divider divider shape.
+		 * @returns {string} divider title
+		 */
 		getDividerTitle: function( divider ) {
 			return self.dividers[divider].title;
 		}
