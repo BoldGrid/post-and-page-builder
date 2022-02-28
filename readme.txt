@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.16.0
+Stable tag: 1.17.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,9 +134,20 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.17.0 =
+* New Feature: Ability to use multiple colors in headings [#260](https://github.com/BoldGrid/post-and-page-builder/issues/260)
+* New Feature: Add wave / swirl designs between sections or as column separators [#306] (https://github.com/BoldGrid/post-and-page-builder/issues/306)
+* New Feature: Add Image Backgrounds on Column Shapes [#304](https://github.com/BoldGrid/post-and-page-builder/issues/304)
+* New Feature: Hover Boxes [#297](https://github.com/BoldGrid/post-and-page-builder/issues/297)
+* Feature Update: Update PPB and Crio Google Fonts [#276](https://github.com/BoldGrid/post-and-page-builder/issues/276)
+
 = 1.16.0 =
 * New Feature: Include Custom Primary & Secondary buttons in button selector
 * Bug Fix: Block Library blocks do not load "below the fold" [#174](https://github.com/BoldGrid/post-and-page-builder/issues/174)
+
+= 1.15.3 =
+Release Date: January 24, 2022
+* Bug Fix: WP 5.9 - difficulty dragging and dropping blocks on Add Block screen [#324](https://github.com/BoldGrid/post-and-page-builder/issues/324)
 
 = 1.15.2 =
 Release Date: December 28, 2021

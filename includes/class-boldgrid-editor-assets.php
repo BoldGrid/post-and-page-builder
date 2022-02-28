@@ -179,6 +179,21 @@ class Boldgrid_Editor_Assets {
 			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
+		$current_theme = wp_get_theme();
+		$theme_name = '';
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+		}
+		wp_localize_script(
+			'boldgrid-editor-public',
+			'BoldgridEditorPublic',
+			array(
+				'is_boldgrid_theme' => Boldgrid_Editor_Theme::is_editing_boldgrid_theme(),
+				'colors'            => Boldgrid_Editor_Theme::get_color_palettes(),
+				'theme'             => $theme_name,
+			)
+		);
+
 		wp_enqueue_style( 'animatecss',
 			plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
 			array(), BOLDGRID_EDITOR_VERSION );
@@ -268,6 +283,15 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
+		$current_theme = wp_get_theme();
+		$is_crio = false;
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
+				$is_crio = true;
+			}
+		}
+
 		/*
 		 * Since we are removing the 'Add Block' functionality from Crio Page Headers,
 		 * we need to make sure to also bypass the 'display_gridblock_lead' on Crio Page Header
@@ -297,6 +321,7 @@ class Boldgrid_Editor_Assets {
 		$vars = array(
 			'is_boldgrid_theme'      => $is_bg_theme,
 			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
+			'is_crio'                => $is_crio,
 			'is_add_new'             => 'post-new.php' === $pagenow,
 			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
 			'post'                   => (array) $post,
@@ -319,6 +344,7 @@ class Boldgrid_Editor_Assets {
 			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
 			'internalPageTemplates'  => Boldgrid_Editor_Service::get( 'templater' )->templates,
 			'sample_backgrounds'     => Boldgrid_Editor_Builder::get_background_data(),
+			'divider_shapes'         => Boldgrid_Editor_Builder::get_divider_shapes(),
 			'builder_config'         => Boldgrid_Editor_Builder::get_builder_config(),
 			'boldgrid_settings'      => $boldgrid_settings,
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),

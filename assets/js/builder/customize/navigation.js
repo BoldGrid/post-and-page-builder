@@ -18,7 +18,7 @@ import fontSizeSvg from '../../../../assets/image/icons/customize-nav/font-size.
 import designSvg from '../../../../assets/image/icons/customize-nav/design.svg';
 import animationSvg from '../../../../assets/image/icons/customize-nav/animation.svg';
 import devicesSvg from '../../../../assets/image/icons/customize-nav/devices.svg';
-import dividerSvg from '../../../../assets/image/icons/customize-nav/divider.svg';
+import hoverSvg from '../../../../assets/image/icons/customize-nav/hover-click.svg';
 
 export class Navigation {
 	constructor() {
@@ -40,6 +40,7 @@ export class Navigation {
 				{ name: 'width', icon: widthSvg, label: 'Width' },
 				{ name: 'blockAlignment', icon: blockAlignment, label: 'Block Alignment' },
 				{ name: 'device-visibility', icon: devicesSvg, label: 'Responsive Utilities' },
+				{ name: 'hoverVisibility', icon: hoverSvg, label: 'Hover Visibility' },
 				{ name: 'customClasses', icon: customClasses, label: 'Custom CSS Classes' }
 			]
 		};

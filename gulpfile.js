@@ -35,16 +35,21 @@ var config = {
 // Update google fonts css.
 gulp.task( 'fontFamilyCss', () => {
 	let fileContent = fs.readFileSync( config.src + '/assets/json/google-fonts.json', 'utf8' ),
-		webFonts = JSON.parse( fileContent ),
+		webFonts = JSON.parse( fileContent ).items,
 		outFilename = config.cssDest + '/font-family-controls.min.css',
 		css = '',
 		index = 0;
 
 	for ( let font in webFonts ) {
-		let position = -5 + ( index * -40 ),
-			classname = font.replace( /\s+/g, '-' ).toLowerCase();
+		position = 0 === index ? 0 : ( index * -41.423841059602649006622516556291 ) - 5,
+		classname = webFonts[font].family.replace( /\s+/g, '-' ).toLowerCase();
 
 		css += '.bgcon-google-font.' + classname + '{background-position:0 ' + position + 'px;}';
+		console.log( {
+			family: webFonts[font].family,
+			index: index,
+			position: position
+		} );
 		index++;
 	}
 

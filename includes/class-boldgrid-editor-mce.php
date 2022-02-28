@@ -161,6 +161,9 @@ class Boldgrid_Editor_MCE {
 		$extra_tags = array (
 			'div[*]',
 			'i[*]',
+			'svg[*]',
+			'path[*]',
+			'span[*]',
 		);
 
 		$extended_valid_elements = ! empty( $init['extended_valid_elements'] ) ?

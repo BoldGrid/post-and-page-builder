@@ -123,7 +123,6 @@ class Menu extends \WP_Widget {
 			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone' ) ) );
 			$class    .= ' ' . $ham_class;
 
-
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . ' ' . $align . '">';
 
 			// Make sure that if there is a registerd location already, that it is used.

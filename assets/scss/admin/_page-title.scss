@@ -16,3 +16,7 @@
 .post-php.post-type-page.boldgrid-editor-template #boldgrid-hide-post-title.boldgrid-controls {
 	display: block;
 }
+
+.php-error #adminmenuback, .php-error #adminmenuwrap {
+	margin-top: 0 !important;
+}

@@ -232,6 +232,7 @@ class Boldgrid_Editor_Builder {
 		$paths[] = $template_path . '/upgrade-notice.php';
 		$paths[] = $template_path . '/icon.php';
 		$paths[] = $template_path . '/generic-controls.php';
+		$paths[] = $template_path . '/section-dividers.php';
 
 		foreach ( $paths as $path ) {
 			include $path;
@@ -276,6 +277,37 @@ class Boldgrid_Editor_Builder {
 			// 'default_gradients' =>  json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/gradients.json' ) ),
 			'gradients' => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/preset-gradients.json' ) ) ?: [],
 		);
+	}
+
+	/**
+	 * Get all section divider shapes.
+	 *
+	 * @since 1.2.3
+	 *
+	 * @return array Configurations.
+	 */
+	public static function get_divider_shapes() {
+		// Grab the first 20 gradients.
+		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
+
+		$divider_files = $fs->dirlist( BOLDGRID_EDITOR_PATH . '/assets/image/section-dividers' );
+
+		$divider_shapes = array();
+
+		foreach ( $divider_files as $file ) {
+			$value = str_replace( '.svg', '', $file['name'] );
+			$title = ucwords( str_replace( '-', ' ', $value ) );
+
+			$divider_shapes[ $value ] = array(
+				'value' => $value,
+				'title' => $title,
+				'url'   => plugins_url( '/assets/image/section-dividers/' . $file['name'], BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' ),
+			);
+
+			ksort( $divider_shapes );
+		}
+
+		return $divider_shapes;
 	}
 
 	/**

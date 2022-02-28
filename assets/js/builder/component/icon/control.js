@@ -199,6 +199,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = $menu.targetData[self.name],
 				$selected;
 
+			if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {
+				this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
+			} else if ( -1 === hoverVisibilityIndex ) {
+				this.panel.customizeSupport.push( 'hoverVisibility' );
+			}
+
 			self.highlightElement();
 
 			// Create Markup.

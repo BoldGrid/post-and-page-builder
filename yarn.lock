@@ -87,21 +87,16 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.15.2":
-  version "2.15.2"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.2.tgz#e32bf1a600dfeba53a409705911d2a2a35fbf9ac"
-  integrity sha512-VVLcMmFgEC05HcF/18+H+E26apv2m8DLidOSIkLvQTtfwb+RyGIgS2tzBcHiGwdyHUaCwZ/8SaLkd6EqNZrR7Q==
+"@boldgrid/components@^2.16.8":
+  version "2.16.8"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.8.tgz#c335568e5d791294bb25007aec8f6399487c3acb"
+  integrity sha512-38ubSfrDAG75ia94kAfxL8vKVJs76nJIKgqJOxSsMD5GzP1pnSfgqIFmy3H4dBZLXximc1xyb062pFIMjsehsQ==
 
-"@boldgrid/components@^2.16.2":
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.2.tgz#8a0fcac9d14093fb72bca09bb9e72d8ff9033c1a"
-  integrity sha512-SAvoySS7JwX9S63sJW83D9A8LG2P67IJyrVtLDseeZnQ4eoxOBTzU5I5W2kZObse4hhjlgwqBUINooXiCmICSg==
-
-"@boldgrid/controls@https://github.com/BoldGrid/controls#typography":
+"@boldgrid/controls@https://github.com/BoldGrid/controls#typography-new":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#dc39fc404ad1eb53bb937d6760d6c064cabce747"
+  resolved "https://github.com/BoldGrid/controls#53caa81fb606c7a3824db0151bfc21d25f963134"
   dependencies:
-    "@boldgrid/components" "^2.15.2"
+    "@boldgrid/components" "^2.16.8"
     Buttons "https://github.com/alexwolfe/Buttons"
     Iris "git+https://github.com/Automattic/Iris.git#master"
     animate.css "^3.5.2"
