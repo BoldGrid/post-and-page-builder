@@ -277,6 +277,15 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
+		$current_theme = wp_get_theme();
+		$is_crio = false;
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
+				$is_crio = true;
+			}
+		}
+
 		/*
 		 * Since we are removing the 'Add Block' functionality from Crio Page Headers,
 		 * we need to make sure to also bypass the 'display_gridblock_lead' on Crio Page Header
@@ -306,6 +315,7 @@ class Boldgrid_Editor_Assets {
 		$vars = array(
 			'is_boldgrid_theme'      => $is_bg_theme,
 			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
+			'is_crio'                => $is_crio,
 			'is_add_new'             => 'post-new.php' === $pagenow,
 			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
 			'post'                   => (array) $post,

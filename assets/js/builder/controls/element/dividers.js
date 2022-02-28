@@ -32,7 +32,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		elementType: '',
 
-		iconClasses: 'fa fa-columns',
+		iconClasses: 'fa fa-map-o',
 
 		selectors: [ '.boldgrid-section' ],
 

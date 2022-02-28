@@ -422,12 +422,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						value = $this.val(),
 						type = $this.attr( 'data-type' ),
 						hoverClass = $target.attr( 'data-hover-bg-class' ),
+						isGridBlock = $target.hasClass( 'dynamic-gridblock' ),
+						isCrio = BoldgridEditor.is_crio,
 						css = '';
-
-					console.log( {
-						method: '_setupBackgroundColor',
-						value: value
-					} );
 
 					if ( ! $target.hasClass( 'has-hover-bg' ) ) {
 						$target.addClass( 'has-hover-bg' );
@@ -463,7 +460,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						}
 					}
 
-					if ( 'class' === type ) {
+					if ( 'class' === type && ( isGridBlock || ! isCrio ) ) {
+						value = 'neutral' === value ? value : parseInt( value ) - 1;
+						let color =
+							'neutral' === value ?
+								BoldgridEditor.colors.neutral :
+								BoldgridEditor.colors.defaults[value];
+						$target.attr( 'data-hover-bg-color', color );
+					} else if ( 'class' === type ) {
 						$target.attr( 'data-hover-bg-color', 'var(--color-' + value + ')' );
 					} else {
 						$target.attr( 'data-hover-bg-color', value );

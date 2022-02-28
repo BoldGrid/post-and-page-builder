@@ -71,10 +71,8 @@
 		}
 	}
 }
-li[data-action=menu-dividers] {
-	span {
-		&:before {
-			transform: rotate(90deg);
-		}
+.boldgrid-instance-menu {
+	span.fa-map-o {
+		transform: rotate(90deg);
 	}
 }
