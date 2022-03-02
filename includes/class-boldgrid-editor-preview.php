@@ -136,7 +136,7 @@ class Boldgrid_Editor_Preview {
 
 		if ( ! empty( $post->ID ) && $post->ID === $this->preview_page_id ) {
 			if ( ! current_user_can( 'edit_posts' ) ) {
-				wp_redirect( home_url(), 301 );
+				wp_safe_redirect( home_url(), 301 );
 				exit;
 			}
 		}
