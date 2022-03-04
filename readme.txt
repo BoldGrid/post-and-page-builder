@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.17.0
+Stable tag: 1.17.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+=1.17.1=
+* Bug Fix: Custom Classes option missing in 1.17.0 [#357](https://github.com/BoldGrid/post-and-page-builder/issues/357)
+* Bug Fix: Cannot work with icons [#356](https://github.com/BoldGrid/post-and-page-builder/issues/356)
 
 = 1.17.0 =
 * New Feature: Ability to use multiple colors in headings [#260](https://github.com/BoldGrid/post-and-page-builder/issues/260)
