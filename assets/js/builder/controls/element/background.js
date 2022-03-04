@@ -146,9 +146,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
 				}
 
-				if ( hoverColor ) {
+				if ( hoverColor && hoverBgUrl ) {
 					css = `.${hoverBoxClass}:hover { background-color: ${hoverColor} !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+				} else if ( hoverColor && ! hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverColor} !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover {background-image: unset !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
 				}
 			} );
 		},
