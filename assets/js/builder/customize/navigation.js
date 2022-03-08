@@ -41,6 +41,7 @@ export class Navigation {
 				{ name: 'blockAlignment', icon: blockAlignment, label: 'Block Alignment' },
 				{ name: 'device-visibility', icon: devicesSvg, label: 'Responsive Utilities' },
 				{ name: 'hoverVisibility', icon: hoverSvg, label: 'Hover Visibility' },
+				{ name: 'Fullwidthrows', icon: hoverSvg, label: 'Full Width Rows' },
 				{ name: 'customClasses', icon: customClasses, label: 'Custom CSS Classes' }
 			]
 		};

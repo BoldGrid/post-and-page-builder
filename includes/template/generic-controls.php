@@ -59,6 +59,15 @@
 		</label>
 	</div>
 </script>
+<script type="text/html" id="tmpl-boldgrid-editor-full-width-rows">
+	<div class='section full-width-rows' data-tooltip-id='full-width-rows'>
+		<h4>Full Width Row Background</h4>
+		<p>Determine if the background of this row's columns should extend to the full width of the screen.</p>
+		<label>Enabled
+			<input type="checkbox" name="full-width-rows">
+		</label>
+	</div>
+</script>
 <script type="text/html" id="tmpl-boldgrid-editor-horizontal-block-alignment">
 	<div class='horizontal-block-alignment section' data-tooltip-id='horizontal-block-alignment'>
 		<h4>Horizontal Alignment</h4>

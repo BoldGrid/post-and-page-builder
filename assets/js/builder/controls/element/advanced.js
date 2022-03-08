@@ -45,16 +45,41 @@ export class Advanced {
 	 * @since 1.6.0
 	 */
 	openPanel( $target, targetType ) {
-		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
+		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
+			fullWidthRowsIndex = this.panel.customizeSupport.indexOf( 'Fullwidthrows' ),
+			$parent = $target.parent(),
+			isHoverChild;
 
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
 
-		if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {
+		if ( $parent.hasClass( 'has-hover-bg' ) ) {
+			isHoverChild = true;
+		} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {
+			isHoverChild = true;
+		} else if ( $target.is( 'div.row' ) && 0 !== $parent.parents( 'has-hover-bg' ).length ) {
+			isHoverChild = true;
+		}
+
+		if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 			this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
-		} else if ( -1 === hoverVisibilityIndex ) {
+		} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
+
+		if ( ! $target.hasClass( 'row' ) && -1 !== fullWidthRowsIndex ) {
+			this.panel.customizeSupport.splice( fullWidthRowsIndex, 1 );
+		} else if ( -1 === fullWidthRowsIndex && $target.hasClass( 'row' ) ) {
+			this.panel.customizeSupport.push( 'Fullwidthrows' );
+		}
+
+		console.log( {
+			method: 'Advanced.openPanel',
+			$target: $target,
+			targetType: targetType,
+			fullWidthRowsIndex: fullWidthRowsIndex,
+			customizeSupport: this.panel.customizeSupport
+		} );
 
 		BG.Panel.clear();
 		BG.Panel.showFooter();

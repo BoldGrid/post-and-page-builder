@@ -9,7 +9,8 @@ import {
 	BorderRadius,
 	Animation,
 	DeviceVisibility,
-	HoverVisibility
+	HoverVisibility,
+	Fullwidthrows
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
 import { Border } from './generic/border';
@@ -34,7 +35,8 @@ import { Border } from './generic/border';
 			'device-visibility': DeviceVisibility,
 			animation: Animation,
 			'background-color': BackgroundColor,
-			'hover-visibility': HoverVisibility
+			'hover-visibility': HoverVisibility,
+			'full-width-rows': Fullwidthrows
 		},
 
 		allControls: [
@@ -143,7 +145,11 @@ import { Border } from './generic/border';
 					customizationOption = customizationOption.toLowerCase();
 					customizationOption =
 						customizationOption.charAt( 0 ).toUpperCase() + customizationOption.slice( 1 );
-
+					console.log( {
+						GENERIC: BG.CONTROLS.GENERIC,
+						controlId: customizationOption,
+						control: BG.CONTROLS.GENERIC[customizationOption]
+					} );
 					$control = BG.CONTROLS.GENERIC[customizationOption].render( addOptions );
 					BG.CONTROLS.GENERIC[customizationOption].bind( addOptions );
 				}
