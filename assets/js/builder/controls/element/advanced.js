@@ -37,6 +37,7 @@ export class Advanced {
 
 	_setTargetType( targetType ) {
 		BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', targetType );
+		BG.Panel.$element.attr( 'data-element-type', targetType );
 	}
 
 	/**
@@ -46,7 +47,6 @@ export class Advanced {
 	 */
 	openPanel( $target, targetType ) {
 		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-			fullWidthRowsIndex = this.panel.customizeSupport.indexOf( 'Fullwidthrows' ),
 			$parent = $target.parent(),
 			isHoverChild;
 
@@ -67,19 +67,7 @@ export class Advanced {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
 
-		if ( ! $target.hasClass( 'row' ) && -1 !== fullWidthRowsIndex ) {
-			this.panel.customizeSupport.splice( fullWidthRowsIndex, 1 );
-		} else if ( -1 === fullWidthRowsIndex && $target.hasClass( 'row' ) ) {
-			this.panel.customizeSupport.push( 'Fullwidthrows' );
-		}
-
-		console.log( {
-			method: 'Advanced.openPanel',
-			$target: $target,
-			targetType: targetType,
-			fullWidthRowsIndex: fullWidthRowsIndex,
-			customizeSupport: this.panel.customizeSupport
-		} );
+		this.panel.targetType = targetType;
 
 		BG.Panel.clear();
 		BG.Panel.showFooter();

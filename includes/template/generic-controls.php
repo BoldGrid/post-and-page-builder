@@ -91,6 +91,15 @@
 			<span class='value'></span>
 		</div>
 	</div>
+	<div class="section full-width-rows" data-tooltip-id="full-width-rows">
+		<h4>Full Width Row Background</h4>
+		<div class="full-width-rows">
+			<p>Determine if the background of this row's columns should extend to the full width of the screen.</p>
+			<label>Enabled
+				<input type="checkbox" name="full-width-rows">
+			</label>
+		</div>
+	</div>
 </script>
 
 <script type="text/html" id="tmpl-boldgrid-editor-rotate">
