@@ -17,9 +17,37 @@ class Public {
 			this.initWowJs();
 			this.setupHoverBoxes();
 			this.detectFillColors();
+			this.addColLg();
 		} );
 
 		return this;
+	}
+
+	/**
+	 * Add col-lg to columns that do not have it.
+	 */
+	addColLg() {
+		$( '#content div[class^="col-"]' ).each( function() {
+			var $this = $( this ),
+				classes = $this.attr( 'class' ),
+				mdSize = classes.match( /col-md-([\d]+)/i ),
+				lgSize = classes.match( /col-lg-([\d]+)/i );
+
+			console.log( {
+				'this': $this,
+				mdSize: mdSize,
+				lgSize: lgSize
+			} );
+
+			if ( lgSize ) {
+				$this.removeClass( 'col-lg-' + lgSize[1] );
+			}
+
+			if ( mdSize ) {
+				$this.addClass( `col-lg-${mdSize[1]}` );
+			}
+
+		} );
 	}
 
 	/**

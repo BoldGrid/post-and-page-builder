@@ -30,14 +30,6 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 				$inputs.each( function() {
 					var $this = $( this );
 
-					console.log( {
-						method: 'width.render',
-						$this: $this,
-						isChecked: $this.prop( 'checked' ),
-						value: value,
-						hasClassFullWidthRow: $target.hasClass( 'full-width-row' )
-					} );
-
 					if ( true === value ) {
 						$this.prop( 'checked', true );
 					} else {
@@ -97,13 +89,6 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 					value = $this.prop( 'checked' ),
 					$firstCol = $target.find( 'div[class^="col-"]:first-of-type' ),
 					$lastCol = $target.find( 'div[class^="col-"]:last-of-type' );
-
-				console.log( {
-					method: 'Width.bindFullWidthRows',
-					firstCol: $firstCol,
-					lastCol: $lastCol,
-					value: value
-				} );
 
 				if ( false === value ) {
 					$target.removeClass( 'full-width-row' );
