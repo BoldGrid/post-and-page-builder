@@ -33,17 +33,11 @@ class Public {
 				mdSize = classes.match( /col-md-([\d]+)/i ),
 				lgSize = classes.match( /col-lg-([\d]+)/i );
 
-			console.log( {
-				'this': $this,
-				mdSize: mdSize,
-				lgSize: lgSize
-			} );
-
-			if ( lgSize ) {
+			if ( lgSize && mdSize && mdSize[1] !== lgSize[1] ) {
 				$this.removeClass( 'col-lg-' + lgSize[1] );
 			}
 
-			if ( mdSize ) {
+			if ( mdSize && ! lgSize ) {
 				$this.addClass( `col-lg-${mdSize[1]}` );
 			}
 
