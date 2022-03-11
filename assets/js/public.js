@@ -18,6 +18,7 @@ class Public {
 			this.setupHoverBoxes();
 			this.detectFillColors();
 			this.addColLg();
+			this.setupFullWidthRows();
 		} );
 
 		return this;
@@ -37,6 +38,36 @@ class Public {
 				$this.addClass( `col-lg-${mdSize[1]}` );
 			}
 
+		} );
+	}
+
+	/**
+	 * Setup Full Width Rows.
+	 */
+	setupFullWidthRows() {
+		$( '.row.full-width-row' ).each( function() {
+			var $this     = $( this ),
+				$firstCol = $this.children( 'div[class^="col-"]' ).first(),
+				$lastCol  = $this.children( 'div[class^="col-"]' ).last(),
+				firstColStyle = $firstCol.attr( 'style' ),
+				lastColStyle  = $lastCol.attr( 'style' ),
+				paddingPattern = /(padding:[\s\d\w]*;)/,
+				firstColPadding = firstColStyle.match( paddingPattern ),
+				lastColPadding  = lastColStyle.match( paddingPattern );
+
+			console.log( {
+				firstColPadding: firstColStyle.match( paddingPattern ),
+				lastColPadding: lastColStyle.match( paddingPattern )
+			} );
+
+			if ( 1 < firstColPadding.length ) {
+				$this.find( '.fwr-left' ).attr( 'style', firstColPadding[1] );
+				$firstCol.attr( 'style', firstColStyle.replace( paddingPattern, 'padding: 0;' ) );
+			}
+			if ( 1 < lastColPadding.length ) {
+				$this.find( '.fwr-right' ).attr( 'style', lastColPadding[1] );
+				$lastCol.attr( 'style', lastColStyle.replace( paddingPattern, 'padding: 0;' ) );
+			}
 		} );
 	}
 
