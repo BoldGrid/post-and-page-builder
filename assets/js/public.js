@@ -41,33 +41,47 @@ class Public {
 		} );
 	}
 
+	setFwrContainers( $col, $fwrContainer ) {
+		var colBgColor = $col.css( 'background-color' ),
+			colBgImg = $col.css( 'background-image' ),
+			colStyle = $col.attr( 'style' ) ? $col.attr( 'style' ) : '';
+
+		$col.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
+			var matches = /col-([\w]+-[\d]+)/i.exec( className );
+			if ( matches && 2 === matches.length ) {
+				$fwrContainer.addClass( 'fwr-' + matches[1] );
+			}
+		} );
+
+		if ( colBgColor && colBgImg ) {
+			$fwrContainer.attr( 'style', `background-image: ${colBgImg}; background-color: ${colBgColor};` );
+			colStyle = colStyle + 'background-image: unset !important; background-color: unset !important;';
+			$col.attr( 'style', colStyle );
+		} else if ( colBgColor ) {
+			$fwrContainer.attr( 'style', `background-color: ${colBgColor};` );
+			colStyle = colStyle + 'background-color: unset !important;';
+			$col.attr( 'style', colStyle );
+		} else if ( colBgImg ) {
+			$fwrContainer.attr( 'style', `background-image: ${colBgImg};` );
+			colStyle = colStyle + 'background-image: unset !important;';
+			$col.attr( 'style', colStyle );
+		}
+	}
+
 	/**
 	 * Setup Full Width Rows.
 	 */
 	setupFullWidthRows() {
-		$( '.row.full-width-row' ).each( function() {
-			var $this     = $( this ),
+		$( '.row.full-width-row' ).each( ( index, el ) => {
+			var $this     = $( el ),
 				$firstCol = $this.children( 'div[class^="col-"]' ).first(),
-				$lastCol  = $this.children( 'div[class^="col-"]' ).last(),
-				firstColStyle = $firstCol.attr( 'style' ),
-				lastColStyle  = $lastCol.attr( 'style' ),
-				paddingPattern = /(padding:[\s\d\w]*;)/,
-				firstColPadding = firstColStyle.match( paddingPattern ),
-				lastColPadding  = lastColStyle.match( paddingPattern );
+				$lastCol  = $this.children( 'div[class^="col-"]' ).last();
 
-			console.log( {
-				firstColPadding: firstColStyle.match( paddingPattern ),
-				lastColPadding: lastColStyle.match( paddingPattern )
-			} );
+			$this.append( '<div class="fwr-container"><div class="fwr-left-container"></div><div class="fwr-right-container"></div></div>' );
 
-			if ( 1 < firstColPadding.length ) {
-				$this.find( '.fwr-left' ).attr( 'style', firstColPadding[1] );
-				$firstCol.attr( 'style', firstColStyle.replace( paddingPattern, 'padding: 0;' ) );
-			}
-			if ( 1 < lastColPadding.length ) {
-				$this.find( '.fwr-right' ).attr( 'style', lastColPadding[1] );
-				$lastCol.attr( 'style', lastColStyle.replace( paddingPattern, 'padding: 0;' ) );
-			}
+			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
+			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
+
 		} );
 	}
 

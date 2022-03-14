@@ -95,20 +95,6 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 				} else {
 					$target.addClass( 'full-width-row' );
 				}
-
-				if ( false === value && 0 !== $firstCol.children( '.fwr-left' ).length ) {
-					$firstCol
-						.children( '.fwr-left' )
-						.children()
-						.unwrap();
-					$lastCol
-						.children( '.fwr-right' )
-						.children()
-						.unwrap();
-				} else if ( true === value && 0 === $firstCol.children( '.fwr-left' ).length ) {
-					$firstCol.wrapInner( '<div class="fwr-left" />' );
-					$lastCol.wrapInner( '<div class="fwr-right" />' );
-				}
 			} );
 		}
 	};
