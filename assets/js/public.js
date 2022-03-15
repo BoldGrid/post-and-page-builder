@@ -43,8 +43,13 @@ class Public {
 
 	setFwrContainers( $col, $fwrContainer ) {
 		var colBgColor = $col.css( 'background-color' ),
+			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
 			colBgImg = $col.css( 'background-image' ),
-			colStyle = $col.attr( 'style' ) ? $col.attr( 'style' ) : '';
+			colBgSize = $col.css( 'background-size' ) ? $col.css( 'background-size' ) : '',
+			colBgPos = $col.css( 'background-position' ) ? $col.css( 'background-position' ) : '',
+			colStyle = $col.attr( 'style' ) ? $col.attr( 'style' ) : '',
+			colCss   = '';
 
 		$col.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
 			var matches = /col-([\w]+-[\d]+)/i.exec( className );
@@ -53,19 +58,44 @@ class Public {
 			}
 		} );
 
+		$col.addClass( fwrUuid );
+		$fwrContainer.addClass( fwrUuid );
+
+		colCss += '@media only screen and (min-width: 992px) {';
+
 		if ( colBgColor && colBgImg ) {
-			$fwrContainer.attr( 'style', `background-image: ${colBgImg}; background-color: ${colBgColor};` );
-			colStyle = colStyle + 'background-image: unset !important; background-color: unset !important;';
-			$col.attr( 'style', colStyle );
+			colCss += `.fwr-container div.${fwrUuid} {
+				background-color: ${colBgColor};
+				background-image: ${colBgImg};
+				background-size: ${colBgSize};
+				background-position: ${colBgPos};
+			}
+			.row.full-width-row > div.${fwrUuid} {
+				background-image: unset !important;
+				background-color: unset !important;
+				z-index: 1;
+			}`;
 		} else if ( colBgColor ) {
-			$fwrContainer.attr( 'style', `background-color: ${colBgColor};` );
-			colStyle = colStyle + 'background-color: unset !important;';
-			$col.attr( 'style', colStyle );
+			colCss += `.fwr-container div.${fwrUuid} {
+				background-color: ${colBgColor};
+			}
+			.row.full-width-row > div.${fwrUuid} {
+				background-color: unset !important;
+			}`;
 		} else if ( colBgImg ) {
-			$fwrContainer.attr( 'style', `background-image: ${colBgImg};` );
-			colStyle = colStyle + 'background-image: unset !important;';
-			$col.attr( 'style', colStyle );
+			colCss += `.fwr-container div.${fwrUuid} {
+				background-image: ${colBgImg};
+				background-size: ${colBgSize};
+				background-position: ${colBgPos};
+			}
+			.row.full-width-row > div.${fwrUuid} {
+				background-image: unset !important;
+			}`;
 		}
+		colCss += '}';
+
+		$style.html( colCss );
+		$( 'head' ).append( $style );
 	}
 
 	/**
