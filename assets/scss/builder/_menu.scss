@@ -256,7 +256,14 @@
 }
 
 .mce-viewsize-monitor-imhwpb {
-	min-width:1065px !important;
+	width:1200px !important;
+	margin: 0 auto !important;
+	z-index: 10;
+}
+
+.mce-viewsize-large-imhwpb {
+	max-width: 100% !important;
+	min-width: 1270px !important;
 	margin: 0 auto !important;
 	z-index: 10;
 }

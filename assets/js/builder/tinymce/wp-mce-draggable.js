@@ -32,6 +32,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.phone_width_needed = 620; //480 + 300;
 	this.tablet_width_needed = 1250; //890 + 300;
 	this.desktop_width_needed = 1270; //1100 + 300;
+	this.large_width_needed = 1920; //1100 + 300;
 
 	var menu_items = [];
 
@@ -349,6 +350,15 @@ IMHWPB.WP_MCE_Draggable = function() {
 				min_visible();
 			}
 
+		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
+			if ( 2180 < window.innerWidth ) {
+				all_elements_visible();
+			} else if ( 1920 < window.innerWidth ) {
+				collapse_sidebar();
+			} else {
+				min_visible();
+			}
+
 			// Tablet type Selected.
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1250 < window.innerWidth ) {
@@ -409,9 +419,11 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.update_device_highlighting = function() {
 		if ( BG.Controls.$container.$iframe && ! self.draggable_inactive ) {
 			var iframe_width = BG.Controls.$container.$iframe.width();
-			if ( 1061 < iframe_width ) {
+			if ( 1269 < iframe_width) {
+				self.highlight_screen_size( 'large' );
+			} else if ( 992 < iframe_width ) {
 				self.highlight_screen_size( 'desktop' );
-			} else if ( 837 < iframe_width ) {
+			} else if ( 620 < iframe_width ) {
 				self.highlight_screen_size( 'tablet' );
 			} else {
 				self.highlight_screen_size( 'phone' );

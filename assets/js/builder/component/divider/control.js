@@ -85,7 +85,7 @@ import ComponentConfig from '@boldgrid/components/src/components/config';
 
 		getTemplate() {
 			return `<div class="row bg-editor-hr-wrap">
-						<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 							<p><div class="bg-hr bg-hr-16"></div></p>
 						</div>
 					</div>`;

@@ -133,19 +133,19 @@ body {
 <div class="redacted-placeholder">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
 				voluptatem.
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
 				voluptatem.
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
@@ -160,7 +160,7 @@ body {
 <div class="redacted-placeholder">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
@@ -168,7 +168,7 @@ body {
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis.
 			</div>
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
