@@ -351,15 +351,14 @@ IMHWPB.WP_MCE_Draggable = function() {
 			}
 
 		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 2180 < window.innerWidth ) {
+			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1920 < window.innerWidth ) {
+			} else if ( 1355 < window.innerWidth ) {
 				collapse_sidebar();
 			} else {
 				min_visible();
 			}
 
-			// Tablet type Selected.
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1250 < window.innerWidth ) {
 				all_elements_visible();
