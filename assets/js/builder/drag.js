@@ -1436,10 +1436,12 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	};
 
 	this.getNewColumnString = function() {
-		var string = 'col-lg-1 col-md-1 col-sm-12 col-xs-12';
+		var string = 'col-lg-12 col-md-1 col-sm-12 col-xs-12';
+
 		switch ( self.active_resize_class ) {
 			case 'col-lg':
-				string = 'col-lg-1 col-md-1 col-sm-12 col-xs-12';
+				string = 'col-lg-1 col-md-12 col-sm-12 col-xs-12';
+				break;
 			case 'col-sm':
 				string = 'col-lg-12 col-md-12 col-sm-1 col-xs-12';
 				break;

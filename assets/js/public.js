@@ -61,34 +61,34 @@ class Public {
 		$col.addClass( fwrUuid );
 		$fwrContainer.addClass( fwrUuid );
 
-		colCss += '@media only screen and (min-width: 992px) {';
+		colCss += '@media only screen and (min-width: 1200px) {';
 
 		if ( colBgColor && colBgImg ) {
-			colCss += `.fwr-container div.${fwrUuid} {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			.row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
 				background-image: unset !important;
 				background-color: unset !important;
 				z-index: 1;
 			}`;
 		} else if ( colBgColor ) {
-			colCss += `.fwr-container div.${fwrUuid} {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 			}
-			.row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
 				background-color: unset !important;
 			}`;
 		} else if ( colBgImg ) {
-			colCss += `.fwr-container div.${fwrUuid} {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			.row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
 				background-image: unset !important;
 			}`;
 		}
