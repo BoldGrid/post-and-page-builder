@@ -48,13 +48,18 @@ class Public {
 			colBgImg = $col.css( 'background-image' ),
 			colBgSize = $col.css( 'background-size' ) ? $col.css( 'background-size' ) : '',
 			colBgPos = $col.css( 'background-position' ) ? $col.css( 'background-position' ) : '',
-			colStyle = $col.attr( 'style' ) ? $col.attr( 'style' ) : '',
-			colCss   = '';
+			colCss   = '',
+			colorClass = '';
 
 		$col.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
 			var matches = /col-([\w]+-[\d]+)/i.exec( className );
 			if ( matches && 2 === matches.length ) {
 				$fwrContainer.addClass( 'fwr-' + matches[1] );
+			}
+
+			matches = /color([\d]+|neutral)-background-color/i.exec( className );
+			if ( matches && 2 === matches.length ) {
+				$fwrContainer.addClass( className );
 			}
 		} );
 
@@ -111,8 +116,20 @@ class Public {
 
 			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
 			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
+			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
 
 		} );
+	}
+
+	setZIndexes( $firstCol, $lastCol ) {
+		var firstColWidth = $firstCol.outerWidth(),
+			lastColWidth  = $lastCol.outerWidth();
+
+		if ( firstColWidth > lastColWidth ) {
+			$lastCol.css( 'z-index', 1 );
+		} else {
+			$firstCol.css( 'z-index', 1 );
+		}
 	}
 
 	/**

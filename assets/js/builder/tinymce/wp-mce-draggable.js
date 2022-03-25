@@ -332,29 +332,20 @@ IMHWPB.WP_MCE_Draggable = function() {
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1355 < window.innerWidth ) {
-				collapse_sidebar();
-			} else if ( 1041 < window.innerWidth ) {
+			} else {
 				min_visible();
-			} else if ( 1040 >= window.innerWidth ) {
-				self.set_num_columns( 2 );
 			}
-
 			// Monitor type Selected.
-		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
+		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1355 < window.innerWidth ) {
-				collapse_sidebar();
 			} else {
 				min_visible();
 			}
 
-		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
+		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1355 < window.innerWidth ) {
-				collapse_sidebar();
 			} else {
 				min_visible();
 			}
