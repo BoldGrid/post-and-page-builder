@@ -197,6 +197,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $panel = BG.Panel.$element,
 				$menu = BG.Controls.$menu,
 				$target = $menu.targetData[self.name],
+				hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
 				$selected;
 
 			if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {

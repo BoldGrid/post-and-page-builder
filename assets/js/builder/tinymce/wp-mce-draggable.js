@@ -330,38 +330,40 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1920 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 			// Monitor type Selected.
 		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1920 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 
 		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1920 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1250 < window.innerWidth ) {
+			if ( 1920 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1134 < window.innerWidth ) {
-				collapse_sidebar();
 			} else {
 				min_visible();
 			}
 
 			// Phone type Selected.
 		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
-			all_elements_visible();
+			if ( 1920 < window.innerWidth ) {
+				all_elements_visible();
+			} else {
+				min_visible();
+			}
 		}
 	};
 

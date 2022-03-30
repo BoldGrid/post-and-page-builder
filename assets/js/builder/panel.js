@@ -637,11 +637,6 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			BOLDGRID.EDITOR.mce.undoManager.add();
 
 			BOLDGRID.EDITOR.Menu.activateControl( control );
-			console.log( {
-				method: 'Panel.open',
-				control: control,
-				target: $target
-			} );
 			this.currentControl = control;
 			this.$element.addClass( 'ui-widget-content' );
 			this.setDimensions( control.panel.width, control.panel.height );
