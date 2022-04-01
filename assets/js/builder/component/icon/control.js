@@ -26,7 +26,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		panel: {
 			title: 'Change Icon',
-			height: '675px',
+			height: '735px',
 			width: '335px',
 			includeFooter: true,
 			customizeLeaveCallback: true,
@@ -197,12 +197,22 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $panel = BG.Panel.$element,
 				$menu = BG.Controls.$menu,
 				$target = $menu.targetData[self.name],
+				$parent = $target.parent(),
 				hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
+				isHoverChild = false,
 				$selected;
 
-			if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {
+			if ( $parent.hasClass( 'has-hover-bg' ) ) {
+				isHoverChild = true;
+			} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {
+				isHoverChild = true;
+			} else if ( $target.is( 'div.row' ) && 0 !== $parent.parents( 'has-hover-bg' ).length ) {
+				isHoverChild = true;
+			}
+
+			if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 				this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
-			} else if ( -1 === hoverVisibilityIndex ) {
+			} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 				this.panel.customizeSupport.push( 'hoverVisibility' );
 			}
 
