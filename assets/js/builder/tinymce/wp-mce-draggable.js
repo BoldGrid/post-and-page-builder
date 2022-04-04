@@ -32,6 +32,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.phone_width_needed = 620; //480 + 300;
 	this.tablet_width_needed = 1250; //890 + 300;
 	this.desktop_width_needed = 1270; //1100 + 300;
+	this.large_width_needed = 1920; //1100 + 300;
 
 	var menu_items = [];
 
@@ -290,7 +291,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	/**
 	 * Event to fire once the user resizes their window
 	 */
-	this.resize_done_event = function() {
+	this.resize_done_event = function( e ) {
 		self.updateScreenLayout();
 		self.updateResizingIframe();
 
@@ -329,17 +330,19 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1600 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1355 < window.innerWidth ) {
-				collapse_sidebar();
-			} else if ( 1041 < window.innerWidth ) {
+			} else if ( 1600 >= window.innerWidth ) {
 				min_visible();
-			} else if ( 1040 >= window.innerWidth ) {
-				self.set_num_columns( 2 );
+			}
+			// Monitor type Selected.
+		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
+			if ( 1600 < window.innerWidth ) {
+				all_elements_visible();
+			} else if ( 1600 >= window.innerWidth ) {
+				min_visible();
 			}
 
-			// Monitor type Selected.
 		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
@@ -349,7 +352,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 				min_visible();
 			}
 
-			// Tablet type Selected.
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1250 < window.innerWidth ) {
 				all_elements_visible();
@@ -358,7 +360,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 			} else {
 				min_visible();
 			}
-
 			// Phone type Selected.
 		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
 			all_elements_visible();
@@ -409,9 +410,11 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.update_device_highlighting = function() {
 		if ( BG.Controls.$container.$iframe && ! self.draggable_inactive ) {
 			var iframe_width = BG.Controls.$container.$iframe.width();
-			if ( 1061 < iframe_width ) {
+			if ( 1199 < iframe_width) {
+				self.highlight_screen_size( 'large' );
+			} else if ( 992 < iframe_width ) {
 				self.highlight_screen_size( 'desktop' );
-			} else if ( 837 < iframe_width ) {
+			} else if ( 620 < iframe_width ) {
 				self.highlight_screen_size( 'tablet' );
 			} else {
 				self.highlight_screen_size( 'phone' );

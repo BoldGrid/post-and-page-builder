@@ -37,6 +37,7 @@ export class Advanced {
 
 	_setTargetType( targetType ) {
 		BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', targetType );
+		BG.Panel.$element.attr( 'data-element-type', targetType );
 	}
 
 	/**
@@ -69,6 +70,8 @@ export class Advanced {
 		} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
+
+		this.panel.targetType = targetType;
 
 		BG.Panel.clear();
 		BG.Panel.showFooter();

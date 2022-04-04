@@ -32,4 +32,9 @@
 	.ui-slider-horizontal {
 		width: 65%;
 	}
+	&.customize-open {
+		.slimScrollBar {
+			display: none !important;
+		}
+	}
 }

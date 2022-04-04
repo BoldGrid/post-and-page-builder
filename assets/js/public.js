@@ -17,9 +17,119 @@ class Public {
 			this.initWowJs();
 			this.setupHoverBoxes();
 			this.detectFillColors();
+			this.addColLg();
+			this.setupFullWidthRows();
 		} );
 
 		return this;
+	}
+
+	/**
+	 * Add col-lg to columns that do not have it.
+	 */
+	addColLg() {
+		$( 'div[class^="col-"]' ).each( function() {
+			var $this = $( this ),
+				classes = $this.attr( 'class' ),
+				mdSize = classes.match( /col-md-([\d]+)/i ),
+				lgSize = classes.match( /col-lg-([\d]+)/i );
+
+			if ( mdSize && ! lgSize ) {
+				$this.addClass( `col-lg-${mdSize[1]}` );
+			}
+
+		} );
+	}
+
+	setFwrContainers( $col, $fwrContainer ) {
+		var colBgColor = $col.css( 'background-color' ),
+			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
+			colBgImg = $col.css( 'background-image' ),
+			colBgSize = $col.css( 'background-size' ) ? $col.css( 'background-size' ) : '',
+			colBgPos = $col.css( 'background-position' ) ? $col.css( 'background-position' ) : '',
+			colCss   = '',
+			colorClass = '';
+
+		$col.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
+			var matches = /col-([\w]+-[\d]+)/i.exec( className );
+			if ( matches && 2 === matches.length ) {
+				$fwrContainer.addClass( 'fwr-' + matches[1] );
+			}
+
+			matches = /color([\d]+|neutral)-background-color/i.exec( className );
+			if ( matches && 2 === matches.length ) {
+				$fwrContainer.addClass( className );
+			}
+		} );
+
+		$col.addClass( fwrUuid );
+		$fwrContainer.addClass( fwrUuid );
+
+		colCss += '@media only screen and (min-width: 1200px) {';
+
+		if ( colBgColor && colBgImg ) {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
+				background-color: ${colBgColor};
+				background-image: ${colBgImg};
+				background-size: ${colBgSize};
+				background-position: ${colBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+				background-image: unset !important;
+				background-color: unset !important;
+				z-index: 1;
+			}`;
+		} else if ( colBgColor ) {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
+				background-color: ${colBgColor};
+			}
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+				background-color: unset !important;
+			}`;
+		} else if ( colBgImg ) {
+			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
+				background-image: ${colBgImg};
+				background-size: ${colBgSize};
+				background-position: ${colBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+				background-image: unset !important;
+			}`;
+		}
+		colCss += '}';
+
+		$style.html( colCss );
+		$( 'head' ).append( $style );
+	}
+
+	/**
+	 * Setup Full Width Rows.
+	 */
+	setupFullWidthRows() {
+		$( '.row.full-width-row' ).each( ( index, el ) => {
+			var $this     = $( el ),
+				$firstCol = $this.children( 'div[class^="col-"]' ).first(),
+				$lastCol  = $this.children( 'div[class^="col-"]' ).last();
+
+			$this.append( '<div class="fwr-container"><div class="fwr-left-container"></div><div class="fwr-right-container"></div></div>' );
+
+			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
+			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
+			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
+
+		} );
+	}
+
+	setZIndexes( $firstCol, $lastCol ) {
+		var firstColWidth = $firstCol.outerWidth(),
+			lastColWidth  = $lastCol.outerWidth();
+
+		if ( firstColWidth > lastColWidth ) {
+			$lastCol.css( 'z-index', 1 );
+		} else {
+			$firstCol.css( 'z-index', 1 );
+		}
 	}
 
 	/**

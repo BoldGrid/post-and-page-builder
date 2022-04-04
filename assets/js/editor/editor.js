@@ -234,6 +234,24 @@ IMHWPB.Editor = function( $ ) {
 	/**
 	 * Adding three new buttons
 	 */
+	tinymce.PluginManager.add( 'large_view_imhwpb', function( editor, url ) {
+		if ( 'content' !== editor.id ) {
+			return;
+		}
+
+		editor.addButton( 'large_view_imhwpb', {
+			title: 'Large View',
+			icon: 'icon dashicons dashicons-desktop imhwpb-icon',
+			classes: 'displaysize-imhwpb widget btn boldgrid-large',
+			onclick: function( e ) {
+				self.activate_display( 'large', $( e.target ) );
+			}
+		} );
+	} );
+
+	/**
+	 * Adding three new buttons
+	 */
 	tinymce.PluginManager.add( 'monitor_view_imhwpb', function( editor, url ) {
 		if ( 'content' !== editor.id ) {
 			return;
@@ -241,7 +259,7 @@ IMHWPB.Editor = function( $ ) {
 
 		editor.addButton( 'monitor_view_imhwpb', {
 			title: 'Desktop View',
-			icon: 'icon dashicons dashicons-desktop imhwpb-icon',
+			icon: 'icon dashicons dashicons-laptop imhwpb-icon',
 			classes: 'displaysize-imhwpb widget btn boldgrid-desktop',
 			onclick: function( e ) {
 				self.activate_display( 'monitor', $( e.target ) );
@@ -404,7 +422,7 @@ IMHWPB.Editor = function( $ ) {
 									self.draggable.find_column_size( $current_node ) )
 						) {
 							$structure = $(
-								'<div class="row"><div class="col-md-12"></div></div>'
+								'<div class="row"><div class="col-lg-12 col-md-12"></div></div>'
 							);
 							$current_node.closest( '.row' ).after( $structure );
 							editor.selection.setCursorLocation(
@@ -429,7 +447,7 @@ IMHWPB.Editor = function( $ ) {
 						$newParagraph = $( '<p><br data-mce-bogus="1"></p>' );
 						$structure = $newParagraph;
 					} else {
-						$structure = $( '<div class="col-md-12"><p><br></p></div>' );
+						$structure = $( '<div class="col-lg-12 col-md-12"><p><br></p></div>' );
 						$newParagraph = $structure.find( 'p' );
 					}
 
@@ -965,7 +983,7 @@ IMHWPB.Editor = function( $ ) {
 	 */
 	this.remove_editor_styles = function() {
 		$( '#content_ifr' ).removeClass(
-			'mce-viewsize-phone-imhwpb mce-viewsize-tablet-imhwpb mce-viewsize-monitor-imhwpb'
+			'mce-viewsize-phone-imhwpb mce-viewsize-tablet-imhwpb mce-viewsize-monitor-imhwpb mce-viewsize-large-imhwpb'
 		);
 	};
 

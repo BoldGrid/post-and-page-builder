@@ -75,7 +75,7 @@ export class Instance {
 
 		// When the user clicks the add button.
 		this.component.js_control.onClick = () => {
-			var before = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">',
+			var before = '<div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">',
 				after = '</div></div>';
 
 			BG.Panel.showLoading();
@@ -137,7 +137,7 @@ export class Instance {
 
 		// When the shortcode is dropped.
 		this.component.js_control.onDragDrop = ( component, $target ) => {
-			var before = '<div class="row"><div class="col-md-12 col-sm-12 col-xs-12">',
+			var before = '<div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">',
 				after = '</div></div>';
 			this.insertedNode = true;
 

@@ -1,5 +1,10 @@
 .editor-panel[data-type="background"],
 .editor-panel[data-type="Advanced"] {
+	&:not( [data-element-type="row"] ) {
+		.section.full-width-rows {
+			display: none !important;
+		}
+	}
 	.customize-navigation[data-element-type="column"] {
 		.item[data-control-name="blockAlignment"],
 		.item[data-control-name="width"],

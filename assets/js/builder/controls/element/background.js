@@ -1534,6 +1534,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setElementType: function() {
 			self.elementType = this.checkElementType( self.$target );
 			BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', self.elementType );
+			self.panel.targetType = self.elementType;
 		},
 
 		/**

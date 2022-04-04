@@ -40,7 +40,7 @@
 <script type="text/html" id="tmpl-boldgrid-editor-empty-section">
 <div class="boldgrid-section"  style='background-color: #ddd'>
 	<div class="container">
-		<div class="row" style='padding-top:75px;padding-bottom:75px'><div class="col-md-12"></div></div>
+		<div class="row" style='padding-top:75px;padding-bottom:75px'><div class="col-lg-12 col-md-12"></div></div>
 	</div>
 </div>
 </script>

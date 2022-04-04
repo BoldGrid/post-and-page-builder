@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 1.17.1
+Stable tag: 1.18.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,11 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+=1.18.0=
+* New Feature: [FEATURE] Add drag and drop support for col-lg [#257](https://github.com/BoldGrid/post-and-page-builder/issues/257)
+* New Feature: Add Hover Boxes to Nested Rows [#346](https://github.com/BoldGrid/post-and-page-builder/issues/346)
+* New Feature: Add 'Full Width Row' Control [#359](https://github.com/BoldGrid/post-and-page-builder/issues/359)
 
 =1.17.1=
 * Bug Fix: Custom Classes option missing in 1.17.0 [#357](https://github.com/BoldGrid/post-and-page-builder/issues/357)
