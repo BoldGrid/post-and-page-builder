@@ -143,21 +143,6 @@ div#mce_fullscreen_actions + div {
 	}
 }
 
-
-@media screen and (min-width: 1470px) {
-	div#mce_fullscreen_actions + div {
-		.mce-container-body {
-			> .mce-container:nth-of-type( 2 ) {
-				display: inline-block;
-				width: fit-content;
-				> .mce-container-body {
-					display: inline-block;
-					width: fit-content;
-				}
-			}
-		}
-	}
-}
 .mce-container .mce-toolbar .mce-btn.mce-gridblock-icon button.gridblock-icon {
 	display: inline-block;
     text-decoration: none;
