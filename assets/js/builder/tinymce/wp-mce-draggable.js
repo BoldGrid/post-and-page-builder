@@ -292,9 +292,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 	 * Event to fire once the user resizes their window
 	 */
 	this.resize_done_event = function( e ) {
-		console.log( {
-			'resize_done_event': e
-		} );
 		self.updateScreenLayout();
 		self.updateResizingIframe();
 
@@ -330,10 +327,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 	};
 
 	this.updateScreenLayout = function() {
-
-		console.log( {
-			'BOLDGRID.EDITOR': BOLDGRID.EDITOR
-		} );
 
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
