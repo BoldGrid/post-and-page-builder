@@ -26,10 +26,36 @@ export class Sanitize {
 	cleanup( markup ) {
 		var $markup = $( '<div>' + markup + '</div>' );
 		this.removeClasses( $markup );
+		this.cleanupButtons( $markup );
 
 		BG.Service.event.emit( 'cleanup', $markup );
 
 		return $markup.html();
+	}
+
+	/**
+	 * Cleanup Buttons.
+	 *
+	 * Remove duplicated button classes.
+	 *
+	 * @param {*} $context
+	 */
+	cleanupButtons( $context ) {
+		var buttons = {
+				primary: $context.find( '.button-primary' ),
+				secondary: $context.find( '.button-secondary' )
+			},
+			buttonClasses = BoldgridEditor.builder_config.theme_buttons;
+
+		buttons.primary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.primary );
+		} );
+
+		buttons.secondary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.secondary );
+		} );
 	}
 
 	/**

@@ -143,7 +143,6 @@ import { Border } from './generic/border';
 					customizationOption = customizationOption.toLowerCase();
 					customizationOption =
 						customizationOption.charAt( 0 ).toUpperCase() + customizationOption.slice( 1 );
-
 					$control = BG.CONTROLS.GENERIC[customizationOption].render( addOptions );
 					BG.CONTROLS.GENERIC[customizationOption].bind( addOptions );
 				}

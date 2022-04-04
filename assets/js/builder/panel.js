@@ -63,8 +63,14 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 *
 		 * @since 1.3
 		 */
-		setTitle: function( title ) {
-			this.$element.find( '.panel-title .name' ).html( title );
+		setTitle: function( title, targetType ) {
+			var formattedTitle;
+			if ( 'string' === typeof targetType ) {
+				formattedTitle = targetType.charAt( 0 ).toUpperCase() + targetType.slice( 1 );
+				this.$element.find( '.panel-title .name' ).html( formattedTitle + ' - ' + title );
+			} else {
+				this.$element.find( '.panel-title .name' ).html( title );
+			}
 		},
 
 		/**
@@ -631,11 +637,10 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			BOLDGRID.EDITOR.mce.undoManager.add();
 
 			BOLDGRID.EDITOR.Menu.activateControl( control );
-
 			this.currentControl = control;
 			this.$element.addClass( 'ui-widget-content' );
 			this.setDimensions( control.panel.width, control.panel.height );
-			this.setTitle( control.panel.title );
+			this.setTitle( control.panel.title, control.panel.targetType );
 			this.$element.attr( 'data-type', control.name );
 			this.$element.find( '.panel-body' ).attr( 'data-control-name', control.name );
 			this._enableFooter( control.panel );

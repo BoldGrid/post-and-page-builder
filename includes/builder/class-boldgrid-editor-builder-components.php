@@ -135,8 +135,8 @@ class Boldgrid_Editor_Builder_Components {
 
 		foreach ( $xpath->query( '//*[@data-font-family]' ) as $node ) {
 			$family  = $node->getAttribute( 'data-font-family' );
-			$weight  = $node->getAttribute( 'data-font-weight' );
-			$variant = $node->getAttribute( 'data-font-style' ) ?: 'regular';
+			$weight  = '400' === $node->getAttribute( 'data-font-weight' ) ? 'regular' : $node->getAttribute( 'data-font-weight' );
+			$variant = $node->getAttribute( 'data-font-style' ) ? $node->getAttribute( 'data-font-style' ) : 'regular';
 
 			// Combine font famillies.
 			if ( $family && ! empty( $googleFonts[ $family ] ) ) {

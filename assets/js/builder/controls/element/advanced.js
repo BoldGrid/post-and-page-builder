@@ -37,6 +37,7 @@ export class Advanced {
 
 	_setTargetType( targetType ) {
 		BG.Panel.$element.find( '.customize-navigation' ).attr( 'data-element-type', targetType );
+		BG.Panel.$element.attr( 'data-element-type', targetType );
 	}
 
 	/**
@@ -45,16 +46,28 @@ export class Advanced {
 	 * @since 1.6.0
 	 */
 	openPanel( $target, targetType ) {
-		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
+		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
+			$parent = $target.parent(),
+			isHoverChild;
 
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
 
-		if ( ! $target.parent().hasClass( 'has-hover-bg' ) ) {
+		if ( $parent.hasClass( 'has-hover-bg' ) ) {
+			isHoverChild = true;
+		} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {
+			isHoverChild = true;
+		} else if ( $target.is( 'div.row' ) && 0 !== $parent.parents( 'has-hover-bg' ).length ) {
+			isHoverChild = true;
+		}
+
+		if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 			this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
-		} else if ( -1 === hoverVisibilityIndex ) {
+		} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
+
+		this.panel.targetType = targetType;
 
 		BG.Panel.clear();
 		BG.Panel.showFooter();

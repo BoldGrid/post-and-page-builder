@@ -120,7 +120,7 @@ class Menu extends \WP_Widget {
 			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
 			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
 
-			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone' ) ) );
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
 			$class    .= ' ' . $ham_class;
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . ' ' . $align . '">';
@@ -137,7 +137,7 @@ class Menu extends \WP_Widget {
 			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
 			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
 
-			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone' ) ) );
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
 			$class    .= ' ' . $ham_class;
 
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . '">';

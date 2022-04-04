@@ -118,6 +118,7 @@ class Boldgrid_Editor_MCE {
 		$editor_js_file = plugins_url( $file, BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
 
 		$plugin_array = (array) $plugin_array;
+		$plugin_array['large_view_imhwpb'] = $editor_js_file;
 		$plugin_array['monitor_view_imhwpb'] = $editor_js_file;
 		$plugin_array['tablet_view_imhwpb'] = $editor_js_file;
 		$plugin_array['phone_view_imhwpb'] = $editor_js_file;
@@ -138,6 +139,7 @@ class Boldgrid_Editor_MCE {
 	 * @return array.
 	 */
 	public function register_mce_button( $buttons ) {
+		array_push( $buttons, 'large_view_imhwpb' );
 		array_push( $buttons, 'monitor_view_imhwpb' );
 		array_push( $buttons, 'tablet_view_imhwpb' );
 		array_push( $buttons, 'phone_view_imhwpb' );
