@@ -376,8 +376,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 				all_elements_visible();
 			} else if ( 1134 < window.innerWidth ) {
 				collapse_sidebar();
-			if ( 1470 < window.innerWidth ) {
-				all_elements_visible();
 			} else {
 				min_visible();
 			}
