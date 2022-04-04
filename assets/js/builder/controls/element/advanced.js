@@ -53,6 +53,10 @@ export class Advanced {
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
 
+		if ( 'row' === targetType ) {
+			$parent = $target.parents( '.boldgrid-section' );
+		}
+
 		if ( $parent.hasClass( 'has-hover-bg' ) ) {
 			isHoverChild = true;
 		} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {

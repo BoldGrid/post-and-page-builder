@@ -134,6 +134,10 @@ WordPress Editor.
 
 == Changelog ==
 
+=1.17.1=
+* Bug Fix: Custom Classes option missing in 1.17.0 [#357](https://github.com/BoldGrid/post-and-page-builder/issues/357)
+* Bug Fix: Cannot work with icons [#356](https://github.com/BoldGrid/post-and-page-builder/issues/356)
+
 = 1.17.0 =
 * New Feature: Ability to use multiple colors in headings [#260](https://github.com/BoldGrid/post-and-page-builder/issues/260)
 * New Feature: Add wave / swirl designs between sections or as column separators [#306] (https://github.com/BoldGrid/post-and-page-builder/issues/306)
