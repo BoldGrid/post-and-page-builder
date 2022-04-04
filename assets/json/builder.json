@@ -153,7 +153,7 @@
         "[data-tooltip-id='text-effect']": "Use Effects to add shadows and make text more pronounced.",
         "[data-tooltip-id='horizontal-block-alignment']": "Note: This control will have no effect if your element is full width.",
         "[data-tooltip-id='width']": "Change the width of this element proportionally to it's container.",
-		"[data-tooltip-id='full-width-rows']": "Note: This should only be used with pages utilizing the Max Full Width layout option in Crio.",
+        "[data-tooltip-id='full-width-rows']": "Note: This should only be used with pages utilizing the Max Full Width layout option in Crio.",
         "[data-tooltip-id='box-padding']": "Padding is used to create space around your content, inside your text background.",
         "[data-tooltip-id='custom-classes']": "These class names must be defined in your theme or through the Customizer.",
         "[data-tooltip-id='box-margin']": "Margin is used to create space around your background, outside your text background.",
