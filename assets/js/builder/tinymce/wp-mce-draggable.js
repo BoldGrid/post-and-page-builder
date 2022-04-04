@@ -291,7 +291,10 @@ IMHWPB.WP_MCE_Draggable = function() {
 	/**
 	 * Event to fire once the user resizes their window
 	 */
-	this.resize_done_event = function() {
+	this.resize_done_event = function( e ) {
+		console.log( {
+			'resize_done_event': e
+		} );
 		self.updateScreenLayout();
 		self.updateResizingIframe();
 
@@ -328,30 +331,40 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 	this.updateScreenLayout = function() {
 
+		console.log( {
+			'BOLDGRID.EDITOR': BOLDGRID.EDITOR
+		} );
+
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1920 < window.innerWidth ) {
+			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 			// Monitor type Selected.
 		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1920 < window.innerWidth ) {
+			 if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 
 		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1920 < window.innerWidth ) {
+			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
 			}
 
+		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
+			if ( 1470 < window.innerWidth ) {
+				all_elements_visible();
+			} else {
+				min_visible();
+			}
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1920 < window.innerWidth ) {
+			if ( 1470 <= window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
@@ -359,7 +372,11 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 			// Phone type Selected.
 		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1920 < window.innerWidth ) {
+			if ( 1470 < window.innerWidth ) {
+				all_elements_visible();
+			} else if ( 1134 < window.innerWidth ) {
+				collapse_sidebar();
+			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
