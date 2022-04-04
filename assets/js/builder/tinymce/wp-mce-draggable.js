@@ -344,6 +344,13 @@ IMHWPB.WP_MCE_Draggable = function() {
 			}
 			// Monitor type Selected.
 		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
+			 if ( 1470 < window.innerWidth ) {
+				all_elements_visible();
+			} else {
+				min_visible();
+			}
+
+		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else {
@@ -357,7 +364,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 				min_visible();
 			}
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1700 <= window.innerWidth ) {
+			if ( 1470 <= window.innerWidth ) {
 				all_elements_visible();
 			} else {
 				min_visible();
@@ -365,10 +372,12 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 			// Phone type Selected.
 		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1250 < window.innerWidth ) {
+			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
 			} else if ( 1134 < window.innerWidth ) {
 				collapse_sidebar();
+			if ( 1470 < window.innerWidth ) {
+				all_elements_visible();
 			} else {
 				min_visible();
 			}
