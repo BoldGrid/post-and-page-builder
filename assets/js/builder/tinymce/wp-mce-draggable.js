@@ -330,48 +330,39 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1600 < window.innerWidth ) {
 				all_elements_visible();
-			} else {
+			} else if ( 1600 >= window.innerWidth ) {
 				min_visible();
 			}
 			// Monitor type Selected.
 		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
-			 if ( 1470 < window.innerWidth ) {
+			if ( 1600 < window.innerWidth ) {
 				all_elements_visible();
-			} else {
+			} else if ( 1600 >= window.innerWidth ) {
 				min_visible();
 			}
 
 		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
+			} else if ( 1355 < window.innerWidth ) {
+				collapse_sidebar();
 			} else {
 				min_visible();
 			}
 
-		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
-				all_elements_visible();
-			} else {
-				min_visible();
-			}
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 <= window.innerWidth ) {
-				all_elements_visible();
-			} else {
-				min_visible();
-			}
-
-			// Phone type Selected.
-		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1250 < window.innerWidth ) {
 				all_elements_visible();
 			} else if ( 1134 < window.innerWidth ) {
 				collapse_sidebar();
 			} else {
 				min_visible();
 			}
+			// Phone type Selected.
+		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
+			all_elements_visible();
 		}
 	};
 
@@ -419,7 +410,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.update_device_highlighting = function() {
 		if ( BG.Controls.$container.$iframe && ! self.draggable_inactive ) {
 			var iframe_width = BG.Controls.$container.$iframe.width();
-			if ( 1269 < iframe_width) {
+			if ( 1199 < iframe_width) {
 				self.highlight_screen_size( 'large' );
 			} else if ( 992 < iframe_width ) {
 				self.highlight_screen_size( 'desktop' );
