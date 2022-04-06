@@ -13,6 +13,7 @@ import {
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
 import { Border } from './generic/border';
+import { Outline } from './generic/outline';
 
 ( function( $ ) {
 	'use strict';
@@ -31,6 +32,7 @@ import { Border } from './generic/border';
 			'box-shadow': BoxShadow,
 			'border-radius': BorderRadius,
 			border: Border,
+			outline: Outline,
 			'device-visibility': DeviceVisibility,
 			animation: Animation,
 			'background-color': BackgroundColor,
@@ -44,6 +46,7 @@ import { Border } from './generic/border';
 			'animation',
 			'padding',
 			'border',
+			'outline',
 			'box-shadow',
 			'border-radius',
 			'width',
@@ -136,6 +139,11 @@ import { Border } from './generic/border';
 					addOptions = customizeSupportOptions[this];
 				}
 
+				console.log( {
+					method: 'BOLDGRID.EDITOR.CONTROLS.Generic.initControls',
+					customizationOption: customizationOption,
+					addOptions: addOptions
+				} );
 				if ( self.bgControls[customizationOption] ) {
 					$control = self.appendBasicBGControl( addOptions, self.bgControls[customizationOption] );
 				} else {

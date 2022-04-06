@@ -120,6 +120,16 @@ import { Palette } from './color/palette';
 		},
 
 		/**
+		 * Remove border styles.
+		 *
+		 * @since 1.2.7
+		 */
+		resetOutlineClasses: function( $el ) {
+			$el.removeClass( self.borderColorClasses.join( ' ' ) );
+			BG.Controls.addStyle( $el, 'outline-color', '' );
+		},
+
+		/**
 		 * Add any extra classes to the panel on load.
 		 *
 		 * @since 1.2.7

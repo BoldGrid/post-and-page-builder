@@ -14,6 +14,7 @@ export class Advanced {
 				'margin',
 				'padding',
 				'border',
+				'outline',
 				'width',
 				'box-shadow',
 				'border-radius',

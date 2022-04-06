@@ -43,6 +43,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				'margin',
 				'padding',
 				'box-shadow',
+				'outline',
 				'border',
 				'border-radius',
 				'animation',
