@@ -52,6 +52,7 @@ import { Outline } from './generic/outline';
 			'width',
 			'device-visibility',
 			'blockAlignment',
+			'responsiveAlignment',
 			'customClasses'
 		],
 
@@ -139,11 +140,6 @@ import { Outline } from './generic/outline';
 					addOptions = customizeSupportOptions[this];
 				}
 
-				console.log( {
-					method: 'BOLDGRID.EDITOR.CONTROLS.Generic.initControls',
-					customizationOption: customizationOption,
-					addOptions: addOptions
-				} );
 				if ( self.bgControls[customizationOption] ) {
 					$control = self.appendBasicBGControl( addOptions, self.bgControls[customizationOption] );
 				} else {

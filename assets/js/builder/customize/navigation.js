@@ -12,6 +12,7 @@ import borderRadius from '../../../../assets/image/icons/customize-nav/border-ra
 import customClasses from '../../../../assets/image/icons/customize-nav/custom-class.svg';
 import widthSvg from '../../../../assets/image/icons/customize-nav/width.svg';
 import blockAlignment from '../../../../assets/image/icons/customize-nav/block-align.svg';
+import responsiveAlignment from '../../../../assets/image/icons/customize-nav/responsive-align.svg';
 import colorSvg from '../../../../assets/image/icons/customize-nav/color.svg';
 import backgroundColorSvg from '../../../../assets/image/icons/customize-nav/background-color.svg';
 import rotateSvg from '../../../../assets/image/icons/customize-nav/rotate.svg';
@@ -41,6 +42,11 @@ export class Navigation {
 				{ name: 'animation', icon: animationSvg, label: 'Animation' },
 				{ name: 'width', icon: widthSvg, label: 'Width' },
 				{ name: 'blockAlignment', icon: blockAlignment, label: 'Block Alignment' },
+				{
+					name: 'responsiveAlignment',
+					icon: responsiveAlignment,
+					label: 'Responsive Text Alignment'
+				},
 				{ name: 'device-visibility', icon: devicesSvg, label: 'Responsive Utilities' },
 				{ name: 'hoverVisibility', icon: hoverSvg, label: 'Hover Visibility' },
 				{ name: 'customClasses', icon: customClasses, label: 'Custom CSS Classes' }
