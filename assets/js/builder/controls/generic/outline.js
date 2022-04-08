@@ -23,9 +23,16 @@ export class Outline extends OutlineWidth {
 	 * @return {jQuery} Control element.
 	 */
 	render() {
+		this.$target = BG.Menu.getCurrentTarget();
+
+		console.log( {
+			method: 'render',
+			target: this.$target,
+			outline: this.$target.css( 'outline-style' )
+		} );
+
 		let $control = super.render();
 
-		this.$target = BG.Menu.getCurrentTarget();
 		this.$colorControl = this.createControl();
 
 		this.$control.append( this.$colorControl );

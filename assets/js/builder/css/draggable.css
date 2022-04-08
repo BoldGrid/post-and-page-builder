@@ -72,7 +72,7 @@ iframe[src^="https://maps.google.com"] {
 .content-border-imhwpb,
 .resize-border-right-imhwpb.content-border-imhwpb + [class*="col-md"],
 .resize-border-left-imhwpb {
-	outline: 1px solid #a7a7a7 !important;
+	outline: 1px solid #a7a7a7;
 }
 
 .dragging-section .content-border-imhwpb {

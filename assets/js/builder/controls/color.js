@@ -55,6 +55,14 @@ import { Palette } from './color/palette';
 			'color5-border-color'
 		],
 
+		outlineColorClasses: [
+			'color1-outline-color',
+			'color2-outline-color',
+			'color3-outline-color',
+			'color4-outline-color',
+			'color5-outline-color'
+		],
+
 		customColors: BoldgridEditor.saved_colors,
 
 		/**
@@ -125,7 +133,7 @@ import { Palette } from './color/palette';
 		 * @since 1.2.7
 		 */
 		resetOutlineClasses: function( $el ) {
-			$el.removeClass( self.borderColorClasses.join( ' ' ) );
+			$el.removeClass( self.outlineColorClasses.join( ' ' ) );
 			BG.Controls.addStyle( $el, 'outline-color', '' );
 		},
 

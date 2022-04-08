@@ -6,7 +6,7 @@ import template from '../../../../includes/template/customize/navigation.html';
 import marginSvg from '../../../../assets/image/icons/customize-nav/margin.svg';
 import paddingSvg from '../../../../assets/image/icons/customize-nav/padding.svg';
 import borderSvg from '../../../../assets/image/icons/customize-nav/border.svg';
-import outlineSvg from '../../../../assets/image/icons/customize-nav/border.svg';
+import outlineSvg from '../../../../assets/image/icons/customize-nav/outline.svg';
 import boxShadow from '../../../../assets/image/icons/customize-nav/box-shadow.svg';
 import borderRadius from '../../../../assets/image/icons/customize-nav/border-radius.svg';
 import customClasses from '../../../../assets/image/icons/customize-nav/custom-class.svg';
