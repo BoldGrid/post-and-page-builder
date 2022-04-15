@@ -116,6 +116,7 @@ class Public {
 
 			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
 			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
+			this.setFwrContainers( $this, $this.find( '.fwr-container' ) );
 			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
 
 		} );
