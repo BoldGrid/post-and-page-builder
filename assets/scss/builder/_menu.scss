@@ -9,6 +9,13 @@
 	right: 0;
 	text-align: center;
 
+	> ul {
+		> li {
+			width: 29px;
+			height: 29px;
+		}
+	}
+
 	ul {
 		text-align: center;
 		display: inline-block;
@@ -29,8 +36,6 @@
 		background-color: white;
 		transition: box-shadow .3s;
 		position: relative;
-		width: 29px;
-		height: 29px;
 
 		&:hover .boldgrid-tooltip {
 			top: 39px;
