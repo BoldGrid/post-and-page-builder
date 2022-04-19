@@ -25,12 +25,6 @@ export class Outline extends OutlineWidth {
 	render() {
 		this.$target = BG.Menu.getCurrentTarget();
 
-		console.log( {
-			method: 'render',
-			target: this.$target,
-			outline: this.$target.css( 'outline-style' )
-		} );
-
 		let $control = super.render();
 
 		this.$colorControl = this.createControl();
@@ -51,12 +45,28 @@ export class Outline extends OutlineWidth {
 	 * @return {jQuery} Control element.
 	 */
 	createControl() {
-		let $control = $( _.template( template )( this.configs ) );
+		var $control = $( _.template( template )( this.configs ) ),
+			color = this.$target.css( this.configs.propertyName ),
+			classList = this.$target.attr( 'class' ).split( ' ' ),
+			colorsList = BoldgridEditor.colors,
+			colorClass;
+
+		classList.forEach( className => {
+			if ( className.includes( '-outline-color' ) ) {
+				colorClass = className.split( '-' )[0];
+				colorClass = colorClass.replace( 'color', '' );
+			}
+		} );
+
+		if ( colorClass ) {
+			color =
+				'neutral' === colorClass ?
+					colorsList.neutral :
+					colorsList.defaults[parseInt( colorClass ) - 1];
+		}
 
 		BG.Panel.$element.on( 'bg-customize-open', () => {
-			this.$control
-				.find( 'label.color-preview' )
-				.css( 'background-color', this.$target.css( this.configs.propertyName ) );
+			this.$control.find( 'label.color-preview' ).css( 'background-color', color );
 		} );
 
 		return $control;
@@ -72,7 +82,7 @@ export class Outline extends OutlineWidth {
 			var value = this.$input.val(),
 				type = this.$input.attr( 'data-type' );
 
-			BG.CONTROLS.Color.resetOutlineClasses( this.$target );
+			BG.CONTROLS.Color.resetOutlineClasses( this.$target, false );
 
 			if ( 'class' === type ) {
 				this.$target.addClass( BG.CONTROLS.Color.getColorClass( this.configs.propertyName, value ) );

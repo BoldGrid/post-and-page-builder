@@ -29,6 +29,8 @@
 		background-color: white;
 		transition: box-shadow .3s;
 		position: relative;
+		width: 29px;
+		height: 29px;
 
 		&:hover .boldgrid-tooltip {
 			top: 39px;
@@ -196,12 +198,9 @@
 			}
 
 			&.column-shape-background::before{
-				content: "\f2d0";
-				font-family: FontAwesome;
-				font-size: 20px;
-				text-align: center;
-				line-height: 25px;
-				color: #fff;
+				content: "";
+				background-image: url("../image/icons/grid/shape.svg");
+				background-position: 3px 3px;
 			}
 
 			&.section-background::before {

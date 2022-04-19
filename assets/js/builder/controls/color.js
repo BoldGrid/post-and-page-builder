@@ -132,9 +132,13 @@ import { Palette } from './color/palette';
 		 *
 		 * @since 1.2.7
 		 */
-		resetOutlineClasses: function( $el ) {
+		resetOutlineClasses: function( $el, resetAll = false ) {
 			$el.removeClass( self.outlineColorClasses.join( ' ' ) );
 			BG.Controls.addStyle( $el, 'outline-color', '' );
+			if ( resetAll ) {
+				BG.Controls.addStyle( $el, 'outline-width', '' );
+				BG.Controls.addStyle( $el, 'outline-offset', '' );
+			}
 		},
 
 		/**

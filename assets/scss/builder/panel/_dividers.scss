@@ -72,7 +72,17 @@
 	}
 }
 .boldgrid-instance-menu {
-	span.fa-map-o {
-		transform: rotate(90deg);
+	.menu-dividers {
+		width: 30px;
+		height: 30px;
+	}
+	span.section-divider-icon {
+		width: 24px;
+		height: 24px;
+		&:before {
+			content: url(../image/icons/shape-divider-icon.svg);
+			width: 24px;
+			height: 24px;
+		}
 	}
 }
