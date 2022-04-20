@@ -26,6 +26,8 @@ class Public {
 
 	/**
 	 * Add col-lg to columns that do not have it.
+	 *
+	 * @since 1.18.0
 	 */
 	addColLg() {
 		$( 'div[class^="col-"]' ).each( function() {
@@ -41,7 +43,80 @@ class Public {
 		} );
 	}
 
-	setFwrContainers( $col, $fwrContainer ) {
+	/**
+	 * Moves background color from $row to $fwrContainer.
+	 *
+	 * @since 1.19.0
+	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {object} $fwrContainer Full width row container jQuery object.
+	 */
+	setFwrContainerRow( $row, $fwrContainer ) {
+		var rowBgColor = $row.css( 'background-color' ),
+			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
+			rowBgImg = $row.css( 'background-image' ),
+			rowBgSize = $row.css( 'background-size' ) ? $row.css( 'background-size' ) : '',
+			rowBgPos = $row.css( 'background-position' ) ? $row.css( 'background-position' ) : '',
+			rowCss   = '';
+
+			$row.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
+				var matches = /color([\d]+|neutral)-background-color/i.exec( className );
+
+				if ( matches && 2 === matches.length ) {
+					$fwrContainer.addClass( className );
+				}
+			} );
+
+			$row.addClass( fwrUuid );
+			$fwrContainer.addClass( fwrUuid );
+
+			rowCss += '@media only screen and (min-width: 1200px) {';
+
+		if ( rowBgColor && rowBgImg && 'none' !== rowBgImg ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-color: ${rowBgColor};
+				background-image: ${rowBgImg};
+				background-size: ${rowBgSize};
+				background-position: ${rowBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-image: unset !important;
+				background-color: unset !important;
+				z-index: 1;
+			}`;
+		} else if ( rowBgColor ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-color: ${rowBgColor};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-color: unset !important;
+			}`;
+		} else if ( rowBgImg && 'none' !== rowBgImg ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-image: ${rowBgImg};
+				background-size: ${rowBgSize};
+				background-position: ${rowBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-image: unset !important;
+			}`;
+		}
+		rowCss += '}';
+
+		$style.html( rowCss );
+		$( 'head' ).append( $style );
+	}
+
+	/**
+	 * Moves background from $col to $fwrContainer.
+	 *
+	 * @since 1.18.0
+	 *
+	 * @param {object} $col Column jQuery object.
+	 * @param {object} $fwrContainer Full width row container jQuery object.
+	 */
+	setFwrContainerCols( $col, $fwrContainer ) {
 		var colBgColor = $col.css( 'background-color' ),
 			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
 			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
@@ -68,14 +143,14 @@ class Public {
 
 		colCss += '@media only screen and (min-width: 1200px) {';
 
-		if ( colBgColor && colBgImg ) {
+		if ( colBgColor && colBgImg && 'none' !== colBgImg ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-image: unset !important;
 				background-color: unset !important;
 				z-index: 1;
@@ -84,16 +159,16 @@ class Public {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-color: unset !important;
 			}`;
-		} else if ( colBgImg ) {
+		} else if ( colBgImg && 'none' !== colBgImg ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-image: unset !important;
 			}`;
 		}
@@ -105,6 +180,8 @@ class Public {
 
 	/**
 	 * Setup Full Width Rows.
+	 *
+	 * @since 1.18.0
 	 */
 	setupFullWidthRows() {
 		$( '.row.full-width-row' ).each( ( index, el ) => {
@@ -114,14 +191,22 @@ class Public {
 
 			$this.append( '<div class="fwr-container"><div class="fwr-left-container"></div><div class="fwr-right-container"></div></div>' );
 
-			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
-			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
-			this.setFwrContainers( $this, $this.find( '.fwr-container' ) );
+			this.setFwrContainerCols( $firstCol, $this.find( '.fwr-left-container' ) );
+			this.setFwrContainerCols( $lastCol, $this.find( '.fwr-right-container' ) );
+			this.setFwrContainerRow( $this, $this.find( '.fwr-container' ) );
 			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
 
 		} );
 	}
 
+	/**
+	 * Set Z Indexes of first and last column.
+	 *
+	 * @since 1.18.0
+	 *
+	 * @param {object} $firstCol First Column jQuery object.
+	 * @param {object} $lastCol Last Column jQuery object.
+	 */
 	setZIndexes( $firstCol, $lastCol ) {
 		var firstColWidth = $firstCol.outerWidth(),
 			lastColWidth  = $lastCol.outerWidth();
@@ -136,7 +221,7 @@ class Public {
 	/**
 	 * Setup frontend Hover Box effects.
 	 *
-	 * @since 1.7.0
+	 * @since 1.17.0
 	 */
 	setupHoverBoxes() {
 		var $hoverBoxes = $( '.has-hover-bg' ),
