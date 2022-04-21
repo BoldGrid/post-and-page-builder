@@ -18,7 +18,7 @@ export class Outline extends OutlineWidth {
 	/**
 	 * Render the control.
 	 *
-	 * @since 1.6
+	 * @since 1.19.0
 	 *
 	 * @return {jQuery} Control element.
 	 */
@@ -40,7 +40,7 @@ export class Outline extends OutlineWidth {
 	/**
 	 * Create a control.
 	 *
-	 * @since 1.6.0
+	 * @since 1.19.0
 	 *
 	 * @return {jQuery} Control element.
 	 */
@@ -75,7 +75,7 @@ export class Outline extends OutlineWidth {
 	/**
 	 * Setup outline color change event.
 	 *
-	 * @since 1.6.0
+	 * @since 1.19.0
 	 */
 	_bind() {
 		this.$input.on( 'change', () => {

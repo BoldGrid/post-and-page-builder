@@ -128,9 +128,12 @@ import { Palette } from './color/palette';
 		},
 
 		/**
-		 * Remove border styles.
+		 * Remove outline styles.
 		 *
-		 * @since 1.2.7
+		 * @param {object} $el      jQuery element.
+		 * @param {bool}   resetAll If true, reset all styles.
+		 *
+		 * @since 1.19.0
 		 */
 		resetOutlineClasses: function( $el, resetAll = false ) {
 			$el.removeClass( self.outlineColorClasses.join( ' ' ) );

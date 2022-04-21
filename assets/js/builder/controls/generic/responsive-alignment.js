@@ -12,6 +12,13 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 	BOLDGRID.EDITOR.CONTROLS.GENERIC.Responsivealignment = {
 		template: wp.template( 'boldgrid-editor-responsive-text-alignment' ),
 
+		/**
+		 * Render the control.
+		 *
+		 * @since 1.19.0
+		 *
+		 * @returns {object} control jQuery object.
+		 */
 		render: function() {
 			let $control = $( this.template() );
 
@@ -24,6 +31,11 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 			return $control;
 		},
 
+		/**
+		 * Bind event.
+		 *
+		 * @since 1.19.0
+		 */
 		bind: function() {
 			var $section = BG.Panel.$element.find( '.section.responsive-text-alignment' ),
 				$el = BG.Menu.getCurrentTarget(),
@@ -38,6 +50,14 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 			} );
 		},
 
+		/**
+		 * Bind Input changes.
+		 *
+		 * @since 1.19.0
+		 *
+		 * @param {object} $buttonset Buttonset jQuery object.
+		 * @param {object} $el Target element jQuery object.
+		 */
 		bindInputs: function( $buttonset, $el ) {
 			var device = $buttonset.attr( 'data-device' ),
 				$inputs = $buttonset.find( 'input' ),
@@ -54,6 +74,14 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 			} );
 		},
 
+		/**
+		 * Apply preset alignment.
+		 *
+		 * @since 1.19.0
+		 *
+		 * @param {object} $buttonset Buttonset jQuery object.
+		 * @param {object} $el        Target element jQuery object.
+		 */
 		applyPreset: function( $buttonset, $el ) {
 			var device = $buttonset.attr( 'data-device' ),
 				$inputs = $buttonset.find( 'input' ),
