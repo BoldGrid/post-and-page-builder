@@ -48,9 +48,12 @@ export class Advanced {
 	 * @since 1.6.0
 	 */
 	openPanel( $target, targetType ) {
-		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-			$parent = $target.parent(),
-			isHoverChild;
+		var hoverVisibilityIndex,
+			responsiveAlignmentIndex,
+			isHoverChild,
+			theme = BoldgridEditor.current_theme,
+			isCrio = 'prime' === theme || 'crio' === theme ? true : false,
+			$parent = $target.parent();
 
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
@@ -67,11 +70,26 @@ export class Advanced {
 			isHoverChild = true;
 		}
 
+		hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
+
 		if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 			this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
 		} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
+
+		responsiveAlignmentIndex = this.panel.customizeSupport.indexOf( 'responsiveAlignment' );
+
+		if ( ! isCrio && -1 !== responsiveAlignmentIndex ) {
+			this.panel.customizeSupport.splice( responsiveAlignmentIndex, 1 );
+		} else if ( isCrio && -1 === responsiveAlignmentIndex ) {
+			this.panel.customizeSupport.push( 'hoverVisibility' );
+		}
+
+		console.log( {
+			method: 'openPanel',
+			customizeSupport: this.panel.customizeSupport
+		} );
 
 		this.panel.targetType = targetType;
 
