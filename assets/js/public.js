@@ -102,10 +102,71 @@ class Public {
 				background-image: unset !important;
 			}`;
 		}
+
+		rowCss += this.marginAdjustmentCss( $row, fwrUuid );
 		rowCss += '}';
 
 		$style.html( rowCss );
 		$( 'head' ).append( $style );
+	}
+
+	/**
+	 * Make adjustments to row css to accommodate
+	 * left / right margins.
+	 *
+	 * @since 1.19.0
+	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {string} fwrUuid Full width row container uuid.
+	 *
+	 * @return {string} Css string.
+	 */
+	marginAdjustmentCss( $row, fwrUuid ) {
+		var rowMarginLeft       = parseInt( $row.css( 'margin-left' ) ),
+			rowMarginRight      = parseInt( $row.css( 'margin-right' ) ),
+			css                 = `body[data-container=max-full-width] .fwr-container.${fwrUuid} {`,
+			widthAdjustment     = 0,
+			leftAdjustment      = 0,
+			transformAdjustment = 0;
+
+		// If no positive margins are set, return an empty css string to skip adjustment.
+		if ( 0 >= rowMarginLeft && 0 >= rowMarginRight ) {
+			return '';
+		}
+
+		/*
+		 * The CSS needed depends on whether there are left, right, or both margins.
+		 * Since the fwr-container row is absolute positioned, we give it a margin by
+		 * adjusting it's absolute size and position instead.
+		 *
+		 * If both left and right margins are set, we need to adjust the width, left
+		 * positioning, AND the transform property to center the row. If we only have
+		 * a left or right margin, we only need to adjust the width property, because the
+		 * 50% transform will make sure the margin is applied on the correct side.
+		 *
+		 * 1. Left + Right Margins
+		 * 2. Left Margin only
+		 * 3. Right Margin only
+		 */
+		if ( 0 < rowMarginLeft && 0 < rowMarginRight ) {
+			leftAdjustment      = 10 + rowMarginRight;
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			transformAdjustment = 10 + rowMarginLeft;
+			css += `left: calc( 50% - ${leftAdjustment}px ) !important;`;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+			css += `transform: translateX(calc( -50% + ${transformAdjustment}px ) ) !important;`;
+		} else if ( 0 < rowMarginLeft && 0 >= rowMarginRight ) {
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+		} else if ( 0 >= rowMarginLeft && 0 < rowMarginRight ) {
+			leftAdjustment      = 10 + rowMarginRight;
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+		}
+
+		css += '}';
+
+		return css;
 	}
 
 	/**
@@ -194,7 +255,7 @@ class Public {
 			this.setFwrContainerCols( $firstCol, $this.find( '.fwr-left-container' ) );
 			this.setFwrContainerCols( $lastCol, $this.find( '.fwr-right-container' ) );
 			this.setFwrContainerRow( $this, $this.find( '.fwr-container' ) );
-			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
+			this.setZIndexes( $this, index, $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
 
 		} );
 	}
@@ -204,12 +265,16 @@ class Public {
 	 *
 	 * @since 1.18.0
 	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {int}    index Index of row.
 	 * @param {object} $firstCol First Column jQuery object.
 	 * @param {object} $lastCol Last Column jQuery object.
 	 */
-	setZIndexes( $firstCol, $lastCol ) {
+	setZIndexes( $row, rowIndex, $firstCol, $lastCol ) {
 		var firstColWidth = $firstCol.outerWidth(),
 			lastColWidth  = $lastCol.outerWidth();
+
+		$row.css( 'z-index', 10 - rowIndex );
 
 		if ( firstColWidth > lastColWidth ) {
 			$lastCol.css( 'z-index', 1 );
