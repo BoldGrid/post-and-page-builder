@@ -47,16 +47,20 @@ export class Outline extends OutlineWidth {
 	createControl() {
 		var $control = $( _.template( template )( this.configs ) ),
 			color = this.$target.css( this.configs.propertyName ),
-			classList = this.$target.attr( 'class' ).split( ' ' ),
+			classList = this.$target.attr( 'class' ),
 			colorsList = BoldgridEditor.colors,
-			colorClass;
+			colorClass = false;
 
-		classList.forEach( className => {
-			if ( className.includes( '-outline-color' ) ) {
-				colorClass = className.split( '-' )[0];
-				colorClass = colorClass.replace( 'color', '' );
-			}
-		} );
+		if ( 'string' === typeof classList ) {
+			classList = this.$target.attr( 'class' ).split( ' ' );
+
+			classList.forEach( className => {
+				if ( className.includes( '-outline-color' ) ) {
+					colorClass = className.split( '-' )[0];
+					colorClass = colorClass.replace( 'color', '' );
+				}
+			} );
+		}
 
 		if ( colorClass ) {
 			color =
