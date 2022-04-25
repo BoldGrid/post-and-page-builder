@@ -86,11 +86,6 @@ export class Advanced {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
 		}
 
-		console.log( {
-			method: 'openPanel',
-			customizeSupport: this.panel.customizeSupport
-		} );
-
 		this.panel.targetType = targetType;
 
 		BG.Panel.clear();
