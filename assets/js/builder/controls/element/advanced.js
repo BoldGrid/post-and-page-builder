@@ -50,6 +50,7 @@ export class Advanced {
 	openPanel( $target, targetType ) {
 		var hoverVisibilityIndex,
 			responsiveAlignmentIndex,
+			outlineIndex,
 			isHoverChild,
 			theme = BoldgridEditor.current_theme,
 			isCrio = 'prime' === theme || 'crio' === theme ? true : false,
@@ -84,6 +85,14 @@ export class Advanced {
 			this.panel.customizeSupport.splice( responsiveAlignmentIndex, 1 );
 		} else if ( isCrio && -1 === responsiveAlignmentIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
+		}
+
+		outlineIndex = this.panel.customizeSupport.indexOf( 'outline' );
+
+		if ( ! isCrio && -1 !== outlineIndex ) {
+			this.panel.customizeSupport.splice( outlineIndex, 1 );
+		} else if ( isCrio && -1 === outlineIndex ) {
+			this.panel.customizeSupport.push( 'outline' );
 		}
 
 		this.panel.targetType = targetType;
