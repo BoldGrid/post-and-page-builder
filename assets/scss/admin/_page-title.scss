@@ -20,3 +20,9 @@
 .php-error #adminmenuback, .php-error #adminmenuwrap {
 	margin-top: 0 !important;
 }
+
+.wp-admin.post-php {
+	h1, h2, h3, h4, h5, h6 {
+		font-family: inherit;
+	}
+}
