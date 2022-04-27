@@ -7,19 +7,21 @@ export class Advanced {
 
 		this.panel = {
 			title: 'Advanced',
-			height: '650px',
+			height: '575px',
 			width: '375px',
 			customizeCallback: true,
 			customizeSupport: [
 				'margin',
 				'padding',
 				'border',
+				'outline',
 				'width',
 				'box-shadow',
 				'border-radius',
 				'animation',
 				'background-color',
 				'blockAlignment',
+				'responsiveAlignment',
 				'device-visibility',
 				'customClasses'
 			]
@@ -46,9 +48,13 @@ export class Advanced {
 	 * @since 1.6.0
 	 */
 	openPanel( $target, targetType ) {
-		var hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-			$parent = $target.parent(),
-			isHoverChild;
+		var hoverVisibilityIndex,
+			responsiveAlignmentIndex,
+			outlineIndex,
+			isHoverChild,
+			theme = BoldgridEditor.current_theme,
+			isCrio = 'prime' === theme || 'crio' === theme ? true : false,
+			$parent = $target.parent();
 
 		this.$target = $target;
 		BG.Menu.$element.targetData[this.name] = $target;
@@ -65,10 +71,28 @@ export class Advanced {
 			isHoverChild = true;
 		}
 
+		hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
+
 		if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 			this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
 		} else if ( isHoverChild && -1 === hoverVisibilityIndex ) {
 			this.panel.customizeSupport.push( 'hoverVisibility' );
+		}
+
+		responsiveAlignmentIndex = this.panel.customizeSupport.indexOf( 'responsiveAlignment' );
+
+		if ( ! isCrio && -1 !== responsiveAlignmentIndex ) {
+			this.panel.customizeSupport.splice( responsiveAlignmentIndex, 1 );
+		} else if ( isCrio && -1 === responsiveAlignmentIndex ) {
+			this.panel.customizeSupport.push( 'hoverVisibility' );
+		}
+
+		outlineIndex = this.panel.customizeSupport.indexOf( 'outline' );
+
+		if ( ! isCrio && -1 !== outlineIndex ) {
+			this.panel.customizeSupport.splice( outlineIndex, 1 );
+		} else if ( isCrio && -1 === outlineIndex ) {
+			this.panel.customizeSupport.push( 'outline' );
 		}
 
 		this.panel.targetType = targetType;

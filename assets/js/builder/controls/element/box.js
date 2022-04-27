@@ -36,13 +36,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		panel: {
 			title: 'Column Shape',
-			height: '625px',
+			height: '575px',
 			width: '350px',
 			customizeSupport: [
 				'width',
 				'margin',
 				'padding',
 				'box-shadow',
+				'outline',
 				'border',
 				'border-radius',
 				'animation',
@@ -548,7 +549,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		openPanel: function() {
 			var panel = BG.Panel,
-				template = wp.template( 'boldgrid-editor-box' );
+				template = wp.template( 'boldgrid-editor-box' ),
+				theme = BoldgridEditor.current_theme,
+				isCrio = 'prime' === theme || 'crio' === theme ? true : false,
+				outlineIndex = self.panel.customizeSupport.indexOf( 'outline' );
+
+			if ( ! isCrio && -1 !== outlineIndex ) {
+				self.panel.customizeSupport.splice( outlineIndex, 1 );
+			} else if ( isCrio && -1 === outlineIndex ) {
+				self.panel.customizeSupport.push( 'outline' );
+			}
 
 			self.updateUiStyles();
 

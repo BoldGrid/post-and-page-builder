@@ -9,6 +9,13 @@
 	right: 0;
 	text-align: center;
 
+	> ul {
+		> li {
+			width: 29px;
+			height: 29px;
+		}
+	}
+
 	ul {
 		text-align: center;
 		display: inline-block;
@@ -196,12 +203,9 @@
 			}
 
 			&.column-shape-background::before{
-				content: "\f2d0";
-				font-family: FontAwesome;
-				font-size: 20px;
-				text-align: center;
-				line-height: 25px;
-				color: #fff;
+				content: "";
+				background-image: url("../image/icons/grid/shape.svg");
+				background-position: 3px 3px;
 			}
 
 			&.section-background::before {
@@ -256,7 +260,7 @@
 }
 
 .mce-viewsize-monitor-imhwpb {
-	width:1200px !important;
+	width:1199px !important;
 	max-width: 100% !important;
 	margin: 0 auto !important;
 	z-index: 10;

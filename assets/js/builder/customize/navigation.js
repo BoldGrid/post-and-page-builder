@@ -6,11 +6,13 @@ import template from '../../../../includes/template/customize/navigation.html';
 import marginSvg from '../../../../assets/image/icons/customize-nav/margin.svg';
 import paddingSvg from '../../../../assets/image/icons/customize-nav/padding.svg';
 import borderSvg from '../../../../assets/image/icons/customize-nav/border.svg';
+import outlineSvg from '../../../../assets/image/icons/customize-nav/outline.svg';
 import boxShadow from '../../../../assets/image/icons/customize-nav/box-shadow.svg';
 import borderRadius from '../../../../assets/image/icons/customize-nav/border-radius.svg';
 import customClasses from '../../../../assets/image/icons/customize-nav/custom-class.svg';
 import widthSvg from '../../../../assets/image/icons/customize-nav/width.svg';
 import blockAlignment from '../../../../assets/image/icons/customize-nav/block-align.svg';
+import responsiveAlignment from '../../../../assets/image/icons/customize-nav/responsive-align.svg';
 import colorSvg from '../../../../assets/image/icons/customize-nav/color.svg';
 import backgroundColorSvg from '../../../../assets/image/icons/customize-nav/background-color.svg';
 import rotateSvg from '../../../../assets/image/icons/customize-nav/rotate.svg';
@@ -35,10 +37,16 @@ export class Navigation {
 				{ name: 'rotate', icon: rotateSvg, label: 'Rotate' },
 				{ name: 'border', icon: borderSvg, label: 'Border' },
 				{ name: 'border-radius', icon: borderRadius, label: 'Border Radius' },
+				{ name: 'outline', icon: outlineSvg, label: 'Outline' },
 				{ name: 'box-shadow', icon: boxShadow, label: 'Box Shadow' },
 				{ name: 'animation', icon: animationSvg, label: 'Animation' },
 				{ name: 'width', icon: widthSvg, label: 'Width' },
 				{ name: 'blockAlignment', icon: blockAlignment, label: 'Block Alignment' },
+				{
+					name: 'responsiveAlignment',
+					icon: responsiveAlignment,
+					label: 'Responsive Text Alignment'
+				},
 				{ name: 'device-visibility', icon: devicesSvg, label: 'Responsive Utilities' },
 				{ name: 'hoverVisibility', icon: hoverSvg, label: 'Hover Visibility' },
 				{ name: 'customClasses', icon: customClasses, label: 'Custom CSS Classes' }

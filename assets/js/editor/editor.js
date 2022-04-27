@@ -896,7 +896,7 @@ IMHWPB.Editor = function( $ ) {
 	/**
 	 * Wraps anchor contents in spaces to make it easier for the user to target
 	 */
-	this.reset_anchor_spaces = function( markup, add_spaces ) {
+	this.reset_anchor_spaces = function( markup, addSpaces ) {
 		var $markup = $( markup );
 
 		//Strip out added spaces
@@ -914,8 +914,12 @@ IMHWPB.Editor = function( $ ) {
 				html = html.substr( 0, html.length - 6 );
 			}
 
-			if ( add_spaces ) {
-				if ( $this.hasClass( 'btn' ) || $this.hasClass( 'button' ) ) {
+			if ( addSpaces ) {
+				if ( $this.hasClass( 'btn' ) ||
+					$this.hasClass( 'button' ) ||
+					$this.hasClass( 'button-primary' ) ||
+					$this.hasClass( 'button-secondary' ) ) {
+
 					// Wrap all buttons in spaces to make it easier for the user to target.
 					$this.html( '&nbsp;' + html + '&nbsp;' );
 				}

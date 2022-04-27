@@ -12,4 +12,13 @@
 			display: none !important;
 		}
 	}
+	.customize-navigation:not( [data-element-type="column"] ) {
+		.item[data-control-name="responsiveAlignment"] {
+			display: none !important;
+		}
+	}
+	.item[data-control-name="responsiveAlignment"] svg {
+		padding-top: 0px;
+		height: 30px;
+	}
 }

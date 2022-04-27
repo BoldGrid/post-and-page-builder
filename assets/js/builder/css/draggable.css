@@ -72,7 +72,7 @@ iframe[src^="https://maps.google.com"] {
 .content-border-imhwpb,
 .resize-border-right-imhwpb.content-border-imhwpb + [class*="col-md"],
 .resize-border-left-imhwpb {
-	outline: 1px solid #a7a7a7 !important;
+	outline: 1px solid #a7a7a7;
 }
 
 .dragging-section .content-border-imhwpb {
@@ -774,7 +774,7 @@ iframe[src^="https://maps.google.com"] {
 
 html {
 	background-color: #f1f1f1;
-	padding:30px 55px 200px 55px;
+	padding:30px 20px 200px 20px;
 }
 
 html #tinymce.mceContentBody  {

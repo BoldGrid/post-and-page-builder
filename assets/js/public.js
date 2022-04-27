@@ -26,6 +26,8 @@ class Public {
 
 	/**
 	 * Add col-lg to columns that do not have it.
+	 *
+	 * @since 1.18.0
 	 */
 	addColLg() {
 		$( 'div[class^="col-"]' ).each( function() {
@@ -41,7 +43,141 @@ class Public {
 		} );
 	}
 
-	setFwrContainers( $col, $fwrContainer ) {
+	/**
+	 * Moves background color from $row to $fwrContainer.
+	 *
+	 * @since 1.19.0
+	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {object} $fwrContainer Full width row container jQuery object.
+	 */
+	setFwrContainerRow( $row, $fwrContainer ) {
+		var rowBgColor = $row.css( 'background-color' ),
+			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
+			rowBgImg = $row.css( 'background-image' ),
+			rowBgSize = $row.css( 'background-size' ) ? $row.css( 'background-size' ) : '',
+			rowBgPos = $row.css( 'background-position' ) ? $row.css( 'background-position' ) : '',
+			rowCss   = '';
+
+			$row.attr( 'class' ).split( ' ' ).forEach( ( className ) => {
+				var matches = /color([\d]+|neutral)-background-color/i.exec( className );
+
+				if ( matches && 2 === matches.length ) {
+					$fwrContainer.addClass( className );
+				}
+			} );
+
+			$row.addClass( fwrUuid );
+			$fwrContainer.addClass( fwrUuid );
+
+			rowCss += '@media only screen and (min-width: 1200px) {';
+
+		if ( rowBgColor && rowBgImg && 'none' !== rowBgImg ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-color: ${rowBgColor};
+				background-image: ${rowBgImg};
+				background-size: ${rowBgSize};
+				background-position: ${rowBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-image: unset !important;
+				background-color: unset !important;
+				z-index: 1;
+			}`;
+		} else if ( rowBgColor ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-color: ${rowBgColor};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-color: unset !important;
+			}`;
+		} else if ( rowBgImg && 'none' !== rowBgImg ) {
+			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
+				background-image: ${rowBgImg};
+				background-size: ${rowBgSize};
+				background-position: ${rowBgPos};
+			}
+			body[data-container=max-full-width] .row.full-width-row {
+				background-image: unset !important;
+			}`;
+		}
+
+		rowCss += this.marginAdjustmentCss( $row, fwrUuid );
+		rowCss += '}';
+
+		$style.html( rowCss );
+		$( 'head' ).append( $style );
+	}
+
+	/**
+	 * Make adjustments to row css to accommodate
+	 * left / right margins.
+	 *
+	 * @since 1.19.0
+	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {string} fwrUuid Full width row container uuid.
+	 *
+	 * @return {string} Css string.
+	 */
+	marginAdjustmentCss( $row, fwrUuid ) {
+		var rowMarginLeft       = parseInt( $row.css( 'margin-left' ) ),
+			rowMarginRight      = parseInt( $row.css( 'margin-right' ) ),
+			css                 = `body[data-container=max-full-width] .fwr-container.${fwrUuid} {`,
+			widthAdjustment     = 0,
+			leftAdjustment      = 0,
+			transformAdjustment = 0;
+
+		// If no positive margins are set, return an empty css string to skip adjustment.
+		if ( 0 >= rowMarginLeft && 0 >= rowMarginRight ) {
+			return '';
+		}
+
+		/*
+		 * The CSS needed depends on whether there are left, right, or both margins.
+		 * Since the fwr-container row is absolute positioned, we give it a margin by
+		 * adjusting it's absolute size and position instead.
+		 *
+		 * If both left and right margins are set, we need to adjust the width, left
+		 * positioning, AND the transform property to center the row. If we only have
+		 * a left or right margin, we only need to adjust the width property, because the
+		 * 50% transform will make sure the margin is applied on the correct side.
+		 *
+		 * 1. Left + Right Margins
+		 * 2. Left Margin only
+		 * 3. Right Margin only
+		 */
+		if ( 0 < rowMarginLeft && 0 < rowMarginRight ) {
+			leftAdjustment      = 10 + rowMarginRight;
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			transformAdjustment = 10 + rowMarginLeft;
+			css += `left: calc( 50% - ${leftAdjustment}px ) !important;`;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+			css += `transform: translateX(calc( -50% + ${transformAdjustment}px ) ) !important;`;
+		} else if ( 0 < rowMarginLeft && 0 >= rowMarginRight ) {
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+		} else if ( 0 >= rowMarginLeft && 0 < rowMarginRight ) {
+			leftAdjustment      = 10 + rowMarginRight;
+			widthAdjustment     = 10 + rowMarginLeft + rowMarginRight;
+			css += `width: calc(100vw - ${widthAdjustment}px ) !important;`;
+		}
+
+		css += '}';
+
+		return css;
+	}
+
+	/**
+	 * Moves background from $col to $fwrContainer.
+	 *
+	 * @since 1.18.0
+	 *
+	 * @param {object} $col Column jQuery object.
+	 * @param {object} $fwrContainer Full width row container jQuery object.
+	 */
+	setFwrContainerCols( $col, $fwrContainer ) {
 		var colBgColor = $col.css( 'background-color' ),
 			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
 			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
@@ -68,14 +204,14 @@ class Public {
 
 		colCss += '@media only screen and (min-width: 1200px) {';
 
-		if ( colBgColor && colBgImg ) {
+		if ( colBgColor && colBgImg && 'none' !== colBgImg ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-image: unset !important;
 				background-color: unset !important;
 				z-index: 1;
@@ -84,16 +220,16 @@ class Public {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-color: ${colBgColor};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-color: unset !important;
 			}`;
-		} else if ( colBgImg ) {
+		} else if ( colBgImg && 'none' !== colBgImg ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
 				background-image: ${colBgImg};
 				background-size: ${colBgSize};
 				background-position: ${colBgPos};
 			}
-			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid} {
+			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-image: unset !important;
 			}`;
 		}
@@ -105,6 +241,8 @@ class Public {
 
 	/**
 	 * Setup Full Width Rows.
+	 *
+	 * @since 1.18.0
 	 */
 	setupFullWidthRows() {
 		$( '.row.full-width-row' ).each( ( index, el ) => {
@@ -114,16 +252,29 @@ class Public {
 
 			$this.append( '<div class="fwr-container"><div class="fwr-left-container"></div><div class="fwr-right-container"></div></div>' );
 
-			this.setFwrContainers( $firstCol, $this.find( '.fwr-left-container' ) );
-			this.setFwrContainers( $lastCol, $this.find( '.fwr-right-container' ) );
-			this.setZIndexes( $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
+			this.setFwrContainerCols( $firstCol, $this.find( '.fwr-left-container' ) );
+			this.setFwrContainerCols( $lastCol, $this.find( '.fwr-right-container' ) );
+			this.setFwrContainerRow( $this, $this.find( '.fwr-container' ) );
+			this.setZIndexes( $this, index, $this.find( '.fwr-left-container' ), $this.find( '.fwr-right-container' ) );
 
 		} );
 	}
 
-	setZIndexes( $firstCol, $lastCol ) {
+	/**
+	 * Set Z Indexes of first and last column.
+	 *
+	 * @since 1.18.0
+	 *
+	 * @param {object} $row Row jQuery object.
+	 * @param {int}    index Index of row.
+	 * @param {object} $firstCol First Column jQuery object.
+	 * @param {object} $lastCol Last Column jQuery object.
+	 */
+	setZIndexes( $row, rowIndex, $firstCol, $lastCol ) {
 		var firstColWidth = $firstCol.outerWidth(),
 			lastColWidth  = $lastCol.outerWidth();
+
+		$row.css( 'z-index', 10 - rowIndex );
 
 		if ( firstColWidth > lastColWidth ) {
 			$lastCol.css( 'z-index', 1 );
@@ -135,7 +286,7 @@ class Public {
 	/**
 	 * Setup frontend Hover Box effects.
 	 *
-	 * @since 1.7.0
+	 * @since 1.17.0
 	 */
 	setupHoverBoxes() {
 		var $hoverBoxes = $( '.has-hover-bg' ),
