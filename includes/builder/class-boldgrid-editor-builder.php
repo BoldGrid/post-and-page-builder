@@ -134,6 +134,14 @@ class Boldgrid_Editor_Builder {
 		global $boldgrid_theme_framework;
 
 		if ( empty( $boldgrid_theme_framework ) ) {
+			/**
+			 * Allow 3rd-Party Themes to add buttons
+			 *
+			 * @param array button_classes {
+			 * 	An key value array of button names and their classes
+			 *  'button-name' => 'classes'
+			 * }
+			 */
 			return apply_filters( 'third_party_theme_button_classes', array() );
 		}
 
@@ -174,6 +182,16 @@ class Boldgrid_Editor_Builder {
 			}
 
 			return $theme_buttons;
+	}
+
+	/**
+	 * Check if the current theme provides theme buttons
+	 *
+	 * @since 1.19.1
+	 * @return boolean
+	 */
+	public static function has_theme_buttons() {
+		return ! empty( self::get_theme_buttons() );
 	}
 
 	/**
