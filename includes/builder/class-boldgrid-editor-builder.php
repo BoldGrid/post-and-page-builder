@@ -135,11 +135,12 @@ class Boldgrid_Editor_Builder {
 
 		if ( empty( $boldgrid_theme_framework ) ) {
 			/**
-			 * Allow 3rd-Party Themes to add buttons
+			 * Allow 3rd-Party Themes to add buttons. BGTFW Themes do this with theme configs or customizer controls, but 3rd-Party developers only need to provide button names and classes.
 			 *
 			 * @param array button_classes {
-			 * 	An key value array of button names and their classes
-			 *  'button-name' => 'classes'
+			 * 	An key value array of button names and their classes.
+			 *  
+			 * 		@type string $button_name Name to be displayed in PPB button conrol. Accepts 'string' class names, space-delimited without preceeding dots. 
 			 * }
 			 */
 			return apply_filters( 'third_party_theme_button_classes', array() );
@@ -185,7 +186,7 @@ class Boldgrid_Editor_Builder {
 	}
 
 	/**
-	 * Check if the current theme provides theme buttons
+	 * Check if the current theme provides theme buttons.
 	 *
 	 * @since 1.19.1
 	 * @return boolean
