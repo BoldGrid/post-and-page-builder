@@ -350,6 +350,7 @@ class Boldgrid_Editor_Assets {
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
 			'shortcodes'             => $shortcode_keys,
 			'current_theme'          => get_stylesheet(),
+			'has_theme_buttons'      => BoldGrid_Editor_Builder::has_theme_buttons(),
 
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
