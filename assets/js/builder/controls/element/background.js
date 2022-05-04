@@ -412,7 +412,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						value = $this.val(),
 						type = $this.attr( 'data-type' ),
 						$currentSelection = BG.Panel.$element.find( '.current-selection' ),
-						selectionType = $currentSelection.attr( 'data-type' );
+						selectionType = $currentSelection.attr( 'data-type' ),
+						classFromColor = self.classFromColor( value ),
+						alphaFromColor = self.alphaFromColor( value );
 
 					self.removeColorClasses( $target );
 					BG.Controls.addStyle( $target, 'background-color', '' );
@@ -433,6 +435,18 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 							.addClass( 'bg-background-color' )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', value ) )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', value ) );
+					} else if ( classFromColor ) {
+						$target
+							.addClass( 'bg-background-color' )
+							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor ) )
+							.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', classFromColor ) )
+							.attr( 'data-alpha', alphaFromColor );
+
+						self.paletteAddAlpha(
+							$target,
+							value,
+							BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor )
+						);
 					} else {
 						BG.Controls.addStyle( $target, 'background-color', value );
 					}
@@ -515,6 +529,64 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					self.setImageSelection( 'hover-color' );
 				}
 			);
+		},
+
+		paletteAddAlpha( $target, value, bgColorClass ) {
+			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+				$head = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				css;
+
+			if ( $target.attr( 'data-bg-uuid' ) ) {
+				uuid = $target.attr( 'data-bg-uuid' );
+			} else {
+				$target.attr( 'data-bg-uuid', uuid );
+				$target.addClass( uuid );
+			}
+
+			$head.find( '#' + uuid + '-inline-style' ).remove();
+
+			css = `.${bgColorClass}.${uuid} {background-color: ${value} !important;}`;
+
+			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
+		},
+
+		alphaFromColor: function( color ) {
+			var alpha = 1;
+
+			if ( color.includes( 'rgba' ) ) {
+				alpha = color.replace( /rgba\(\d{1,3}\,\d{1,3}\,\d{1,3}\,(.*\))/, '$1' );
+				alpha = alpha.replace( ')', '' );
+			}
+
+			return alpha;
+		},
+
+		classFromColor: function( color ) {
+			var colors = BoldgridEditor.colors.defaults,
+				neutralColor = BoldgridEditor.colors.neutral,
+				colorClass = false;
+
+			if ( color.includes( 'rgba' ) ) {
+				color = color.replace( /(rgba\(\d{1,3}\,\d{1,3}\,\d{1,3})(.*\))/, '$1)' );
+				color = color.replace( 'rgba', 'rgb' );
+			} else {
+				return colorClass;
+			}
+
+			for ( let key in colors ) {
+				if ( colors[key] === color ) {
+					colorClass = parseInt( key ) + 1;
+					break;
+				}
+			}
+
+			if ( color === neutralColor ) {
+				colorClass = 'neutral';
+			}
+
+			return colorClass;
 		},
 
 		/**
