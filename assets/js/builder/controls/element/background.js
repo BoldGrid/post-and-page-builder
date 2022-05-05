@@ -1616,9 +1616,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setElementVisibility() {
 			var $target = self.getTarget(),
-				visibility = $target.hasClass( 'show-on-hover' ) ? 'show' : 'always',
-				visibility = $target.hasClass( 'hide-on-hover' ) ? 'hide' : visibility,
-				$radios = BG.Panel.$element.find( '.child-elements-visibility input' );
+				visibility = $target.hasClass( 'hover-mobile-bg' ) ? 'hover' : 'default',
+				$radios = BG.Panel.$element.find( '.mobile-only-visibility input' );
 
 			$radios.each( function() {
 				if ( $( this ).val() === visibility ) {
