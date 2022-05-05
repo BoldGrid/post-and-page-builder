@@ -13,7 +13,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		panel: {
 			title: 'Controls Information',
-			height: '575px',
+			height: '700px',
 			icon: 'fa fa-info',
 			width: '750px'
 		},
