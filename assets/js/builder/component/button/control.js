@@ -17,7 +17,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		iconClasses: 'fa fa-cog',
 
-		selectors: [ '.btn', 'a.button', 'a.button-secondary', 'a.button-primary' ],
+		selectors: [ '.btn', 'a.button', 'a.button-secondary', 'a.button-primary', '.ppb-button' ],
 
 		defaultColorClasses: [
 			{
