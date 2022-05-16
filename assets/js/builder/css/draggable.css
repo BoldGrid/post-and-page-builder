@@ -777,6 +777,12 @@ html {
 	padding:30px 20px 200px 20px;
 }
 
+@media screen and (max-width: 782px) {
+	html {
+		padding:30px 55px 200px 55px;
+	}
+}
+
 html #tinymce.mceContentBody  {
     max-width:100% !important;
     margin: 0 auto;
