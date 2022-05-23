@@ -918,7 +918,8 @@ IMHWPB.Editor = function( $ ) {
 				if ( $this.hasClass( 'btn' ) ||
 					$this.hasClass( 'button' ) ||
 					$this.hasClass( 'button-primary' ) ||
-					$this.hasClass( 'button-secondary' ) ) {
+					$this.hasClass( 'button-secondary' ) ||
+					$this.hasClass( 'ppb-button' ) ) {
 
 					// Wrap all buttons in spaces to make it easier for the user to target.
 					$this.html( '&nbsp;' + html + '&nbsp;' );
