@@ -53,8 +53,13 @@ class Plugins {
 		];
 
 		if ( empty( $config['premium']['is_premium'] ) ) {
-			$row_actions[] = '<a href="' . esc_url( $config['urls']['premium_key'] . '?source=bgppb-plugins-list' ) .
-				 '" target="_blank">' . esc_html__( 'Get Premium', 'boldgrid-editor' ) . '</a>';
+			$row_actions[] = '<a href="' . esc_url(
+				apply_filters(
+					'boldgrid_editor_premium_url',
+					$config['urls']['premium_key'] . '?source=bgppb-plugins-list'
+				)
+			) .
+				'" target="_blank">' . esc_html__( 'Get Premium', 'boldgrid-editor' ) . '</a>';
 		}
 
 		$actions = array_merge( $row_actions, $actions );
