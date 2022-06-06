@@ -15,6 +15,10 @@
 		<span>Loading Blocks</span>
 	</div>
 	<span class="filter-controls">
+	<span class="library-filter">
+			<label>Search</label>
+			<input type="text"></input>
+		</span>
 		<span class="boldgrid-gridblock-categories block-filter">
 			<label>Types</label>
 			<select></select>
@@ -52,9 +56,11 @@
 	data-category="{{data.category}}"
 	data-is-premium="{{data.is_premium ? 1 : 0}}"
 	data-license="{{data.license}}"
-	data-template="{{data.template}}">
+	data-template="{{data.template}}"
+	data-title="{{data.getTitle()}}">
 	<i class="fa fa-arrows" aria-hidden="true"></i>
 	<div class="add-gridblock"></div>
+	<div class="gridblock-title">{{data.getTitle()}}</div>
 	<div class="premium-label">
 		<img class="boldgrid-seal" src="{{BoldgridEditor.plugin_url + '/assets/image/bg-seal.png'}}">
 		Premium Block
