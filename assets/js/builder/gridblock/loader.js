@@ -57,7 +57,10 @@ import { WebFont } from '@boldgrid/controls';
 					maxPerLoad = 4;
 
 				$.each( BGGB.configs.gridblocks, function( index ) {
-					if ( ! this.renderScheduled && currentCount < maxPerLoad ) {
+					if (
+						! this.renderScheduled &&
+						( currentCount < maxPerLoad || 'library' === BGGB.Category.currentCategory )
+					) {
 						if ( BGGB.Category.canDisplayGridblock( this ) ) {
 							currentCount++;
 							this.renderScheduled = true;

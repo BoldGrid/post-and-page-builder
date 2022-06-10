@@ -86,6 +86,7 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		$shortcode_translated_html = wpautop( $html );
 
 		return array (
+			'template' => $post->post_title,
 			'html' => $shortcode_translated_html,
 			'preview_html' => self::run_shortcodes( $shortcode_translated_html ),
 			'type' => 'bg_block' === $post->post_type ? 'library' : 'saved',
