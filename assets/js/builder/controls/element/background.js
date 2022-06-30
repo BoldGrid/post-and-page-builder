@@ -531,6 +531,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			);
 		},
 
+		/**
+		 * Add color palette for overlays to the target.
+		 *
+		 * @param {object} $target      jQuery object of the target element.
+		 * @param {string} value        The value of the color.
+		 * @param {string} bgColorClass The color class string.
+		 */
+		paletteAddOverlayAlpha( $target, value, bgColorClass ) {
+			var image = $target.attr( 'data-image-url' ),
+				color = value;
+
+			BG.Controls.addStyle(
+				$target,
+				'background-image',
+				self.getOverlayImage( color ) + ', url("' + image + '")'
+			);
+		},
+
 		paletteAddAlpha( $target, value, bgColorClass ) {
 			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
 				$head = $( tinyMCE.activeEditor.iframeElement )
@@ -576,7 +594,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 
 			for ( let key in colors ) {
-				if ( colors[key] === color ) {
+				if ( colors[key].replace( /\s/g, '' ) === color ) {
 					colorClass = parseInt( key ) + 1;
 					break;
 				}
@@ -609,6 +627,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.css( 'background-color', 'rgba(255,255,255,.5)' );
 
 				$target.removeAttr( 'data-bg-overlaycolor' );
+				$target.removeAttr( 'data-bg-overlaycolor-alpha' );
+				$target.removeAttr( 'data-bg-overlaycolor-class' );
+
 				self.updateBackgroundImage();
 			} );
 		},
@@ -625,13 +646,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				var $this = $( this ),
 					type = $this.attr( 'data-type' ),
 					value = $this.val(),
-					$target = self.getTarget();
+					$target = self.getTarget(),
+					classFromColor = self.classFromColor( value ),
+					alphaFromColor = self.alphaFromColor( value );
 
 				if ( 'class' === type ) {
 					value = BoldgridEditor.colors.defaults[value - 1];
+					$target.attr( 'data-bg-overlaycolor', value );
+				} else if ( classFromColor ) {
+					$target.attr( 'data-bg-overlaycolor', value ),
+						$target.attr( 'data-bg-overlaycolor-alpha', alphaFromColor );
+					$target.attr( 'data-bg-overlaycolor-class', classFromColor );
+					self.paletteAddOverlayAlpha(
+						$target,
+						value,
+						BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor )
+					);
+				} else {
+					$target.attr( 'data-bg-overlaycolor', value );
 				}
-
-				$target.attr( 'data-bg-overlaycolor', value );
 
 				self.updateBackgroundImage();
 			} );
@@ -1161,6 +1194,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = self.getTarget(),
 				bgImageUrl = $target.attr( 'data-image-url' ),
 				bgColor = $target.css( 'background-color' ),
+				overlayColor = $target.attr( 'data-bg-overlaycolor' ),
 				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
 				hoverBgImageUrl = $target.attr( 'data-hover-image-url' ),
 				hoverColor = $target.attr( 'data-hover-bg-color' );
@@ -1189,7 +1223,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				}
 			} else {
 				$currentSelection.css( 'background-color', bgColor );
-				if ( bgImageUrl ) {
+				if ( bgImageUrl && overlayColor ) {
+					$currentSelection.css(
+						'background-image',
+						`${self.getOverlayImage( overlayColor )}, url('${bgImageUrl}')`
+					);
+				} else if ( bgImageUrl ) {
 					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
 				}
 			}
