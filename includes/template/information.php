@@ -38,14 +38,22 @@
 					available for buttons, images and icons.</li>
 				</ul>
 			</li>
+			<li>
+				<ul class="help-text">
+					<i class="fa fa-arrows-h" aria-hidden="true"></i>
+					<li class="control-name">Spans</li>
+					<li class="description">Changes the font color or style of actively highlighted text.
+						Use a span to make a single word in a heading a different color.</li>
+				</ul>
+			</li>
 		</ul>
 		<ul class="info-column">
-		<li>
-			<ul class="help-text">
-				<i class="fa fa-text-width" aria-hidden="true"></i>
-				<li class="control-name">Font</li>
-				<li class="description">Change the font for the currently selected element. Any element with text
-					will have this control enabled.</li>
+			<li>
+				<ul class="help-text">
+					<i class="fa fa-text-width" aria-hidden="true"></i>
+					<li class="control-name">Font</li>
+					<li class="description">Change the font for the currently selected element. Any element with text
+						will have this control enabled.</li>
 				</ul>
 			</li>
 			<li>
@@ -61,7 +69,7 @@
 				<ul class="help-text">
 					<i class="fa fa-minus" aria-hidden="true"></i>
 					<li class="control-name">Horizontal Line</li>
-					<li class="description">Change the design of a horinzonal line. Available after clicking on a
+					<li class="description">Change the design of a horizontal line. Available after clicking on a
 					horizontal line element.</li>
 				</ul>
 			</li>
@@ -70,6 +78,14 @@
 					<i class="fa fa-globe" aria-hidden="true"></i>
 					<li class="control-name">Global Options</li>
 					<li class="description">Update options specific to either this page or all of your pages. This option is always available.</li>
+				</ul>
+			</li>
+			<li>
+				<ul class="help-text">
+					<i class="section-divider-icon" aria-hidden="true"></i>
+					<li class="control-name">Shape Dividers</li>
+					<li class="description">Adds a design element to the top or bottom of a section.
+						Add the shape divider to a section with a background image to achieve the desired effect.</li>
 				</ul>
 			</li>
 		</ul>

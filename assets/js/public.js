@@ -16,12 +16,62 @@ class Public {
 			this.setupParallax();
 			this.initWowJs();
 			this.setupHoverBoxes();
+			this.addPalletteOverlayAlpha();
+			this.addPaletteAlphas();
 			this.detectFillColors();
 			this.addColLg();
 			this.setupFullWidthRows();
 		} );
 
 		return this;
+	}
+
+	/**
+	 * Add pallette color classes to overlay.
+	 */
+	addPalletteOverlayAlpha() {
+		var $alphaOverlayElements = $( '[data-bg-overlaycolor-alpha]' );
+
+		$alphaOverlayElements.each( function() {
+			var $this = $( this ),
+				palettePosition = $this.data( 'bg-overlaycolor-class' ),
+				alpha = $this.data( 'bg-overlaycolor-alpha' ),
+				image = $this.data( 'image-url' ),
+				styleString,
+				color;
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditorPublic.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditorPublic.colors.neutral;
+			}
+
+			color = color.replace( ')', ',' + alpha + ')' );
+
+			styleString = 'linear-gradient(to left, ' + color + ', ' + color + '), url("' + image + '")';
+
+			$this.css( 'background-image', styleString );
+		} );
+	}
+
+	addPaletteAlphas() {
+		var $bgAlphaElements = $( '[data-bg-uuid]' );
+
+		$bgAlphaElements.each( function() {
+			var $this = $( this ),
+				uuid = $this.data( 'bg-uuid' ),
+				$style = $( `<style id="${uuid}-inline-css"></style>` ),
+				bgColor = $this.css( 'background-color' ),
+				css = '';
+
+			bgColor = bgColor.replace( ')', ',' + $this.data( 'alpha' ) + ')' );
+
+			css += `.${uuid} { background-color: ${bgColor} !important; }`;
+
+			$style.html( css );
+
+			$( 'head' ).append( $style );
+		} );
 	}
 
 	/**

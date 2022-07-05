@@ -24,6 +24,9 @@ import { Industry } from './industry';
 				self.$filterSelectWrap = $( '.filter-controls' );
 				self.gridblockTemplate = wp.template( 'boldgrid-editor-gridblock' );
 				self.$filterSelect = self.$filterSelectWrap.find( '.boldgrid-gridblock-categories select' );
+
+				self.$libraryFilterWrap = $( '.library-filter' );
+				self.$libraryFilter = self.$libraryFilterWrap.find( 'input' );
 				self.findElements();
 
 				self.industry = new Industry();
@@ -42,6 +45,72 @@ import { Industry } from './industry';
 				self.templateClass = self.getTemplateClass();
 
 				self.fetchSaved = new FetchSaved();
+
+				self.setupLibraryFilter();
+			},
+
+			/**
+			 * Setup Block LIbrary search / filter.
+			 */
+			setupLibraryFilter() {
+				var debounceSearch = _.debounce( function() {
+					var $libraryGridblocks = $( '.gridblock[data-type="library"]' );
+					var filterValue = self.$libraryFilter.val();
+
+					filterValue = filterValue ? filterValue.toUpperCase() : '';
+
+					if ( filterValue ) {
+						$libraryGridblocks.each( function() {
+							var $gridblock = $( this ),
+								gridblockTitle = $gridblock.data( 'title' ) ?
+									$gridblock.data( 'title' ).toUpperCase() :
+									'';
+							if ( -1 === gridblockTitle.indexOf( filterValue ) ) {
+								$gridblock.hide();
+							} else {
+								$gridblock.show();
+							}
+						} );
+					} else {
+						$libraryGridblocks.show();
+					}
+				}, 750 );
+
+				// hide the filter wrap by default. We'll show this only when Block Library is shown.
+				self.$libraryFilterWrap.hide();
+				self.$filterSelect.on( 'change', function() {
+					var filterSelectValue = $( this ).val();
+
+					if ( 'library' === filterSelectValue ) {
+						self.$libraryFilterWrap.show();
+						$( '.boldgrid-gridblock-industry.block-filter' ).hide();
+						debounceSearch();
+					} else {
+						self.$libraryFilterWrap.hide();
+						$( '.boldgrid-gridblock-industry.block-filter' ).show();
+					}
+				} );
+
+				self.$libraryFilter.on( 'input', debounceSearch );
+
+				// Blocks that haven't loaded yet do not get filtered, so we have to filter them after loading.
+				BG.Service.event.on( 'filterLibrary', function( $block ) {
+					var filterValue = $( '.library-filter' )
+							.find( 'input' )
+							.val(),
+						gridBlockTitle;
+
+					if ( ! filterValue ) {
+						return;
+					}
+
+					filterValue = filterValue.toUpperCase();
+					gridBlockTitle = $block.data( 'title' ) ? $block.data( 'title' ).toUpperCase() : '';
+
+					if ( -1 === gridBlockTitle.indexOf( filterValue ) ) {
+						$block.hide();
+					}
+				} );
 			},
 
 			/**

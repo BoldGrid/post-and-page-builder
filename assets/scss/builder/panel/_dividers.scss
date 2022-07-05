@@ -86,3 +86,16 @@
 		}
 	}
 }
+
+.editor-panel[data-type=information] {
+	.section-divider-icon {
+		width: 24px;
+		height: 24px;
+		&:before {
+			content: url(../image/icons/shape-divider-icon.svg);
+			width: 24px;
+			height: 24px;
+		}
+	}
+}
+

@@ -26,8 +26,6 @@ class Boldgrid_Editor_Admin_Pointers {
 	 * @since 1.15.0
 	 */
 	public function __construct() {
-		add_filter( 'boldgrid_editor_admin_pointers-post', array( $this, 'editor_pointers' ) );
-		add_filter( 'boldgrid_editor_admin_pointers-page', array( $this, 'editor_pointers' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'pointer_load' ) );
 	}
 

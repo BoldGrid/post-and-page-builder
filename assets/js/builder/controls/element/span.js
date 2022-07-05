@@ -168,7 +168,7 @@ import { Typography } from '@boldgrid/controls';
 				content = selection.getContent();
 
 			if ( 'SPAN' !== nodeType ) {
-				content = '<span>' + content + '</span>';
+				content = '<span class="bg-span">' + content + '</span>';
 				selection.setContent( content );
 			}
 		},

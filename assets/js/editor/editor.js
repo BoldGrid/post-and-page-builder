@@ -349,6 +349,7 @@ IMHWPB.Editor = function( $ ) {
 		//When content is added to editor
 		editor.on( 'SetContent', function( e ) {
 			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), true );
+			self.adjust_overlay_colors( tinymce.activeEditor.getBody() );
 
 			if ( $.fourpan && $.fourpan.refresh ) {
 				$.fourpan.refresh();
@@ -891,6 +892,44 @@ IMHWPB.Editor = function( $ ) {
 		}
 
 		return is_empty;
+	};
+
+	/**
+	 * Adjust overlay colors to match palette.
+	 *
+	 * @param {string} markup The markup to be adjusted
+	 * @returns {string} The markup with the adjusted overlay colors
+	 */
+	this.adjust_overlay_colors = function( markup ) {
+		var $markup = $( markup ),
+			$alphaOverlayElements = $markup.find( '[data-bg-overlaycolor-alpha]' );
+
+		$alphaOverlayElements.each( function() {
+			var $this = $( this ),
+				palettePosition = $this.data( 'bg-overlaycolor-class' ),
+				alpha = $this.data( 'bg-overlaycolor-alpha' ),
+				image = $this.data( 'image-url' ),
+				styleString,
+				color;
+
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditor.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditor.colors.neutral;
+			}
+
+			color = color.replace( ')', ',' + alpha + ')' );
+			color = color.replace( 'rgb', 'rgba' );
+
+			$this.attr( 'data-bg-overlaycolor', color );
+
+			styleString = 'linear-gradient(to left, ' + color + ', ' + color + '), url("' + image + '")';
+
+			$this.css( 'background-image', styleString );
+		} );
+
+		return $markup.html();
 	};
 
 	/**
