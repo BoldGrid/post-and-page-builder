@@ -1,10 +1,10 @@
 <?php
 /**
-* File: Single.php
+* File: Menu.php
 *
-* Create a post component.
+* Create a menu component widget.
 *
-* @since      1.0.0
+* @since      1.14.0
 * @package    Boldgrid_Components
 * @subpackage Boldgrid_Components_Shortcode
 * @author     BoldGrid <support@boldgrid.com>
@@ -14,18 +14,18 @@
 namespace Boldgrid\PPB\Widget;
 
 /**
-* Class: Single
+* Class: Menu
 *
-* Create a post component.
+* Create a menu component widget.
 *
-* @since 1.0.0
+* @since 1.14.0
 */
 class Menu extends \WP_Widget {
 
 	/**
 	 * Default widget wrappers.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array
 	 */
 	public static $widgetArgs = array(
@@ -39,24 +39,33 @@ class Menu extends \WP_Widget {
 	/**
 	 * Default values.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 * @var array Default values.
 	 */
 	public $defaults = [
 	];
 
-		/**
+	/**
+	 * Widget Id
+	 *
+	 * @since 1.14.0
+	 * @var string
+	 */
+	public $widget_id;
+
+
+	/**
 	 * Setup the widget configurations.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 */
 	public function __construct() {
 		parent::__construct(
 			'boldgrid_component_menu',
-			__( 'BoldGrid Menu', 'boldgrid-editor' ),
+			__( 'Navigation Menu', 'boldgrid-editor' ),
 			array(
 				'classname' => 'bgc-menu',
-				'description' => __( 'A customizable menu.', 'boldgrid-editor' )
+				'description' => __( 'A customizable menu for use in Crio Premium Header Templates.', 'boldgrid-editor' ),
 			)
 		);
 	}
@@ -64,7 +73,7 @@ class Menu extends \WP_Widget {
 	/**
 	 * Update a widget with a new configuration.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $new_instance New instance configuration.
 	 * @param  array $old_instance Old instance configuration.
@@ -72,14 +81,13 @@ class Menu extends \WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $new_instance;
-
 		return $instance;
 	}
 
 	/**
 	 * Render a widget.
 	 *
-	 * @since 1.0.0
+	 * @since 1.14.0
 	 *
 	 * @param  array $args     General widget configurations.
 	 * @param  array $instance Widget instance arguments.
@@ -87,125 +95,366 @@ class Menu extends \WP_Widget {
 	public function widget( $args, $instance )  {
 		$class = 'sm bgc-header-template-menu color3-border-color';
 
-		if ( 'vertical' === $instance['bgc_menu_direction'] ) {
-			$class .= ' vertical';
+		$menu_direction = isset( $instance['bgc_menu_direction'] ) ? $instance['bgc_menu_direction'] : '';
+		$menu_direction = 'flex-column' === $menu_direction ? $menu_direction . ' sm-vertical' : 'flex-row';
+
+		$menu_id = isset( $instance['bgc_menu'] ) && 0 !== (int) $instance['bgc_menu'] ? (int) $instance['bgc_menu'] : null;
+
+		$bgc_menu_align = isset( $instance[ 'bgc_menu_align' ] ) ? $instance[ 'bgc_menu_align' ] : 'c c';
+
+		$align = $this->get_align_class( $bgc_menu_align );
+
+		$class .= ' ' . $align;
+
+		$registered_locations = get_nav_menu_locations();
+
+		$this->_register();
+		if ( isset( $instance['bgc_menu_location'] ) && ! $this->location_is_valid( $instance['bgc_menu_location'] ) ) {
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('Menu Location Name can only contain letters, numbers, and spaces.', 'boldgrid-editor' ) ?></p>
+			<?php
+		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
+
+			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
+
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
+			$class    .= ' ' . $ham_class;
+
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . ' ' . $align . '">';
+
+			// Make sure that if there is a registerd location already, that it is used.
+			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
+				&& 0 !== $registered_locations[ $instance['bgc_menu_location_id'] ]
+				? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			echo '</div>';
+		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
+			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
+
+			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
+			$class    .= ' ' . $ham_class;
+
+			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . '">';
+
+			$menu_id = $registered_locations[ $instance['bgc_menu_location_id'] ];
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			echo '</div>';
+		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('You must choose a menu to display in this location', 'boldgrid-editor' ) ?></p>
+			<?php
 		} else {
-			$class .= ' horizontal';
+			?>
+			<p class="bgc_no_menu_notice"><?php echo __('You must register a menu location for this component to render', 'boldgrid-editor' ) ?></p>
+			<?php
 		}
-
-		$menu_id = (int) $instance['bgc_menu'];
-
-		$align = ' align-' . explode( ' ', $instance['bgc_menu_align'] )[0];
-		$just  = ' just-' . explode( ' ', $instance['bgc_menu_align'] )[1];
-
-		$class .= $align . $just;
-
-		echo wp_nav_menu( array( 'menu' => $menu_id, 'menu_class' => $class ) );
 	}
 
+	/**
+	 * Location is Valid
+	 *
+	 * Validates location id to be sure it contains
+	 * alphanumeric characters only.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param string $id Location ID to validate
+	 *
+	 * @return bool True if valid, False if not.
+	 */
+	public function location_is_valid( $id ) {
+		if ( preg_match( '/^[a-z\s0-9][a-z\s0-9]*$/i', $id ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
-	 * Print our a form that allowing the widget configs to be updated.
+	 * Get Alignment Class
+	 *
+	 * This takes the alignment information passed from the form
+	 * and converts it into a usable class name for bgtfw.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param string $align_value Value passed from form.
+	 * @return string Alignment class.
+	 */
+	public function get_align_class( $align_value ) {
+		$align_class = 'c';
+		switch ( $align_value ) {
+			case ( 'left' ):
+				$align_class = 'w';
+				break;
+			case ( 'right' ):
+				$align_class = 'e';
+				break;
+			default:
+				$align_class = 'c';
+				break;
+		}
+
+		return $align_class;
+	}
+
+	/**
+	 * Get Unique Id.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @return string Unique ID for this nav menu.
+	 */
+	public function get_unique_id() {
+		$referer  = wp_get_referer();
+		$matches  = array();
+		preg_match( '/post=(\d+)/', $referer, $matches );
+
+		$page_header = get_post( $matches[1] );
+
+		$header_name  = $page_header->post_name;
+		if ( ! empty( $page_header ) ) {
+			return uniqid( $header_name . '-menu_' );
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Print Menu Registration Controls
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function menu_registration_controls( $instance ) {
+		$registered_locations = get_nav_menu_locations();
+		$location_managed_elsewhere = false;
+		if ( isset( $instance ['bgc_menu_location'] ) ) {
+			$location_managed_elsewhere = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] );
+		}
+
+		if ( isset( $instance['bgc_menu'] ) ) {
+			$instance['bgc_menu'] = $location_managed_elsewhere ? $registered_locations[ $instance['bgc_menu_location_id'] ] : $instance['bgc_menu'];
+		} else {
+			$instance['bgc_menu'] = $location_managed_elsewhere ? $registered_locations[ $instance['bgc_menu_location_id'] ] : 0;
+		}
+
+		?>
+		<div class="bgc_menu_registration_container">
+			<h4><?php _e( 'Register this Menu Location', 'boldgrid-editor' ); ?></h4>
+			<p><?php _e( 'In order to customize this menu, a menu location must be registered. To do so, you must enter a location name and click "Register this Menu Location"', 'boldgrid-editor' ); ?></p>
+			<p class="invalid_characters" style="display:none" ><?php _e( 'Menu Location Name can only contain letters, numbers, and spaces', 'boldgrid-editor' ); ?></p>
+			<input type="text" required class="bgc_menu_location"
+				id="<?php echo $this->get_field_id( 'bgc_menu_location' ); ?>"
+				name="<?php echo $this->get_field_name( 'bgc_menu_location' ); ?>"
+				value="<?php echo isset( $instance['bgc_menu_location'] ) ? $instance['bgc_menu_location'] : '' ?>"
+			>
+			<p>
+				<span class="hidden register_menu_nonce"><?php echo wp_create_nonce( 'crio_premium_register_menu_location' ); ?></span>
+				<button class="button bgc_register_location"><?php _e( 'Register Menu Location', 'boldgrid-editor' ) ?></button>
+				<span class="spinner" style="float: none"></span>
+
+				<input id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ) ?>" type="hidden" required class="bgc_menu_location_id"
+					id="<?php echo $this->get_field_id( 'bgc_menu_location_id' ); ?>"
+					name="<?php echo $this->get_field_name( 'bgc_menu_location_id' ); ?>"
+					value="<?php echo isset( $instance['bgc_menu_location_id'] ) ? $instance['bgc_menu_location_id'] : '' ?>"
+				>
+			</p>
+
+			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
+			<p class="<?php echo ( $location_managed_elsewhere ) ? 'menu_location_notice' : 'menu_location_notice hidden'; ?>">
+				<?php esc_html_e( 'A menu has been assigned to this location elsewhere. ', 'boldgrid-editor' ); ?>
+				<a class="button bgc_goto_menu_assignment" href="<?php echo admin_url( 'nav-menus.php?action=locations'); ?>"><?php esc_html_e( 'Go To Menu Assignment', 'boldgrid-editor' ); ?></a>
+			</p>
+			<p>
+				<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" class="bgc_menu"
+					name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>"
+					<?php echo ( $location_managed_elsewhere ) ? 'disabled' : ''; ?>>
+					<option value="0">Select a Menu</option>
+					<?php
+						foreach ( wp_get_nav_menus() as $menu ) {
+							$selected = ( ! empty( $instance['bgc_menu'] ) && $menu->term_id === (int) $instance['bgc_menu'] ) ? 'selected' : '';
+							echo '<option value="' . $menu->term_id . '" ' . $selected . '>' . $menu->name . '</option>';
+						}
+					?>
+				</select>
+				<?php
+				if ( 0 === count( wp_get_nav_menus() ) ) {
+					?>
+					<a class="button" href="<?php echo admin_url( 'nav-menus.php' ) ?>"><?php esc_html_e( 'Create a Menu', 'boldgrid-editor' ); ?></a>
+					<?php
+				}
+				?>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Menu Alignment Controls
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function menu_alignment_controls( $instance ) {
+		$field_name     = $this->get_field_name( 'bgc_menu_align' );
+		$selected_align = ! empty( $instance['bgc_menu_align'] ) ? $instance['bgc_menu_align'] : 'center';
+		?>
+		<div class="bgc_menu_container">
+			<h4><?php _e( 'Choose Menu Alignment', 'boldgrid-editor' ); ?></h4>
+			<div class="buttonset bgc">
+				<input class="switch-input screen-reader-text bgc" type="radio" value="left"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_left' ); ?>"
+					<?php echo 'left' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_menu_align_left' ); ?>"><span class="dashicons dashicons-editor-alignleft"></span>Left</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="center"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_center' ); ?>"
+					<?php echo 'center' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_align_center' ); ?>"><span class="dashicons dashicons-editor-aligncenter"></span>Center</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="right"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_align_right' ); ?>"
+					<?php echo 'right' === $selected_align ? 'checked' : '';?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_align_right' ); ?>"><span class="dashicons dashicons-editor-alignright"></span>Right</label>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Menu Alignment Controls
+	 *
+	 * @since 1.15.1
+	 *
+	 * @param array $instance Widget instance configs.
+	 */
+	public function menu_direction_controls( $instance ) {
+		$field_name         = $this->get_field_name( 'bgc_menu_direction' );
+		$selected_direction = ! empty( $instance['bgc_menu_direction'] ) ? $instance['bgc_menu_direction'] : 'horizontal';
+		?>
+		<div class="bgc_menu_direction_container">
+			<h4><?php _e( 'Choose Menu Direction', 'boldgrid-editor' ); ?></h4>
+			<div class="buttonset bgc">
+				<input class="switch-input screen-reader-text bgc" type="radio" value="flex-row"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_direction_horizontal' ); ?>"
+					<?php echo 'flex-row' === $selected_direction ? 'checked' : ''; ?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_direction_horizontal' ); ?>"><span class="dashicons dashicons-leftright"></span>Horizontal</label>
+
+				<input class="switch-input screen-reader-text bgc" type="radio" value="flex-column"
+					name="<?php echo $field_name; ?>"
+					id="<?php echo $this->get_field_id( 'bgc_menu_direction_vertical' ); ?>"
+					<?php echo 'flex-column' === $selected_direction ? 'checked' : ''; ?>
+				>
+					<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_menu_direction_vertical' ); ?>"><span class="dashicons dashicons-leftright"></span>Vertical</label>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Print Customizer Button.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance An array of widget coni
+	 */
+	public function print_customizer_button( $instance ) {
+		?>
+			<div class="bgc_menu_container">
+				<h4><?php _e( 'Additional Customization', 'boldgrid-editor' ); ?></h4>
+				<p><?php _e( 'There are additional customization options available for this menu in the Customizer.', 'boldgrid-editor' ); ?></p>
+				<button class="button bgc_goto_customizer" data-panel="headings" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Go To Customizer', 'boldgrid-editor' ); ?></button>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Print Return to Editor Button.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @param array $instance An array of widget coni
+	 */
+	public function return_to_editor( $instance ) {
+		?>
+			<div class="bgc_menu_container">
+				<h4><?php _e( 'What\'s Next?', 'boldgrid-editor' ); ?></h4>
+				<p><?php _e( 'If you wish to continue editing your header layout, that can be done within the editor.', 'boldgrid-editor' ); ?></p>
+				<button class="button bgc_return_to_editor" data-customize="<?php echo admin_url( '/customize.php' ); ?>"><?php _e( 'Return to Editor', 'boldgrid-editor' ); ?></button>
+			</div>
+		<?php
+	}
+
+	/**
+	 * Print form styles
+	 *
+	 * @since 1.14.0
+	 */
+	public function print_form_styles() {
+		?>
+		<style>
+		.bgc.buttonset {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.bgc.buttonset .switch-label {
+			background: rgba(0, 0, 0, 0.1);
+			border: 1px rgba(0, 0, 0, 0.1);
+			color: #555d66;
+			margin: 0;
+			text-align: center;
+			padding: 0.5em 1em;
+			flex-grow: 1;
+			display: -ms-flexbox;
+			display: flex;
+			-ms-flex-align: center;
+			align-items: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			justify-items: center;
+			-ms-flex-line-pack: center;
+			align-content: center;
+			cursor: pointer;
+		}
+
+		.bgc.buttonset .switch-input:checked + .switch-label {
+			background-color: #00a0d2;
+			color: rgba(255, 255, 255, 0.8);
+		}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Print form to adjust menu configs.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param  array $instance Widget instance configs.
 	 */
 	public function form( $instance ) {
-		error_log( 'Form Instance: ' . json_encode( $instance ) );
-		?>
-			<h4><?php _e( 'Select a menu:', 'boldgrid-editor' ) ?></h4>
-		<p>
-			<select id="<?php echo $this->get_field_id( 'bgc_menu' ); ?>" name="<?php echo $this->get_field_name( 'bgc_menu' ); ?>">
-			<option value="0">Select a Menu</option>
-		<?php
-		foreach ( wp_get_nav_menus() as $menu ) {
-			$selected = ( ! empty( $instance['bgc_menu'] ) && $menu->term_id === (int) $instance['bgc_menu'] ) ? 'selected' : '';
-			echo '<option value="' . $menu->term_id . '" ' . $selected . '>' . $menu->name . '</option>';
-		}
-		?>
-			</select>
-		</p>
-		<h4>Choose Menu Type</h4>
-		<p>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
-				value="horizontal"
-				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'horizontal' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_menu_horizontal' ); ?>">Horizontal</label>
-			<input type="radio"
-				id="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>"
-				name="<?php echo $this->get_field_name( 'bgc_menu_direction' ); ?>"
-				value="vertical"
-				<?php echo ( ! empty( $instance['bgc_menu_direction'] ) && 'vertical' === $instance['bgc_menu_direction'] ) ? 'checked' : '';?>
-			>
-			<label for="<?php echo $this->get_field_id( 'bgc_menu_vertical' ); ?>">Vertical</label>
-		</p>
-		<h4>Menu Alignment</h4>
-		<style>
-			.bgc-menu-align-control td {
-				border-spacing: 3px;
-				border:1px solid #000;
-				border-radius: 1px;
-			}
-			.bgc-menu-align-control tr {
-				border-spacing: 3px;
-			}
-
-			.bgc-menu-align-control .dashicons-arrow-up.r,
-			.bgc-menu-align-control .dashicons-arrow-down.l {
-				transform: rotate(45deg);
-			}
-
-			.bgc-menu-align-control .dashicons-arrow-up.l,
-			.bgc-menu-align-control .dashicons-arrow-down.r {
-				transform: rotate(315deg);
-			}
-
-			.bgc-menu-align-control input {
-				opacity: 0;
-				position: absolute;
-				z-index: 99;
-				width:20px;
-				height:20px;
-			}
-			.bgc-menu-align-control td:hover input ~ .dashicons::before {
-  				color: #ccc;
-			}
-
-			.bgc-menu-align-control td input:checked ~ .dashicons::before {
-  				color: rgb(249,91,38);
-			}
-
-		</style>
-		<table class="bgc-menu-align-control">
-			<?php
-				$align = ( ! empty( $instance['bgc_menu_align'] ) ) ? $instance['bgc_menu_align'] : 'c c';
-				$options = array(
-					't' => array( 'l' => 'arrow-up', 'c' => 'arrow-up', 'r' => 'arrow-up' ),
-					'c' => array( 'l' => 'arrow-left', 'c' => 'move', 'r' => 'arrow-right' ),
-					'b' => array( 'l' => 'arrow-down', 'c' => 'arrow-down', 'r' => 'arrow-down' ),
-				);
-
-				foreach( $options as $row => $cols ) {
-					?><tr><?php
-					foreach( $cols as $col => $icon ) {
-						?>
-						<td>
-							<input type="radio"
-								id="<?php echo $this->get_field_id( 'bgc_menu_align_' . $row . $col ); ?>"
-								name="<?php echo $this->get_field_name( 'bgc_menu_align' ); ?>"
-								value="<?php echo $row . ' ' . $col;?>"
-								<?php echo $row . ' ' . $col === $align ? 'checked' : ''; ?>
-							>
-							<span class="dashicons dashicons-<?php echo $icon . ' ' . $col; ?>"></span>
-						</td>
-						<?php
-					}
-					?></tr><?php
-				}
+		$this->menu_registration_controls( $instance );
+		$this->menu_alignment_controls( $instance );
+		$this->menu_direction_controls( $instance );
+		$this->print_customizer_button( $instance );
+		$this->return_to_editor( $instance );
+		$this->print_form_styles( $instance );
 	}
-
 }

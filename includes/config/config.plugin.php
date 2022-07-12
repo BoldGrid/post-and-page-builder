@@ -15,7 +15,7 @@ return array (
 		'gridblock_industries' => '/v1/gridblocks/industries',
 	),
 	'asset_server'          => 'https://wp-assets.boldgrid.com',
-	'development_server'    => 'http://localhost:4000',
+	'development_server'    => 'https://' . $_SERVER['SERVER_NAME'],
 	'plugin_name'           => 'boldgrid-editor',
 	'plugin_key_code'       => 'editor',
 	'templates' => array(
@@ -28,13 +28,13 @@ return array (
 	),
 	'component_controls' => include __DIR__ . '/config.components.php',
 	'urls' => array(
-		'premium_key' => 'https://www.boldgrid.com/connect-keys',
-		'new_key' => 'https://www.boldgrid.com/central/account/new-key',
+		'premium_key'            => apply_filters( 'boldgrid_editor_premium_url', 'https://www.boldgrid.com/connect-keys' ),
+		'new_key'                => apply_filters( 'boldgrid_editor_new_key_url', 'https://www.boldgrid.com/central/account/new-key' ),
 		'support_default_editor' => 'https://www.boldgrid.com/support/boldgrid-post-and-page-builder/preferred-editor/',
 	),
 	'main_file_path'        => BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php',
 	'plugin_transient_name' => 'boldgrid_editor_version_data',
-	'allowed_post_types'    => array( 'page', 'post', 'bg_block' ),
+	'allowed_post_types'    => array( 'page', 'post', 'bg_block', 'crio_page_header' ),
 	'controls'              => array(
 		'page_title' => array(
 			'visible_by_default' => false
@@ -44,7 +44,7 @@ return array (
 		'boldgrid-components' => array(
 			'handle' => 'boldgrid-components',
 			'deps' => array(),
-			'version' => '2.16.2',
+			'version' => '2.16.5',
 			'src' => plugins_url( '/assets/css/components.min.css', BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' ),
 			'mce_str_match' => '/components.',
 		),

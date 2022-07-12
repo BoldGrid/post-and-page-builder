@@ -57,8 +57,8 @@ export class Form {
 				</p>
 				<div class="post-type-category native">
 					<h4>WordPress Post Types</h4>
-					<mat-menu name="post" label="Posts" />
-					<mat-menu name="page" label="Pages" />
+					<mat-menu name="post" label="Posts"></mat-menu>
+					<mat-menu name="page" label="Pages"></mat-menu>
 				</div>
 				<div class="post-type-category cpt">
 					<h4>Custom Post Types</h4>
@@ -80,6 +80,6 @@ export class Form {
 	 */
 	_getCPTInputs() {
 		return  BoldgridEditor.customPostTypes.map(
-			type => `<mat-menu name="${type.value}" label="${type.label}" />` ).join( '' );
+			type => `<mat-menu name="${type.value}" label="${type.label}"></mat-menu>` ).join( '' );
 	}
 }

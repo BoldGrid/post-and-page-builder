@@ -149,12 +149,12 @@ let menuActions = {
 			if ( layout_transform && ! layout_transform.current ) {
 				self.transform_layout( $row, layout_transform );
 				$new_column = $(
-					'<div class="col-md-' + layout_transform.new + ' col-sm-12 col-xs-12"></div>'
+					'<div class="col-lg-' + layout_transform.new + ' col-md-' + layout_transform.new + ' col-sm-12 col-xs-12"></div>'
 				);
 				$row.append( $new_column );
 			} else {
 				self.decrease_row_size( $row );
-				$new_column = $( '<div class="col-md-1 col-sm-12 col-xs-12"></div>' );
+				$new_column = $( '<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>' );
 				$row.append( $new_column );
 			}
 		}

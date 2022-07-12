@@ -55,6 +55,14 @@ import { Palette } from './color/palette';
 			'color5-border-color'
 		],
 
+		outlineColorClasses: [
+			'color1-outline-color',
+			'color2-outline-color',
+			'color3-outline-color',
+			'color4-outline-color',
+			'color5-outline-color'
+		],
+
 		customColors: BoldgridEditor.saved_colors,
 
 		/**
@@ -120,6 +128,23 @@ import { Palette } from './color/palette';
 		},
 
 		/**
+		 * Remove outline styles.
+		 *
+		 * @param {object} $el      jQuery element.
+		 * @param {bool}   resetAll If true, reset all styles.
+		 *
+		 * @since 1.19.0
+		 */
+		resetOutlineClasses: function( $el, resetAll = false ) {
+			$el.removeClass( self.outlineColorClasses.join( ' ' ) );
+			BG.Controls.addStyle( $el, 'outline-color', '' );
+			if ( resetAll ) {
+				BG.Controls.addStyle( $el, 'outline-width', '' );
+				BG.Controls.addStyle( $el, 'outline-offset', '' );
+			}
+		},
+
+		/**
 		 * Add any extra classes to the panel on load.
 		 *
 		 * @since 1.2.7
@@ -140,7 +165,10 @@ import { Palette } from './color/palette';
 				e.preventDefault();
 				e.stopPropagation();
 				self.$currentInput.attr( 'data-type', 'color' );
-				self.$currentInput.val( '' ).change();
+				self.$currentInput
+					.val( '' )
+					.attr( 'value', '' )
+					.change();
 				self.$colorPanel.find( '.selected' ).removeClass( 'selected' );
 				self.$currentInput
 					.parent()

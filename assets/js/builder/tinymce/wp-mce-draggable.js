@@ -32,6 +32,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.phone_width_needed = 620; //480 + 300;
 	this.tablet_width_needed = 1250; //890 + 300;
 	this.desktop_width_needed = 1270; //1100 + 300;
+	this.large_width_needed = 1920; //1100 + 300;
 
 	var menu_items = [];
 
@@ -290,7 +291,7 @@ IMHWPB.WP_MCE_Draggable = function() {
 	/**
 	 * Event to fire once the user resizes their window
 	 */
-	this.resize_done_event = function() {
+	this.resize_done_event = function( e ) {
 		self.updateScreenLayout();
 		self.updateResizingIframe();
 
@@ -310,7 +311,18 @@ IMHWPB.WP_MCE_Draggable = function() {
 			 * editor to the same width.
 			 */
 			BG.Service.editorWidth.$resizeiframe.attr( 'width', BG.Controls.$container.$html.width() );
-			BG.Controls.$container.$body.css( 'width', BG.Service.editorWidth.getWidth() );
+			BG.Controls.$container.$body.css( 'width', 'auto' );
+
+			let style = BG.Controls.$container.$body.attr( 'style' );
+
+			// replace max-width: attribute with max-width:100%!important;
+			if ( style.includes( 'max-width:' ) ) {
+				style = style.replace( /max-width:.*?;/, 'max-width:100%!important;' );
+			} else {
+				style += 'max-width:100%!important;';
+			}
+
+			BG.Controls.$container.$body.attr( 'style', style );
 		}
 	};
 
@@ -318,17 +330,19 @@ IMHWPB.WP_MCE_Draggable = function() {
 
 		// No Display Type Selected.
 		if ( ! IMHWPB.Editor.instance.currently_selected_size ) {
-			if ( 1470 < window.innerWidth ) {
+			if ( 1600 < window.innerWidth ) {
 				all_elements_visible();
-			} else if ( 1355 < window.innerWidth ) {
-				collapse_sidebar();
-			} else if ( 1041 < window.innerWidth ) {
+			} else if ( 1600 >= window.innerWidth ) {
 				min_visible();
-			} else if ( 1040 >= window.innerWidth ) {
-				self.set_num_columns( 2 );
+			}
+			// Monitor type Selected.
+		} else if ( 'large' == IMHWPB.Editor.instance.currently_selected_size ) {
+			if ( 1600 < window.innerWidth ) {
+				all_elements_visible();
+			} else if ( 1600 >= window.innerWidth ) {
+				min_visible();
 			}
 
-			// Monitor type Selected.
 		} else if ( 'monitor' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1470 < window.innerWidth ) {
 				all_elements_visible();
@@ -338,7 +352,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 				min_visible();
 			}
 
-			// Tablet type Selected.
 		} else if ( 'tablet' == IMHWPB.Editor.instance.currently_selected_size ) {
 			if ( 1250 < window.innerWidth ) {
 				all_elements_visible();
@@ -347,7 +360,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 			} else {
 				min_visible();
 			}
-
 			// Phone type Selected.
 		} else if ( 'phone' == IMHWPB.Editor.instance.currently_selected_size ) {
 			all_elements_visible();
@@ -386,9 +398,9 @@ IMHWPB.WP_MCE_Draggable = function() {
 	 */
 	this.set_num_columns = function( columns ) {
 		if ( 1 == columns ) {
-			self.$post_body.addClass( 'columns-1' ).removeClass( 'columns-2' );
+			$( '#post-body' ).addClass( 'columns-1' ).removeClass( 'columns-2' );
 		} else {
-			self.$post_body.addClass( 'columns-2' ).removeClass( 'columns-1' );
+			$( '#post-body' ).addClass( 'columns-2' ).removeClass( 'columns-1' );
 		}
 	};
 
@@ -398,9 +410,11 @@ IMHWPB.WP_MCE_Draggable = function() {
 	this.update_device_highlighting = function() {
 		if ( BG.Controls.$container.$iframe && ! self.draggable_inactive ) {
 			var iframe_width = BG.Controls.$container.$iframe.width();
-			if ( 1061 < iframe_width ) {
+			if ( 1199 < iframe_width) {
+				self.highlight_screen_size( 'large' );
+			} else if ( 992 < iframe_width ) {
 				self.highlight_screen_size( 'desktop' );
-			} else if ( 837 < iframe_width ) {
+			} else if ( 620 < iframe_width ) {
 				self.highlight_screen_size( 'tablet' );
 			} else {
 				self.highlight_screen_size( 'phone' );
@@ -507,7 +521,6 @@ IMHWPB.WP_MCE_Draggable = function() {
 	$( function() {
 		self.$window = $( window );
 		self.$body = $( 'body' );
-		self.$post_body = $( '#post-body' );
 		self.$editor_content_container = $( '#poststuff' );
 		self.$overlay_preview = $( '#boldgrid-overlay-preview' );
 		self.$resize_div = $( '#resizable' );

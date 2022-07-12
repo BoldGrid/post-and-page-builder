@@ -86,6 +86,7 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		$shortcode_translated_html = wpautop( $html );
 
 		return array (
+			'template' => $post->post_title,
 			'html' => $shortcode_translated_html,
 			'preview_html' => self::run_shortcodes( $shortcode_translated_html ),
 			'type' => 'bg_block' === $post->post_type ? 'library' : 'saved',
@@ -303,7 +304,9 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		$row_content = array();
 
 		foreach ( $pages as $page ) {
-			$row_content = array_merge( $row_content, self::parse_gridblocks( $page->post_content, $page ) );
+			if ( ! empty( $page->post_content ) ) {
+				$row_content = array_merge( $row_content, self::parse_gridblocks( $page->post_content, $page ) );
+			}
 		}
 
 		// Limit to 100 GridBlock for performance issues.

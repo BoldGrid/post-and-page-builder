@@ -126,10 +126,9 @@ class Boldgrid_Editor_Setting {
 		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
 		$initial_editor_setting = [];
 		$all_post_types = $this->get_all_cpts();
-		foreach( $all_post_types as $post_type ) {
-			$initial_editor_setting[ $post_type ] = ! empty( $default_editor[ $post_type ] )
-				&& in_array( $default_editor[ $post_type ], $valid_editors, true ) ?
-				$default_editor[ $post_type ] : $this->get_initial_editor_option( $post_type );
+
+		foreach ( $default_editor as $post_type => $editor ) {
+			$initial_editor_setting[ $post_type ] = in_array( $default_editor[ $post_type ], $valid_editors, true ) ? $default_editor[ $post_type ] : 'default';
 		}
 
 		return $initial_editor_setting;
@@ -156,6 +155,14 @@ class Boldgrid_Editor_Setting {
 					'label' => $type->label,
 				];
 			}
+		}
+
+		// Add Crio Page headers to the Settings list.
+		if ( post_type_exists( 'crio_page_header' ) ) {
+			$formatted[] = array(
+				'value' => 'crio_page_header',
+				'label' => 'Crio Page Headers'
+			);
 		}
 
 		usort( $formatted, function ( $a, $b ) {
@@ -247,9 +254,13 @@ class Boldgrid_Editor_Setting {
 		$default_editor_override = ! empty( $_POST['bgppb_default_editor_post'] ) ?
 			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
 
-		$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
+			$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
+
 		if ( ! $default_editor_override && $post ) {
 			$default_editor = get_post_meta( $post->ID, '_bgppb_default_editor', true ) ?: $default_editor;
+		} elseif ( ! $default_editor_override && ! $post && isset( $_GET['post_id'] ) ) {
+			// When loading iFrames in the add media tabs, the $post variable is not set, so we have to obtain the ID from the $_GET array.
+			$default_editor = get_post_meta( intval( $_GET['post_id'] ), '_bgppb_default_editor', true ) ?: $default_editor;
 		}
 
 		return $default_editor;
@@ -263,9 +274,26 @@ class Boldgrid_Editor_Setting {
 	 * @return array Custom Post Type names.
 	 */
 	protected function get_all_cpts() {
-		return array_merge( [ 'post', 'page' ], get_post_types( [
-			'public'   => true,
-			'_builtin' => false,
-		], 'names' ) );
+		/*
+		 * As of 1.14.0 this is broken down into multiple statements
+		 * to make it easier to add other custom post types to the list that
+		 * may not be public, such as the 'crio_page_headers'.
+		 */
+		$wp_post_types = array( 'post', 'page' );
+		$cpts          = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'names'
+		);
+
+		$all_cpts = array_merge( $wp_post_types, $cpts );
+
+		if ( post_type_exists( 'crio_page_header' ) ) {
+			$page_headers  = array( 'crio_page_header' => 'crio_page_header' );
+			$all_cpts = array_merge( $all_cpts, $page_headers );
+		}
+		return $all_cpts;
 	}
 }

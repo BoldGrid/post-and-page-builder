@@ -110,7 +110,7 @@ class Boldgrid_Editor {
 		$this->setup_components();
 		$this->setup_page_title();
 
-		if ( is_admin() && current_user_can( 'edit_pages' ) ) {
+		if ( is_admin() && current_user_can( 'edit_posts' ) ) {
 			$this->add_admin_hooks();
 		}
 
@@ -125,6 +125,19 @@ class Boldgrid_Editor {
 		$shortcode->init();
 
 		register_widget( '\\Boldgrid\\PPB\\Widget\\Menu' );
+
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PageTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteTitle' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteDescription' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\Logo' );
+
+		/*
+		 * This widget is currently disabled, because I need to create
+		 * additional widgets to go with it, such as AuthorAvatar, PostDate,
+		 * PostTime, Tags, etc.
+		 *
+		 * register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
+		 */
 	}
 
 	/**
@@ -172,21 +185,22 @@ class Boldgrid_Editor {
 		global $wp_customize;
 
 		$editor = false;
-		$boldgrid_editor_ajax      = new Boldgrid_Editor_Ajax();
-		$boldgrid_editor_crop      = new Boldgrid_Editor_Crop();
-		$boldgrid_editor_builder   = new Boldgrid_Editor_Builder();
-		$builder_styles            = new Boldgrid_Editor_Builder_Styles();
-		$boldgrid_editor_mce       = new Boldgrid_Editor_MCE( $this->config );
-		$boldgrid_editor_media     = new Boldgrid_Editor_Media();
-		$boldgrid_editor_theme     = new Boldgrid_Editor_Theme();
-		$boldgrid_editor_version   = new Boldgrid_Editor_Version();
-		$boldgrid_editor_wpforms   = new Boldgrid_Editor_Wpforms();
-		$boldgrid_editor_setup     = new Boldgrid_Editor_Setup();
-		$boldgrid_editor_premium   = new Boldgrid_Editor_Premium();
-		$setting_view              = new PPB\View\Settings();
-		$gutenberg_view            = new PPB\View\Gutenberg();
-		$rating_service            = new PPB\Rating\Service();
-		$plugins_view              = new PPB\View\Plugins();
+		$boldgrid_editor_ajax           = new Boldgrid_Editor_Ajax();
+		$boldgrid_editor_crop           = new Boldgrid_Editor_Crop();
+		$boldgrid_editor_builder        = new Boldgrid_Editor_Builder();
+		$builder_styles                 = new Boldgrid_Editor_Builder_Styles();
+		$boldgrid_editor_mce            = new Boldgrid_Editor_MCE( $this->config );
+		$boldgrid_editor_media          = new Boldgrid_Editor_Media();
+		$boldgrid_editor_theme          = new Boldgrid_Editor_Theme();
+		$boldgrid_editor_version        = new Boldgrid_Editor_Version();
+		$boldgrid_editor_wpforms        = new Boldgrid_Editor_Wpforms();
+		$boldgrid_editor_setup          = new Boldgrid_Editor_Setup();
+		$boldgrid_editor_premium        = new Boldgrid_Editor_Premium();
+		$boldgrid_editor_admin_pointers = new Boldgrid_Editor_Admin_Pointers();
+		$setting_view                   = new PPB\View\Settings();
+		$gutenberg_view                 = new PPB\View\Gutenberg();
+		$rating_service                 = new PPB\Rating\Service();
+		$plugins_view                   = new PPB\View\Plugins();
 
 		// Register Services.
 		Boldgrid_Editor_Service::register( 'settings', new Boldgrid_Editor_Setting() );
@@ -257,7 +271,7 @@ class Boldgrid_Editor {
 				add_action( 'save_post', array( $builder_styles, 'save' ), 10, 2 );
 
 				add_action( 'media_buttons', array( $boldgrid_editor_mce, 'load_editor_hooks' ) );
-				add_action( 'media_buttons', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
+				add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
 
 				// Display and save admin notice state.
 				add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );

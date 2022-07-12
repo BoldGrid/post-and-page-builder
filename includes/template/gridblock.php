@@ -15,6 +15,10 @@
 		<span>Loading Blocks</span>
 	</div>
 	<span class="filter-controls">
+	<span class="library-filter">
+			<label>Search</label>
+			<input type="text"></input>
+		</span>
 		<span class="boldgrid-gridblock-categories block-filter">
 			<label>Types</label>
 			<select></select>
@@ -31,7 +35,7 @@
 <div class="boldgrid-zoomout-section zoom-gridblocks-section">
 	<div class="gridblocks">
 		<div class="my-gridblocks-500">
-			We experienced an issue retrieving your saved Blocks. We're sorry for the inconvinence.
+			We experienced an issue retrieving your saved Blocks. We're sorry for the inconvenience.
 			Please try again later.
 		</div>
 		<div class="my-gridblocks-404 saved">
@@ -52,9 +56,11 @@
 	data-category="{{data.category}}"
 	data-is-premium="{{data.is_premium ? 1 : 0}}"
 	data-license="{{data.license}}"
-	data-template="{{data.template}}">
+	data-template="{{data.template}}"
+	data-title="{{data.getTitle()}}">
 	<i class="fa fa-arrows" aria-hidden="true"></i>
 	<div class="add-gridblock"></div>
+	<div class="gridblock-title">{{data.getTitle()}}</div>
 	<div class="premium-label">
 		<img class="boldgrid-seal" src="{{BoldgridEditor.plugin_url + '/assets/image/bg-seal.png'}}">
 		Premium Block
@@ -133,19 +139,19 @@ body {
 <div class="redacted-placeholder">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
 				voluptatem.
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
 				voluptatem.
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
@@ -160,7 +166,7 @@ body {
 <div class="redacted-placeholder">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
@@ -168,7 +174,7 @@ body {
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis.
 			</div>
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6">
 				Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
 				doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
 				veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam

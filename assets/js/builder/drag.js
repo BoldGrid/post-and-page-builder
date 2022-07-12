@@ -309,7 +309,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'.wpview',
 		'blockquote',
 		'code',
-		'abbr'
+		'abbr',
+		'span'
 	];
 
 	/**
@@ -327,6 +328,13 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'h5:not(.row .row h5)',
 		'h6:not(.row .row h6)',
 		'h7:not(.row .row h7)',
+		'span',
+		'h1 span',
+		'h2 span',
+		'h3 span',
+		'h4 span',
+		'h5 span',
+		'h6 span',
 
 		'a:not(.row .row a):not(p a)',
 
@@ -382,6 +390,13 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'.row .row h7',
 
 		'.row .row a',
+
+		'h1 span',
+		'h2 span',
+		'h3 span',
+		'h4 span',
+		'h5 span',
+		'h6 span',
 
 		// Common Drag Content.
 		'.row .row img:not(p img):not(a img)',
@@ -731,12 +746,12 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				);
 				if ( $closest_receptor.is( self.original_selector_strings.row_selectors_string ) ) {
 					$this.wrap(
-						'<div class=\'col-md-12\'><div class=\'row bg-editor-hr-wrap\'><div class=\'col-md-12\'></div></div></div>'
+						'<div class=\'col-lg-12 col-md-12\'><div class=\'row bg-editor-hr-wrap\'><div class=\'col-lg-12 col-md-12\'></div></div></div>'
 					);
 				} else {
 
 					// This HR is not already draggable.
-					$this.wrap( '<div class=\'row bg-editor-hr-wrap\'><div class=\'col-md-12\'></div></div>' );
+					$this.wrap( '<div class=\'row bg-editor-hr-wrap\'><div class=\'col-lg-12 col-md-12\'></div></div>' );
 				}
 			} else {
 				$this.closest( '.row' ).addClass( 'bg-editor-hr-wrap' );
@@ -1031,6 +1046,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		var xs_size = classes.match( /col-xs-([\d]+)/i );
 		var sm_size = classes.match( /col-sm-([\d]+)/i );
 		var md_size = classes.match( /col-md-([\d]+)/i );
+		var lg_size = classes.match( /col-lg-([\d]+)/i );
 
 		// If an element does not have the class then add it.
 		var design_size = 12;
@@ -1048,6 +1064,14 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 
 		if ( ! md_size ) {
 			added_classes.push( 'col-md-' + design_size );
+		}
+
+		if ( md_size ) {
+			design_size = md_size[1];
+		}
+
+		if ( ! lg_size ) {
+			added_classes.push( 'col-lg-' + design_size );
 		}
 
 		return added_classes.join( ' ' );
@@ -1412,13 +1436,17 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	};
 
 	this.getNewColumnString = function() {
-		var string = 'col-md-1 col-sm-12 col-xs-12';
+		var string = 'col-lg-12 col-md-1 col-sm-12 col-xs-12';
+
 		switch ( self.active_resize_class ) {
+			case 'col-lg':
+				string = 'col-lg-1 col-md-12 col-sm-12 col-xs-12';
+				break;
 			case 'col-sm':
-				string = 'col-md-12 col-sm-1 col-xs-12';
+				string = 'col-lg-12 col-md-12 col-sm-1 col-xs-12';
 				break;
 			case 'col-xs':
-				string = 'col-md-12 col-sm-12 col-xs-1';
+				string = 'col-lg-12 col-md-12 col-sm-12 col-xs-1';
 				break;
 		}
 
@@ -1585,7 +1613,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 					self.resize.right &&
 					12 == row_size &&
 					valid_larger &&
-					'col-md' == self.active_resize_class &&
+					( 'col-md' == self.active_resize_class || 'col-lg' == self.active_resize_class ) &&
 					last_col_in_row
 				) {
 					return false;
@@ -1892,9 +1920,11 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		var column_type;
 		var width = self.width();
 
-		if ( 1061 < width ) {
+		if ( 1200 < width ) {
+			column_type = 'col-lg';
+		} else if ( 1061 < width ) {
 			column_type = 'col-md';
-		} else if ( 837 < width ) {
+		} else if ( 820 < width ) {
 			column_type = 'col-sm';
 		} else {
 			column_type = 'col-xs';
@@ -2185,8 +2215,9 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		var $new_column;
 
 		if ( row_size < self.max_row_size ) {
+			let lgMdSize = self.max_row_size - row_size;
 			$new_column = $(
-				'<div class="col-md-' + ( self.max_row_size - row_size ) + ' col-sm-12 col-xs-12"></div>'
+				`<div class="col-lg-${lgMdSize} col-md-${lgMdSize} col-sm-12 col-xs-12"></div>`
 			);
 			$row.append( $new_column );
 		}
@@ -2376,9 +2407,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				}
 
 				// If the row has not stacked with columns, allow the rail dragging && desktop view.
-				if (
-					12 >= row_size &&
-					'col-md' == self.active_resize_class &&
+				if ( 12 >= row_size && ( 'col-md' == self.active_resize_class || 'col-lg' == self.active_resize_class ) &&
 					self.$current_drag.siblings( self.unformatted_column_selectors_string ).not( self.$temp_insertion )
 						.length
 
@@ -2717,7 +2746,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	};
 
 	this.createEmptyRow = function() {
-		return $( '<div class="row"><div class="col-md-12"></div></div>' );
+		return $( '<div class="row"><div class="col-lg-12 col-md-12"></div></div>' );
 	};
 
 	this.postAddRow = function( $empty_row ) {

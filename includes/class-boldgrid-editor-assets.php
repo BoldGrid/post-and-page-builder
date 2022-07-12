@@ -179,6 +179,21 @@ class Boldgrid_Editor_Assets {
 			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
 		array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
 
+		$current_theme = wp_get_theme();
+		$theme_name = '';
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+		}
+		wp_localize_script(
+			'boldgrid-editor-public',
+			'BoldgridEditorPublic',
+			array(
+				'is_boldgrid_theme' => Boldgrid_Editor_Theme::is_editing_boldgrid_theme(),
+				'colors'            => Boldgrid_Editor_Theme::get_color_palettes(),
+				'theme'             => $theme_name,
+			)
+		);
+
 		wp_enqueue_style( 'animatecss',
 			plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
 			array(), BOLDGRID_EDITOR_VERSION );
@@ -268,40 +283,89 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
-		$vars = array(
-			'is_boldgrid_theme' => $is_bg_theme,
-			'is_add_new' => 'post-new.php' === $pagenow,
-			'body_class' => Boldgrid_Editor_Theme::theme_body_class(),
-			'post' => ( array ) $post,
-			'post_id' => $this->get_post_id(),
-			'post_type' => $post_type,
-			'is_boldgrid_template' => Boldgrid_Editor_Service::get( 'templater' )->is_custom_template( $post->page_template ),
-			'site_url' => $this->get_post_url(),
-			'claim_envato_key' => apply_filters( 'Boldgrid\Library\Library\Notice\ClaimPremiumKey_enable', false ),
-			'is_IE' => $is_IE,
-			'version' => BOLDGRID_EDITOR_VERSION,
-			//'hasDraggableEnabled' => Boldgrid_Editor_MCE::has_draggable_enabled(),
-			'hasDraggableEnabled' => true,
-			'inspiration_active' => defined( 'BOLDGRID_INSPIRATIONS_VERSION' ),
-			'default_tab' => wp_default_editor(),
-			'draggableEnableNonce' => wp_create_nonce( 'boldgrid_draggable_enable' ),
-			'setupNonce' => wp_create_nonce( 'boldgrid_editor_setup' ),
-			'icons' => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/font-awesome.json' ), true ),
-			'images' => Boldgrid_Editor_Builder::get_post_images(),
-			'colors' => Boldgrid_Editor_Theme::get_color_palettes(),
-			'saved_colors' => Boldgrid_Editor_Option::get( 'custom_colors', array() ),
-			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
-			'internalPageTemplates' => Boldgrid_Editor_Service::get( 'templater' )->templates,
-			'sample_backgrounds' => Boldgrid_Editor_Builder::get_background_data(),
-			'builder_config' => Boldgrid_Editor_Builder::get_builder_config(),
-			'boldgrid_settings' => $boldgrid_settings,
-			'default_container' => Boldgrid_Editor_Builder::get_page_container(),
-			'shortcodes' => array_keys( $shortcode_tags ) ?: [],
-			'current_theme' => get_stylesheet(),
+		$current_theme = wp_get_theme();
+		$is_crio = false;
+		if ( $current_theme->exists() ) {
+			$theme_name = $current_theme->get( 'Name' );
+			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
+				$is_crio = true;
+			}
+		}
 
+		/*
+		 * Since we are removing the 'Add Block' functionality from Crio Page Headers,
+		 * we need to make sure to also bypass the 'display_gridblock_lead' on Crio Page Header
+		 * post types
+		 */
+		$display_gridblock_lead = 'post-new.php' === $pagenow && 'tinymce' === $default_tab;
+		$screen = get_current_screen();
+		if ( $screen && isset( $screen->post_type ) && 'crio_page_header' === $screen->post_type ) {
+			$display_gridblock_lead = false;
+		}
+
+		/*
+		 * Contributors are not able to see the Add Block button.
+		 * due to a wp_core bug. Until that gets fixed, we need to bypass the
+		 * 'display_gridblock_lead' for contributors.
+		 */
+		if ( ! current_user_can( 'upload_files' ) ) {
+			$display_gridblock_lead = false;
+		}
+
+		$shortcode_keys = array_keys( $shortcode_tags );
+
+		if ( ! in_array( 'weforms', $shortcode_keys ) ) {
+			$shortcode_keys[] = 'weforms';
+		}
+
+		$vars = array(
+			'is_boldgrid_theme'      => $is_bg_theme,
+			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
+			'is_crio'                => $is_crio,
+			'is_add_new'             => 'post-new.php' === $pagenow,
+			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
+			'post'                   => (array) $post,
+			'post_id'                => $this->get_post_id(),
+			'post_type'              => $post_type,
+			'is_boldgrid_template'   => Boldgrid_Editor_Service::get( 'templater' )->is_custom_template( $post->page_template ),
+			'site_url'               => $this->get_post_url(),
+			'claim_envato_key'       => apply_filters( 'Boldgrid\Library\Library\Notice\ClaimPremiumKey_enable', false ),
+			'is_IE'                  => $is_IE,
+			'version'                => BOLDGRID_EDITOR_VERSION,
+			'hasDraggableEnabled'    => true,
+			'inspiration_active'     => defined( 'BOLDGRID_INSPIRATIONS_VERSION' ),
+			'default_tab'            => wp_default_editor(),
+			'draggableEnableNonce'   => wp_create_nonce( 'boldgrid_draggable_enable' ),
+			'setupNonce'             => wp_create_nonce( 'boldgrid_editor_setup' ),
+			'icons'                  => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/font-awesome.json' ), true ),
+			'images'                 => Boldgrid_Editor_Builder::get_post_images(),
+			'colors'                 => Boldgrid_Editor_Theme::get_color_palettes(),
+			'saved_colors'           => Boldgrid_Editor_Option::get( 'custom_colors', array() ),
+			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
+			'internalPageTemplates'  => Boldgrid_Editor_Service::get( 'templater' )->templates,
+			'sample_backgrounds'     => Boldgrid_Editor_Builder::get_background_data(),
+			'divider_shapes'         => Boldgrid_Editor_Builder::get_divider_shapes(),
+			'builder_config'         => Boldgrid_Editor_Builder::get_builder_config(),
+			'boldgrid_settings'      => $boldgrid_settings,
+			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
+			'shortcodes'             => $shortcode_keys,
+			'current_theme'          => get_stylesheet(),
+			'fontWeightNames'        => apply_filters(
+				'boldgrid_editor_font_weight_names',
+				array(
+					'100' => 'Extra Thin',
+					'200' => 'Thin',
+					'300' => 'Light',
+					'400' => 'Regular',
+					'500' => 'Medium',
+					'600' => 'Bold',
+					'700' => 'Thick',
+					'800' => 'Extra Thick',
+				)
+			),
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
-			'display_gridblock_lead' => 'post-new.php' === $pagenow && 'tinymce' === $default_tab,
+			'display_gridblock_lead' => $display_gridblock_lead,
 			'notices' => Boldgrid_Editor_Setup::get_notice_status(),
 			'setup_settings' => Boldgrid_Editor_Option::get( 'setup' ),
 			'control_styles' => ! $is_bg_theme ? Boldgrid_Editor_Builder_Styles::get_option() : array(),
@@ -317,6 +381,12 @@ class Boldgrid_Editor_Assets {
 				'button_colors' => ! $builder->requires_deprecated_buttons(),
 			),
 		);
+
+		if ( function_exists( 'wp_enqueue_global_styles' ) ) {
+			$theme_json        = WP_Theme_JSON_Resolver::get_merged_data();
+			$global_inline_styles = $theme_json->get_stylesheet();
+			$vars['global_inline_styles'] = $global_inline_styles;
+		}
 
 		$vars = array_merge( $vars, $this->get_shared_vars() );
 
@@ -457,7 +527,6 @@ class Boldgrid_Editor_Assets {
 		}
 
 		wp_enqueue_script( 'boldgrid-editor-drag' );
-
 
 		/*
 		 * Fired after the Post and Page Builder enqueues it's editor scripts.

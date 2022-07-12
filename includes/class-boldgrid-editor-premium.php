@@ -60,23 +60,24 @@ class Boldgrid_Editor_Premium {
 	public function add_submenu_item() {
 		global $submenu;
 
-		$config = \Boldgrid_Editor_Service::get( 'config' );
-		$premium_url = $config['urls']['premium_key'] . '?source=ppbp-admin-menu';
+		$config      = \Boldgrid_Editor_Service::get( 'config' );
+		$premium_url = apply_filters( 'boldgrid_editor_premium_url', $config['urls']['premium_key'] . '?source=ppbp-admin-menu' );
 
 		$menu_slug = 'edit.php?post_type=bg_block';
 
+		// This chas been changed to 'edit_posts' to allow Authors and Contributors to use the editor.
 		add_submenu_page(
 			$menu_slug,
 			__( 'Get Premium', 'boldgrid-editor' ),
 			'<span class="dashicons dashicons-dashboard"></span> <span class="get-premium">' . __( 'Get Premium', 'boldgrid-editor' ) . '</span>',
-			'edit_pages',
+			'edit_posts',
 			'ppb-get-premium'
 		);
 
 		// Change the url (2 is key of the menu item's slug / url).
 		foreach ( $submenu[ $menu_slug ] as &$item ) {
 			if ( 'ppb-get-premium' === $item[2] ) {
-				$item[2] = $premium_url;
+				$item[2] = esc_url( $premium_url );
 			}
 		}
 	}
@@ -127,7 +128,7 @@ class Boldgrid_Editor_Premium {
 					// translators: 1: URL address for the upgrade page.
 					__( 'Thank you for activating the <strong>Post & Page Builder Premium</strong>! Before you can begin using all of the premium features, you must <a href="%1$s">add your premium key</a>. If you are using an Official BoldGrid Host, contact them or login to their management system to retrieve your Premium key. Otherwise, please visit <a href="%2$s" target="_blank">BoldGrid Central</a> to upgrade.', 'boldgrid-editor' ),
 					admin_url( 'options-general.php?page=boldgrid-connect.php' ),
-					$config['urls']['premium_key'] . '?source=ppbp-installed'
+					esc_url( apply_filters( 'boldgrid_editor_premium_url', $config['urls']['premium_key'] . '?source=ppbp-installed' ) )
 				) . '</p>',
 				'class'   => 'notice notice-warning',
 			),
@@ -160,10 +161,10 @@ class Boldgrid_Editor_Premium {
 		$url = 'https://www.boldgrid.com/central/plugins';
 		if ( class_exists( '\Boldgrid\Library\Library\Plugin\Plugin' ) ) {
 			$premium_plugin = new \Boldgrid\Library\Library\Plugin\Plugin( 'post-and-page-builder-premium' );
-			$url = $premium_plugin->getDownloadUrl();
+			$url            = $premium_plugin->getDownloadUrl();
 		}
 
-		return $url;
+		return apply_filters( 'boldgrid_editor_premium_download_url', $url );
 	}
 
 	/**

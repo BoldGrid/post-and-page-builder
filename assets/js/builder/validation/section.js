@@ -66,7 +66,9 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 
 		wrap = function() {
 			$( group ).wrapAll(
-				'<div class="' + defaultContainerClass + '"><div class="row"><div class="col-md-12">'
+				'<div class="' +
+					defaultContainerClass +
+					'"><div class="row"><div class="col-lg-12 col-md-12">'
 			);
 			group = [];
 		};
@@ -74,8 +76,12 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 		self.$context.find( '> *' ).each( function() {
 			var $this = $( this );
 
-			// Do not wrap next page marker.
-			if ( $this.is( contentSelector ) && ! $this.find( '.mce-wp-nextpage' ).length ) {
+			// Do not wrap next page marker or tinyMCE bookmarks.
+			if (
+				$this.is( contentSelector ) &&
+				! $this.find( '.mce-wp-nextpage' ).length &&
+				! $this.find( '.mce_SELRES_start' ).length
+			) {
 				group.push( this );
 			} else {
 				wrap();

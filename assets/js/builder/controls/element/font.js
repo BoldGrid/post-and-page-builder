@@ -20,11 +20,12 @@ import { Typography } from '@boldgrid/controls';
 		iconClasses: 'fa fa-text-width',
 
 		selectors: [
-			'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl, blockquote, .boldgrid-shortcode'
+			'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl, blockquote, .boldgrid-shortcode, .bgc-heading *'
 		],
 
 		// Ignore images clicked in paragraphs.
-		exceptionSelector: 'img, .draggable-tools-imhwpb *',
+		exceptionSelector:
+			'.boldgrid-component-menu *, .bgc-header-template-menu, .menu-item a, .boldgrid-component-logo, img, .draggable-tools-imhwpb *',
 
 		templateMarkup: null,
 
@@ -200,7 +201,6 @@ import { Typography } from '@boldgrid/controls';
 		 */
 		openPanel: function() {
 			var panel = BG.Panel;
-
 			let typography = new Typography( {
 				target: BG.Menu.getTarget( self ),
 				fonts: self.createFontConfig()

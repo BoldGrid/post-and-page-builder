@@ -33,7 +33,7 @@ class Boldgrid_Editor_Preview {
 		add_action( 'template_redirect', array( $this, 'restrict_access' ) );
 
 		// Wrapping in permission check to make sure it only runs for logged in users.
-		if ( current_user_can( 'edit_pages' ) ) {
+		if ( current_user_can( 'edit_posts' ) ) {
 			add_action( 'init', array( $this, 'preload' ) );
 			add_action( 'template_include', array( $this, 'set_dynamic_template' ), 5 );
 			add_action( 'template_include', array( $this, 'template_via_url' ), 6 );
@@ -135,8 +135,8 @@ class Boldgrid_Editor_Preview {
 		global $post;
 
 		if ( ! empty( $post->ID ) && $post->ID === $this->preview_page_id ) {
-			if ( ! current_user_can( 'edit_pages' ) ) {
-				wp_redirect( home_url(), 301 );
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				wp_safe_redirect( home_url(), 301 );
 				exit;
 			}
 		}

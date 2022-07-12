@@ -14,7 +14,8 @@ export class Component {
 			'playlist',
 			'audio',
 			'video',
-			'embed'
+			'embed',
+			'weforms'
 		];
 
 		this.panel = {
@@ -46,7 +47,7 @@ export class Component {
 	register() {
 		let self = this;
 		let shortcodes = BoldgridEditor.shortcodes.filter( val => {
-			return ! this.defaultShortcodes.includes( val ) && ! wp.mce.views.get( val );
+			return this.defaultShortcodes.includes( val ) && ! wp.mce.views.get( val );
 		} );
 
 		for ( let shortcode of shortcodes ) {

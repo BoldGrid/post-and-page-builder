@@ -7,15 +7,15 @@
 	line-height: 2em;
 
 	&.bg-primary-color {
-		background-color: $boldgrid-color;
+		background-color: #2271b1;
 		color: white;
 
 		&:hover {
-			background-color: darken($boldgrid-color, 8%);
+			background-color: darken(#2271b1, 8%);
 		}
 
 		&[disabled] {
-			background-color: lighten($boldgrid-color, 30%);
+			background-color: lighten(#2271b1, 30%);
 		}
 	}
 

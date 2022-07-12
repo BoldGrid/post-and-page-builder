@@ -45,8 +45,8 @@ export class Width {
 			$siteContent = $contents.find( '.site-content, #site-content' ),
 			$existingSection = $article.find( '.boldgrid-section:first' );
 
-		if ( $existingSection.length ) {
-			$postContainer = $existingSection;
+		if ( $existingSection.length && $existingSection.find( 'div[class^="container"]' ).length ) {
+			$postContainer = $existingSection.find( 'div[class^="container"]' );
 		} else if ( $siteContent.length ) {
 			$postContainer = $siteContent;
 		} else if ( $article.length ) {
@@ -84,7 +84,7 @@ export class Width {
 		this.$postContainer = this._findPostContainer();
 		this.resizable = this.$postContainer.length && this.$postContainer.width() ? true : false;
 
-		if ( IMHWPB.WP_MCE_Draggable.instance ) {
+		if ( IMHWPB.WP_MCE_Draggable.instance && IMHWPB.WP_MCE_Draggable.instance.$window ) {
 			IMHWPB.WP_MCE_Draggable.instance.resize_done_event();
 		}
 

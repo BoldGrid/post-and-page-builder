@@ -1,10 +1,10 @@
 === Post and Page Builder by BoldGrid - Visual Drag and Drop Editor ===
-Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen
+Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.5
+Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.13.3
+Stable tag: 1.20.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,102 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.20.0 =
+* New Feature: Search / Filter Block Library blocks on Add Block Screen [#332](https://github.com/BoldGrid/post-and-page-builder/issues/332)
+* Update: Update Controls Information notice to include new controls [#390](https://github.com/BoldGrid/post-and-page-builder/issues/390)
+* Update: Remove Full Screen Editing notice and change Icon [#394](https://github.com/BoldGrid/post-and-page-builder/issues/394)
+* Bug Fix: Switching between visual and text adds an empty section [#374] (https://github.com/BoldGrid/post-and-page-builder/issues/374)
+* Bug Fix: Highlighting in visual should take you right to that element in text view [#377] (https://github.com/BoldGrid/post-and-page-builder/issues/#377)
+* Bug Fix: Icons do not work in Custom Page Headers [#416](https://github.com/BoldGrid/post-and-page-builder/issues/416)
+* Bug Fix: Popover handles obstructed in phone view [#395](https://github.com/BoldGrid/post-and-page-builder/issues/395)
+* Bug Fix: Hover Effects Mobile Visibility doesn't stay checked [#347](https://github.com/BoldGrid/post-and-page-builder/issues/347)
+
+= 1.19.0 =
+* New Feature: Add Inner Borders on Columns and Column Shapes [#311](https://github.com/BoldGrid/post-and-page-builder/issues/311)
+* New Feature: Allow for Full Width Rows to work with row backgrounds [#388](https://github.com/BoldGrid/post-and-page-builder/issues/388)
+* New Feature: Add Responsive Alignment Controls [#375](https://github.com/BoldGrid/post-and-page-builder/issues/375)
+* Bug Fix: Fix z-index for dropdown menus in FWRs [#389](https://github.com/BoldGrid/post-and-page-builder/issues/389)
+* Bug Fix: Button gets deleted when trying to replace the text [#282](https://github.com/BoldGrid/post-and-page-builder/issues/282)
+
+= 1.18.0 =
+* New Feature: [FEATURE] Add drag and drop support for col-lg [#257](https://github.com/BoldGrid/post-and-page-builder/issues/257)
+* New Feature: Add Hover Boxes to Nested Rows [#346](https://github.com/BoldGrid/post-and-page-builder/issues/346)
+* New Feature: Add 'Full Width Row' Control [#359](https://github.com/BoldGrid/post-and-page-builder/issues/359)
+
+=1.17.1=
+* Bug Fix: Custom Classes option missing in 1.17.0 [#357](https://github.com/BoldGrid/post-and-page-builder/issues/357)
+* Bug Fix: Cannot work with icons [#356](https://github.com/BoldGrid/post-and-page-builder/issues/356)
+
+= 1.17.0 =
+* New Feature: Ability to use multiple colors in headings [#260](https://github.com/BoldGrid/post-and-page-builder/issues/260)
+* New Feature: Add wave / swirl designs between sections or as column separators [#306] (https://github.com/BoldGrid/post-and-page-builder/issues/306)
+* New Feature: Add Image Backgrounds on Column Shapes [#304](https://github.com/BoldGrid/post-and-page-builder/issues/304)
+* New Feature: Hover Boxes [#297](https://github.com/BoldGrid/post-and-page-builder/issues/297)
+* Feature Update: Update PPB and Crio Google Fonts [#276](https://github.com/BoldGrid/post-and-page-builder/issues/276)
+
+= 1.16.0 =
+* New Feature: Include Custom Primary & Secondary buttons in button selector
+* Bug Fix: Block Library blocks do not load "below the fold" [#174](https://github.com/BoldGrid/post-and-page-builder/issues/174)
+
+= 1.15.3 =
+Release Date: January 24, 2022
+* Bug Fix: WP 5.9 - difficulty dragging and dropping blocks on Add Block screen [#324](https://github.com/BoldGrid/post-and-page-builder/issues/324)
+
+= 1.15.2 =
+Release Date: December 28, 2021
+* Bug Fix: Fatal Error implode(): Argument #1 ($pieces) must be of type array [#322](https://github.com/BoldGrid/post-and-page-builder/issues/322)
+
+= 1.15.1 =
+Release Date: December 22, 2021
+* Bug Fix: MCE is "squished" when additional controls are added [#305](https://github.com/BoldGrid/post-and-page-builder/issues/305)
+* Bug Fix: fixed console warning in PPB when loading submenus in Custom Page Headers.[#303](https://github.com/BoldGrid/post-and-page-builder/issues/303)
+* Enhancement: Add Menu Direction options.[#313](https://github.com/BoldGrid/post-and-page-builder/issues/313)
+
+= 1.15.0 =
+Release Date: November 17, 2021
+* New Feature: Full Screen Editing.
+
+= 1.14.2 =
+Release Date: September 14th, 2021
+
+* Bug Fix: Visual bug when adding links to text [#139](https://github.com/BoldGrid/post-and-page-builder/issues/139)
+* Bug Fix: Review prompt prevents admins from deleting other user accounts [#192](https://github.com/BoldGrid/post-and-page-builder/issues/192)
+* Bug Fix: Google Map option in Add Media [#198](https://github.com/BoldGrid/post-and-page-builder/issues/198)
+
+= 1.14.1 =
+Release Date: August 26th, 2021
+
+* Bug Fix: Allow PPB visual editing tools to load for Author and Contributor level user roles [#197](https://github.com/BoldGrid/post-and-page-builder/issues/197)
+* Bug Fix: Render the weForms form in the editor [#199](https://github.com/BoldGrid/post-and-page-builder/issues/199)
+* Bug Fix: Fatal Error fetching Saved Blocks [#195](https://github.com/BoldGrid/post-and-page-builder/issues/195)
+* Bug Fix: Gray background on panels is same as gray in default palette [#200](https://github.com/BoldGrid/post-and-page-builder/issues/200)
+* Bug Fix: Update 'Add Block' buttons to pass accessibility contrast [#183](https://github.com/BoldGrid/post-and-page-builder/issues/183)
+
+= 1.14.0 =
+
+Release Date: December 17th, 2020
+
+* New Feature: Added new components to support Crio Pro's Custom Page Headers.
+
+= 1.13.6 =
+
+Release Date: December 8th, 2020
+
+* Fix: BoldGrid library loading issue.
+
+
+= 1.13.5 =
+
+Release Date: December 8th, 2020
+
+* Fix: WordPress 5.6 compatibility issues.
+
+= 1.13.4 =
+
+Release Date: August 28th, 2020
+
+* Fix: Issue causing editor selection to switch back to Post and Page Builder after loading WordPress Editor.
 
 = 1.13.3 =
 

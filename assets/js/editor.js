@@ -6,7 +6,7 @@ BOLDGRID.EDITOR.$window = $( window );
 
 // Require jquery plugins.
 import 'istyping';
-import 'fourpan';
+import '@boldgrid/fourpan';
 import 'textselect';
 import 'jquery-slimscroll';
 import 'wp-color-picker-alpha/src/wp-color-picker-alpha.js';

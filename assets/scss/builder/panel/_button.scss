@@ -10,6 +10,16 @@
 			background-color: transparent !important;
 			padding-left: 2px;
 			padding-right: 12px;
+			&.presets {
+				.panel-selection {
+					width: fit-content;
+					:not( .btn-rounded ):not( .btn-pill ) {
+						border-radius: 0;
+					}
+				}
+
+
+			}
 		}
 	}
 
@@ -24,11 +34,14 @@
 	}
 
 	.presets .panel-selection {
-		width: 48%;
+		width: calc( 48% - 20px );
 		height: auto;
-		background-color: #eee;
-		padding: 10px 0;
+		background-color: #ccc;
+		padding: 10px;
 		margin: 0;
+		&[data-preset*='btn-block'] {
+			width: calc( 98% - 20px );
+		}
 	}
 
 	.panel-selection > * {
@@ -58,9 +71,5 @@
 	.section.class-control {
 		padding-top: 0;
 		padding-bottom: 8px;
-	}
-
-	[data-preset*='btn-block'] {
-		width: 100% !important;
 	}
 }

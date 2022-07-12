@@ -47,6 +47,10 @@ class Boldgrid_Editor_Builder_Components {
 	public function parse_post( $html ) {
 		$components = array();
 
+		if ( ! $html ) {
+			return $components;
+		}
+
 		$dom = new DOMDocument();
 
 		@$dom->loadHTML( $html );
@@ -120,19 +124,24 @@ class Boldgrid_Editor_Builder_Components {
 	 * @return array $styles.
 	 */
 	public static function find_fonts( $xpath ) {
-		$families = array();
-		$fs = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
-		$googleFonts = json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/google-fonts.json' ), true ) ?: [];
+		$families       = array();
+		$fs             = Boldgrid_Editor_Service::get( 'file_system' )->get_wp_filesystem();
+		$googleFontsRaw = json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/google-fonts.json' ), true )['items'] ?: [];
+		$googleFonts    = array();
+
+		foreach ( $googleFontsRaw as $font ) {
+			$googleFonts[ $font['family'] ] = $font;
+		}
 
 		foreach ( $xpath->query( '//*[@data-font-family]' ) as $node ) {
-			$family = $node->getAttribute( 'data-font-family' );
-			$weight = $node->getAttribute( 'data-font-weight' );
-			$variant = $node->getAttribute( 'data-font-style' ) ?: 'normal';
+			$family  = $node->getAttribute( 'data-font-family' );
+			$weight  = '400' === $node->getAttribute( 'data-font-weight' ) ? 'regular' : $node->getAttribute( 'data-font-weight' );
+			$variant = $node->getAttribute( 'data-font-style' ) ? $node->getAttribute( 'data-font-style' ) : 'regular';
 
 			// Combine font famillies.
 			if ( $family && ! empty( $googleFonts[ $family ] ) ) {
-				$weights = ! empty( $googleFonts[ $family ]['variants'][ $variant ] ) ?
-					$googleFonts[ $family ]['variants'][ $variant ] : $googleFonts[ $family ]['variants']['normal'];
+				$weights = ! empty( $googleFonts[ $family ]['variants'] ) ?
+					$googleFonts[ $family ]['variants'] : $googleFonts[ $family ]['variants'];
 
 				$families[ $family ] = ! empty( $families[ $family ] ) ? $families[ $family ] : array();
 

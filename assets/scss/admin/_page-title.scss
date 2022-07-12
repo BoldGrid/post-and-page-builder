@@ -16,3 +16,14 @@
 .post-php.post-type-page.boldgrid-editor-template #boldgrid-hide-post-title.boldgrid-controls {
 	display: block;
 }
+
+.php-error #adminmenuback, .php-error #adminmenuwrap {
+	margin-top: 0 !important;
+}
+
+.wp-admin.post-php, .wp-admin.post-new-php {
+	h1, h2, h3, h4, h5, h6 {
+		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+		text-transform: none;
+	}
+}

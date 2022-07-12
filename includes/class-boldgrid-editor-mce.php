@@ -51,7 +51,7 @@ class Boldgrid_Editor_MCE {
 	 * @since 1.1.
 	 */
 	public function load_editor_hooks() {
-		echo '<button type="button" id="insert-gridblocks-button" class="button gridblock-icon boldgrid-color hidden">' .
+		echo '<button type="button" id="insert-gridblocks-button" class="button-primary gridblock-icon hidden">' .
 			'<span class="wp-media-buttons-icon"></span> Add Block</button>';
 	}
 
@@ -94,6 +94,13 @@ class Boldgrid_Editor_MCE {
 				'register_mce_button'
 			) );
 		}
+
+		// Shows keybinding in fullscreen button tooltip.
+		add_filter( 'wp_mce_translation', function( $translation, $mce_locale ) {
+			$translation['Fullscreen'] = __( 'Fullscreen (Ctrl+Shift+F)', 'boldgrid_editor' );
+			return $translation;
+		}, 10, 2 );
+
 	}
 
 	/**
@@ -111,10 +118,13 @@ class Boldgrid_Editor_MCE {
 		$editor_js_file = plugins_url( $file, BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
 
 		$plugin_array = (array) $plugin_array;
+		$plugin_array['large_view_imhwpb'] = $editor_js_file;
 		$plugin_array['monitor_view_imhwpb'] = $editor_js_file;
 		$plugin_array['tablet_view_imhwpb'] = $editor_js_file;
 		$plugin_array['phone_view_imhwpb'] = $editor_js_file;
 		$plugin_array['toggle_draggable_imhwpb'] = $editor_js_file;
+		$plugin_array['fullscreen'] = $editor_js_file;
+		$plugin_array['add_block_imhwpb'] = $editor_js_file;
 
 		return $plugin_array;
 	}
@@ -129,10 +139,13 @@ class Boldgrid_Editor_MCE {
 	 * @return array.
 	 */
 	public function register_mce_button( $buttons ) {
+		array_push( $buttons, 'large_view_imhwpb' );
 		array_push( $buttons, 'monitor_view_imhwpb' );
 		array_push( $buttons, 'tablet_view_imhwpb' );
 		array_push( $buttons, 'phone_view_imhwpb' );
 		array_push( $buttons, 'toggle_draggable_imhwpb' );
+		array_push( $buttons, 'fullscreen' );
+		array_push( $buttons, 'add_block_imhwpb' );
 
 		return $buttons;
 	}
@@ -150,6 +163,8 @@ class Boldgrid_Editor_MCE {
 		$extra_tags = array (
 			'div[*]',
 			'i[*]',
+			'svg[*]',
+			'path[*]',
 		);
 
 		$extended_valid_elements = ! empty( $init['extended_valid_elements'] ) ?
@@ -347,6 +362,11 @@ class Boldgrid_Editor_MCE {
 
 		// Add styles that could conflict.
 		$styles = $this->add_styles_conflict( $styles );
+
+		// Add WeForms CSS.
+		if ( defined( 'WEFORMS_ASSET_URI' ) ) {
+			$styles[] = WEFORMS_ASSET_URI . '/wpuf/css/frontend-forms.css';
+		}
 
 		// Add Query Args.
 		$mce_css = array ();

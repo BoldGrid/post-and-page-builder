@@ -8,10 +8,12 @@ import {
 	BoxShadow,
 	BorderRadius,
 	Animation,
-	DeviceVisibility
+	DeviceVisibility,
+	HoverVisibility
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
 import { Border } from './generic/border';
+import { Outline } from './generic/outline';
 
 ( function( $ ) {
 	'use strict';
@@ -30,9 +32,11 @@ import { Border } from './generic/border';
 			'box-shadow': BoxShadow,
 			'border-radius': BorderRadius,
 			border: Border,
+			outline: Outline,
 			'device-visibility': DeviceVisibility,
 			animation: Animation,
-			'background-color': BackgroundColor
+			'background-color': BackgroundColor,
+			'hover-visibility': HoverVisibility
 		},
 
 		allControls: [
@@ -42,11 +46,13 @@ import { Border } from './generic/border';
 			'animation',
 			'padding',
 			'border',
+			'outline',
 			'box-shadow',
 			'border-radius',
 			'width',
 			'device-visibility',
 			'blockAlignment',
+			'responsiveAlignment',
 			'customClasses'
 		],
 
@@ -141,7 +147,6 @@ import { Border } from './generic/border';
 					customizationOption = customizationOption.toLowerCase();
 					customizationOption =
 						customizationOption.charAt( 0 ).toUpperCase() + customizationOption.slice( 1 );
-
 					$control = BG.CONTROLS.GENERIC[customizationOption].render( addOptions );
 					BG.CONTROLS.GENERIC[customizationOption].bind( addOptions );
 				}

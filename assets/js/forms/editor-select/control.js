@@ -29,9 +29,8 @@ export class Control {
 		this.menu = this._renderMenu();
 		this._setupMenu();
 		this._setupClick();
-
-		this.$element.show();
 		$( '#screen-meta-links' ).prepend( this.$element );
+		this.$element.show();
 		this.setEditorOverrideInput( $( 'form#post' ) );
 	}
 
