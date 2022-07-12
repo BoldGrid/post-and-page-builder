@@ -76,8 +76,12 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 		self.$context.find( '> *' ).each( function() {
 			var $this = $( this );
 
-			// Do not wrap next page marker.
-			if ( $this.is( contentSelector ) && ! $this.find( '.mce-wp-nextpage' ).length ) {
+			// Do not wrap next page marker or tinyMCE bookmarks.
+			if (
+				$this.is( contentSelector ) &&
+				! $this.find( '.mce-wp-nextpage' ).length &&
+				! $this.find( '.mce_SELRES_start' ).length
+			) {
 				group.push( this );
 			} else {
 				wrap();

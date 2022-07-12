@@ -134,7 +134,7 @@ class Boldgrid_Editor_Builder {
 		global $boldgrid_theme_framework;
 
 		if ( empty( $boldgrid_theme_framework ) ) {
-			return array();
+			return apply_filters( 'third_party_theme_button_classes', array() );
 		}
 
 		$configs = $boldgrid_theme_framework->get_configs();

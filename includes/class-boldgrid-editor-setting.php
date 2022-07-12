@@ -126,10 +126,9 @@ class Boldgrid_Editor_Setting {
 		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
 		$initial_editor_setting = [];
 		$all_post_types = $this->get_all_cpts();
-		foreach( $all_post_types as $post_type ) {
-			$initial_editor_setting[ $post_type ] = ! empty( $default_editor[ $post_type ] )
-				&& in_array( $default_editor[ $post_type ], $valid_editors, true ) ?
-				$default_editor[ $post_type ] : $this->get_initial_editor_option( $post_type );
+
+		foreach ( $default_editor as $post_type => $editor ) {
+			$initial_editor_setting[ $post_type ] = in_array( $default_editor[ $post_type ], $valid_editors, true ) ? $default_editor[ $post_type ] : 'default';
 		}
 
 		return $initial_editor_setting;
@@ -255,7 +254,7 @@ class Boldgrid_Editor_Setting {
 		$default_editor_override = ! empty( $_POST['bgppb_default_editor_post'] ) ?
 			sanitize_text_field( $_POST['bgppb_default_editor_post'] ) : null;
 
-		$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
+			$default_editor = $default_editor_override ?: $this->get_default_editor( $post, $post_type );
 
 		if ( ! $default_editor_override && $post ) {
 			$default_editor = get_post_meta( $post->ID, '_bgppb_default_editor', true ) ?: $default_editor;

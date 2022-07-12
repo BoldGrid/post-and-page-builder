@@ -412,7 +412,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						value = $this.val(),
 						type = $this.attr( 'data-type' ),
 						$currentSelection = BG.Panel.$element.find( '.current-selection' ),
-						selectionType = $currentSelection.attr( 'data-type' );
+						selectionType = $currentSelection.attr( 'data-type' ),
+						classFromColor = self.classFromColor( value ),
+						alphaFromColor = self.alphaFromColor( value );
 
 					self.removeColorClasses( $target );
 					BG.Controls.addStyle( $target, 'background-color', '' );
@@ -433,6 +435,18 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 							.addClass( 'bg-background-color' )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', value ) )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', value ) );
+					} else if ( classFromColor ) {
+						$target
+							.addClass( 'bg-background-color' )
+							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor ) )
+							.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', classFromColor ) )
+							.attr( 'data-alpha', alphaFromColor );
+
+						self.paletteAddAlpha(
+							$target,
+							value,
+							BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor )
+						);
 					} else {
 						BG.Controls.addStyle( $target, 'background-color', value );
 					}
@@ -518,6 +532,82 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Add color palette for overlays to the target.
+		 *
+		 * @param {object} $target      jQuery object of the target element.
+		 * @param {string} value        The value of the color.
+		 * @param {string} bgColorClass The color class string.
+		 */
+		paletteAddOverlayAlpha( $target, value, bgColorClass ) {
+			var image = $target.attr( 'data-image-url' ),
+				color = value;
+
+			BG.Controls.addStyle(
+				$target,
+				'background-image',
+				self.getOverlayImage( color ) + ', url("' + image + '")'
+			);
+		},
+
+		paletteAddAlpha( $target, value, bgColorClass ) {
+			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+				$head = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				css;
+
+			if ( $target.attr( 'data-bg-uuid' ) ) {
+				uuid = $target.attr( 'data-bg-uuid' );
+			} else {
+				$target.attr( 'data-bg-uuid', uuid );
+				$target.addClass( uuid );
+			}
+
+			$head.find( '#' + uuid + '-inline-style' ).remove();
+
+			css = `.${bgColorClass}.${uuid} {background-color: ${value} !important;}`;
+
+			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
+		},
+
+		alphaFromColor: function( color ) {
+			var alpha = 1;
+
+			if ( color.includes( 'rgba' ) ) {
+				alpha = color.replace( /rgba\(\d{1,3}\,\d{1,3}\,\d{1,3}\,(.*\))/, '$1' );
+				alpha = alpha.replace( ')', '' );
+			}
+
+			return alpha;
+		},
+
+		classFromColor: function( color ) {
+			var colors = BoldgridEditor.colors.defaults,
+				neutralColor = BoldgridEditor.colors.neutral,
+				colorClass = false;
+
+			if ( color.includes( 'rgba' ) ) {
+				color = color.replace( /(rgba\(\d{1,3}\,\d{1,3}\,\d{1,3})(.*\))/, '$1)' );
+				color = color.replace( 'rgba', 'rgb' );
+			} else {
+				return colorClass;
+			}
+
+			for ( let key in colors ) {
+				if ( colors[key].replace( /\s/g, '' ) === color ) {
+					colorClass = parseInt( key ) + 1;
+					break;
+				}
+			}
+
+			if ( color === neutralColor ) {
+				colorClass = 'neutral';
+			}
+
+			return colorClass;
+		},
+
+		/**
 		 * Bind Event: Set the default color for overlay.
 		 *
 		 * @since 1.2.7
@@ -537,6 +627,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.css( 'background-color', 'rgba(255,255,255,.5)' );
 
 				$target.removeAttr( 'data-bg-overlaycolor' );
+				$target.removeAttr( 'data-bg-overlaycolor-alpha' );
+				$target.removeAttr( 'data-bg-overlaycolor-class' );
+
 				self.updateBackgroundImage();
 			} );
 		},
@@ -553,13 +646,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				var $this = $( this ),
 					type = $this.attr( 'data-type' ),
 					value = $this.val(),
-					$target = self.getTarget();
+					$target = self.getTarget(),
+					classFromColor = self.classFromColor( value ),
+					alphaFromColor = self.alphaFromColor( value );
 
 				if ( 'class' === type ) {
 					value = BoldgridEditor.colors.defaults[value - 1];
+					$target.attr( 'data-bg-overlaycolor', value );
+				} else if ( classFromColor ) {
+					$target.attr( 'data-bg-overlaycolor', value ),
+						$target.attr( 'data-bg-overlaycolor-alpha', alphaFromColor );
+					$target.attr( 'data-bg-overlaycolor-class', classFromColor );
+					self.paletteAddOverlayAlpha(
+						$target,
+						value,
+						BG.CONTROLS.Color.getColorClass( 'background-color', classFromColor )
+					);
+				} else {
+					$target.attr( 'data-bg-overlaycolor', value );
 				}
-
-				$target.attr( 'data-bg-overlaycolor', value );
 
 				self.updateBackgroundImage();
 			} );
@@ -1089,6 +1194,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = self.getTarget(),
 				bgImageUrl = $target.attr( 'data-image-url' ),
 				bgColor = $target.css( 'background-color' ),
+				overlayColor = $target.attr( 'data-bg-overlaycolor' ),
 				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
 				hoverBgImageUrl = $target.attr( 'data-hover-image-url' ),
 				hoverColor = $target.attr( 'data-hover-bg-color' );
@@ -1117,7 +1223,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				}
 			} else {
 				$currentSelection.css( 'background-color', bgColor );
-				if ( bgImageUrl ) {
+				if ( bgImageUrl && overlayColor ) {
+					$currentSelection.css(
+						'background-image',
+						`${self.getOverlayImage( overlayColor )}, url('${bgImageUrl}')`
+					);
+				} else if ( bgImageUrl ) {
 					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
 				}
 			}
@@ -1544,9 +1655,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setElementVisibility() {
 			var $target = self.getTarget(),
-				visibility = $target.hasClass( 'show-on-hover' ) ? 'show' : 'always',
-				visibility = $target.hasClass( 'hide-on-hover' ) ? 'hide' : visibility,
-				$radios = BG.Panel.$element.find( '.child-elements-visibility input' );
+				visibility = $target.hasClass( 'hover-mobile-bg' ) ? 'hover' : 'default',
+				$radios = BG.Panel.$element.find( '.mobile-only-visibility input' );
 
 			$radios.each( function() {
 				if ( $( this ).val() === visibility ) {
