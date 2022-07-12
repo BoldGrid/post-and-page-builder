@@ -2,7 +2,7 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
 Stable tag: 1.20.0
 License: GPLv2 or later
@@ -143,7 +143,6 @@ WordPress Editor.
 * Bug Fix: Icons do not work in Custom Page Headers [#416](https://github.com/BoldGrid/post-and-page-builder/issues/416)
 * Bug Fix: Popover handles obstructed in phone view [#395](https://github.com/BoldGrid/post-and-page-builder/issues/395)
 * Bug Fix: Hover Effects Mobile Visibility doesn't stay checked [#347](https://github.com/BoldGrid/post-and-page-builder/issues/347)
-
 
 = 1.19.0 =
 * New Feature: Add Inner Borders on Columns and Column Shapes [#311](https://github.com/BoldGrid/post-and-page-builder/issues/311)
