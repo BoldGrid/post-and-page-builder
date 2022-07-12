@@ -137,7 +137,7 @@ class Public {
 			}`;
 		} else if ( rowBgColor ) {
 			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
-				background-color: ${rowBgColor};
+				background-color: ${rowBgColor} !important;
 			}
 			body[data-container=max-full-width] .row.full-width-row {
 				background-color: unset !important;
@@ -268,7 +268,7 @@ class Public {
 			}`;
 		} else if ( colBgColor ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
-				background-color: ${colBgColor};
+				background-color: ${colBgColor} !important;
 			}
 			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-color: unset !important;
