@@ -5,6 +5,12 @@ if ( ! defined( 'WPINC' ) ) {
 	exit();
 }
 
+if ( defined( $_SERVER ) && isset( $_SERVER['SERVER_NAME' ] ) ) {
+	$dev_server = 'https://' . $_SERVER['SERVER_NAME'];
+} else {
+	$dev_server = 'https://localhost:4000';
+}
+
 return array (
 	'ajax_calls' => array (
 		'get_plugin_version' => '/api/open/get-plugin-version',
@@ -15,7 +21,7 @@ return array (
 		'gridblock_industries' => '/v1/gridblocks/industries',
 	),
 	'asset_server'          => 'https://wp-assets.boldgrid.com',
-	'development_server'    => 'https://' . $_SERVER['SERVER_NAME'],
+	'development_server'    => $dev_server,
 	'plugin_name'           => 'boldgrid-editor',
 	'plugin_key_code'       => 'editor',
 	'templates' => array(
