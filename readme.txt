@@ -138,6 +138,7 @@ WordPress Editor.
 * Bug Fix: Fix translucency issues with Full Width Rows.
 * Bug Fix: Preferred Editor tools do not load PPB with custom post types [#419](https://github.com/BoldGrid/post-and-page-builder/issues/419)
 * Bug Fix: Allow filtering of font-weights in editor to allow themes to change the naming of the font weights [#424](https://github.com/BoldGrid/post-and-page-builder/pull/424)
+* Bug Fix: [Bug] SERVER_NAME not defined warning [#406](https://github.com/BoldGrid/post-and-page-builder/issues/406)
 
 = 1.20.0 =
 * New Feature: Search / Filter Block Library blocks on Add Block Screen [#332](https://github.com/BoldGrid/post-and-page-builder/issues/332)
