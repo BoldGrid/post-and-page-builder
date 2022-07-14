@@ -903,6 +903,41 @@ IMHWPB.Editor = function( $ ) {
 	this.adjust_overlay_colors = function( markup ) {
 		var $markup = $( markup ),
 			$alphaOverlayElements = $markup.find( '[data-bg-overlaycolor-alpha]' );
+			$alphaBgElements      = $markup.find( '[data-alpha]' );
+
+		$alphaBgElements.each( function() {
+			var $this       = $( this ),
+				classString = $this.attr( 'class' ),
+				bgClass     = classString.match( /color[\d|\-|\w]*-background-color/ ),
+				uuid        = $this.attr( 'data-bg-uuid' ),
+				alpha       = $this.attr( 'data-alpha' ),
+				$head       = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				styleString,
+				palettePosition,
+				color;
+
+				if ( ! bgClass ) {
+					return;
+				}
+
+				palettePosition = bgClass[0].replace( 'color', '' ).replace( '-background-color', '' );
+				palettePosition = palettePosition.replace( '-', '' );
+
+				if ( 'neutral' !== palettePosition ) {
+					color = BoldgridEditor.colors.defaults[ parseInt( palettePosition ) - 1 ];
+				} else {
+					color = BoldgridEditor.colors.neutral;
+				}
+
+				color = color.replace( ')', ',' + alpha + ')' );
+				color = color.replace( 'rgb', 'rgba' );
+
+				styleString = 'background-color: ' + color + ' !important;';
+
+				$head.append( '<style id="' + uuid + '-inline-styles">body .' + uuid + ' { ' + styleString + ' }</style>' );
+		} );
 
 		$alphaOverlayElements.each( function() {
 			var $this = $( this ),
