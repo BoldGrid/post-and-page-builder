@@ -5,7 +5,7 @@ if ( ! defined( 'WPINC' ) ) {
 	exit();
 }
 
-if ( defined( $_SERVER ) && isset( $_SERVER['SERVER_NAME' ] ) ) {
+if ( defined( '$_SERVER' ) && isset( $_SERVER['SERVER_NAME'] ) ) {
 	$dev_server = 'https://' . $_SERVER['SERVER_NAME'];
 } else {
 	$dev_server = 'https://localhost:4000';
