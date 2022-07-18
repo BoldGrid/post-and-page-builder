@@ -55,7 +55,8 @@ class Public {
 	}
 
 	addPaletteAlphas() {
-		var $bgAlphaElements = $( '[data-bg-uuid]' );
+		var $bgAlphaElements = $( '[data-bg-uuid]' ),
+			postImageHeaders = $( '.main .post > header' );
 
 		$bgAlphaElements.each( function() {
 			var $this = $( this ),
@@ -71,6 +72,34 @@ class Public {
 			$style.html( css );
 
 			$( 'head' ).append( $style );
+		} );
+
+		postImageHeaders.each( function() {
+			var $this = $( this ),
+				classString = $this.attr( 'class' ),
+				bgClass     = classString.match( /color[\d|\-|\w]*-background-color/ ),
+				bgStyle     = $this.css( 'background' ),
+				rgbaRegex   = /rgba\(\s?([0-9]+),\s?([0-9]+),\s?([0-9]+),\s?([0-9|.]+)\s?\)/g,
+				palettePosition,
+				color;
+
+			if ( ! bgClass ) {
+				return;
+			}
+
+			palettePosition = bgClass[0].replace( 'color', '' ).replace( '-background-color', '' );
+			palettePosition = palettePosition.replace( '-', '' );
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditorPublic.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditorPublic.colors.neutral;
+			}
+
+			color = color.replace( ')', ', 0.7)' );
+			color = color.replace( 'rgb', 'rgba' );
+
+			$this.css( 'background', bgStyle.replace( rgbaRegex, color, bgStyle ) );
 		} );
 	}
 
