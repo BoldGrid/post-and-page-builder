@@ -1091,7 +1091,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					$target = self.getTarget(),
 					imageUrl = $this.attr( 'data-image-url' ),
 					imageSrc = $this.css( 'background-image' ),
-					background = $this.css( 'background' );
+					background = $this.css( 'background' ),
+					bgUuid = $target.attr( 'data-bg-uuid' );
 
 				if ( $this.hasClass( 'selected' ) ) {
 					self.removeColorClasses( $target );
@@ -1112,6 +1113,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.removeAttr( 'data-image-url' )
 					.removeAttr( 'data-bg-color-2' )
 					.removeAttr( 'data-bg-direction' );
+
+				// Reset Alpha attributes.
+				$target
+					.removeAttr( 'data-bg-alpha' )
+					.removeAttr( 'data-bg-uuid' )
+					.removeClass( bgUuid );
 
 				if ( 'pattern' !== $this.data( 'type' ) ) {
 					self.removeColorClasses( $target );
