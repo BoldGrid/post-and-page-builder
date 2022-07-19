@@ -350,7 +350,19 @@ class Boldgrid_Editor_Assets {
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
 			'shortcodes'             => $shortcode_keys,
 			'current_theme'          => get_stylesheet(),
-
+			'fontWeightNames'        => apply_filters(
+				'boldgrid_editor_font_weight_names',
+				array(
+					'100' => 'Extra Thin',
+					'200' => 'Thin',
+					'300' => 'Light',
+					'400' => 'Regular',
+					'500' => 'Medium',
+					'600' => 'Bold',
+					'700' => 'Thick',
+					'800' => 'Extra Thick',
+				)
+			),
 			//'display_update_notice' => Boldgrid_Editor_Version::should_display_notice(),
 			'display_update_notice' => false,
 			'display_gridblock_lead' => $display_gridblock_lead,

@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.20.0
+Stable tag: 1.20.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.20.1 =
+* Bug Fix: Fix translucency issues with Full Width Rows.
+* Bug Fix: Preferred Editor tools do not load PPB with custom post types [#419](https://github.com/BoldGrid/post-and-page-builder/issues/419)
+* Bug Fix: Allow filtering of font-weights in editor to allow themes to change the naming of the font weights [#424](https://github.com/BoldGrid/post-and-page-builder/pull/424)
+* Bug Fix: [Bug] SERVER_NAME not defined warning [#406](https://github.com/BoldGrid/post-and-page-builder/issues/406)
+
 = 1.20.0 =
 * New Feature: Search / Filter Block Library blocks on Add Block Screen [#332](https://github.com/BoldGrid/post-and-page-builder/issues/332)
 * Update: Update Controls Information notice to include new controls [#390](https://github.com/BoldGrid/post-and-page-builder/issues/390)
@@ -143,7 +149,6 @@ WordPress Editor.
 * Bug Fix: Icons do not work in Custom Page Headers [#416](https://github.com/BoldGrid/post-and-page-builder/issues/416)
 * Bug Fix: Popover handles obstructed in phone view [#395](https://github.com/BoldGrid/post-and-page-builder/issues/395)
 * Bug Fix: Hover Effects Mobile Visibility doesn't stay checked [#347](https://github.com/BoldGrid/post-and-page-builder/issues/347)
-
 
 = 1.19.0 =
 * New Feature: Add Inner Borders on Columns and Column Shapes [#311](https://github.com/BoldGrid/post-and-page-builder/issues/311)
