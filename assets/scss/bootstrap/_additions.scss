@@ -72,3 +72,43 @@
 		width: 0;
 	}
 }
+
+.table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: none;
+}
+
+.table-borderless {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				border: 0
+			}
+		}
+	}
+}
+
+.table-text-align-center {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				text-align: center;
+			}
+		}
+	}
+}
+
+.table-text-align-right {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				text-align: right;
+			}
+		}
+	}
+}
+
+table.table.mce-item-table {
+	border: 0;
+}
