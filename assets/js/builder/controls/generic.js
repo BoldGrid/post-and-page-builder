@@ -12,6 +12,7 @@ import {
 	HoverVisibility
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
+import { Tableborders } from './generic/table-borders';
 import { Border } from './generic/border';
 import { Outline } from './generic/outline';
 
@@ -36,7 +37,8 @@ import { Outline } from './generic/outline';
 			'device-visibility': DeviceVisibility,
 			animation: Animation,
 			'background-color': BackgroundColor,
-			'hover-visibility': HoverVisibility
+			'hover-visibility': HoverVisibility,
+			'table-borders': Tableborders
 		},
 
 		allControls: [
@@ -139,6 +141,14 @@ import { Outline } from './generic/outline';
 				if ( customizeSupportOptions && customizeSupportOptions[this] ) {
 					addOptions = customizeSupportOptions[this];
 				}
+
+				console.log( {
+					customizationOption,
+					customizeSupportOptions,
+					bgControls: self.bgControls,
+					genericControls: BG.CONTROLS.GENERIC,
+					addOptions
+				} );
 
 				if ( self.bgControls[customizationOption] ) {
 					$control = self.appendBasicBGControl( addOptions, self.bgControls[customizationOption] );

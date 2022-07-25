@@ -60,7 +60,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			customizeSupport: [
 				'margin',
 				'box-shadow',
-				'table-borders',
+				'tableborders',
 				'animation',
 				'background-color',
 				'customClasses'
@@ -276,8 +276,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				self.$target = $( selection.getNode() ).find( 'table' );
 			} else if ( 'TABLE' === nodeType ) {
 				self.$target = $selection;
+				BG.Menu.setTarget( self, $selection );
 			} else {
 				self.$target = $selection.parents( 'table' );
+				BG.Menu.setTarget( self, $selection.parents( 'table' ) );
 			}
 
 			console.log( { selection, $selection, nodeType } );

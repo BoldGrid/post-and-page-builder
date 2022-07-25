@@ -1,0 +1,12 @@
+<div class='color-controls generic-table-borders'>
+	<h4>Table Borders</h4>
+    <p><%=testData %></p>
+    <% _.each( borderTypes, function ( borderType, index ) { %>
+        <div class="border-type-container" data-tooltip-inline="<%=borderType.label %>" data-border-type="<%=borderType.name %>" data-control-name="tableborders">
+            <div class="border-type-heading"><%=borderType.label %><span class="dashicons dashicons-arrow-down-alt2"></span></div>
+            <div class="border-type-control-container">
+                <%=controls[borderType.name].$control.html() %>
+            </div>
+        </div>
+    <% } ); %>
+</div>

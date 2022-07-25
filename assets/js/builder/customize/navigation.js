@@ -36,6 +36,7 @@ export class Navigation {
 				{ name: 'background-color', icon: backgroundColorSvg, label: 'Background Color' },
 				{ name: 'rotate', icon: rotateSvg, label: 'Rotate' },
 				{ name: 'border', icon: borderSvg, label: 'Border' },
+				{ name: 'tableborders', icon: borderSvg, label: 'Table Borders' },
 				{ name: 'border-radius', icon: borderRadius, label: 'Border Radius' },
 				{ name: 'outline', icon: outlineSvg, label: 'Outline' },
 				{ name: 'box-shadow', icon: boxShadow, label: 'Box Shadow' },

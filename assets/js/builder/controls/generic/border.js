@@ -23,12 +23,14 @@ export class Border extends BorderWidth {
 	 * @return {jQuery} Control element.
 	 */
 	render() {
+		console.log( 'Border Control Render' );
 		let $control = super.render();
 
 		this.$target = BG.Menu.getCurrentTarget();
 		this.$colorControl = this.createControl();
 
 		this.$control.append( this.$colorControl );
+		console.log( { 'this.configs.name': this.configs.name } );
 		this.$input = this.$colorControl.find( '[name="' + this.configs.name + '"]' );
 
 		this._bind();
@@ -44,6 +46,7 @@ export class Border extends BorderWidth {
 	 * @return {jQuery} Control element.
 	 */
 	createControl() {
+		console.log( 'Border Color Control Render' );
 		let $control = $( _.template( template )( this.configs ) );
 
 		BG.Panel.$element.on( 'bg-customize-open', () => {
@@ -61,6 +64,7 @@ export class Border extends BorderWidth {
 	 * @since 1.6.0
 	 */
 	_bind() {
+		console.log( { thisInputs: this.$input } );
 		this.$input.on( 'change', () => {
 			var value = this.$input.val(),
 				type = this.$input.attr( 'data-type' );
