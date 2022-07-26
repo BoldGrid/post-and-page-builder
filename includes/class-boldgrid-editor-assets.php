@@ -221,8 +221,6 @@ class Boldgrid_Editor_Assets {
 
 		$maybe_enqueue_animate = $this->maybe_enqueue_animate();
 
-		error_log( 'maybe_enqueue_animate: ' . json_encode( $maybe_enqueue_animate ) );
-
 		if ( $maybe_enqueue_animate ) {
 			wp_enqueue_script( 'animate-js',
 				plugins_url( '/assets/js/animate.js', BOLDGRID_EDITOR_ENTRY ),
