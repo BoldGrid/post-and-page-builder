@@ -30,6 +30,13 @@ import template from '../../../../../includes/template/customize/table-borders.h
 					property: 'right',
 					dataAttr: 'column-borders',
 					type: 'column'
+				},
+				{
+					name: 'heading-borders',
+					label: 'Heading Border',
+					property: 'top',
+					dataAttr: 'heading-borders',
+					type: 'heading'
 				}
 			],
 			controls: {}
@@ -184,6 +191,36 @@ import template from '../../../../../includes/template/customize/table-borders.h
 					}
 				} );
 			}
+
+			if ( 'heading' === options.type ) {
+				let nodes = $target.find( 'thead' ).find( nodeTypes );
+				nodes.each( function() {
+					var $this = $( this );
+					$this.css( `border-bottom-${styleSuffix}`, value );
+					$this.css( `border-top-${styleSuffix}`, value );
+
+					if ( ! value && 'style' === styleSuffix ) {
+						$this.css( 'border-bottom-width', '' );
+						$this.css( 'border-bottom-color', '' );
+						$this.css( 'border-top-width', '' );
+						$this.css( 'border-top-color', '' );
+					}
+				} );
+			}
+		},
+
+		bindContainerCollapse: function( $section ) {
+			var $containers = $section.find( '.border-control-container' );
+
+			$containers.each( function() {
+				var $this = $( this ),
+					$heading = $this.find( '.border-control-heading' );
+				$heading.on( 'click', function() {
+					$( this )
+						.parent()
+						.toggleClass( 'collapsed' );
+				} );
+			} );
 		},
 
 		/**
@@ -202,6 +239,7 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				self.initSlider( $slider, borderType );
 				self.bindBorderType( $borderTypeInputs, borderType );
 				self.bindColorControl( $borderColorInput, borderType );
+				self.bindContainerCollapse( $section );
 			} );
 		}
 	};

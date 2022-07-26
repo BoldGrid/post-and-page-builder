@@ -1,0 +1,35 @@
+.panel-body {
+    .generic-table-borders {
+        .border-control-container {
+            border: 1px solid #eee;
+            overflow: hidden;
+            &.collapsed {
+                .border-control-contents {
+                    display: none;
+                }
+                .border-control-heading {
+                    .dashicons {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+            .border-control-heading {
+                background-color: #eee;
+                padding: 0px 20px;
+                h4 {
+                    font-size: 1.25em;
+                    display: inline-block;
+                    margin: 10px 0;
+                }
+                .dashicons {
+                    float: right;
+                    line-height: 1.75;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 25px;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
