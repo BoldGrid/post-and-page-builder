@@ -126,9 +126,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		open: function( selector ) {
 			for ( let target of self.layerEvent.targets ) {
-				console.log( {
-					target: target
-				} );
 				let $target = $( target );
 				if ( $target.is( selector ) ) {
 					self.openPanel( $target );
@@ -263,7 +260,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				! $selection.is( '[class*=col]' ) &&
 				$parentDiv.length
 			) {
-				console.log( 'Not a table element or a column' );
 				selection.select( $selection.parents( 'div[class*=col]' )[0] );
 				$selection = $( selection.getNode() );
 				nodeType = $selection.prop( 'nodeName' );
@@ -281,8 +277,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				self.$target = $selection.parents( 'table' );
 				BG.Menu.setTarget( self, $selection.parents( 'table' ) );
 			}
-
-			console.log( { selection, $selection, nodeType } );
 		},
 
 		_setupChangeOptions: function() {
@@ -290,17 +284,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = self.getTarget(),
 				$optionInputs = panel.$element.find( '.section-general-options input' );
 
-			console.log( { target: $target } );
-
 			$optionInputs.on( 'change', function() {
 				var $this = $( this ),
 					isChecked = $this.prop( 'checked' ) ? true : false;
-
-				console.log( {
-					inputName: $this.attr( 'name' ),
-					inputValue: $this.val(),
-					isChecked: isChecked
-				} );
 
 				if ( 'radio' === $this.attr( 'type' ) ) {
 					$target.removeClass( $this.attr( 'data-classes' ) );

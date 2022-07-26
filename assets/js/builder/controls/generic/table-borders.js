@@ -4,7 +4,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 
 import template from '../../../../../includes/template/customize/table-borders.html';
-import Border from './border';
 
 ( function( $ ) {
 	'use strict';
@@ -22,13 +21,15 @@ import Border from './border';
 					name: 'row-borders',
 					label: 'Row Borders',
 					property: 'top',
-					dataAttr: 'row-borders'
+					dataAttr: 'row-borders',
+					type: 'row'
 				},
 				{
 					name: 'column-borders',
 					label: 'Column Borders',
 					property: 'right',
-					dataAttr: 'column-borders'
+					dataAttr: 'column-borders',
+					type: 'column'
 				}
 			],
 			controls: {}
@@ -44,15 +45,15 @@ import Border from './border';
 		render: function() {
 			var $tableBorderControl;
 			this.data.borderTypes.forEach( function( borderType ) {
-				var borderControl = new Border( { target: BG.Menu.getCurrentTarget() } ),
-					$control = borderControl.render();
+				var borderTypeControl = self.getBorderTypeMarkup( borderType );
+				var borderSlider = self.getSliderMarkup( borderType );
+				var borderColor = self.getBorderColorMarkup( borderType );
 
 				self.data.controls[borderType.name] = {
-					control: borderControl,
-					$control: $control
+					borderSlider: borderSlider,
+					borderTypeControl: borderTypeControl,
+					borderColor: borderColor
 				};
-
-				console.log( { $control } );
 			} );
 			$tableBorderControl = $( this.template( this.data ) );
 
@@ -66,21 +67,141 @@ import Border from './border';
 			return $tableBorderControl;
 		},
 
+		getBorderTypeMarkup: function( options ) {
+			return `<div class="border-type-control">
+                    <h4 class="control-title">Border Type</h4>
+                    <ul>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" checked="checked" value="">Inherit</label></li>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" value="none">None</label></li>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" value="dashed">Dashed</label></li>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" value="double">Double</label></li>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" value="solid">Solid</label></li>
+                        <li><label><input type="radio" name="${
+													options.name
+												}-type" value="dotted">Dotted</label></li>
+                    </ul>
+                </div>`;
+		},
+
+		getSliderMarkup: function( options ) {
+			return `<div data-tooltip-id='${options.name}' class='${options.name} section'>
+                    <h4>${options.label} (px)</h4>
+                    <div class="slider"></div>
+                    <span class='value'></span>
+                </div>`;
+		},
+
+		getBorderColorMarkup: function( options ) {
+			return `<div class='${options.name}-color section color-controls'>
+                    <h4>Border Color</h4>
+                    <label for="${options.name}-color" class='color-preview'></label>
+                    <input type="text" data-type="" name='${
+											options.name
+										}-color' class='color-control' value='rgba(0,0,0,1)'>
+                    <div>
+                        <a class="default-color" href="#">Reset to Default</a>
+                    </div>
+                </div>`;
+		},
+
+		initSlider: function( $slider, options ) {
+			var $target = BG.Menu.getCurrentTarget();
+			$slider.slider( {
+				min: 0,
+				max: 20,
+				range: 'max',
+				slide: function( event, ui ) {
+					console.log( { event, ui } );
+					self.applyBorderStyle( ui.value, options, 'width' );
+				}
+			} );
+		},
+
+		bindBorderType: function( $borderTypeControl, options ) {
+			var $target = BG.Menu.getCurrentTarget();
+			$borderTypeControl.on( 'change', function() {
+				var $this = $( this );
+
+				if ( $this.prop( 'checked' ) ) {
+					self.applyBorderStyle( $this.val(), options, 'style' );
+				}
+			} );
+		},
+
+		bindColorControl: function( $colorControl, options ) {
+			var $target = BG.Menu.getCurrentTarget();
+			$colorControl.on( 'change', function() {
+				var $this = $( this );
+
+				self.applyBorderStyle( $this.val(), options, 'color' );
+			} );
+		},
+
+		applyBorderStyle: function( value, options, styleSuffix ) {
+			var $target = BG.Menu.getCurrentTarget(),
+				nodeTypes = 'td, th';
+			$target.attr( `data-${options.name}-${styleSuffix}`, value );
+
+			if ( 'column' === options.type ) {
+				let nodes = $target.find( nodeTypes );
+				nodes.each( function() {
+					var $this = $( this );
+					$this.css( `border-right-${styleSuffix}`, value );
+					$this.css( `border-left-${styleSuffix}`, value );
+
+					if ( ! value && 'style' === styleSuffix ) {
+						$this.css( 'border-left-width', '' );
+						$this.css( 'border-right-width', '' );
+						$this.css( 'border-left-color', '' );
+						$this.css( 'border-right-color', '' );
+					}
+				} );
+			}
+
+			if ( 'row' === options.type ) {
+				let rows = $target.find( 'tbody tr' );
+				rows.each( function() {
+					var $this = $( this );
+
+					$this.find( nodeTypes ).css( `border-top-${styleSuffix}`, value );
+					$this.find( nodeTypes ).css( `border-bottom-${styleSuffix}`, value );
+
+					if ( ! value && 'style' === styleSuffix ) {
+						$this.find( nodeTypes ).css( 'border-top-width', '' );
+						$this.find( nodeTypes ).css( 'border-bottom-width', '' );
+						$this.find( nodeTypes ).css( 'border-top-color', '' );
+						$this.find( nodeTypes ).css( 'border-bottom-color', '' );
+					}
+				} );
+			}
+		},
+
 		/**
 		 * Bind event.
 		 *
 		 * @since 1.19.0
 		 */
 		bind: function() {
-			var $section = BG.Panel.$element.find( '.section .generic-table-borders' ),
-				$el = BG.Menu.getCurrentTarget();
-
-			console.log( { $section, $el } );
+			var $section = BG.Panel.$element.find( '.customize .generic-table-borders' );
 
 			this.data.borderTypes.forEach( function( borderType ) {
-				console.log( { borderType, controls: self.data.controls } );
-
-				//self.data.controls[ borderType.name ].control.bind();
+				var $slider = $section.find( `.${borderType.name} .slider` ),
+					$borderTypeInputs = $section.find( `input[name="${borderType.name}-type"]` ),
+					$borderColorInput = $section.find( `.${borderType.name}-color.color-controls input` );
+				console.log( $borderColorInput );
+				self.initSlider( $slider, borderType );
+				self.bindBorderType( $borderTypeInputs, borderType );
+				self.bindColorControl( $borderColorInput, borderType );
 			} );
 		}
 	};
