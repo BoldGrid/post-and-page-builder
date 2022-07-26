@@ -30,6 +30,12 @@
                     vertical-align: middle;
                 }
             }
+            .border-control-contents {
+                padding: 0 10px;
+                .border-type-control ul li label input[value="none"]:after {
+                    border-color: transparent;
+                }
+            }
         }
     }
 }

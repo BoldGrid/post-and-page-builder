@@ -33,7 +33,7 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				},
 				{
 					name: 'heading-borders',
-					label: 'Heading Border',
+					label: 'Heading Borders',
 					property: 'top',
 					dataAttr: 'heading-borders',
 					type: 'heading'
@@ -122,20 +122,44 @@ import template from '../../../../../includes/template/customize/table-borders.h
 		},
 
 		initSlider: function( $slider, options ) {
-			var $target = BG.Menu.getCurrentTarget();
+			var $target = BG.Menu.getCurrentTarget(),
+				defaultValue = $target.attr( `data-${options.name}-width` ) || 0;
+
+			$slider.siblings( '.value' ).text( defaultValue );
+
+			console.log( {
+				$target,
+				defaultValue
+			} );
+
 			$slider.slider( {
 				min: 0,
 				max: 20,
 				range: 'max',
+				value: defaultValue,
 				slide: function( event, ui ) {
-					console.log( { event, ui } );
 					self.applyBorderStyle( ui.value, options, 'width' );
 				}
 			} );
 		},
 
 		bindBorderType: function( $borderTypeControl, options ) {
-			var $target = BG.Menu.getCurrentTarget();
+			var $target = BG.Menu.getCurrentTarget(),
+				defaultValue = $target.attr( `data-${options.name}-style` ) || '';
+
+			console.log( {
+				$target,
+				defaultValue
+			} );
+
+			$borderTypeControl.each( function() {
+				var $this = $( this );
+				$this.prop( 'checked', false );
+				if ( $this.val() === defaultValue ) {
+					$this.prop( 'checked', true );
+				}
+			} );
+
 			$borderTypeControl.on( 'change', function() {
 				var $this = $( this );
 
@@ -146,7 +170,12 @@ import template from '../../../../../includes/template/customize/table-borders.h
 		},
 
 		bindColorControl: function( $colorControl, options ) {
-			var $target = BG.Menu.getCurrentTarget();
+			var $target = BG.Menu.getCurrentTarget(),
+				defaultValue = $target.attr( `data-${options.name}-color` ) || '#000';
+
+			$colorControl.val( defaultValue );
+			$colorControl.siblings( 'label' ).css( 'background-color', defaultValue );
+
 			$colorControl.on( 'change', function() {
 				var $this = $( this );
 
@@ -235,7 +264,6 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				var $slider = $section.find( `.${borderType.name} .slider` ),
 					$borderTypeInputs = $section.find( `input[name="${borderType.name}-type"]` ),
 					$borderColorInput = $section.find( `.${borderType.name}-color.color-controls input` );
-				console.log( $borderColorInput );
 				self.initSlider( $slider, borderType );
 				self.bindBorderType( $borderTypeInputs, borderType );
 				self.bindColorControl( $borderColorInput, borderType );
