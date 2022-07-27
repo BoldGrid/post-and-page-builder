@@ -226,10 +226,56 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			panel.clear();
 			panel.$element.find( '.panel-body' ).html( template( self.getTemplateVariables() ) );
 
+			self._setupChangeColsRows();
+
 			self._setupChangeOptions();
+
+			self._bindStructureChanges();
 
 			// Open Panel.
 			panel.open( self );
+		},
+
+		_bindStructureChanges: function() {
+			tinyMCE.activeEditor.on( 'ExecCommand', event => {
+				var command = event.command,
+					numRows = parseInt( self.$target.attr( 'data-num-rows' ) ),
+					numCols = parseInt( self.$target.attr( 'data-num-cols' ) ),
+					rowAddCommands = [
+						'mceTableInsertRowBefore',
+						'mceTableInsertRowAfter',
+						'mceTablePasteRowBefore',
+						'mceTablePasteRowAfter'
+					],
+					rowDelCommands = [ 'mceTableDeleteRow', 'mceTableCutRow' ],
+					colAddCommands = [
+						'mceTableInsertColBefore',
+						'mceTableInsertColAfter',
+						'mceTablePasteColBefore',
+						'mceTablePasteColAfter'
+					],
+					colDelCommands = [ 'mceTableDeleteCol', 'mceTableCutCol' ];
+
+				console.log( { command } );
+
+				if ( -1 !== rowAddCommands.indexOf( command ) ) {
+					self.$target.attr( 'data-num-rows', numRows + 1 );
+					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+				}
+
+				if ( -1 !== rowDelCommands.indexOf( command ) ) {
+					self.$target.attr( 'data-num-rows', numRows - 1 );
+					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+				}
+
+				if ( -1 !== colAddCommands.indexOf( command ) ) {
+					self.$target.attr( 'data-num-cols', numCols + 1 );
+				}
+
+				if ( -1 !== colDelCommands.indexOf( command ) ) {
+					self.$target.attr( 'data-num-cols', numCols - 1 );
+				}
+			} );
 		},
 
 		/**
@@ -253,7 +299,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$parentDiv = $selection.parents( 'div[class*=col]' ),
 				nodeType = $selection.prop( 'nodeName' ),
 				talbeNodeTypes = [ 'TABLE', 'THEAD', 'TBODY', 'TR', 'TD', 'TH' ],
-				content;
+				$content;
 
 			if (
 				-1 === talbeNodeTypes.indexOf( nodeType ) &&
@@ -266,10 +312,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 
 			if ( -1 === talbeNodeTypes.indexOf( nodeType ) ) {
-				content = selection.getContent();
-				content = self.getDefaultTableMarkup() + content;
-				selection.setContent( content );
+				$content = $( selection.getContent() );
+				$content.prepend( self.getDefaultTableMarkup() );
+				selection.setNode( $content[0] );
 				self.$target = $( selection.getNode() ).find( 'table' );
+				console.log( {
+					'last cell': $( self.$target.find( 'td' ).last() )
+				} );
+				selection.setCursorLocation( self.$target.find( 'td' ).last()[0] );
 			} else if ( 'TABLE' === nodeType ) {
 				self.$target = $selection;
 				BG.Menu.setTarget( self, $selection );
@@ -277,6 +327,64 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				self.$target = $selection.parents( 'table' );
 				BG.Menu.setTarget( self, $selection.parents( 'table' ) );
 			}
+		},
+
+		_setupChangeColsRows: function() {
+			var panel = BG.Panel,
+				$target = self.getTarget(),
+				$colsInput = panel.$element.find( '.number-of-columns input' ),
+				$rowsInput = panel.$element.find( '.number-of-rows input' );
+
+			$colsInput.on( 'change', function() {
+				var $this = $( this ),
+					colsValue = parseInt( $this.val() ),
+					targetCols = parseInt( $target.attr( 'data-num-cols' ) ),
+					selection = BOLDGRID.EDITOR.mce.selection;
+
+				if ( colsValue > targetCols ) {
+					let i = 0;
+					while ( i < colsValue - targetCols ) {
+						selection.setCursorLocation( $target.find( 'td' ).last()[0] );
+						tinyMCE.activeEditor.execCommand( 'mceTableInsertColAfter' );
+						i++;
+					}
+				} else if ( colsValue < targetCols ) {
+					let i = 0;
+					while ( i < targetCols - colsValue ) {
+						selection.setCursorLocation( $target.find( 'td' ).last()[0] );
+						tinyMCE.activeEditor.execCommand( 'mceTableDeleteCol' );
+						i++;
+					}
+				}
+			} );
+
+			$rowsInput.on( 'change', function() {
+				var $this = $( this ),
+					rowsValue = parseInt( $this.val() ),
+					targetRows = parseInt( $target.attr( 'data-num-rows' ) ),
+					selection = BOLDGRID.EDITOR.mce.selection;
+
+				console.log( {
+					rowsValue: rowsValue,
+					targetRows: targetRows
+				} );
+
+				if ( rowsValue > targetRows ) {
+					let i = 0;
+					while ( i < rowsValue - targetRows ) {
+						tinyMCE.activeEditor.execCommand( 'mceTableInsertRowAfter' );
+						selection.setCursorLocation( $target.find( 'td' ).last()[0] );
+						i++;
+					}
+				} else if ( rowsValue < targetRows ) {
+					let i = 0;
+					while ( i < targetRows - rowsValue ) {
+						tinyMCE.activeEditor.execCommand( 'mceTableDeleteRow' );
+						selection.setCursorLocation( $target.find( 'td' ).last()[0] );
+						i++;
+					}
+				}
+			} );
 		},
 
 		_setupChangeOptions: function() {
@@ -308,34 +416,34 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @returns {string} default table markup.
 		 */
 		getDefaultTableMarkup: function() {
-			return `<table class="table">
+			return `<table class="table" data-num-cols="3" data-num-rows="4" style="width:100%">
                     <thead>
                         <tr>
-                            <th data-column="1">Header 1</th>
-                            <th data-column="2">Header 2</th>
-                            <th data-column="3">Header 3</th>
+                            <th data-label="Header 1" data-column="1">Header 1</th>
+                            <th data-label="Header 2" data-column="2">Header 2</th>
+                            <th data-label="Header 3" data-column="3">Header 3</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-row="1">
-                            <td data-column="1">Cell 1</td>
-                            <td data-column="2">Cell 2</td>
-                            <td data-column="3">Cell 3</td>
+                            <td data-label="Header 1" data-column="1">Cell 1</td>
+                            <td data-label="Header 2" >Cell 2</td>
+                            <td data-label="Header 3" data-column="3">Cell 3</td>
                         </tr>
                         <tr data-row="2">
-                            <td data-column="1">Cell 1</td>
-                            <td data-column="2">Cell 2</td>
-                            <td data-column="3">Cell 3</td>
+                            <td data-label="Header 1" data-column="1">Cell 1</td>
+                            <td data-label="Header 2" data-column="2">Cell 2</td>
+                            <td data-label="Header 3" data-column="3">Cell 3</td>
                         </tr>
                         <tr data-row="3">
-                            <td data-column="1">Cell 1</td>
-                            <td data-column="2">Cell 2</td>
-                            <td data-column="3">Cell 3</td>
+                            <td data-label="Header 1" data-column="1">Cell 1</td>
+                            <td data-label="Header 2" data-column="2">Cell 2</td>
+                            <td data-label="Header 3" data-column="3">Cell 3</td>
                         </tr>
                         <tr data-row="4">
-                            <td data-column="1">Cell 1</td>
-                            <td data-column="2">Cell 2</td>
-                            <td data-column="3">Cell 3</td>
+                            <td data-label="Header 1" data-column="1">Cell 1</td>
+                            <td data-label="Header 2" data-column="2">Cell 2</td>
+                            <td data-label="Header 3" data-column="3">Cell 3</td>
                         </tr>
                     </tbody>
                 </table>`;
