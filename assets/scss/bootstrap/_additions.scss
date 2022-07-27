@@ -76,7 +76,7 @@
 .table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	width: none;
+	width: unset;
 	&.hide-header {
 		thead {
 			display: none;
