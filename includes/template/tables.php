@@ -2,10 +2,10 @@
     <div class="boldgrid-editor-tables presets supports-customization">
         <div class="section section-columns-and-rows">
             <p class="number-of-columns">
-                <label for="tables-number-of-columns">Number of Rows</label>
+                <label for="tables-number-of-columns">Number of Columns</label>
                 <input type="number" name="tables-number-of-columns" id="tables-number-of-columns" value="3" min="1" max="100" step="1">
             </p>
-            <p class="tables-number-of-rows">
+            <p class="number-of-rows">
                 <label for="tables-number-of-rows">Number of Rows</label>
                 <input type="number" name="tables-number-of-rows" id="tables-number-of-rows" value="4" min="1" max="100" step="1">
             </p>
