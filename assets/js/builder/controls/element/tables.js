@@ -62,7 +62,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				'box-shadow',
 				'tableborders',
 				'animation',
-				'background-color',
+				'table-colors',
 				'customClasses'
 			]
 		},

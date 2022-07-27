@@ -13,6 +13,7 @@ import {
 } from '@boldgrid/controls';
 import { BackgroundColor } from './generic/background-color';
 import { Tableborders } from './generic/table-borders';
+import { TableColors } from './generic/table-colors';
 import { Border } from './generic/border';
 import { Outline } from './generic/outline';
 
@@ -38,7 +39,8 @@ import { Outline } from './generic/outline';
 			animation: Animation,
 			'background-color': BackgroundColor,
 			'hover-visibility': HoverVisibility,
-			'table-borders': Tableborders
+			'table-borders': Tableborders,
+			'table-colors': TableColors
 		},
 
 		allControls: [

@@ -77,6 +77,11 @@
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: none;
+	&.hide-header {
+		thead {
+			display: none;
+		}
+	}
 }
 
 .table-borderless {

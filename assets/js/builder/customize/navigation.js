@@ -34,6 +34,7 @@ export class Navigation {
 				{ name: 'fontSize', icon: fontSizeSvg, label: 'Font Size' },
 				{ name: 'fontColor', icon: colorSvg, label: 'Color' },
 				{ name: 'background-color', icon: backgroundColorSvg, label: 'Background Color' },
+				{ name: 'table-colors', icon: backgroundColorSvg, label: 'Table Colors' },
 				{ name: 'rotate', icon: rotateSvg, label: 'Rotate' },
 				{ name: 'border', icon: borderSvg, label: 'Border' },
 				{ name: 'tableborders', icon: borderSvg, label: 'Table Borders' },
