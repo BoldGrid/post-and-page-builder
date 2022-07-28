@@ -332,8 +332,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_setupChangeColsRows: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
-				$colsInput = panel.$element.find( '.number-of-columns input' ),
-				$rowsInput = panel.$element.find( '.number-of-rows input' );
+				$colsInput = panel.$element.find( '.input[name=tables-number-of-columns]' ),
+				$rowsInput = panel.$element.find( '.input[name=tables-number-of-rows]' );
 
 			$colsInput.on( 'change', function() {
 				var $this = $( this ),
@@ -390,7 +390,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_setupChangeOptions: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
-				$optionInputs = panel.$element.find( '.section-general-options input' );
+				$optionInputs = panel.$element.find( 'input.general-table-option' );
 
 			$optionInputs.on( 'change', function() {
 				var $this = $( this ),
