@@ -127,11 +127,6 @@ import template from '../../../../../includes/template/customize/table-borders.h
 
 			$slider.siblings( '.value' ).text( defaultValue );
 
-			console.log( {
-				$target,
-				defaultValue
-			} );
-
 			$slider.slider( {
 				min: 0,
 				max: 20,
@@ -146,11 +141,6 @@ import template from '../../../../../includes/template/customize/table-borders.h
 		bindBorderType: function( $borderTypeControl, options ) {
 			var $target = BG.Menu.getCurrentTarget(),
 				defaultValue = $target.attr( `data-${options.name}-style` ) || '';
-
-			console.log( {
-				$target,
-				defaultValue
-			} );
 
 			$borderTypeControl.each( function() {
 				var $this = $( this );

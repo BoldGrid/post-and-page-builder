@@ -228,12 +228,64 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self._setupChangeColsRows();
 
+			self._setupChangeHeadingLabels();
+
 			self._setupChangeOptions();
 
 			self._bindStructureChanges();
 
 			// Open Panel.
 			panel.open( self );
+		},
+
+		_setupChangeHeadingLabels() {
+			var panel = BG.Panel,
+				$target = self.getTarget(),
+				$headingLabelsSection = panel.$element.find( '.section-heading-labels' ),
+				$targetHeadings = $target.find( 'th' );
+
+			$headingLabelsSection.children().remove();
+
+			$targetHeadings.each( function() {
+				var $heading = $( this ),
+					headingLabel = $heading.attr( 'data-label' ) ? $heading.attr( 'data-label' ) : '',
+					headingIndex = $heading.index();
+
+				$headingLabelsSection.append(
+					`<p class="hide-header">
+						<label>Heading ${headingIndex + 1} Label
+							<input type="text" 
+								name="heading-label-${headingIndex}"
+								data-heading-index="${headingIndex}"  
+								value="${headingLabel}"></label>
+					</p>`
+				);
+			} );
+
+			$headingLabelsSection.find( 'input' ).each( self._bindHeadingLabels );
+
+			$headingLabelsSection.find( 'input' ).on( 'change', self._bindHeadingLabels );
+		},
+
+		_bindHeadingLabels: function() {
+			var $this = $( this ),
+				$target = self.getTarget(),
+				$targetHeadings = $target.find( 'th' ),
+				headingIndex = $this.data( 'heading-index' ),
+				headingLabel = $this.val() ? $this.val() : '',
+				$heading = $targetHeadings.eq( headingIndex );
+
+			$heading.attr( 'data-label', headingLabel );
+
+			$target
+				.find( 'tbody' )
+				.find( 'tr' )
+				.each( function() {
+					var $row = $( this ),
+						$columnCell = $row.find( 'td' ).eq( headingIndex );
+
+					$columnCell.attr( 'data-label', headingLabel );
+				} );
 		},
 
 		_bindStructureChanges: function() {
@@ -256,24 +308,30 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					],
 					colDelCommands = [ 'mceTableDeleteCol', 'mceTableCutCol' ];
 
-				console.log( { command } );
-
 				if ( -1 !== rowAddCommands.indexOf( command ) ) {
 					self.$target.attr( 'data-num-rows', numRows + 1 );
 					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+					self._setupChangeColsRows();
+					self._setupChangeHeadingLabels();
 				}
 
 				if ( -1 !== rowDelCommands.indexOf( command ) ) {
 					self.$target.attr( 'data-num-rows', numRows - 1 );
 					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+					self._setupChangeColsRows();
+					self._setupChangeHeadingLabels();
 				}
 
 				if ( -1 !== colAddCommands.indexOf( command ) ) {
 					self.$target.attr( 'data-num-cols', numCols + 1 );
+					self._setupChangeColsRows();
+					self._setupChangeHeadingLabels();
 				}
 
 				if ( -1 !== colDelCommands.indexOf( command ) ) {
 					self.$target.attr( 'data-num-cols', numCols - 1 );
+					self._setupChangeColsRows();
+					self._setupChangeHeadingLabels();
 				}
 			} );
 		},
@@ -293,7 +351,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return variables;
 		},
 
-		createTable: function( initialTarget ) {
+		createTable: function() {
 			var selection = BOLDGRID.EDITOR.mce.selection,
 				$selection = $( selection.getNode() ),
 				$parentDiv = $selection.parents( 'div[class*=col]' ),
@@ -316,9 +374,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$content.prepend( self.getDefaultTableMarkup() );
 				selection.setNode( $content[0] );
 				self.$target = $( selection.getNode() ).find( 'table' );
-				console.log( {
-					'last cell': $( self.$target.find( 'td' ).last() )
-				} );
 				selection.setCursorLocation( self.$target.find( 'td' ).last()[0] );
 			} else if ( 'TABLE' === nodeType ) {
 				self.$target = $selection;
@@ -332,8 +387,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_setupChangeColsRows: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
-				$colsInput = panel.$element.find( '.input[name=tables-number-of-columns]' ),
-				$rowsInput = panel.$element.find( '.input[name=tables-number-of-rows]' );
+				$colsInput = panel.$element.find( 'input[name=tables-number-of-columns]' ),
+				$rowsInput = panel.$element.find( 'input[name=tables-number-of-rows]' );
+
+			$colsInput.off( 'change' );
+			$rowsInput.off( 'change' );
+
+			$colsInput.val( $target.attr( 'data-num-cols' ) );
+			$rowsInput.val( $target.attr( 'data-num-rows' ) );
 
 			$colsInput.on( 'change', function() {
 				var $this = $( this ),
@@ -364,11 +425,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					targetRows = parseInt( $target.attr( 'data-num-rows' ) ),
 					selection = BOLDGRID.EDITOR.mce.selection;
 
-				console.log( {
-					rowsValue: rowsValue,
-					targetRows: targetRows
-				} );
-
 				if ( rowsValue > targetRows ) {
 					let i = 0;
 					while ( i < rowsValue - targetRows ) {
@@ -392,6 +448,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$target = self.getTarget(),
 				$optionInputs = panel.$element.find( 'input.general-table-option' );
 
+			$optionInputs.each( function() {
+				var $this = $( this ),
+					$target = self.getTarget(),
+					value = $this.val();
+
+				if ( value && $target.hasClass( value ) ) {
+					$this.prop( 'checked', true );
+				}
+			} );
+
 			$optionInputs.on( 'change', function() {
 				var $this = $( this ),
 					isChecked = $this.prop( 'checked' ) ? true : false;
@@ -404,6 +470,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					$target.addClass( $this.val() );
 				} else {
 					$target.removeClass( $this.val() );
+				}
+
+				if ( 'tables-striped-rows' === $this.attr( 'name' ) ) {
+					BG.CONTROLS.Color.updateTableBackgrounds( $target );
 				}
 			} );
 		},
@@ -419,31 +489,31 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return `<table class="table" data-num-cols="3" data-num-rows="4" style="width:100%">
                     <thead>
                         <tr>
-                            <th data-label="Header 1" data-column="1">Header 1</th>
-                            <th data-label="Header 2" data-column="2">Header 2</th>
-                            <th data-label="Header 3" data-column="3">Header 3</th>
+                            <th data-label="Header 1">Header 1</th>
+                            <th data-label="Header 2">Header 2</th>
+                            <th data-label="Header 3">Header 3</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-row="1">
-                            <td data-label="Header 1" data-column="1">Cell 1</td>
-                            <td data-label="Header 2" >Cell 2</td>
-                            <td data-label="Header 3" data-column="3">Cell 3</td>
+                            <td data-label="Header 1">Cell 1</td>
+                            <td data-label="Header 2">Cell 2</td>
+                            <td data-label="Header 3">Cell 3</td>
                         </tr>
                         <tr data-row="2">
-                            <td data-label="Header 1" data-column="1">Cell 1</td>
-                            <td data-label="Header 2" data-column="2">Cell 2</td>
-                            <td data-label="Header 3" data-column="3">Cell 3</td>
+                            <td data-label="Header 1">Cell 1</td>
+                            <td data-label="Header 2">Cell 2</td>
+                            <td data-label="Header 3">Cell 3</td>
                         </tr>
                         <tr data-row="3">
-                            <td data-label="Header 1" data-column="1">Cell 1</td>
-                            <td data-label="Header 2" data-column="2">Cell 2</td>
-                            <td data-label="Header 3" data-column="3">Cell 3</td>
+                            <td data-label="Header 1">Cell 1</td>
+                            <td data-label="Header 2">Cell 2</td>
+                            <td data-label="Header 3">Cell 3</td>
                         </tr>
                         <tr data-row="4">
-                            <td data-label="Header 1" data-column="1">Cell 1</td>
-                            <td data-label="Header 2" data-column="2">Cell 2</td>
-                            <td data-label="Header 3" data-column="3">Cell 3</td>
+                            <td data-label="Header 1">Cell 1</td>
+                            <td data-label="Header 2">Cell 2</td>
+                            <td data-label="Header 3">Cell 3</td>
                         </tr>
                     </tbody>
                 </table>`;

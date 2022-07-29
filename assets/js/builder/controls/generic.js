@@ -144,14 +144,6 @@ import { Outline } from './generic/outline';
 					addOptions = customizeSupportOptions[this];
 				}
 
-				console.log( {
-					customizationOption,
-					customizeSupportOptions,
-					bgControls: self.bgControls,
-					genericControls: BG.CONTROLS.GENERIC,
-					addOptions
-				} );
-
 				if ( self.bgControls[customizationOption] ) {
 					$control = self.appendBasicBGControl( addOptions, self.bgControls[customizationOption] );
 				} else {

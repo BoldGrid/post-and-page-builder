@@ -30,18 +30,34 @@ export class TableColors {
 	 * @return {jQuery} Control element.
 	 */
 	createControl() {
-		let $control = $( template );
+		let $control = $( template ),
+			bgColors = BG.CONTROLS.Color.getColorsFormatted();
 
 		BG.Panel.$element.find( '.panel-body .customize .generic-table-colors' ).remove();
 		BG.Panel.$element.find( '.panel-body .customize' ).append( $control );
 
 		BG.Panel.$element.on( 'bg-customize-open', () => {
-			let currentBackgroundColor = this.$target.css( 'background-color' );
-			if ( BG.Controls.$container.color_is( currentBackgroundColor, 'transparent' ) ) {
-				currentBackgroundColor = '#FFFFFF';
-			}
+			var $target = this.$target;
 
-			this.$control.find( 'label.color-preview' ).css( 'background-color', currentBackgroundColor );
+			this.$input.each( ( _, input ) => {
+				var $input = $( input ),
+					targetType = $input.attr( 'data-target-type' ),
+					targetColor = $target.attr( `data-table-${targetType}-bg-color` ),
+					targetColorType = $target.attr( `data-table-${targetType}-bg-type` );
+
+				$input.val( targetColor ? targetColor : '#000' );
+				$input.attr( 'data-type', targetColorType ? targetColorType : 'color' );
+				if ( 'color' === targetColorType ) {
+					this.$control
+						.find( `label[for=${targetType}-bg-color] ` )
+						.css( 'background-color', targetColor ? targetColor : '#fff' );
+				} else if ( 'class' === targetColorType ) {
+					let color = targetColor ? bgColors[parseInt( targetColor ) - 1].color : '#000';
+					this.$control.find( `label[for=${targetType}-bg-color] ` ).css( 'background-color', color );
+				} else if ( ! targetColor ) {
+					this.$control.find( `label[for=${targetType}-bg-color] ` ).css( 'background-color', '#000' );
+				}
+			} );
 		} );
 
 		return $control;

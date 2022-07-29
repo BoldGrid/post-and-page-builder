@@ -141,6 +141,7 @@ table.table.mce-item-table {
 				td {
 					display: block;
 					text-align: right !important;
+					width: 100% !important;
 					&::before {
 						content: attr(data-label);
 						float: left;

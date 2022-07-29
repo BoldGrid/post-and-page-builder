@@ -8,6 +8,9 @@
                     <input type="number" name="tables-number-of-rows" id="tables-number-of-rows" value="4" min="1" max="100" step="1"></label>
             </p>
         </div>
+        <h4>Heading Labels</h4>
+        <div class="section section-heading-labels">
+        </div>
         <h4>General Options</h4>
         <div class="section section-general-options">
             <p class="hide-header">
@@ -28,7 +31,7 @@
             <div class="buttonset bgc" >
                 <input class="switch-input screen-reader-text bgc general-table-option" 
                     data-classes="table-text-align-center table-text-align-right"
-                    type="radio" value="" name="tables-text-align" id="tables-text-align-left">
+                    type="radio" value="" checked name="tables-text-align" id="tables-text-align-left">
                     <label class="switch-label switch-label-on " for="tables-text-align-left">
                         <span class="dashicons dashicons-editor-alignleft"></span>Left
                     </label>
@@ -52,7 +55,7 @@
                 <label>None
                     <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="table-borderless"></label>
                 <label>Rows Only
-                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value=""></label>
+                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="" checked></label>
                 <label>Rows and Columns
                     <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="table-bordered"></label>
             </p>
