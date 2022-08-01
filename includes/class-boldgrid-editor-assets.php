@@ -164,6 +164,31 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
+	 * Maybe Enqueue Animate.css
+	 *
+	 * Checks if post uses the animate.css or not.
+	 *
+	 * @since SINCEVERSION
+	 *
+	 * @return bool True if animate.css is to be enqueued.
+	 */
+	public function maybe_enqueue_animate() {
+		global $post;
+
+		if ( ! $post ) {
+			return true;
+		}
+
+		$post_content = apply_filters( 'the_content', $post->post_content );
+
+		if ( preg_match( '/class=".*wow.*"/', $post_content ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Enqueue Styles to the front end of the site.
 	 *
 	 * @since 1.2.7
@@ -194,9 +219,13 @@ class Boldgrid_Editor_Assets {
 			)
 		);
 
-		wp_enqueue_style( 'animatecss',
-			plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
-			array(), BOLDGRID_EDITOR_VERSION );
+		$maybe_enqueue_animate = $this->maybe_enqueue_animate();
+
+		if ( $maybe_enqueue_animate ) {
+			wp_enqueue_script( 'animate-js',
+				plugins_url( '/assets/js/animate.js', BOLDGRID_EDITOR_ENTRY ),
+			array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
+		}
 
 		// Enqueue Styles that which depend on version.
 		$this->enqueue_latest();
