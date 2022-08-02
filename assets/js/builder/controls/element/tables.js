@@ -34,7 +34,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		iconClasses: 'dashicons dashicons-editor-table',
 
-		selectors: [ 'table', 'div[class*="col"]' ],
+		selectors: [ 'table', 'td', 'tr', 'th', 'tbody', 'thead', 'tfoot' ],
 
 		defaults: {
 			cols: 3,
@@ -48,6 +48,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		init: function() {
 			BOLDGRID.EDITOR.Controls.registerControl( this );
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.8.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'tables',
+				title: 'Table',
+				type: 'design',
+				icon: require( './../../../../image/icons/table.svg' ),
+				onInsert: 'prependColumn',
+				getDragElement: () => $( self.getDefaultTableMarkup() )
+			};
+
+			BG.Service.component.register( config );
 		},
 
 		panel: {
@@ -103,7 +121,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @return {jQuery} Element.
 		 */
 		getTarget: function() {
-			return self.$target;
+			return BOLDGRID.EDITOR.Menu.getTarget( self );
 		},
 
 		/**
@@ -113,7 +131,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		onMenuClick: function() {
 			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
-			self.createTable( initialTarget );
+			self.$target = initialTarget;
 			self.openPanel();
 		},
 
@@ -141,12 +159,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param  {object} event DOM Event
 		 */
 		elementClick( event ) {
-			if ( self.layerEvent.latestTime !== event.timeStamp ) {
-				self.layerEvent.latestTime = event.timeStamp;
-				self.layerEvent.targets = [];
+			if ( BOLDGRID.EDITOR.Panel.isOpenControl( this ) ) {
+				self.openPanel();
 			}
-
-			self.layerEvent.targets.push( event.currentTarget );
 		},
 
 		/**
@@ -157,17 +172,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
 
-			self._setupMenuReactivate();
-		},
-
-		/**
-		 * When a menu item is reopened because a user clicked on another similar element
-		 * Update the available options.
-		 *
-		 * @since 1.8.0
-		 */
-		_setupMenuReactivate: function() {
-			self.$menuItem.on( 'reactivate', self.updateMenuOptions );
+			self.registerComponent();
 		},
 
 		/**
@@ -234,8 +239,79 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self._bindStructureChanges();
 
+			self._bindContextToolbar();
+
 			// Open Panel.
 			panel.open( self );
+		},
+
+		_bindContextToolbar: function() {
+			var observer = new MutationObserver( ( mutationList, observer ) => {
+				mutationList.forEach( mutation => {
+					if ( 'childList' === mutation.type ) {
+						mutation.addedNodes.forEach( node => {
+							if ( $( node ).hasClass( 'mce-floatpanel' ) ) {
+								self._adjustToolbarPosition( $( node ) );
+								tinymce.activeEditor.contextToolbars[0].panel.state.off(
+									'change:visible',
+									self._bindShowHideContextToolbar
+								);
+								tinymce.activeEditor.contextToolbars[0].panel.state.on(
+									'change:visible',
+									self._bindShowHideContextToolbar
+								);
+							}
+						} );
+					}
+				} );
+			} );
+
+			var observerOptions = {
+				childList: true,
+				subtree: false,
+				attributes: false
+			};
+
+			tinymce.activeEditor.contextToolbars[0].items =
+				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+
+			observer.observe( document.body, observerOptions );
+		},
+
+		_bindShowHideContextToolbar: function( event ) {
+			var $toolbar = $( '.mce-floatpanel' );
+			if ( event.value ) {
+				self._adjustToolbarPosition( $toolbar );
+			}
+		},
+
+		_adjustToolbarPosition: function( $toolbar ) {
+			var iframeRects = tinymce.activeEditor.iframeElement.getClientRects()[0],
+				toolbarPanel = tinymce.activeEditor.contextToolbars[0].panel,
+				toolbarRects = toolbarPanel.layoutRect(),
+				newRects = {},
+				selectionRects = self
+					.getTarget()
+					.closest( 'table' )[0]
+					.getClientRects()[0];
+
+			console.log( {
+				iframeRects: iframeRects,
+				toolbarRects: toolbarRects,
+				selectionRects: selectionRects,
+				'toolbarRects Before': toolbarRects
+			} );
+
+			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
+			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
+
+			$toolbar.css( 'top', newRects.y );
+			$toolbar.css( 'left', newRects.x );
+
+			console.log( {
+				newRects: newRects,
+				'toolbarRects After': toolbarPanel.layoutRect()
+			} );
 		},
 
 		_setupChangeHeadingLabels() {
@@ -358,7 +434,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				nodeType = $selection.prop( 'nodeName' ),
 				talbeNodeTypes = [ 'TABLE', 'THEAD', 'TBODY', 'TR', 'TD', 'TH' ],
 				$content;
-
 			if (
 				-1 === talbeNodeTypes.indexOf( nodeType ) &&
 				! $selection.is( '[class*=col]' ) &&
