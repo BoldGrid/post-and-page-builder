@@ -62,13 +62,15 @@ var contentInteraction = ( event, $left, $entered ) => {
 	var self = BOLDGRID.EDITOR.Controls.$container;
 	self.$current_drag.forceSibling = false;
 
+
 	if ( false == self.has( $entered ).length ) {
 		return true;
 	}
 
 	// Rewrite to highest.
 	var $parent_content = $entered.parents( self.content_selectors_string ).last();
-	if ( true == $parent_content.length ) {
+	var $entered_table_cell = $entered.is( 'td,th' );
+	if ( true == $parent_content.length && ! $entered_table_cell ) {
 		$entered = $parent_content;
 	}
 
@@ -81,7 +83,6 @@ var contentInteraction = ( event, $left, $entered ) => {
 
 	// If entered content.
 	if ( $entered.is( self.unformatted_content_selectors_string ) ) {
-
 		// If entered a column that is not my own.
 		if ( $entered[0] != self.$current_drag[0] ) {
 
@@ -156,13 +157,15 @@ var contentInteraction = ( event, $left, $entered ) => {
 			'.row .row hr)'
 	) || self.$current_drag.forceSibling;
 
+	var entered_table_cell = $entered.is( 'td,th' );
+
 	// If you began dragging over the column, and the column has
 	// "siblings", ignore the drag over.
 	// Any of these cases should be rewritten to handle the
 	// appropriate sibling in the container.
 	// This event should be handled by dragging over the
 	// "siblings".
-	if ( ! current_drag_is_sibling && true == parent_has_content ) {
+	if ( ! current_drag_is_sibling && true == parent_has_content && ! entered_table_cell ) {
 		return true;
 	}
 
@@ -170,6 +173,7 @@ var contentInteraction = ( event, $left, $entered ) => {
 	var entered_current_drag =
 		$current_placement.length && $current_placement[0] == self.$temp_insertion[0];
 	if ( entered_current_drag ) {
+		console.log( 'returned because entering current drag' );
 		self.$most_recent_row_enter_add = null;
 		return true;
 	}
@@ -191,7 +195,7 @@ var contentInteraction = ( event, $left, $entered ) => {
 
 		// We have just modified the DOM.
 		self.trigger( self.boldgrid_modify_event );
-	} else if ( current_drag_is_parent ) {
+	} else if ( current_drag_is_parent || entered_table_cell ) {
 
 		// If the drag enter element is a parent, we will append or prepend.
 		// This handles cases where you are dragging into a container.
