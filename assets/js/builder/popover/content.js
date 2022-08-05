@@ -162,8 +162,10 @@ export class Content extends Base {
 	 * @since 1.6
 	 */
 	_onUpdatePosition() {
-		let $nestedContent = this.$target.parents( this.getSelectorString() ).last();
-		if ( $nestedContent.length ) {
+		let $nestedContent = this.$target.parents( this.getSelectorString() ).last(),
+			nestedInTable = ! this.$target.is( 'table, td, th' ) && $nestedContent.is( 'table' );
+
+		if ( $nestedContent.length && ! nestedInTable ) {
 			this.$target = $nestedContent;
 		}
 

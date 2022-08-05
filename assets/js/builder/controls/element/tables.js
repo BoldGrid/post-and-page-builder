@@ -34,7 +34,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		iconClasses: 'dashicons dashicons-editor-table',
 
-		selectors: [ 'table', 'td', 'tr', 'th', 'tbody', 'thead', 'tfoot' ],
+		selectors: [ 'table' ],
 
 		defaults: {
 			cols: 3,

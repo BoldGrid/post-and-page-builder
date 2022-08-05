@@ -358,6 +358,14 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'table:not(.row .row table)',
 		'pre:not(.row .row pre)',
 
+		// Nested Table contents.
+		'table tr td p',
+		'table tr th p',
+		'table tr td a',
+		'table tr th a',
+		'table tr td i',
+		'table tr th i',
+
 		// Nested Rows - Not rows nested out of master container.
 		'.row .row:not(.row .row .row)',
 

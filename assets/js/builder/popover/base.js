@@ -129,7 +129,7 @@ export class Base {
 				this.$element.$menu.addClass( 'hidden' );
 			}
 
-			this.$target = $newTarget;
+			this.$target = this._getParentTarget( $newTarget );
 		}
 
 		// Check validation after all rewrites are done.
@@ -143,7 +143,7 @@ export class Base {
 
 		this._setPosition();
 		this.$element.show();
-		this.$target.$wrapTarget.addClass( 'popover-hover' );
+		this._findWrapTarget().addClass( 'popover-hover' );
 	}
 
 	/**
@@ -153,7 +153,7 @@ export class Base {
 	 */
 	_setPosition() {
 		this.$element.trigger( 'updatePosition' );
-		let pos = this.$target.$wrapTarget[0].getBoundingClientRect();
+		let pos = this._findWrapTarget()[0].getBoundingClientRect();
 		this.$element.css( this.getPositionCss( pos ) );
 	}
 
@@ -208,7 +208,14 @@ export class Base {
 	 * @return {jQuery}         Parent target.
 	 */
 	_getParentTarget( $target ) {
-		let $parent = $target.parents( this.getSelectorString() ).last();
+		let $parents = $target.parents( this.getSelectorString() );
+		let $parent = $parents.last();
+
+		if ( ! $target.is( 'table' ) && $parent.is( 'table' ) && 2 <= $parents.length ) {
+			$parent = $parents.eq( -2 );
+		} else if ( ! $target.is( 'table' ) && $parent.is( 'table' ) ) {
+			$parent = $target;
+		}
 		return $parent.length ? $parent : $target;
 	}
 

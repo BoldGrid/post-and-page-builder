@@ -173,7 +173,6 @@ var contentInteraction = ( event, $left, $entered ) => {
 	var entered_current_drag =
 		$current_placement.length && $current_placement[0] == self.$temp_insertion[0];
 	if ( entered_current_drag ) {
-		console.log( 'returned because entering current drag' );
 		self.$most_recent_row_enter_add = null;
 		return true;
 	}
