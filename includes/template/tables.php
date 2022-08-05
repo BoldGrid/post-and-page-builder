@@ -21,12 +21,16 @@
                 <label for="tables-striped-rows">
                     <input type="checkbox" class="general-table-option" name="tables-striped-rows" id="tables-striped-rows" value="table-striped">Striped Rows</label>
             </p>
-            <p class="table-responsive">
+            <p class="table-responsive-xs">
                 <label for="tables-responsive">
-                    <input type="checkbox" class="general-table-option" name="tables-responsive" id="tables-responsive" value="table-responsive">Responsive Table</label>
+                    <input type="checkbox" class="general-table-option" name="tables-responsive-xs" id="tables-responsive-xs" value="table-responsive-xs">Responsive Table ( Phones )</label>
+            </p>
+            <p class="table-responsive-sm">
+                <label for="tables-responsive">
+                    <input type="checkbox" class="general-table-option" name="tables-responsive-sm" id="tables-responsive-sm" value="table-responsive-sm">Responsive Table ( Tablets )</label>
             </p>
         </div>
-        <h4>Table Text Alignment</h4>
+        <h4>Horizontal Text Alignment</h4>
         <div class="section section-text-alignment">
             <div class="buttonset bgc" >
                 <input class="switch-input screen-reader-text bgc general-table-option" 
@@ -49,15 +53,46 @@
                     </label>
 		    </div>
         </div>
+        <h4>Vertical Text Alignment</h4>
+        <div class="section section-vertical-alignment">
+            <div class="buttonset bgc" >
+                <input class="switch-input screen-reader-text bgc general-table-option" 
+                    data-classes="table-vertical-align-top table-vertical-align-middle table-vertical-align-bottom"
+                    type="radio" value="" checked name="tables-vertical-align" id="tables-vertical-align-none">
+                    <label class="switch-label switch-label-on " for="tables-vertical-align-none">
+                        None
+                    </label>
+                <input class="switch-input screen-reader-text bgc general-table-option" 
+                    data-classes="table-vertical-align-top table-vertical-align-middle table-vertical-align-bottom"
+                    type="radio" value="table-vertical-align-top" name="tables-vertical-align" id="tables-vertical-align-top">
+                    <label class="switch-label switch-label-on " for="tables-vertical-align-top">
+                        Top
+                    </label>
+                <input class="switch-input screen-reader-text bgc general-table-option"
+                    data-classes="table-vertical-align-top table-vertical-align-middle table-vertical-align-bottom"
+                    type="radio" value="table-vertical-align-middle" name="tables-vertical-align" id="tables-vertical-align-middle">
+                    <label class="switch-label switch-label-on " for="tables-vertical-align-middle">
+                        Middle
+                    </label>
+                <input class="switch-input screen-reader-text bgc general-table-option"
+                    data-classes="table-vertical-align-top table-vertical-align-middle table-vertical-align-bottom"
+                    type="radio" value="table-vertical-align-bottom" name="tables-vertical-align" id="tables-vertical-align-bottom">
+                    <label class="switch-label switch-label-on " for="tables-vertical-align-bottom">
+                        Bottom
+                    </label>
+		    </div>
+        </div>
         <h4>Table Borders</h4>
         <div class="section section-borders">
             <p class="table-borders">
                 <label>None
-                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="table-borderless"></label>
+                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered table-bordered-columns" name="tables-borders" value="table-borderless"></label>
                 <label>Rows Only
-                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="" checked></label>
+                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered table-bordered-columns" name="tables-borders" value="" checked></label>
+                <label>Columns Only
+                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered table-bordered-columns" name="tables-borders" value="table-borderless table-bordered-columns"></label>
                 <label>Rows and Columns
-                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered" name="tables-borders" value="table-bordered"></label>
+                    <input type="radio" class="general-table-option" data-classes="table-borderless table-bordered table-bordered-columns" name="tables-borders" value="table-bordered"></label>
             </p>
         </div>
     </div>

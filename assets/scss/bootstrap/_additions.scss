@@ -92,6 +92,46 @@
 			}
 		}
 	}
+	&.table-bordered-columns {
+		thead, tbody, tfoot {
+			tr {
+				td, th {
+					border-left: 1px solid #ddd;
+					border-right: 1px solid #ddd;
+				}
+			}
+		}
+	}
+}
+
+.table-vertical-align-top {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				vertical-align: top;
+			}
+		}
+	}
+}
+
+.table-vertical-align-middle {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				vertical-align: middle;
+			}
+		}
+	}
+}
+
+.table-vertical-align-bottom {
+	thead, tbody, tfoot {
+		tr {
+			td, th {
+				vertical-align: bottom;
+			}
+		}
+	}
 }
 
 .table-text-align-center {
@@ -118,30 +158,67 @@ table.table.mce-item-table {
 	border: 0;
 }
 
-@media screen and ( max-width: 767px ) {
-	.table.table-responsive {
+@media screen and (min-width: 768px ) and ( max-width: 991px ) {
+	.table.table-responsive-sm {
 		thead {
-			border: none;
-			clip: rect( 0 0 0 0 );
-			height: 1px;
-			margin: -1px;
-			overflow: hidden;
-			padding: 0;
-			position: absolute;
-			width: 1px;
 			tr {
 				display: block;
-
+				width: 100% !important;
+				height: auto !important;
+				margin-bottom: 0.625em;
+				th {
+					display: block;
+					width: 100% !important;
+					height: auto !important;
+				}
 			}
 		}
 		tbody {
 			tr {
 				display: block;
 				margin-bottom: 0.625em;
+				height: auto !important;
 				td {
 					display: block;
 					text-align: right !important;
 					width: 100% !important;
+					height: auto !important;
+					&::before {
+						content: attr(data-label);
+						float: left;
+						font-weight: 600;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and ( max-width: 767px ) {
+	.table.table-responsive-xs {
+		thead {
+			tr {
+				display: block;
+				width: 100% !important;
+				height: auto !important;
+				margin-bottom: 0.625em;
+				th {
+					display: block;
+					width: 100% !important;
+					height: auto !important;
+				}
+			}
+		}
+		tbody {
+			tr {
+				display: block;
+				margin-bottom: 0.625em;
+				height: auto !important;
+				td {
+					display: block;
+					text-align: right !important;
+					width: 100% !important;
+					height: auto !important;
 					&::before {
 						content: attr(data-label);
 						float: left;

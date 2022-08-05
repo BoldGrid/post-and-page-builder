@@ -121,7 +121,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @return {jQuery} Element.
 		 */
 		getTarget: function() {
-			return BOLDGRID.EDITOR.Menu.getTarget( self );
+			var $target = BOLDGRID.EDITOR.Menu.getTarget( self );
+
+			if ( ! $target ) {
+				$target = $( BOLDGRID.EDITOR.mce.selection ).closest( 'table' );
+			}
+			return $target;
 		},
 
 		/**
@@ -171,6 +176,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
+
+			tinymce.activeEditor.contextToolbars[0].items =
+				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+
+			self._bindContextToolbar();
 
 			self.registerComponent();
 		},
@@ -235,11 +245,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self._setupChangeHeadingLabels();
 
-			self._setupChangeOptions();
-
 			self._bindStructureChanges();
 
-			self._bindContextToolbar();
+			self._setupChangeOptions();
 
 			// Open Panel.
 			panel.open( self );
@@ -272,9 +280,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				attributes: false
 			};
 
-			tinymce.activeEditor.contextToolbars[0].items =
-				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
-
 			observer.observe( document.body, observerOptions );
 		},
 
@@ -282,6 +287,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $toolbar = $( '.mce-floatpanel' );
 			if ( event.value ) {
 				self._adjustToolbarPosition( $toolbar );
+				self.openPanel();
 			}
 		},
 
@@ -295,23 +301,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.closest( 'table' )[0]
 					.getClientRects()[0];
 
-			console.log( {
-				iframeRects: iframeRects,
-				toolbarRects: toolbarRects,
-				selectionRects: selectionRects,
-				'toolbarRects Before': toolbarRects
-			} );
-
 			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
 			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
 
 			$toolbar.css( 'top', newRects.y );
 			$toolbar.css( 'left', newRects.x );
-
-			console.log( {
-				newRects: newRects,
-				'toolbarRects After': toolbarPanel.layoutRect()
-			} );
 		},
 
 		_setupChangeHeadingLabels() {
@@ -367,8 +361,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_bindStructureChanges: function() {
 			tinyMCE.activeEditor.on( 'ExecCommand', event => {
 				var command = event.command,
-					numRows = parseInt( self.$target.attr( 'data-num-rows' ) ),
-					numCols = parseInt( self.$target.attr( 'data-num-cols' ) ),
+					numRows = parseInt( self.getTarget().attr( 'data-num-rows' ) ),
+					numCols = parseInt( self.getTarget().attr( 'data-num-cols' ) ),
 					rowAddCommands = [
 						'mceTableInsertRowBefore',
 						'mceTableInsertRowAfter',
@@ -384,31 +378,47 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					],
 					colDelCommands = [ 'mceTableDeleteCol', 'mceTableCutCol' ];
 
+				// Bind to Row Addition
 				if ( -1 !== rowAddCommands.indexOf( command ) ) {
-					self.$target.attr( 'data-num-rows', numRows + 1 );
-					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+					self.getTarget().attr( 'data-num-rows', numRows + 1 );
+					BG.CONTROLS.Color.updateTableBackgrounds( self.getTarget() );
 					self._setupChangeColsRows();
 					self._setupChangeHeadingLabels();
 				}
 
+				// Bind to Row Deletion
 				if ( -1 !== rowDelCommands.indexOf( command ) ) {
-					self.$target.attr( 'data-num-rows', numRows - 1 );
-					BG.CONTROLS.Color.updateTableBackgrounds( this.$target );
+					self.getTarget().attr( 'data-num-rows', numRows - 1 );
+					BG.CONTROLS.Color.updateTableBackgrounds( self.getTarget() );
 					self._setupChangeColsRows();
 					self._setupChangeHeadingLabels();
 				}
 
+				// Bind to Column Addition
 				if ( -1 !== colAddCommands.indexOf( command ) ) {
-					self.$target.attr( 'data-num-cols', numCols + 1 );
+					self.getTarget().attr( 'data-num-cols', numCols + 1 );
 					self._setupChangeColsRows();
 					self._setupChangeHeadingLabels();
+					self._setupColumnSizing();
 				}
 
+				// Bind to Column Deletion
 				if ( -1 !== colDelCommands.indexOf( command ) ) {
-					self.$target.attr( 'data-num-cols', numCols - 1 );
+					self.getTarget().attr( 'data-num-cols', numCols - 1 );
 					self._setupChangeColsRows();
 					self._setupChangeHeadingLabels();
+					self._setupColumnSizing();
 				}
+			} );
+		},
+
+		_setupColumnSizing: function() {
+			var $target = self.getTarget(),
+				numCols = parseInt( $target.attr( 'data-num-cols' ) ),
+				widthVal = Math.floor( 100 / numCols );
+
+			$target.find( 'th, td' ).each( ( _, col ) => {
+				$( col ).css( 'width', widthVal + '%' );
 			} );
 		},
 
@@ -561,7 +571,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @returns {string} default table markup.
 		 */
 		getDefaultTableMarkup: function() {
-			return `<table class="table" data-num-cols="3" data-num-rows="4" style="width:100%">
+			return `<table class="bg-table table" data-num-cols="3" data-num-rows="4" style="width:100%">
                     <thead>
                         <tr>
                             <th data-label="Header 1">Header 1</th>
