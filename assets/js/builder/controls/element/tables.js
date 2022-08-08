@@ -134,9 +134,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @since 1.8.0
 		 */
-		onMenuClick: function() {
+		onMenuClick: function( event ) {
 			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
-			self.$target = initialTarget;
+			self.$target = event.target ? $( event.target ) : initialTarget;
 			self.openPanel();
 		},
 
@@ -166,7 +166,31 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		elementClick( event ) {
 			if ( BOLDGRID.EDITOR.Panel.isOpenControl( this ) ) {
 				self.openPanel();
+			} else if ( $( event.target ).is( 'tb, td, table' ) ) {
+				self.onMenuClick( event );
 			}
+		},
+
+		_bindColumnResize: function() {
+			tinymce.activeEditor.on( 'ObjectResized', event => {
+				var eventTarget = event.target;
+				$( eventTarget )
+					.find( 'td' )
+					.each( function() {
+						var width = parseInt( $( this ).width() ),
+							parentWidth = parseInt(
+								$( this )
+									.offsetParent()
+									.width()
+							),
+							percent = Math.ceil( 100 * width / parentWidth ),
+							roundedPercent = Math.floor( percent / 5 ) * 5;
+
+						roundedPercent = 5 > roundedPercent ? 5 : roundedPercent;
+
+						$( this ).css( 'width', roundedPercent + '%' );
+					} );
+			} );
 		},
 
 		/**
@@ -181,6 +205,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
 
 			self._bindContextToolbar();
+
+			self._bindColumnResize();
 
 			self.registerComponent();
 		},
@@ -287,7 +313,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $toolbar = $( '.mce-floatpanel' );
 			if ( event.value ) {
 				self._adjustToolbarPosition( $toolbar );
-				self.openPanel();
 			}
 		},
 
@@ -300,6 +325,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					.getTarget()
 					.closest( 'table' )[0]
 					.getClientRects()[0];
+
+			if ( ! selectionRects || ! toolbarRects || ! iframeRects ) {
+				return;
+			}
 
 			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
 			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
