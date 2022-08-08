@@ -174,6 +174,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		_bindColumnResize: function() {
 			tinymce.activeEditor.on( 'ObjectResized', event => {
 				var eventTarget = event.target;
+
+				if ( ! $( eventTarget ).is( 'table' ) ) {
+					return;
+				}
+
 				$( eventTarget )
 					.find( 'td' )
 					.each( function() {
@@ -190,7 +195,32 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 						$( this ).css( 'width', roundedPercent + '%' );
 					} );
+
+				$( eventTarget )
+					.find( 'tr:first-of-type' )
+					.find( 'td' )
+					.each( function() {
+						self._showResizeValue( $( this ) );
+					} );
 			} );
+		},
+
+		_showResizeValue: function( $td ) {
+			var width = parseInt( $td.width() ),
+				parentWidth = parseInt( $td.offsetParent().width() ),
+				percent = Math.ceil( 100 * width / parentWidth ),
+				roundedPercent = Math.floor( percent / 5 ) * 5,
+				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`;
+
+			$td.find( '.td-resize-tooltip' ).remove();
+			$td.append( markup );
+
+			$td
+				.find( '.td-resize-tooltip' )
+				.delay( 4000 )
+				.fadeOut( 1000, function() {
+					$( this ).remove();
+				} );
 		},
 
 		/**

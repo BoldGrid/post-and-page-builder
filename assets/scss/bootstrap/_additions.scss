@@ -82,6 +82,18 @@
 			display: none;
 		}
 	}
+	td {
+		position: relative;
+		p.td-resize-tooltip {
+			position: absolute;
+			top: 5px;
+			left: 50%;
+			background-color: rgba(0,0,0,0.7);
+			color: white;
+			padding: 5px;
+			border-radius: 5px;
+		}
+	}
 }
 
 .table-borderless {
