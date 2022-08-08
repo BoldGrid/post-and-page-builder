@@ -45,7 +45,7 @@ import template from '../../../../../includes/template/customize/table-borders.h
 		/**
 		 * Render the control.
 		 *
-		 * @since 1.19.0
+		 * @since 1.21.0
 		 *
 		 * @returns {object} control jQuery object.
 		 */
@@ -74,6 +74,17 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			return $tableBorderControl;
 		},
 
+		/**
+		 * Get Border Type Markup.
+		 *
+		 * Generates the markup for the border type control.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {Object} options Set of Options for the control.
+		 *
+		 * @returns {String} Markup for the control.
+		 */
 		getBorderTypeMarkup: function( options ) {
 			return `<div class="border-type-control">
                     <h4 class="control-title">Border Type</h4>
@@ -100,6 +111,17 @@ import template from '../../../../../includes/template/customize/table-borders.h
                 </div>`;
 		},
 
+		/**
+		 * Get Slider Markup.
+		 *
+		 * Generates the markup for the border width controls.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {Object} options Set of Options for the control.
+		 *
+		 * @returns {String} Markup for the control.
+		 */
 		getSliderMarkup: function( options ) {
 			return `<div data-tooltip-id='${options.name}' class='${options.name} section'>
                     <h4>${options.label} (px)</h4>
@@ -108,6 +130,17 @@ import template from '../../../../../includes/template/customize/table-borders.h
                 </div>`;
 		},
 
+		/**
+		 * Get Border Color Markup.
+		 *
+		 * Generates the markup for the border color controls.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {Object} options Set of Options for the control.
+		 *
+		 * @returns {String} Markup for the control.
+		 */
 		getBorderColorMarkup: function( options ) {
 			return `<div class='${options.name}-color section color-controls'>
                     <h4>Border Color</h4>
@@ -121,6 +154,14 @@ import template from '../../../../../includes/template/customize/table-borders.h
                 </div>`;
 		},
 
+		/**
+		 * Initialize Slider
+		 *
+		 * Initializes the jQuery Slider object.
+		 *
+		 * @param {jQuery Object} $slider jQuery object for the slider.
+		 * @param {Object} options Set of Options for the control.
+		 */
 		initSlider: function( $slider, options ) {
 			var $target = BG.Menu.getCurrentTarget(),
 				defaultValue = $target.attr( `data-${options.name}-width` ) || 0;
@@ -138,6 +179,16 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			} );
 		},
 
+		/**
+		 * Bind Border Type.
+		 *
+		 * Binds the onChange event for the Border Type control.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $borderTypeControl jQuery object for the control.
+		 * @param {Object} options Set of Options for the control.
+		 */
 		bindBorderType: function( $borderTypeControl, options ) {
 			var $target = BG.Menu.getCurrentTarget(),
 				defaultValue = $target.attr( `data-${options.name}-style` ) || '';
@@ -159,6 +210,16 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			} );
 		},
 
+		/**
+		 * Bind Border Color.
+		 *
+		 * Binds the onChange event for the Border Color control.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $colorControl jQuery object for the control.
+		 * @param {Object} options Set of Options for the control.
+		 */
 		bindColorControl: function( $colorControl, options ) {
 			var $target = BG.Menu.getCurrentTarget(),
 				defaultValue = $target.attr( `data-${options.name}-color` ) || '#000';
@@ -173,6 +234,13 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			} );
 		},
 
+		/**
+		 * Applies the Border Style changes.
+		 *
+		 * @param {string} value Border Type string.
+		 * @param {Object} options Set of Options for the control.
+		 * @param {string} styleSuffix Border Style suffix.
+		 */
 		applyBorderStyle: function( value, options, styleSuffix ) {
 			var $target = BG.Menu.getCurrentTarget(),
 				nodeTypes = 'td, th';
@@ -228,6 +296,12 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			}
 		},
 
+		/**
+		 * Bind Container Collapse.
+		 *
+		 * This handles collapsing of border sections in the panel.
+		 * @param {jQuery Object} $section Border Control Section.
+		 */
 		bindContainerCollapse: function( $section ) {
 			var $containers = $section.find( '.border-control-container' );
 
@@ -245,7 +319,7 @@ import template from '../../../../../includes/template/customize/table-borders.h
 		/**
 		 * Bind event.
 		 *
-		 * @since 1.19.0
+		 * @since 1.21.0
 		 */
 		bind: function() {
 			var $section = BG.Panel.$element.find( '.customize .generic-table-borders' );

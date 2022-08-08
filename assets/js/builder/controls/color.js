@@ -215,6 +215,16 @@ import { Palette } from './color/palette';
 			return 'color' + seperator + index + '-' + type;
 		},
 
+		/**
+		 * Update Table Background Colors.
+		 *
+		 * This is run whenever structure changes are made to a table
+		 * to ensure that the background color styles / classes are correct.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $target The target element.
+		 */
 		updateTableBackgrounds: function( $target ) {
 			var headerBgType = $target.attr( 'data-table-header-bg-type' ) || '',
 				headerBgColor = $target.attr( 'data-table-header-bg-color' ) || '',

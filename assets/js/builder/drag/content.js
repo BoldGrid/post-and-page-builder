@@ -70,6 +70,8 @@ var contentInteraction = ( event, $left, $entered ) => {
 	// Rewrite to highest.
 	var $parent_content = $entered.parents( self.content_selectors_string ).last();
 	var $entered_table_cell = $entered.is( 'td,th' );
+
+	// If we are in a table cell, we do NOT want to adjust to the parent content.
 	if ( true == $parent_content.length && ! $entered_table_cell ) {
 		$entered = $parent_content;
 	}
@@ -164,7 +166,7 @@ var contentInteraction = ( event, $left, $entered ) => {
 	// Any of these cases should be rewritten to handle the
 	// appropriate sibling in the container.
 	// This event should be handled by dragging over the
-	// "siblings".
+	// "siblings". Do not ignore drag overs of table cells.
 	if ( ! current_drag_is_sibling && true == parent_has_content && ! entered_table_cell ) {
 		return true;
 	}

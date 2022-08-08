@@ -8,7 +8,7 @@ export class TableColors {
 	/**
 	 * Render the control.
 	 *
-	 * @since 1.6
+	 * @since 1.21.0
 	 *
 	 * @return {jQuery} Control element.
 	 */
@@ -25,7 +25,7 @@ export class TableColors {
 	/**
 	 * Create a control.
 	 *
-	 * @since 1.6.0
+	 * @since 1.21.0
 	 *
 	 * @return {jQuery} Control element.
 	 */
@@ -66,7 +66,7 @@ export class TableColors {
 	/**
 	 * Setup background color change event.
 	 *
-	 * @since 1.6.0
+	 * @since 1.21.0
 	 */
 	_bind() {
 		this.$input.on( 'change', e => {

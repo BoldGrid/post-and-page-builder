@@ -168,7 +168,7 @@ class Boldgrid_Editor_Assets {
 	 *
 	 * Checks if post uses the animate.css or not.
 	 *
-	 * @since SINCEVERSION
+	 * @since 1.21.0
 	 *
 	 * @return bool True if animate.css is to be enqueued.
 	 */

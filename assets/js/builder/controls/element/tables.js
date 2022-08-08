@@ -36,15 +36,27 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 		selectors: [ 'table' ],
 
-		defaults: {
-			cols: 3,
-			rows: 4
+		// This is what place we are rounding column widths to.
+		roundWidthTo: 5,
+
+		// This is how long we want to display column resize values.
+		resizeTooltipDelay: 4000,
+
+		// Panel configuration options.
+		panel: {
+			title: 'Table Designer',
+			height: '600px',
+			width: '450px',
+			includeFooter: true,
+			customizeLeaveCallback: true,
+			customizeCallback: true,
+			customizeSupport: [ 'tableborders', 'table-colors' ]
 		},
 
 		/**
 		 * Initialize control.
 		 *
-		 * @since 1.17.0
+		 * @since 1.21.0
 		 */
 		init: function() {
 			BOLDGRID.EDITOR.Controls.registerControl( this );
@@ -53,7 +65,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Register the componet in the Add Components panel.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 */
 		registerComponent() {
 			let config = {
@@ -68,27 +80,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			BG.Service.component.register( config );
 		},
 
-		panel: {
-			title: 'Table Designer',
-			height: '600px',
-			width: '450px',
-			includeFooter: true,
-			customizeLeaveCallback: true,
-			customizeCallback: true,
-			customizeSupport: [
-				'margin',
-				'box-shadow',
-				'tableborders',
-				'animation',
-				'table-colors',
-				'customClasses'
-			]
-		},
-
 		/**
 		 * Get the color from defaults
 		 *
-		 * @since 1.17.0
+		 * @since 1.21.0
 		 *
 		 * @param {string} color color value
 		 * @returns color value
@@ -117,22 +112,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Get the current target.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 * @return {jQuery} Element.
 		 */
 		getTarget: function() {
 			var $target = BOLDGRID.EDITOR.Menu.getTarget( self );
 
+			// Sometimes the target is needed before it's been set by clicking the menu item.
 			if ( ! $target ) {
 				$target = $( BOLDGRID.EDITOR.mce.selection ).closest( 'table' );
 			}
+
 			return $target;
 		},
 
 		/**
 		 * When the user clicks on a menu item, update the available options.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 */
 		onMenuClick: function( event ) {
 			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
@@ -143,7 +140,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Open the editor panel for a given selector and store element as target.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 *
 		 * @param  {string} selector Selector.
 		 */
@@ -159,7 +156,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * When the user clicks on an element within the mce editor record the element clicked.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 *
 		 * @param  {object} event DOM Event
 		 */
@@ -171,10 +168,21 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 		},
 
+		/**
+		 * Bind Column Resize events.
+		 *
+		 * This utilizes the TinyMCE Tables plugin event 'ObjectResized'
+		 * to detect when a resize event occurs on a table. When this happens
+		 * we need to round the table widths to ease resizing, and then display
+		 * the new size.
+		 *
+		 * @since 1.21.0
+		 */
 		_bindColumnResize: function() {
 			tinymce.activeEditor.on( 'ObjectResized', event => {
 				var eventTarget = event.target;
 
+				// This event can be triggered by other objects.
 				if ( ! $( eventTarget ).is( 'table' ) ) {
 					return;
 				}
@@ -189,9 +197,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 									.width()
 							),
 							percent = Math.ceil( 100 * width / parentWidth ),
-							roundedPercent = Math.floor( percent / 5 ) * 5;
+							roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo;
 
-						roundedPercent = 5 > roundedPercent ? 5 : roundedPercent;
+						// If smaller than the rounding value, it'll end up as 0, and disappear. We don't want that.
+						roundedPercent =
+							self.roundWidthTo > roundedPercent ? self.roundWidthTo : roundedPercent;
 
 						$( this ).css( 'width', roundedPercent + '%' );
 					} );
@@ -205,11 +215,21 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Show Resize Value.
+		 *
+		 * This adds an absolute positioned element to the cells in the first row
+		 * to display the current width of the cell after resizing.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $td The td element.
+		 */
 		_showResizeValue: function( $td ) {
 			var width = parseInt( $td.width() ),
 				parentWidth = parseInt( $td.offsetParent().width() ),
 				percent = Math.ceil( 100 * width / parentWidth ),
-				roundedPercent = Math.floor( percent / 5 ) * 5,
+				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo,
 				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`;
 
 			$td.find( '.td-resize-tooltip' ).remove();
@@ -217,7 +237,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			$td
 				.find( '.td-resize-tooltip' )
-				.delay( 4000 )
+				.delay( self.resizeTooltipDelay )
 				.fadeOut( 1000, function() {
 					$( this ).remove();
 				} );
@@ -226,7 +246,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Setup Init.
 		 *
-		 * @since 1.2.7
+		 * @since 1.21.0
 		 */
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
@@ -242,29 +262,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Add style to header.
-		 *
-		 * @since 1.17.0
-		 *
-		 * @param {string} styleId style id
-		 * @param {string} css css
-		 */
-		_addHeadingStyle: function( styleId, css ) {
-			var $target = self.getTarget(),
-				$body = $target.parents( 'body' ),
-				$head = $body.parent().find( 'head' );
-
-			if ( $head.find( '#' + styleId ).length ) {
-				$head.find( '#' + styleId ).remove();
-			}
-
-			$head.append( '<style id="' + styleId + '">' + css + '</style>' );
-		},
-
-		/**
 		 * Determine the element type supported by this control.
 		 *
-		 * @since 1.8.0
+		 * @since 1.21.0
 		 *
 		 * @param  {jQuery} $element Jquery Element.
 		 * @return {string}          Element.
@@ -285,17 +285,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Open Panel.
 		 *
-		 * @since 1.2.7
-		 *
-		 * @param $target Current Target.
+		 * @since 1.21.0
 		 */
-		openPanel: function( $target ) {
+		openPanel: function() {
 			var panel = BG.Panel,
 				template = wp.template( 'boldgrid-editor-tables' );
 
 			// Remove all content from the panel.
 			panel.clear();
-			panel.$element.find( '.panel-body' ).html( template( self.getTemplateVariables() ) );
+			panel.$element.find( '.panel-body' ).html( template() );
 
 			self._setupChangeColsRows();
 
@@ -309,6 +307,15 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			panel.open( self );
 		},
 
+		/**
+		 * Bind Context Toolbar.
+		 *
+		 * We need to be able to adjust the table toolbar positioning.
+		 * Because the toolbar doesn't exist until the table is first clicked,
+		 * we need to use a MutationObserver to detect when the toolbar is created.
+		 *
+		 * @since 1.21.0
+		 */
 		_bindContextToolbar: function() {
 			var observer = new MutationObserver( ( mutationList, observer ) => {
 				mutationList.forEach( mutation => {
@@ -339,13 +346,32 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			observer.observe( document.body, observerOptions );
 		},
 
+		/**
+		 * Bind Show Hide Context Toolbar.
+		 *
+		 * Bind Toolbar Position adjustment to the Toolbar's visibility change event.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {Event} event Toolbar Visibility Change Event.
+		 */
 		_bindShowHideContextToolbar: function( event ) {
 			var $toolbar = $( '.mce-floatpanel' );
+
+			// Event.value is only true when the toolbar is visible.
 			if ( event.value ) {
 				self._adjustToolbarPosition( $toolbar );
 			}
 		},
 
+		/**
+		 * Adjust Toolbar Position.
+		 *
+		 * The toolbar positioning gets screwed up due to our implementation of the TinyMCE editor,
+		 * so we have to correc the positioning whenever it is displayed.
+		 *
+		 * @param {jQuery Object} $toolbar The toolbar element.
+		 */
 		_adjustToolbarPosition: function( $toolbar ) {
 			var iframeRects = tinymce.activeEditor.iframeElement.getClientRects()[0],
 				toolbarPanel = tinymce.activeEditor.contextToolbars[0].panel,
@@ -367,6 +393,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$toolbar.css( 'left', newRects.x );
 		},
 
+		/**
+		 * Setup Change Heading Labels.
+		 *
+		 * Heading labels are used to display the label in responsive tables.
+		 * When the label inputs are changed, we assign their values to the data-label attribute.
+		 *
+		 * @since 1.21.0
+		 */
 		_setupChangeHeadingLabels() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
@@ -396,6 +430,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$headingLabelsSection.find( 'input' ).on( 'change', self._bindHeadingLabels );
 		},
 
+		/**
+		 * Bind Heading Labels.
+		 *
+		 * This is the actual event handler for the heading label inputs.
+		 *
+		 * @since 1.21.0
+		 */
 		_bindHeadingLabels: function() {
 			var $this = $( this ),
 				$target = self.getTarget(),
@@ -417,6 +458,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} );
 		},
 
+		/**
+		 * Bind Structure Changes
+		 *
+		 * Whenever the structure of the table is changed by adding
+		 * or deleting rows or columns, we have to make sure that
+		 * various things are updated appropriately. Since TinyMCE doesn't have an event for this, we
+		 * can do this by listenging to the 'ExecCommand' event, and filtering the events by the commands
+		 * that were executed.
+		 *
+		 * @since 1.21.0
+		 */
 		_bindStructureChanges: function() {
 			tinyMCE.activeEditor.on( 'ExecCommand', event => {
 				var command = event.command,
@@ -471,6 +523,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Bind Column Sizing.
+		 *
+		 * Whenever a column is added or deleted, we need to make
+		 * sure that all the columns are an even percentage.
+		 *
+		 * @since 1.21.0
+		 */
 		_setupColumnSizing: function() {
 			var $target = self.getTarget(),
 				numCols = parseInt( $target.attr( 'data-num-cols' ) ),
@@ -482,52 +542,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Get Variables for use in template.
+		 * Setup Change Cols Rows.
 		 *
-		 * @since 1.17.0
+		 * This sets up the changing of the number of columns
+		 * and rows input fields.
 		 *
-		 * @returns {array} array of template variables.
+		 * @since 1.21.0
 		 */
-		getTemplateVariables: function() {
-			var variables = {
-				states: {}
-			};
-
-			return variables;
-		},
-
-		createTable: function() {
-			var selection = BOLDGRID.EDITOR.mce.selection,
-				$selection = $( selection.getNode() ),
-				$parentDiv = $selection.parents( 'div[class*=col]' ),
-				nodeType = $selection.prop( 'nodeName' ),
-				talbeNodeTypes = [ 'TABLE', 'THEAD', 'TBODY', 'TR', 'TD', 'TH' ],
-				$content;
-			if (
-				-1 === talbeNodeTypes.indexOf( nodeType ) &&
-				! $selection.is( '[class*=col]' ) &&
-				$parentDiv.length
-			) {
-				selection.select( $selection.parents( 'div[class*=col]' )[0] );
-				$selection = $( selection.getNode() );
-				nodeType = $selection.prop( 'nodeName' );
-			}
-
-			if ( -1 === talbeNodeTypes.indexOf( nodeType ) ) {
-				$content = $( selection.getContent() );
-				$content.prepend( self.getDefaultTableMarkup() );
-				selection.setNode( $content[0] );
-				self.$target = $( selection.getNode() ).find( 'table' );
-				selection.setCursorLocation( self.$target.find( 'td' ).last()[0] );
-			} else if ( 'TABLE' === nodeType ) {
-				self.$target = $selection;
-				BG.Menu.setTarget( self, $selection );
-			} else {
-				self.$target = $selection.parents( 'table' );
-				BG.Menu.setTarget( self, $selection.parents( 'table' ) );
-			}
-		},
-
 		_setupChangeColsRows: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
@@ -587,6 +608,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			} );
 		},
 
+		/**
+		 * Setup Change Options.
+		 *
+		 * This sets up the changing of the generic option
+		 * fields. These fields all work based on adding / removing
+		 * classes. Therefore all of these options' handlers can be
+		 * generalized.
+		 *
+		 * @since 1.21.0
+		 */
 		_setupChangeOptions: function() {
 			var panel = BG.Panel,
 				$target = self.getTarget(),
@@ -625,7 +656,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Default Table Markup.
 		 *
-		 * @since SINCEVERSION
+		 * @since 1.21.0
 		 *
 		 * @returns {string} default table markup.
 		 */

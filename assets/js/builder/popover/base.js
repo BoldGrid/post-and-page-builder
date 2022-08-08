@@ -202,6 +202,11 @@ export class Base {
 	/**
 	 * Check for parents if they exists and return it.
 	 *
+	 * This defaults to using the last parent in the set of parents matching
+	 * this selector string. However, when working with tables, we need to get a parent
+	 * lower down in the Tree than the table itself. This SHOULD usually result in pulling
+	 * a TD, TH, or the content element itself.
+	 *
 	 * @since 1.8.0
 	 *
 	 * @param  {jQuery} $target Target to check.
