@@ -40,7 +40,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		roundWidthTo: 5,
 
 		// This is how long we want to display column resize values.
-		resizeTooltipDelay: 4000,
+		resizeTooltipDelay: 2000,
 
 		// Panel configuration options.
 		panel: {
@@ -133,7 +133,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		onMenuClick: function( event ) {
 			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
-			self.$target = event.target ? $( event.target ) : initialTarget;
+
+			if ( event && event.target ) {
+				self.$target = initialTarget ? initialTarget : event.target;
+			}
+
 			self.openPanel();
 		},
 
@@ -160,11 +164,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 *
 		 * @param  {object} event DOM Event
 		 */
-		elementClick( event ) {
+		elementClick() {
 			if ( BOLDGRID.EDITOR.Panel.isOpenControl( this ) ) {
 				self.openPanel();
-			} else if ( $( event.target ).is( 'tb, td, table' ) ) {
-				self.onMenuClick( event );
 			}
 		},
 
@@ -256,6 +258,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self._bindContextToolbar();
 
+			self._bindStructureChanges();
+
 			self._bindColumnResize();
 
 			self.registerComponent();
@@ -299,8 +303,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			self._setupChangeHeadingLabels();
 
-			self._bindStructureChanges();
-
 			self._setupChangeOptions();
 
 			// Open Panel.
@@ -321,7 +323,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				mutationList.forEach( mutation => {
 					if ( 'childList' === mutation.type ) {
 						mutation.addedNodes.forEach( node => {
-							if ( $( node ).hasClass( 'mce-floatpanel' ) ) {
+							var nodeIsFloatpanel = $( node ).hasClass( 'mce-floatpanel' ),
+								nodeHasTableButton = 0 < $( node ).find( '.mce-i-tableinsertrowafter' ).length;
+							if ( nodeIsFloatpanel && nodeHasTableButton ) {
 								self._adjustToolbarPosition( $( node ) );
 								tinymce.activeEditor.contextToolbars[0].panel.state.off(
 									'change:visible',

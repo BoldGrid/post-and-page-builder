@@ -31,6 +31,12 @@ export class Content extends Base {
 		this.$element.find( '.edit-as-row' ).on( 'click', () => this._onEditRow() );
 		this.event.on( 'open', () => this._toggleFontOption() );
 		this.event.on( 'open', () => this._toggleAdvancedOption() );
+		this.event.on( 'open', () => this._toggleCellOptions() );
+	}
+
+	_toggleCellOptions() {
+		let targetIsTable = this.$target.is( 'table, td, th' );
+		this.$element.toggleClass( 'has-table-support', targetIsTable );
 	}
 
 	/**
@@ -163,7 +169,7 @@ export class Content extends Base {
 	 */
 	_onUpdatePosition() {
 		let $nestedContent = this.$target.parents( this.getSelectorString() ).last(),
-			nestedInTable = ! this.$target.is( 'table, td, th' ) && $nestedContent.is( 'table' );
+			nestedInTable = ! this.$target.is( 'table' ) && $nestedContent.is( 'table' );
 
 		if ( $nestedContent.length && ! nestedInTable ) {
 			this.$target = $nestedContent;

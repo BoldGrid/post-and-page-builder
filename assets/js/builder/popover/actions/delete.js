@@ -23,7 +23,11 @@ export class Delete {
 	 * @since 1.6
 	 */
 	delete() {
-		this.popover.getWrapTarget().remove();
+		var $target = this.popover.getWrapTarget();
+		if ( $target.is( 'td, th' ) ) {
+			$target = $target.closest( 'table' );
+		}
+		$target.remove();
 		this.popover.$element.hide();
 		this.popover.updatePosition();
 		BG.Controls.$container.trigger( 'delete_dwpb' );
