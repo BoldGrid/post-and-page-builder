@@ -197,6 +197,9 @@ var contentInteraction = ( event, $left, $entered ) => {
 		// We have just modified the DOM.
 		self.trigger( self.boldgrid_modify_event );
 	} else if ( current_drag_is_parent || entered_table_cell ) {
+		if ( entered_table_cell && '<br>' === $entered.html() ) {
+			$entered.html( '' );
+		}
 
 		// If the drag enter element is a parent, we will append or prepend.
 		// This handles cases where you are dragging into a container.

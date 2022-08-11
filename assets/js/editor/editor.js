@@ -326,6 +326,17 @@ IMHWPB.Editor = function( $ ) {
 			onclick: self.toggle_draggable_plugin
 		} );
 
+		// On NodeChange, we need to remove phantom <br> from table cells.
+		editor.on( 'NodeChange', function( e ) {
+			var html = $( e.element ).html();
+
+			if ( $( e.element ).is( 'td, th' ) && html.includes( '<br>' ) ) {
+				html = html.replace( '<br>', '' );
+				$( e.element ).html( html );
+			}
+
+		} );
+
 		//Before adding an undo level check to see if this is allowed
 		editor.on( 'BeforeAddUndo', function( e ) {
 			if ( true == IMHWPB.tinymce_undo_disabled ) {
