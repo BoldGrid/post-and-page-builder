@@ -21,6 +21,9 @@
                 <label for="tables-striped-rows">
                     <input type="checkbox" class="general-table-option" name="tables-striped-rows" id="tables-striped-rows" value="table-striped">Striped Rows</label>
             </p>
+        </div>
+        <h4>Responsive Options</h4>
+        <div class="section section-responsive-options">
             <p class="table-responsive-xs">
                 <label for="tables-responsive">
                     <input type="checkbox" class="general-table-option" name="tables-responsive-xs" id="tables-responsive-xs" value="table-responsive-xs">Responsive Table ( Phones )</label>
@@ -29,6 +32,9 @@
                 <label for="tables-responsive">
                     <input type="checkbox" class="general-table-option" name="tables-responsive-sm" id="tables-responsive-sm" value="table-responsive-sm">Responsive Table ( Tablets )</label>
             </p>
+            <p class="hide-header-responsive">
+                <label for="hide-header-responsive">
+                    <input type="checkbox" class="general-table-option" name="hide-header-responsive" id="hide-header-responsive" value="hide-header-responsive">Hide Header on Responsive Tables</label>
         </div>
         <h4>Horizontal Text Alignment</h4>
         <div class="section section-text-alignment">
