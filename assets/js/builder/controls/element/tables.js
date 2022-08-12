@@ -54,120 +54,32 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Initialize control.
+		 * Adjust Toolbar Position.
 		 *
-		 * @since 1.21.0
+		 * The toolbar positioning gets screwed up due to our implementation of the TinyMCE editor,
+		 * so we have to correc the positioning whenever it is displayed.
+		 *
+		 * @param {jQuery Object} $toolbar The toolbar element.
 		 */
-		init: function() {
-			BOLDGRID.EDITOR.Controls.registerControl( this );
-		},
+		_adjustToolbarPosition: function( $toolbar ) {
+			var iframeRects = tinymce.activeEditor.iframeElement.getClientRects()[0],
+				toolbarPanel = tinymce.activeEditor.contextToolbars[0].panel,
+				toolbarRects = toolbarPanel.layoutRect(),
+				newRects = {},
+				selectionRects = self
+					.getTarget()
+					.closest( 'table' )[0]
+					.getClientRects()[0];
 
-		/**
-		 * Register the componet in the Add Components panel.
-		 *
-		 * @since 1.21.0
-		 */
-		registerComponent() {
-			let config = {
-				name: 'tables',
-				title: 'Table',
-				type: 'design',
-				icon: require( './../../../../image/icons/table.svg' ),
-				onInsert: 'prependColumn',
-				getDragElement: () => $( self.getDefaultTableMarkup() )
-			};
-
-			BG.Service.component.register( config );
-		},
-
-		/**
-		 * Get the color from defaults
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param {string} color color value
-		 * @returns color value
-		 */
-		getColorFromPalette: function( color ) {
-			var paletteColors = BoldgridEditor.colors,
-				isPaletteColor = false,
-				isNeutralColor;
-
-			isNeutralColor = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColors.neutral );
-
-			if ( false !== isNeutralColor ) {
-				return 'var( --color-neutral )';
+			if ( ! selectionRects || ! toolbarRects || ! iframeRects ) {
+				return;
 			}
 
-			paletteColors.defaults.forEach( function( paletteColor, index ) {
-				var isMatch = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColor );
-				if ( isMatch ) {
-					isPaletteColor = `var(--color-${index + 1} )`;
-				}
-			} );
+			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
+			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
 
-			return false !== isPaletteColor ? isPaletteColor : color;
-		},
-
-		/**
-		 * Get the current target.
-		 *
-		 * @since 1.21.0
-		 * @return {jQuery} Element.
-		 */
-		getTarget: function() {
-			var $target = BOLDGRID.EDITOR.Menu.getTarget( self );
-
-			// Sometimes the target is needed before it's been set by clicking the menu item.
-			if ( ! $target ) {
-				$target = $( BOLDGRID.EDITOR.mce.selection ).closest( 'table' );
-			}
-
-			return $target;
-		},
-
-		/**
-		 * When the user clicks on a menu item, update the available options.
-		 *
-		 * @since 1.21.0
-		 */
-		onMenuClick: function( event ) {
-			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
-
-			if ( event && event.target ) {
-				self.$target = initialTarget ? initialTarget : event.target;
-			}
-
-			self.openPanel();
-		},
-
-		/**
-		 * Open the editor panel for a given selector and store element as target.
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param  {string} selector Selector.
-		 */
-		open: function( selector ) {
-			for ( let target of self.layerEvent.targets ) {
-				let $target = $( target );
-				if ( $target.is( selector ) ) {
-					self.openPanel( $target );
-				}
-			}
-		},
-
-		/**
-		 * When the user clicks on an element within the mce editor record the element clicked.
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param  {object} event DOM Event
-		 */
-		elementClick() {
-			if ( BOLDGRID.EDITOR.Panel.isOpenControl( this ) ) {
-				self.openPanel();
-			}
+			$toolbar.css( 'top', newRects.y );
+			$toolbar.css( 'left', newRects.x );
 		},
 
 		/**
@@ -218,98 +130,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Show Resize Value.
-		 *
-		 * This adds an absolute positioned element to the cells in the first row
-		 * to display the current width of the cell after resizing.
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param {jQuery Object} $td The td element.
-		 */
-		_showResizeValue: function( $td ) {
-			var width = parseInt( $td.width() ),
-				parentWidth = parseInt( $td.offsetParent().width() ),
-				percent = Math.ceil( 100 * width / parentWidth ),
-				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo,
-				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`;
-
-			$td.find( '.td-resize-tooltip' ).remove();
-			$td.append( markup );
-
-			$td
-				.find( '.td-resize-tooltip' )
-				.delay( self.resizeTooltipDelay )
-				.fadeOut( 1000, function() {
-					$( this ).remove();
-				} );
-		},
-
-		/**
-		 * Setup Init.
-		 *
-		 * @since 1.21.0
-		 */
-		setup: function() {
-			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
-
-			tinymce.activeEditor.contextToolbars[0].items =
-				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
-
-			self._bindContextToolbar();
-
-			self._bindStructureChanges();
-
-			self._bindColumnResize();
-
-			self.registerComponent();
-		},
-
-		/**
-		 * Determine the element type supported by this control.
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param  {jQuery} $element Jquery Element.
-		 * @return {string}          Element.
-		 */
-		checkElementType: function( $element ) {
-			let type = '';
-			if ( $element.is( 'TABLE' ) ) {
-				type = 'table';
-			} else if ( $element.hasClass( 'row' ) ) {
-				type = 'row';
-			} else {
-				type = 'column';
-			}
-
-			return type;
-		},
-
-		/**
-		 * Open Panel.
-		 *
-		 * @since 1.21.0
-		 */
-		openPanel: function() {
-			var panel = BG.Panel,
-				template = wp.template( 'boldgrid-editor-tables' );
-
-			// Remove all content from the panel.
-			panel.clear();
-			panel.$element.find( '.panel-body' ).html( template() );
-
-			self._setupChangeColsRows();
-
-			self._setupChangeHeadingLabels();
-
-			self._setupChangeOptions();
-
-			// Open Panel.
-			panel.open( self );
-		},
-
-		/**
 		 * Bind Context Toolbar.
 		 *
 		 * We need to be able to adjust the table toolbar positioning.
@@ -351,90 +171,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Bind Show Hide Context Toolbar.
-		 *
-		 * Bind Toolbar Position adjustment to the Toolbar's visibility change event.
-		 *
-		 * @since 1.21.0
-		 *
-		 * @param {Event} event Toolbar Visibility Change Event.
-		 */
-		_bindShowHideContextToolbar: function( event ) {
-			var $toolbar = $( '.mce-floatpanel' );
-
-			// Event.value is only true when the toolbar is visible.
-			if ( event.value ) {
-				self._adjustToolbarPosition( $toolbar );
-			}
-		},
-
-		/**
-		 * Adjust Toolbar Position.
-		 *
-		 * The toolbar positioning gets screwed up due to our implementation of the TinyMCE editor,
-		 * so we have to correc the positioning whenever it is displayed.
-		 *
-		 * @param {jQuery Object} $toolbar The toolbar element.
-		 */
-		_adjustToolbarPosition: function( $toolbar ) {
-			var iframeRects = tinymce.activeEditor.iframeElement.getClientRects()[0],
-				toolbarPanel = tinymce.activeEditor.contextToolbars[0].panel,
-				toolbarRects = toolbarPanel.layoutRect(),
-				newRects = {},
-				selectionRects = self
-					.getTarget()
-					.closest( 'table' )[0]
-					.getClientRects()[0];
-
-			if ( ! selectionRects || ! toolbarRects || ! iframeRects ) {
-				return;
-			}
-
-			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
-			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
-
-			$toolbar.css( 'top', newRects.y );
-			$toolbar.css( 'left', newRects.x );
-		},
-
-		/**
-		 * Setup Change Heading Labels.
-		 *
-		 * Heading labels are used to display the label in responsive tables.
-		 * When the label inputs are changed, we assign their values to the data-label attribute.
-		 *
-		 * @since 1.21.0
-		 */
-		_setupChangeHeadingLabels() {
-			var panel = BG.Panel,
-				$target = self.getTarget(),
-				$headingLabelsSection = panel.$element.find( '.section-heading-labels' ),
-				$targetHeadings = $target.find( 'th' );
-
-			$headingLabelsSection.children().remove();
-
-			$targetHeadings.each( function() {
-				var $heading = $( this ),
-					headingLabel = $heading.attr( 'data-label' ) ? $heading.attr( 'data-label' ) : '',
-					headingIndex = $heading.index();
-
-				$headingLabelsSection.append(
-					`<p class="hide-header">
-						<label>Heading ${headingIndex + 1} Label
-							<input type="text" 
-								name="heading-label-${headingIndex}"
-								data-heading-index="${headingIndex}"  
-								value="${headingLabel}"></label>
-					</p>`
-				);
-			} );
-
-			$headingLabelsSection.find( 'input' ).each( self._bindHeadingLabels );
-
-			$headingLabelsSection.find( 'input' ).on( 'change', self._bindHeadingLabels );
-		},
-
-		/**
 		 * Bind Heading Labels.
 		 *
 		 * This is the actual event handler for the heading label inputs.
@@ -460,6 +196,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 					$columnCell.attr( 'data-label', headingLabel );
 				} );
+		},
+
+		/**
+		 * Bind Show Hide Context Toolbar.
+		 *
+		 * Bind Toolbar Position adjustment to the Toolbar's visibility change event.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {Event} event Toolbar Visibility Change Event.
+		 */
+		_bindShowHideContextToolbar: function( event ) {
+			var $toolbar = $( '.mce-floatpanel' );
+
+			// Event.value is only true when the toolbar is visible.
+			if ( event.value ) {
+				self._adjustToolbarPosition( $toolbar );
+			}
 		},
 
 		/**
@@ -524,24 +278,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					self._setupChangeHeadingLabels();
 					self._setupColumnSizing();
 				}
-			} );
-		},
-
-		/**
-		 * Bind Column Sizing.
-		 *
-		 * Whenever a column is added or deleted, we need to make
-		 * sure that all the columns are an even percentage.
-		 *
-		 * @since 1.21.0
-		 */
-		_setupColumnSizing: function() {
-			var $target = self.getTarget(),
-				numCols = parseInt( $target.attr( 'data-num-cols' ) ),
-				widthVal = Math.floor( 100 / numCols );
-
-			$target.find( 'th, td' ).each( ( _, col ) => {
-				$( col ).css( 'width', widthVal + '%' );
 			} );
 		},
 
@@ -613,6 +349,43 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Setup Change Heading Labels.
+		 *
+		 * Heading labels are used to display the label in responsive tables.
+		 * When the label inputs are changed, we assign their values to the data-label attribute.
+		 *
+		 * @since 1.21.0
+		 */
+		_setupChangeHeadingLabels() {
+			var panel = BG.Panel,
+				$target = self.getTarget(),
+				$headingLabelsSection = panel.$element.find( '.section-heading-labels' ),
+				$targetHeadings = $target.find( 'th' );
+
+			$headingLabelsSection.children().remove();
+
+			$targetHeadings.each( function() {
+				var $heading = $( this ),
+					headingLabel = $heading.attr( 'data-label' ) ? $heading.attr( 'data-label' ) : '',
+					headingIndex = $heading.index();
+
+				$headingLabelsSection.append(
+					`<p class="hide-header">
+						<label>Heading ${headingIndex + 1} Label
+							<input type="text" 
+								name="heading-label-${headingIndex}"
+								data-heading-index="${headingIndex}"  
+								value="${headingLabel}"></label>
+					</p>`
+				);
+			} );
+
+			$headingLabelsSection.find( 'input' ).each( self._bindHeadingLabels );
+
+			$headingLabelsSection.find( 'input' ).on( 'change', self._bindHeadingLabels );
+		},
+
+		/**
 		 * Setup Change Options.
 		 *
 		 * This sets up the changing of the generic option
@@ -658,6 +431,115 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Bind Column Sizing.
+		 *
+		 * Whenever a column is added or deleted, we need to make
+		 * sure that all the columns are an even percentage.
+		 *
+		 * @since 1.21.0
+		 */
+		_setupColumnSizing: function() {
+			var $target = self.getTarget(),
+				numCols = parseInt( $target.attr( 'data-num-cols' ) ),
+				widthVal = Math.floor( 100 / numCols );
+
+			$target.find( 'th, td' ).each( ( _, col ) => {
+				$( col ).css( 'width', widthVal + '%' );
+			} );
+		},
+
+		/**
+		 * Show Resize Value.
+		 *
+		 * This adds an absolute positioned element to the cells in the first row
+		 * to display the current width of the cell after resizing.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $td The td element.
+		 */
+		_showResizeValue: function( $td ) {
+			var width = parseInt( $td.width() ),
+				parentWidth = parseInt( $td.offsetParent().width() ),
+				percent = Math.ceil( 100 * width / parentWidth ),
+				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo,
+				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`;
+
+			$td.find( '.td-resize-tooltip' ).remove();
+			$td.append( markup );
+
+			$td
+				.find( '.td-resize-tooltip' )
+				.delay( self.resizeTooltipDelay )
+				.fadeOut( 1000, function() {
+					$( this ).remove();
+				} );
+		},
+
+		/**
+		 * Determine the element type supported by this control.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param  {jQuery} $element Jquery Element.
+		 * @return {string}          Element.
+		 */
+		checkElementType: function( $element ) {
+			let type = '';
+			if ( $element.is( 'TABLE' ) ) {
+				type = 'table';
+			} else if ( $element.hasClass( 'row' ) ) {
+				type = 'row';
+			} else {
+				type = 'column';
+			}
+
+			return type;
+		},
+
+		/**
+		 * When the user clicks on an element within the mce editor record the element clicked.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param  {object} event DOM Event
+		 */
+		elementClick() {
+			if ( BOLDGRID.EDITOR.Panel.isOpenControl( this ) ) {
+				self.openPanel();
+			}
+		},
+
+		/**
+		 * Get the color from defaults
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {string} color color value
+		 * @returns color value
+		 */
+		getColorFromPalette: function( color ) {
+			var paletteColors = BoldgridEditor.colors,
+				isPaletteColor = false,
+				isNeutralColor;
+
+			isNeutralColor = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColors.neutral );
+
+			if ( false !== isNeutralColor ) {
+				return 'var( --color-neutral )';
+			}
+
+			paletteColors.defaults.forEach( function( paletteColor, index ) {
+				var isMatch = BOLDGRID.COLOR_PALETTE.Modify.compareColors( color, paletteColor );
+				if ( isMatch ) {
+					isPaletteColor = `var(--color-${index + 1} )`;
+				}
+			} );
+
+			return false !== isPaletteColor ? isPaletteColor : color;
+		},
+
+		/**
 		 * Default Table Markup.
 		 *
 		 * @since 1.21.0
@@ -696,6 +578,124 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
                         </tr>
                     </tbody>
                 </table>`;
+		},
+
+		/**
+		 * Get the current target.
+		 *
+		 * @since 1.21.0
+		 * @return {jQuery} Element.
+		 */
+		getTarget: function() {
+			var $target = BOLDGRID.EDITOR.Menu.getTarget( self );
+
+			// Sometimes the target is needed before it's been set by clicking the menu item.
+			if ( ! $target ) {
+				$target = $( BOLDGRID.EDITOR.mce.selection ).closest( 'table' );
+			}
+
+			return $target;
+		},
+
+		/**
+		 * When the user clicks on a menu item, update the available options.
+		 *
+		 * @since 1.21.0
+		 */
+		onMenuClick: function( event ) {
+			var initialTarget = BOLDGRID.EDITOR.Menu.getTarget( self );
+
+			if ( event && event.target ) {
+				self.$target = initialTarget ? initialTarget : event.target;
+			}
+
+			self.openPanel();
+		},
+
+		/**
+		 * Open the editor panel for a given selector and store element as target.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param  {string} selector Selector.
+		 */
+		open: function( selector ) {
+			for ( let target of self.layerEvent.targets ) {
+				let $target = $( target );
+				if ( $target.is( selector ) ) {
+					self.openPanel( $target );
+				}
+			}
+		},
+
+		/**
+		 * Open Panel.
+		 *
+		 * @since 1.21.0
+		 */
+		openPanel: function() {
+			var panel = BG.Panel,
+				template = wp.template( 'boldgrid-editor-tables' );
+
+			// Remove all content from the panel.
+			panel.clear();
+			panel.$element.find( '.panel-body' ).html( template() );
+
+			self._setupChangeColsRows();
+
+			self._setupChangeHeadingLabels();
+
+			self._setupChangeOptions();
+
+			// Open Panel.
+			panel.open( self );
+		},
+
+		/**
+		 * Register the componet in the Add Components panel.
+		 *
+		 * @since 1.21.0
+		 */
+		registerComponent() {
+			let config = {
+				name: 'tables',
+				title: 'Table',
+				type: 'design',
+				icon: require( './../../../../image/icons/table.svg' ),
+				onInsert: 'prependColumn',
+				getDragElement: () => $( self.getDefaultTableMarkup() )
+			};
+
+			BG.Service.component.register( config );
+		},
+
+		/**
+		 * Setup Init.
+		 *
+		 * @since 1.21.0
+		 */
+		setup: function() {
+			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
+
+			tinymce.activeEditor.contextToolbars[0].items =
+				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+
+			self._bindContextToolbar();
+
+			self._bindStructureChanges();
+
+			self._bindColumnResize();
+
+			self.registerComponent();
+		},
+
+		/**
+		 * Initialize control.
+		 *
+		 * @since 1.21.0
+		 */
+		init: function() {
+			BOLDGRID.EDITOR.Controls.registerControl( this );
 		}
 	};
 
