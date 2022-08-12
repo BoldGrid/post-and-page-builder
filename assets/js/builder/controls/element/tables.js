@@ -75,6 +75,20 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				return;
 			}
 
+			/**
+			 * The formula for this is based on adding the distance between the edge of the iframe
+			 * and the edge of the screen ( iframeRects.x & y ) to the distance between the edge of
+			 * the selection ( selectionRects.x & y ). Then, to center it horizontally we subtract
+			 * half the width of the toolbar ( toolbarRects.w / 2 ) and add half the width of
+			 * the selection ( selectionRects.w / 2 ).
+			 *
+			 * To position it vertically, we also have to add the scrolldistance from the top of
+			 * the screen ( windows.scrollY ) and the height of the selection ( selectionRects.height ).
+			 *
+			 * NOTE: the toolbar is NOT an actual DOMRect collection, so some of the property names
+			 *       used by tinymce.activeEditor.contextToolbars[0].panel are different from standerd.
+			 *       For example, instead of DOMRect.width, we use DOMRect.w.
+			 */
 			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
 			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
 
@@ -94,38 +108,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		_bindColumnResize: function() {
 			tinymce.activeEditor.on( 'ObjectResized', event => {
-				var eventTarget = event.target;
+				var eventTarget = event.target,
+					$firstRowCells,
+					$tableCells;
 
 				// This event can be triggered by other objects.
 				if ( ! $( eventTarget ).is( 'table' ) ) {
 					return;
 				}
 
-				$( eventTarget )
-					.find( 'td' )
-					.each( function() {
-						var width = parseInt( $( this ).width() ),
-							parentWidth = parseInt(
-								$( this )
-									.offsetParent()
-									.width()
-							),
-							percent = Math.ceil( 100 * width / parentWidth ),
-							roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo;
+				$tableCells = $( eventTarget ).find( 'td, th' );
+				$tableCells.each( self._resizeTableCell );
 
-						// If smaller than the rounding value, it'll end up as 0, and disappear. We don't want that.
-						roundedPercent =
-							self.roundWidthTo > roundedPercent ? self.roundWidthTo : roundedPercent;
-
-						$( this ).css( 'width', roundedPercent + '%' );
-					} );
-
-				$( eventTarget )
+				$firstRowCells = $( eventTarget )
 					.find( 'tr:first-of-type' )
-					.find( 'td' )
-					.each( function() {
-						self._showResizeValue( $( this ) );
-					} );
+					.find( 'td' );
+
+				$firstRowCells.each( function() {
+					self._showResizeValue( $( this ) );
+				} );
 			} );
 		},
 
@@ -139,33 +140,32 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.21.0
 		 */
 		_bindContextToolbar: function() {
-			var observer = new MutationObserver( ( mutationList, observer ) => {
-				mutationList.forEach( mutation => {
-					if ( 'childList' === mutation.type ) {
-						mutation.addedNodes.forEach( node => {
-							var nodeIsFloatpanel = $( node ).hasClass( 'mce-floatpanel' ),
-								nodeHasTableButton = 0 < $( node ).find( '.mce-i-tableinsertrowafter' ).length;
-							if ( nodeIsFloatpanel && nodeHasTableButton ) {
-								self._adjustToolbarPosition( $( node ) );
-								tinymce.activeEditor.contextToolbars[0].panel.state.off(
-									'change:visible',
-									self._bindShowHideContextToolbar
-								);
-								tinymce.activeEditor.contextToolbars[0].panel.state.on(
-									'change:visible',
-									self._bindShowHideContextToolbar
-								);
-							}
-						} );
-					}
-				} );
-			} );
-
-			var observerOptions = {
-				childList: true,
-				subtree: false,
-				attributes: false
-			};
+			var observer = new MutationObserver( ( mutationList, _ ) => {
+					mutationList.forEach( mutation => {
+						if ( 'childList' === mutation.type ) {
+							mutation.addedNodes.forEach( node => {
+								var nodeIsFloatpanel = $( node ).hasClass( 'mce-floatpanel' ),
+									nodeHasTableButton = 0 < $( node ).find( '.mce-i-tableinsertrowafter' ).length;
+								if ( nodeIsFloatpanel && nodeHasTableButton ) {
+									self._adjustToolbarPosition( $( node ) );
+									tinymce.activeEditor.contextToolbars[0].panel.state.off(
+										'change:visible',
+										self._bindShowHideContextToolbar
+									);
+									tinymce.activeEditor.contextToolbars[0].panel.state.on(
+										'change:visible',
+										self._bindShowHideContextToolbar
+									);
+								}
+							} );
+						}
+					} );
+				} ),
+				observerOptions = {
+					childList: true,
+					subtree: false,
+					attributes: false
+				};
 
 			observer.observe( document.body, observerOptions );
 		},
@@ -279,6 +279,25 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					self._setupColumnSizing();
 				}
 			} );
+		},
+
+		/**
+		 * Resize Table Cell.
+		 *
+		 * Resizes a single table cell in a row so that
+		 * it matches the width of all other cells.
+		 */
+		_resizeTableCell: function() {
+			var $cell = $( this ),
+				width = parseInt( $cell.width() ),
+				parentWidth = $cell.offsetParent().width(),
+				percent = Math.ceil( 100 * width / parseInt( parentWidth ) ),
+				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo;
+
+			// If smaller than the rounding value, it'll end up as 0, and disappear. We don't want that.
+			roundedPercent = self.roundWidthTo > roundedPercent ? self.roundWidthTo : roundedPercent;
+
+			$cell.css( 'width', roundedPercent + '%' );
 		},
 
 		/**
@@ -414,6 +433,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				var $this = $( this ),
 					isChecked = $this.prop( 'checked' ) ? true : false;
 
+				/**
+				 * General controls with a 'radio' type, have a 'data-classes' attribute
+				 * which is a list of all possible classes this control can add. To
+				 * ensure correct behavior, we remove all classes, then only add
+				 * the class in the value of the 'checked' radio.
+				 */
 				if ( 'radio' === $this.attr( 'type' ) ) {
 					$target.removeClass( $this.attr( 'data-classes' ) );
 				}
@@ -463,17 +488,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				parentWidth = parseInt( $td.offsetParent().width() ),
 				percent = Math.ceil( 100 * width / parentWidth ),
 				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo,
-				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`;
+				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`,
+				$tooltips;
 
 			$td.find( '.td-resize-tooltip' ).remove();
 			$td.append( markup );
 
-			$td
-				.find( '.td-resize-tooltip' )
-				.delay( self.resizeTooltipDelay )
-				.fadeOut( 1000, function() {
-					$( this ).remove();
-				} );
+			$tooltips = $td.find( '.td-resize-tooltip' );
+
+			$tooltips.delay( self.resizeTooltipDelay ).fadeOut( 1000, function() {
+				$( this ).remove();
+			} );
 		},
 
 		/**
