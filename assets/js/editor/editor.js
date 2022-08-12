@@ -337,6 +337,17 @@ IMHWPB.Editor = function( $ ) {
 
 		} );
 
+		/**
+		 * This Event is fired when the post is saved. This is a good place to add any filters
+		 * that need to be added to post content.
+		 */
+		editor.on( 'SaveContent', function( e ) {
+			var $savedContent = $( '<div>' + e.content + '</div>' );
+			$savedContent.find( '.td-resize-tooltip' ).remove();
+
+			e.content = $savedContent.html();
+		} );
+
 		//Before adding an undo level check to see if this is allowed
 		editor.on( 'BeforeAddUndo', function( e ) {
 			if ( true == IMHWPB.tinymce_undo_disabled ) {
