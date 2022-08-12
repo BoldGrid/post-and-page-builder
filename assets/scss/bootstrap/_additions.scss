@@ -90,6 +90,7 @@
 	}
 	td {
 		position: relative;
+		border-color: #ddd;
 		p.td-resize-tooltip {
 			position: absolute;
 			top: 5px;
@@ -98,6 +99,16 @@
 			color: white;
 			padding: 5px;
 			border-radius: 5px;
+		}
+	}
+	th {
+		border-color: #ddd;
+	}
+	> thead:first-child {
+		> tr:first-child {
+			> th {
+				border-top-color: #ddd;
+			}
 		}
 	}
 }
