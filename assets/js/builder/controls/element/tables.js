@@ -62,14 +62,23 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param {jQuery Object} $toolbar The toolbar element.
 		 */
 		_adjustToolbarPosition: function( $toolbar ) {
-			var iframeRects = tinymce.activeEditor.iframeElement.getClientRects()[0],
+			var iframeElement = tinymce.activeEditor.iframeElement,
 				toolbarPanel = tinymce.activeEditor.contextToolbars[0].panel,
 				toolbarRects = toolbarPanel.layoutRect(),
 				newRects = {},
-				selectionRects = self
+				iframeRects,
+				selection = self
 					.getTarget()
-					.closest( 'table' )[0]
-					.getClientRects()[0];
+					.closest( 'table' )
+					.get( 0 ),
+				selectionRects;
+
+			if ( ! iframeElement || ! toolbarPanel || ! selection ) {
+				return;
+			}
+
+			iframeRects = iframeElement.getClientRects()[0];
+			selectionRects = selection.getClientRects()[0];
 
 			if ( ! selectionRects || ! toolbarRects || ! iframeRects ) {
 				return;
@@ -292,12 +301,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				width = parseInt( $cell.width() ),
 				parentWidth = $cell.offsetParent().width(),
 				percent = Math.ceil( 100 * width / parseInt( parentWidth ) ),
-				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo;
+				roundedPercent = Math.ceil( percent / self.roundWidthTo ) * self.roundWidthTo;
 
 			// If smaller than the rounding value, it'll end up as 0, and disappear. We don't want that.
 			roundedPercent = self.roundWidthTo > roundedPercent ? self.roundWidthTo : roundedPercent;
 
 			$cell.css( 'width', roundedPercent + '%' );
+
+			BG.Controls.addStyle( $cell, { width: roundedPercent + '%' } );
+			BG.Controls.addStyle( $cell, { height: $cell.css( 'height' ) } );
+			BG.Controls.addStyle( $cell.parent( 'tr' ), { height: $cell.css( 'height' ) } );
 		},
 
 		/**
@@ -487,7 +500,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var width = parseInt( $td.width() ),
 				parentWidth = parseInt( $td.offsetParent().width() ),
 				percent = Math.ceil( 100 * width / parentWidth ),
-				roundedPercent = Math.floor( percent / self.roundWidthTo ) * self.roundWidthTo,
+				roundedPercent = Math.ceil( percent / self.roundWidthTo ) * self.roundWidthTo,
 				markup = `<p class="td-resize-tooltip">${roundedPercent}%</p>`,
 				$tooltips;
 
