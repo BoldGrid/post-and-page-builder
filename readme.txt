@@ -138,6 +138,9 @@ WordPress Editor.
 * New Feature: Table Designer - Add tables to posts / pages, with the abilitiy to customize borders, backgrounds, and more. [#98](https://github.com/BoldGrid/post-and-page-builder/issues/98)
 * Optimization: Only load animate.min.css on pages / posts that specifically utilizie it.
 
+= 1.20.2 =
+* Bug Fix: Some Posts/Pages are not defaulting to PPB when Preferred Editor is set [#435](https://github.com/BoldGrid/post-and-page-builder/issues/435)
+
 = 1.20.1 =
 * Bug Fix: Fix translucency issues with Full Width Rows.
 * Bug Fix: Preferred Editor tools do not load PPB with custom post types [#419](https://github.com/BoldGrid/post-and-page-builder/issues/419)
