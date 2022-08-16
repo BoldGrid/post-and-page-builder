@@ -216,6 +216,60 @@ import { Palette } from './color/palette';
 		},
 
 		/**
+		 * Update Table Background Colors.
+		 *
+		 * This is run whenever structure changes are made to a table
+		 * to ensure that the background color styles / classes are correct.
+		 *
+		 * @since 1.21.0
+		 *
+		 * @param {jQuery Object} $target The target element.
+		 */
+		updateTableBackgrounds: function( $target ) {
+			var headerBgType = $target.attr( 'data-table-header-bg-type' ) || '',
+				headerBgColor = $target.attr( 'data-table-header-bg-color' ) || '',
+				rowsBgType = $target.attr( 'data-table-rows-bg-type' ) || '',
+				rowsBgColor = $target.attr( 'data-table-rows-bg-color' ) || '',
+				stripedBgType = $target.attr( 'data-table-striped-bg-type' ) || '',
+				stripedBgColor = $target.attr( 'data-table-striped-bg-color' ) || '',
+				resetBgs = function( $el ) {
+					$el.removeClass( BG.CONTROLS.Color.backgroundColorClasses.join( ' ' ) );
+					$el.removeClass( BG.CONTROLS.Color.textContrastClasses.join( ' ' ) );
+					BG.Controls.addStyle( $el, 'background-color', '' );
+				},
+				updateBgs = function( $el, type, value ) {
+					if ( 'class' === type && value ) {
+						$el.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', value ) );
+						$el.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', value ) );
+					} else if ( 'class' !== type && value ) {
+						BG.Controls.addStyle( $el, 'background-color', value );
+					}
+				};
+
+			$target.find( 'thead tr' ).each( function() {
+				var $this = $( this );
+				resetBgs( $this );
+				updateBgs( $this, headerBgType, headerBgColor );
+			} );
+
+			$target.find( 'tbody tr' ).each( function() {
+				var $this = $( this );
+				resetBgs( $this );
+				updateBgs( $this, rowsBgType, rowsBgColor );
+			} );
+
+			if ( ! $target.hasClass( 'table-striped' ) ) {
+				return;
+			}
+
+			$target.find( 'tbody tr:nth-of-type(odd)' ).each( function() {
+				var $this = $( this );
+				resetBgs( $this );
+				updateBgs( $this, stripedBgType, stripedBgColor );
+			} );
+		},
+
+		/**
 		 * Close color panel.
 		 *
 		 * @since 1.2.7

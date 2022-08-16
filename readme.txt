@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.20.2
+Stable tag: 1.21.0-rc2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.21.0 =
+* New Feature: Table Designer - Add tables to posts / pages, with the abilitiy to customize borders, backgrounds, and more. [#98](https://github.com/BoldGrid/post-and-page-builder/issues/98)
+* Optimization: Only load animate.min.css on pages / posts that specifically utilizie it.
 
 = 1.20.2 =
 * Bug Fix: Some Posts/Pages are not defaulting to PPB when Preferred Editor is set [#435](https://github.com/BoldGrid/post-and-page-builder/issues/435)

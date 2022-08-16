@@ -1,5 +1,22 @@
 .editor-panel[data-type="background"],
 .editor-panel[data-type="Advanced"] {
+	.customize-navigation[data-element-type="table-cell"] {
+		.item[data-control-name="margin"],
+		.item[data-control-name="width"],
+		.item[data-control-name="border-radius"],
+		.item[data-control-name="box-shadow"],
+		.item[data-control-name="animation"],
+		.item[data-control-name="block-alignment"] {
+			display: none !important;
+		}
+	}
+	.customize-navigation[data-element-type="table"] {
+		.item[data-control-name="padding"],
+		.item[data-control-name="border-radius"],
+		.item[data-control-name="block-alignment"] {
+			display: none !important;
+		}
+	}
 	&:not( [data-element-type="row"] ) {
 		.section.full-width-rows {
 			display: none !important;

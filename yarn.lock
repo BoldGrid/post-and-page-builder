@@ -87,14 +87,19 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.16.8", "@boldgrid/components@^2.16.9":
+"@boldgrid/components@^2.16.13":
+  version "2.16.13"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.13.tgz#5462838ded8c1c9d7690512910dbeed36d89a8ac"
+  integrity sha512-bmKmjCIovCSKUrZyImL1HHBjcLAmdzoA+/2j7BOiJk+ENExgV+8J1mg74xxasCpJT0Kk1eYIjXJpu/zKdnBHbA==
+
+"@boldgrid/components@^2.16.8":
   version "2.16.9"
   resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.9.tgz#3fe60f6c40bf9c499ffeeb46abcff5b77f8b5de3"
   integrity sha512-S9l+QOHrl+drnu++mRmNnBv0YvMPI22gxJv/OcKVIraOYeS7rGaQXZoTEuBb6cMxjK1sWmM1i0wa6Gu0+bZ9Dg==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#outline-control":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#2d95b3955303869345f866ce79aacb94077d02f9"
+  resolved "https://github.com/BoldGrid/controls#eb6a7711d451a6f007789f665af167b9be1fa362"
   dependencies:
     "@boldgrid/components" "^2.16.8"
     Buttons "https://github.com/alexwolfe/Buttons"

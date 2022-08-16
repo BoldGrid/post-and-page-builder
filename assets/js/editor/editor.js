@@ -326,6 +326,47 @@ IMHWPB.Editor = function( $ ) {
 			onclick: self.toggle_draggable_plugin
 		} );
 
+		// On NodeChange, we need to remove phantom <br> from table cells.
+		editor.on( 'NodeChange', function( e ) {
+			var html = $( e.element ).html();
+
+			if ( $( e.element ).is( 'td, th' ) && html.includes( '<br>' ) ) {
+				html = html.replace( '<br>', '' );
+				$( e.element ).html( html );
+			}
+
+		} );
+
+		editor.on( 'SetSelectionRange', function( e ) {
+			console.log( { SetSelectionRange: e } );
+		} );
+
+		/**
+		 * When selecting all contents of a table cell, we need to ensure that
+		 * the selection doesn't extend beyond that cell.
+		 */
+		editor.on( 'AfterSetSelectionRange', function( e ) {
+			var startContainer = e.range.startContainer,
+				endContainer   = e.range.endContainer,
+				startIsTableCell = $( startContainer ).is( 'td, th' ) || 0 < $( startContainer ).parents( 'td, th' ).length,
+				endIsTableCell   = $( endContainer ).is( startContainer );
+
+			if ( startIsTableCell && ! endIsTableCell ) {
+				editor.selection.select( startContainer );
+			}
+		} );
+
+		/**
+		 * This Event is fired when the post is saved. This is a good place to add any filters
+		 * that need to be added to post content.
+		 */
+		editor.on( 'SaveContent', function( e ) {
+			var $savedContent = $( '<div>' + e.content + '</div>' );
+			$savedContent.find( '.td-resize-tooltip' ).remove();
+
+			e.content = $savedContent.html();
+		} );
+
 		//Before adding an undo level check to see if this is allowed
 		editor.on( 'BeforeAddUndo', function( e ) {
 			if ( true == IMHWPB.tinymce_undo_disabled ) {
