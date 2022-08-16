@@ -337,6 +337,25 @@ IMHWPB.Editor = function( $ ) {
 
 		} );
 
+		editor.on( 'SetSelectionRange', function( e ) {
+			console.log( { SetSelectionRange: e } );
+		} );
+
+		/**
+		 * When selecting all contents of a table cell, we need to ensure that
+		 * the selection doesn't extend beyond that cell.
+		 */
+		editor.on( 'AfterSetSelectionRange', function( e ) {
+			var startContainer = e.range.startContainer,
+				endContainer   = e.range.endContainer,
+				startIsTableCell = $( startContainer ).is( 'td, th' ) || 0 < $( startContainer ).parents( 'td, th' ).length,
+				endIsTableCell   = $( endContainer ).is( startContainer );
+
+			if ( startIsTableCell && ! endIsTableCell ) {
+				editor.selection.select( startContainer );
+			}
+		} );
+
 		/**
 		 * This Event is fired when the post is saved. This is a good place to add any filters
 		 * that need to be added to post content.

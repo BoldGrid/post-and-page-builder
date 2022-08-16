@@ -188,73 +188,100 @@ table.table.mce-item-table {
 }
 
 @media screen and (min-width: 768px ) and ( max-width: 991px ) {
-	.table.table-responsive-sm {
-		thead {
-			tr {
-				display: block;
-				width: 100% !important;
-				height: auto !important;
-				margin-bottom: 0.625em;
-				th {
-					display: block;
-					width: 100% !important;
-					height: auto !important;
-				}
-			}
-		}
-		tbody {
-			tr {
-				display: block;
-				margin-bottom: 0.625em;
-				height: auto !important;
-				td {
-					display: block;
-					text-align: right !important;
-					width: 100% !important;
-					height: auto !important;
-					&::before {
-						content: attr(data-label);
-						float: left;
-						font-weight: 600;
-					}
-				}
-			}
-		}
-	}
+    .bg-table.table.table-responsive-sm {
+        border-width: 0 !important;
+        &.hide-header-responsive {
+            thead {
+                display: none;
+            }
+        }
+        thead {
+            tr {
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+                margin-bottom: 0.625em;
+                border-top: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                border-left: 1px solid #dddd;
+                border-bottom: 3px solid #ddd;
+                th {
+                    display: block;
+                    width: 100% !important;
+                    height: auto !important;
+                }
+            }
+        }
+        tbody {
+            tr {
+                display: block;
+                margin-bottom: 0.625em;
+                height: auto !important;
+                border-top: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                border-left: 1px solid #dddd;
+                border-bottom: 3px solid #ddd;
+                td {
+                    display: block;
+                    text-align: right !important;
+                    width: 100% !important;
+                    height: auto !important;
+                    &::before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media screen and ( max-width: 767px ) {
-	.table.table-responsive-xs {
-		thead {
-			tr {
-				display: block;
-				width: 100% !important;
-				height: auto !important;
-				margin-bottom: 0.625em;
-				th {
-					display: block;
-					width: 100% !important;
-					height: auto !important;
-				}
-			}
-		}
-		tbody {
-			tr {
-				display: block;
-				margin-bottom: 0.625em;
-				height: auto !important;
-				td {
-					display: block;
-					text-align: right !important;
-					width: 100% !important;
-					height: auto !important;
-					&::before {
-						content: attr(data-label);
-						float: left;
-						font-weight: 600;
-					}
-				}
-			}
-		}
-	}
+    .bg-table.table.table-responsive-xs {
+        border-width: 0 !important;
+        &.hide-header-responsive {
+            thead {
+                display: none;
+            }
+        }
+        thead {
+            tr {
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+                margin-bottom: 0.625em;
+                border-top: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                border-left: 1px solid #dddd;
+                border-bottom: 3px solid #ddd;
+                th {
+                    display: block;
+                    width: 100% !important;
+                    height: auto !important;
+                }
+            }
+        }
+        tbody {
+            tr {
+                display: block;
+                margin-bottom: 0.625em;
+                height: auto !important;
+                border-right: 1px solid #ddd;
+                border-left: 1px solid #dddd;
+                border-bottom: 3px solid #ddd;
+                td {
+                    display: block;
+                    text-align: right !important;
+                    width: 100% !important;
+                    height: auto !important;
+                    &::before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
 }
