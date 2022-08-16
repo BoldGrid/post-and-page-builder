@@ -337,10 +337,6 @@ IMHWPB.Editor = function( $ ) {
 
 		} );
 
-		editor.on( 'SetSelectionRange', function( e ) {
-			console.log( { SetSelectionRange: e } );
-		} );
-
 		/**
 		 * When selecting all contents of a table cell, we need to ensure that
 		 * the selection doesn't extend beyond that cell.
@@ -349,10 +345,15 @@ IMHWPB.Editor = function( $ ) {
 			var startContainer = e.range.startContainer,
 				endContainer   = e.range.endContainer,
 				startIsTableCell = $( startContainer ).is( 'td, th' ) || 0 < $( startContainer ).parents( 'td, th' ).length,
-				endIsTableCell   = $( endContainer ).is( startContainer );
+				endIsTableCell   = $( endContainer ).is( startContainer ),
+				startTable = $( startContainer ).closest( 'table' ),
+				endTable = $( endContainer ).closest( 'table' ),
+				endTableIsStartTable = endTable.is( startTable );
 
 			if ( startIsTableCell && ! endIsTableCell ) {
-				editor.selection.select( startContainer );
+				if ( ! endTableIsStartTable ) {
+					editor.selection.select( startContainer );
+				}
 			}
 		} );
 

@@ -101,8 +101,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			newRects.x = iframeRects.x + selectionRects.x - toolbarRects.w / 2 + selectionRects.width / 2;
 			newRects.y = iframeRects.y + selectionRects.y + window.scrollY + selectionRects.height;
 
-			$toolbar.css( 'top', newRects.y );
-			$toolbar.css( 'left', newRects.x );
+			$toolbar.each( function() {
+				var toolbarIsTableToolbar = 0 < $( this ).find( '.mce-i-tableinsertrowafter' ).length;
+
+				if ( toolbarIsTableToolbar ) {
+					$( this ).css( {
+						left: newRects.x,
+						top: newRects.y
+					} );
+				}
+			} );
 		},
 
 		/**
