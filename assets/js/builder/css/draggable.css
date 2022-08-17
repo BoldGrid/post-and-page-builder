@@ -531,10 +531,15 @@ iframe[src^="https://maps.google.com"] {
 }
 
 .popover-imhwpb .popover-menu-imhwpb li[data-action="Advanced"]::before,
-.popover-imhwpb .popover-menu-imhwpb li[data-action="Font"]::before {
+.popover-imhwpb .popover-menu-imhwpb li[data-action="Font"]::before,
+.popover-imhwpb .popover-menu-imhwpb li[data-action="AdvancedCell"]::before {
 	font: normal normal normal 15px/1 FontAwesome;
 	content: "\f035";
     padding-top: 5px;
+}
+
+.popover-imhwpb .popover-menu-imhwpb li[data-action="AdvancedCell"]::before {
+    content: "\f00a";
 }
 
 .popover-imhwpb .popover-menu-imhwpb li[data-action="Box"]::before,

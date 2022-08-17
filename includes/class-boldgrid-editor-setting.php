@@ -94,7 +94,7 @@ class Boldgrid_Editor_Setting {
 		$default_editor = $this->get_saved_editor_options();
 		$post_type = ! empty( $post->post_type ) ? $post->post_type : $post_type;
 		return ! empty( $default_editor[ $post_type ] ) ?
-			$default_editor[ $post_type ] : 'default';
+			$default_editor[ $post_type ] : 'bgppb';
 	}
 
 	/**
@@ -121,14 +121,18 @@ class Boldgrid_Editor_Setting {
 	 * @return array Options.
 	 */
 	public function get_saved_editor_options() {
-		$default_editor = Boldgrid_Editor_Option::get( 'default_editor', [] );
+		$default_editor = Boldgrid_Editor_Option::get( 'default_editor', array() );
+
+		$initial_editor_setting = array();
+
+		$default_editor = Boldgrid_Editor_Option::get( 'default_editor', array() );
 
 		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
-		$initial_editor_setting = [];
+		$initial_editor_setting = array();
 		$all_post_types = $this->get_all_cpts();
 
-		foreach ( $default_editor as $post_type => $editor ) {
-			$initial_editor_setting[ $post_type ] = in_array( $default_editor[ $post_type ], $valid_editors, true ) ? $default_editor[ $post_type ] : 'default';
+		foreach ( $all_post_types as $post_type ) {
+			$initial_editor_setting[ $post_type ] = ! empty( $default_editor[ $post_type ] ) ? $default_editor[ $post_type ] : $this->get_initial_editor_option( $post_type );
 		}
 
 		return $initial_editor_setting;
@@ -223,8 +227,8 @@ class Boldgrid_Editor_Setting {
 	/**
 	 * Get the initial editor option.
 	 *
-	 * Basically Custom Post types should continue to use whatever editor they
-	 * currently use unless the user explicitly sets it otherwise.
+	 * Custom Post types will use PPB by default if
+	 * a different editor is not saved.
 	 *
 	 * @since 1.9.0
 	 *
@@ -232,15 +236,7 @@ class Boldgrid_Editor_Setting {
 	 * @return string            Editor option.
 	 */
 	public function get_initial_editor_option( $post_type ) {
-		$configs = Boldgrid_Editor_Service::get( 'config' );
-
-		$initial_editor_option = 'default';
-
-		if ( in_array( $post_type, $configs[ 'allowed_post_types' ] ) ) {
-			$initial_editor_option = 'bgppb';
-		}
-
-		return $initial_editor_option;
+		return 'bgppb';
 	}
 
 	/**

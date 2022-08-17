@@ -23,8 +23,13 @@ export class Clone {
 	 * @since 1.6
 	 */
 	clone() {
-		let $target = this.popover.getWrapTarget(),
-			$clone = $target.clone();
+		let $target = this.popover.getWrapTarget();
+
+		if ( $target.is( 'td, th' ) ) {
+			$target = $target.closest( 'table' );
+		}
+
+		let $clone = $target.clone();
 
 		$target.after( $clone );
 

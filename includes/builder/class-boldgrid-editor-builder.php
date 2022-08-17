@@ -233,6 +233,7 @@ class Boldgrid_Editor_Builder {
 		$paths[] = $template_path . '/icon.php';
 		$paths[] = $template_path . '/generic-controls.php';
 		$paths[] = $template_path . '/section-dividers.php';
+		$paths[] = $template_path . '/tables.php';
 
 		foreach ( $paths as $path ) {
 			include $path;

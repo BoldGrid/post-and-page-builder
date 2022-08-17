@@ -23,6 +23,7 @@ export class GeneralActions {
 		popover.$element.find( 'li[data-action="Background"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="Box"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="Advanced"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
+		popover.$element.find( 'li[data-action="AdvancedCell"]' ).on( 'click', ( e ) => this.advancedCell( e ) );
 		popover.$element.find( 'li[data-action="Font"]' ).on( 'click', ( e ) => this.generalMacro( e ) );
 		popover.$element.find( 'li[data-action="align-default"]' ).on( 'click', menuActions.alignDefault );
 		popover.$element.find( 'li[data-action="align-bottom"]' ).on( 'click', menuActions.alignBottom );
@@ -32,14 +33,32 @@ export class GeneralActions {
 	}
 
 	generalMacro( e ) {
-		let controlName;
+		let controlName,
+			$target    = BG.Service.popover.selection.$target,
+			targetType = this.popover.name;
 
 		e.stopPropagation();
 
 		controlName = $( e.target ).data( 'action' );
 
-		BG.Service.popover.selection.$target.click();
-		BG.Controls.get( controlName ).openPanel( BG.Service.popover.selection.$target, this.popover.name );
+		if ( $target.is( 'td, th' ) ) {
+			$target = $target.closest( 'table' );
+			targetType = 'table';
+		}
+
+		$target.click();
+		BG.Controls.get( controlName ).openPanel( $target, targetType );
+	}
+
+	advancedCell( e ) {
+		let controlName = 'Advanced',
+			$target = BG.Service.popover.selection.$target;
+
+		e.stopPropagation();
+
+		$target.click();
+
+		BG.Controls.get( controlName ).openPanel( $target, 'table-cell' );
 	}
 }
 

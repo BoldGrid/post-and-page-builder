@@ -170,6 +170,7 @@ import { Typography } from '@boldgrid/controls';
 			if ( 'SPAN' !== nodeType ) {
 				content = '<span class="bg-span">' + content + '</span>';
 				selection.setContent( content );
+				BG.Menu.setTarget( self, $( selection.getNode() ) );
 			}
 		},
 
