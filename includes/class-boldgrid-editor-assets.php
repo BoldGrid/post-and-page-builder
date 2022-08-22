@@ -379,6 +379,7 @@ class Boldgrid_Editor_Assets {
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
 			'shortcodes'             => $shortcode_keys,
 			'current_theme'          => get_stylesheet(),
+			'has_theme_buttons'      => BoldGrid_Editor_Builder::has_theme_buttons(),
 			'fontWeightNames'        => apply_filters(
 				'boldgrid_editor_font_weight_names',
 				array(
