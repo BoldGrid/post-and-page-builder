@@ -723,8 +723,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-tables"]' );
 
-			tinymce.activeEditor.contextToolbars[0].items =
-				'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+			if ( tinymce.activeEditor.contextToolbars ) {
+				tinymce.activeEditor.contextToolbars[0].items =
+					'tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+			}
 
 			self._bindContextToolbar();
 
