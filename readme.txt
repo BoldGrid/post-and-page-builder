@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.20.0-rc1
+Stable tag: 1.21.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,29 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.21.0 =
+* New Feature: Table Designer - Add tables to posts / pages, with the abilitiy to customize borders, backgrounds, and more. [#98](https://github.com/BoldGrid/post-and-page-builder/issues/98)
+* Optimization: Only load animate.min.css on pages / posts that specifically utilizie it.
+
+= 1.20.2 =
+* Bug Fix: Some Posts/Pages are not defaulting to PPB when Preferred Editor is set [#435](https://github.com/BoldGrid/post-and-page-builder/issues/435)
+
+= 1.20.1 =
+* Bug Fix: Fix translucency issues with Full Width Rows.
+* Bug Fix: Preferred Editor tools do not load PPB with custom post types [#419](https://github.com/BoldGrid/post-and-page-builder/issues/419)
+* Bug Fix: Allow filtering of font-weights in editor to allow themes to change the naming of the font weights [#424](https://github.com/BoldGrid/post-and-page-builder/pull/424)
+* Bug Fix: [Bug] SERVER_NAME not defined warning [#406](https://github.com/BoldGrid/post-and-page-builder/issues/406)
+
+= 1.20.0 =
+* New Feature: Search / Filter Block Library blocks on Add Block Screen [#332](https://github.com/BoldGrid/post-and-page-builder/issues/332)
+* Update: Update Controls Information notice to include new controls [#390](https://github.com/BoldGrid/post-and-page-builder/issues/390)
+* Update: Remove Full Screen Editing notice and change Icon [#394](https://github.com/BoldGrid/post-and-page-builder/issues/394)
+* Bug Fix: Switching between visual and text adds an empty section [#374] (https://github.com/BoldGrid/post-and-page-builder/issues/374)
+* Bug Fix: Highlighting in visual should take you right to that element in text view [#377] (https://github.com/BoldGrid/post-and-page-builder/issues/#377)
+* Bug Fix: Icons do not work in Custom Page Headers [#416](https://github.com/BoldGrid/post-and-page-builder/issues/416)
+* Bug Fix: Popover handles obstructed in phone view [#395](https://github.com/BoldGrid/post-and-page-builder/issues/395)
+* Bug Fix: Hover Effects Mobile Visibility doesn't stay checked [#347](https://github.com/BoldGrid/post-and-page-builder/issues/347)
 
 = 1.19.0 =
 * New Feature: Add Inner Borders on Columns and Column Shapes [#311](https://github.com/BoldGrid/post-and-page-builder/issues/311)

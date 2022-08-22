@@ -93,6 +93,25 @@ import { Industry } from './industry';
 				} );
 
 				self.$libraryFilter.on( 'input', debounceSearch );
+
+				// Blocks that haven't loaded yet do not get filtered, so we have to filter them after loading.
+				BG.Service.event.on( 'filterLibrary', function( $block ) {
+					var filterValue = $( '.library-filter' )
+							.find( 'input' )
+							.val(),
+						gridBlockTitle;
+
+					if ( ! filterValue ) {
+						return;
+					}
+
+					filterValue = filterValue.toUpperCase();
+					gridBlockTitle = $block.data( 'title' ) ? $block.data( 'title' ).toUpperCase() : '';
+
+					if ( -1 === gridBlockTitle.indexOf( filterValue ) ) {
+						$block.hide();
+					}
+				} );
 			},
 
 			/**

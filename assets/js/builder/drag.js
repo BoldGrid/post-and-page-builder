@@ -358,6 +358,14 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'table:not(.row .row table)',
 		'pre:not(.row .row pre)',
 
+		// Nested Table contents.
+		'table tr td p',
+		'table tr th p',
+		'table tr td i',
+		'table tr th i',
+		'table tr td span',
+		'table tr th span',
+
 		// Nested Rows - Not rows nested out of master container.
 		'.row .row:not(.row .row .row)',
 
@@ -1704,6 +1712,11 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		self.valid_drag = true;
 		self.$current_clicked_element = BOLDGRID.EDITOR.Service.popover.selection.$target;
 
+		// Remap drag element from table cell to table itself.
+		if ( self.$current_clicked_element.is( 'td, th' ) ) {
+			self.$current_clicked_element = self.$current_clicked_element.closest( 'table' );
+		}
+
 		if ( self.$current_clicked_element.is( 'a' ) && self.$current_clicked_element.find( 'img, button' ).length ) {
 			self.$current_clicked_element
 				.find( 'img, button' )
@@ -2317,6 +2330,11 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			var $this = $( this );
 
 			self.$current_drag = BG.Service.popover.selection.getWrapTarget();
+
+			// Remap the drag element from table cells to the table itself.
+			if ( self.$current_drag.is( 'td, th' ) ) {
+				self.$current_drag = self.$current_drag.closest( 'table' );
+			}
 			self.$current_drag.addClass( 'dragging-imhwpb' );
 			self.addClass( 'drag-progress' );
 

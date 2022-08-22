@@ -117,6 +117,10 @@ class Boldgrid_Editor_MCE {
 		$file = $file . '?ver=' . BOLDGRID_EDITOR_VERSION;
 		$editor_js_file = plugins_url( $file, BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
 
+		$mce_tables_file    = Boldgrid_Editor_Assets::get_minified_js( '/assets/js/tinymce_tables' );
+		$mce_tables_file    = $mce_tables_file . '?ver=' . BOLDGRID_EDITOR_VERSION;
+		$mce_tables_js_file = plugins_url( $mce_tables_file, BOLDGRID_EDITOR_PATH . '/boldgrid-editor.php' );
+
 		$plugin_array = (array) $plugin_array;
 		$plugin_array['large_view_imhwpb'] = $editor_js_file;
 		$plugin_array['monitor_view_imhwpb'] = $editor_js_file;
@@ -125,6 +129,7 @@ class Boldgrid_Editor_MCE {
 		$plugin_array['toggle_draggable_imhwpb'] = $editor_js_file;
 		$plugin_array['fullscreen'] = $editor_js_file;
 		$plugin_array['add_block_imhwpb'] = $editor_js_file;
+		$plugin_array['table'] = $mce_tables_js_file;
 
 		return $plugin_array;
 	}

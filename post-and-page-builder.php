@@ -3,7 +3,7 @@
  * Plugin Name: Post and Page Builder
  * Plugin URI: https://www.boldgrid.com/boldgrid-editor/?utm_source=ppb-wp-repo&utm_medium=plugin-uri&utm_campaign=ppb
  * Description: Customized drag and drop editing for posts and pages. The Post and Page Builder adds functionality to the existing TinyMCE Editor to give you easier control over your content.
- * Version: 1.20.0-rc1
+ * Version: 1.21.0
  * Author: BoldGrid <support@boldgrid.com>
  * Author URI: https://www.boldgrid.com/?utm_source=ppb-wp-repo&utm_medium=author-uri&utm_campaign=ppb
  * Text Domain: boldgrid-editor

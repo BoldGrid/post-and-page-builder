@@ -1,6 +1,6 @@
 {
 	"name": "boldgrid-editor",
-	"version": "1.20.0-rc1",
+	"version": "1.21.0",
 	"description": "Post and Page Builder is a standalone plugin which adds functionality to the existing TinyMCE Editor.",
 	"main": "assets/js/editor.js",
 	"scripts": {
@@ -71,7 +71,7 @@
 	},
 	"dependencies": {
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#outline-control",
-		"@boldgrid/components": "^2.16.9",
+		"@boldgrid/components": "^2.16.15",
 		"@boldgrid/fourpan": "^1.1.1",
 		"animate.css": "^3.7.0",
 		"babel-eslint": "^8.2.6",

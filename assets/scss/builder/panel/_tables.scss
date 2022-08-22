@@ -1,0 +1,108 @@
+.panel-body[data-control-name="tables"] {
+    .boldgrid-editor-tables > h4 {
+        padding-left: 10px;
+    }
+    .section {
+        padding-top: 0;
+        p {
+            display: flex;
+            margin-top: 0;
+            label {
+                margin-top: 0;
+                input {
+                    margin-right: 10px;
+                }
+            }
+            &.number-of-col-and-rows,
+            &.table-borders {
+                justify-content: space-around;
+                label {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    align-items: center;
+                    input {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+
+        .bgc.buttonset {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .bgc.buttonset .switch-label {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px rgba(0, 0, 0, 0.1);
+            color: #555d66;
+            margin: 0;
+            text-align: center;
+            padding: 0.5em 1em;
+            flex-grow: 1;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            justify-items: center;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            cursor: pointer;
+        }
+
+        .bgc.buttonset .switch-input:checked + .switch-label {
+            background-color: #00a0d2;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .bgc-default-style.label {
+            padding-left: 5px;
+            font-weight: 600;
+        }
+
+        .bgc-default-style.font-family {
+            font-size: 20px;
+        }
+    }
+    .generic-table-borders {
+        .border-control-container {
+            border: 1px solid #eee;
+            overflow: hidden;
+            &.collapsed {
+                .border-control-contents {
+                    display: none;
+                }
+                .border-control-heading {
+                    .dashicons {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+            .border-control-heading {
+                background-color: #eee;
+                padding: 0px 20px;
+                h4 {
+                    font-size: 1.25em;
+                    display: inline-block;
+                    margin: 10px 0;
+                }
+                .dashicons {
+                    float: right;
+                    line-height: 1.75;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 25px;
+                    vertical-align: middle;
+                }
+            }
+            .border-control-contents {
+                padding: 0 10px;
+                .border-type-control ul li label input[value="none"]:after {
+                    border-color: transparent;
+                }
+            }
+        }
+    }
+}

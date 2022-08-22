@@ -326,6 +326,48 @@ IMHWPB.Editor = function( $ ) {
 			onclick: self.toggle_draggable_plugin
 		} );
 
+		// On NodeChange, we need to remove phantom <br> from table cells.
+		editor.on( 'NodeChange', function( e ) {
+			var html = $( e.element ).html();
+
+			if ( $( e.element ).is( 'td, th' ) && html.includes( '<br>' ) ) {
+				html = html.replace( '<br>', '' );
+				$( e.element ).html( html );
+			}
+
+		} );
+
+		/**
+		 * When selecting all contents of a table cell, we need to ensure that
+		 * the selection doesn't extend beyond that cell.
+		 */
+		editor.on( 'AfterSetSelectionRange', function( e ) {
+			var startContainer = e.range.startContainer,
+				endContainer   = e.range.endContainer,
+				startIsTableCell = $( startContainer ).is( 'td, th' ) || 0 < $( startContainer ).parents( 'td, th' ).length,
+				endIsTableCell   = $( endContainer ).is( startContainer ),
+				startTable = $( startContainer ).closest( 'table' ),
+				endTable = $( endContainer ).closest( 'table' ),
+				endTableIsStartTable = endTable.is( startTable );
+
+			if ( startIsTableCell && ! endIsTableCell ) {
+				if ( ! endTableIsStartTable ) {
+					editor.selection.select( startContainer );
+				}
+			}
+		} );
+
+		/**
+		 * This Event is fired when the post is saved. This is a good place to add any filters
+		 * that need to be added to post content.
+		 */
+		editor.on( 'SaveContent', function( e ) {
+			var $savedContent = $( '<div>' + e.content + '</div>' );
+			$savedContent.find( '.td-resize-tooltip' ).remove();
+
+			e.content = $savedContent.html();
+		} );
+
 		//Before adding an undo level check to see if this is allowed
 		editor.on( 'BeforeAddUndo', function( e ) {
 			if ( true == IMHWPB.tinymce_undo_disabled ) {
@@ -349,6 +391,7 @@ IMHWPB.Editor = function( $ ) {
 		//When content is added to editor
 		editor.on( 'SetContent', function( e ) {
 			self.reset_anchor_spaces( tinymce.activeEditor.getBody(), true );
+			self.adjust_overlay_colors( tinymce.activeEditor.getBody() );
 
 			if ( $.fourpan && $.fourpan.refresh ) {
 				$.fourpan.refresh();
@@ -891,6 +934,79 @@ IMHWPB.Editor = function( $ ) {
 		}
 
 		return is_empty;
+	};
+
+	/**
+	 * Adjust overlay colors to match palette.
+	 *
+	 * @param {string} markup The markup to be adjusted
+	 * @returns {string} The markup with the adjusted overlay colors
+	 */
+	this.adjust_overlay_colors = function( markup ) {
+		var $markup = $( markup ),
+			$alphaOverlayElements = $markup.find( '[data-bg-overlaycolor-alpha]' );
+			$alphaBgElements      = $markup.find( '[data-alpha]' );
+
+		$alphaBgElements.each( function() {
+			var $this       = $( this ),
+				classString = $this.attr( 'class' ),
+				bgClass     = classString.match( /color[\d|\-|\w]*-background-color/ ),
+				uuid        = $this.attr( 'data-bg-uuid' ),
+				alpha       = $this.attr( 'data-alpha' ),
+				$head       = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				styleString,
+				palettePosition,
+				color;
+
+				if ( ! bgClass ) {
+					return;
+				}
+
+				palettePosition = bgClass[0].replace( 'color', '' ).replace( '-background-color', '' );
+				palettePosition = palettePosition.replace( '-', '' );
+
+				if ( 'neutral' !== palettePosition ) {
+					color = BoldgridEditor.colors.defaults[ parseInt( palettePosition ) - 1 ];
+				} else {
+					color = BoldgridEditor.colors.neutral;
+				}
+
+				color = color.replace( ')', ',' + alpha + ')' );
+				color = color.replace( 'rgb', 'rgba' );
+
+				styleString = 'background-color: ' + color + ' !important;';
+
+				$head.append( '<style id="' + uuid + '-inline-styles">body .' + uuid + ' { ' + styleString + ' }</style>' );
+		} );
+
+		$alphaOverlayElements.each( function() {
+			var $this = $( this ),
+				palettePosition = $this.data( 'bg-overlaycolor-class' ),
+				alpha = $this.data( 'bg-overlaycolor-alpha' ),
+				image = $this.data( 'image-url' ),
+				styleString,
+				color;
+
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditor.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditor.colors.neutral;
+			}
+
+			color = color.replace( ')', ',' + alpha + ')' );
+			color = color.replace( 'rgb', 'rgba' );
+
+			$this.attr( 'data-bg-overlaycolor', color );
+
+			styleString = 'linear-gradient(to left, ' + color + ', ' + color + '), url("' + image + '")';
+
+			$this.css( 'background-image', styleString );
+		} );
+
+		return $markup.html();
 	};
 
 	/**

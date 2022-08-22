@@ -16,6 +16,7 @@ class Public {
 			this.setupParallax();
 			this.initWowJs();
 			this.setupHoverBoxes();
+			this.addPalletteOverlayAlpha();
 			this.addPaletteAlphas();
 			this.detectFillColors();
 			this.addColLg();
@@ -42,6 +43,83 @@ class Public {
 			$style.html( css );
 
 			$( 'head' ).append( $style );
+		} );
+	}
+
+	/**
+	 * Add pallette color classes to overlay.
+	 */
+	addPalletteOverlayAlpha() {
+		var $alphaOverlayElements = $( '[data-bg-overlaycolor-alpha]' );
+
+		$alphaOverlayElements.each( function() {
+			var $this = $( this ),
+				palettePosition = $this.data( 'bg-overlaycolor-class' ),
+				alpha = $this.data( 'bg-overlaycolor-alpha' ),
+				image = $this.data( 'image-url' ),
+				styleString,
+				color;
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditorPublic.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditorPublic.colors.neutral;
+			}
+
+			color = color.replace( ')', ',' + alpha + ')' );
+
+			styleString = 'linear-gradient(to left, ' + color + ', ' + color + '), url("' + image + '")';
+
+			$this.css( 'background-image', styleString );
+		} );
+	}
+
+	addPaletteAlphas() {
+		var $bgAlphaElements = $( '[data-bg-uuid]' ),
+			postImageHeaders = $( '.main .post > header' );
+
+		$bgAlphaElements.each( function() {
+			var $this = $( this ),
+				uuid = $this.data( 'bg-uuid' ),
+				$style = $( `<style id="${uuid}-inline-css"></style>` ),
+				bgColor = $this.css( 'background-color' ),
+				css = '';
+
+			bgColor = bgColor.replace( ')', ',' + $this.data( 'alpha' ) + ')' );
+
+			css += `.${uuid} { background-color: ${bgColor} !important; }`;
+
+			$style.html( css );
+
+			$( 'head' ).append( $style );
+		} );
+
+		postImageHeaders.each( function() {
+			var $this = $( this ),
+				classString = $this.attr( 'class' ),
+				bgClass     = classString.match( /color[\d|\-|\w]*-background-color/ ),
+				bgStyle     = $this.css( 'background' ),
+				rgbaRegex   = /rgba\(\s?([0-9]+),\s?([0-9]+),\s?([0-9]+),\s?([0-9|.]+)\s?\)/g,
+				palettePosition,
+				color;
+
+			if ( ! bgClass ) {
+				return;
+			}
+
+			palettePosition = bgClass[0].replace( 'color', '' ).replace( '-background-color', '' );
+			palettePosition = palettePosition.replace( '-', '' );
+
+			if ( 'neutral' !== palettePosition ) {
+				color = BoldgridEditorPublic.colors.defaults[ parseInt( palettePosition ) - 1 ];
+			} else {
+				color = BoldgridEditorPublic.colors.neutral;
+			}
+
+			color = color.replace( ')', ', 0.7)' );
+			color = color.replace( 'rgb', 'rgba' );
+
+			$this.css( 'background', bgStyle.replace( rgbaRegex, color, bgStyle ) );
 		} );
 	}
 
@@ -108,7 +186,7 @@ class Public {
 			}`;
 		} else if ( rowBgColor ) {
 			rowCss += `body[data-container=max-full-width] .fwr-container.${fwrUuid} {
-				background-color: ${rowBgColor};
+				background-color: ${rowBgColor} !important;
 			}
 			body[data-container=max-full-width] .row.full-width-row {
 				background-color: unset !important;
@@ -239,7 +317,7 @@ class Public {
 			}`;
 		} else if ( colBgColor ) {
 			colCss += `body[data-container=max-full-width] .fwr-container div.${fwrUuid} {
-				background-color: ${colBgColor};
+				background-color: ${colBgColor} !important;
 			}
 			body[data-container=max-full-width] .row.full-width-row > div.${fwrUuid}:not( .fwr-container ) {
 				background-color: unset !important;
