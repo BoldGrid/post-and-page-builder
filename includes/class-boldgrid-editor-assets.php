@@ -219,12 +219,14 @@ class Boldgrid_Editor_Assets {
 			)
 		);
 
-		$maybe_enqueue_animate = $this->maybe_enqueue_animate();
-
-		if ( $maybe_enqueue_animate ) {
-			wp_enqueue_script( 'animate-js',
-				plugins_url( '/assets/js/animate.js', BOLDGRID_EDITOR_ENTRY ),
-			array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
+		// Only enque the animate.css if it's needed.
+		if ( $this->maybe_enqueue_animate() ) {
+			wp_enqueue_style(
+				'animatecss',
+				plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
+				array(),
+				BOLDGRID_EDITOR_VERSION
+			);
 		}
 
 		// Enqueue Styles that which depend on version.
