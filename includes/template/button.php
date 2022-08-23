@@ -1,6 +1,6 @@
 <script type="text/html" id="tmpl-boldgrid-editor-button">
 	<div class='choices button-design'>
-		<# if ( BoldgridEditor.is_boldgrid_theme ) { #>
+		<# if ( BoldgridEditor.has_theme_buttons ) { #>
 			<div class='title'>
 				<h4>Theme Designs</h4>
 			</div>

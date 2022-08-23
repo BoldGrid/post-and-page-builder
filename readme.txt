@@ -134,6 +134,11 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.21.1 =
+* Bug Fix: add extra button classes for button selector to improve compatibility with imh-responsive theme [#437](https://github.com/BoldGrid/post-and-page-builder/issues/437)
+* Bug Fix: JavaScript Conflict with TinyMCE Advanced plugin [#439](https://github.com/BoldGrid/post-and-page-builder/issues/439)
+* Bug Fix: Buttons do not add where the cursor is active - always adds at the top [#398](https://github.com/BoldGrid/post-and-page-builder/issues/398)
+
 = 1.21.0 =
 * New Feature: Table Designer - Add tables to posts / pages, with the abilitiy to customize borders, backgrounds, and more. [#98](https://github.com/BoldGrid/post-and-page-builder/issues/98)
 * Optimization: Only load animate.min.css on pages / posts that specifically utilizie it.

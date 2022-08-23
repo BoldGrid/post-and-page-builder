@@ -87,12 +87,12 @@ class Boldgrid_Editor_MCE {
 			add_filter( 'mce_external_plugins', array (
 				$this,
 				'add_tinymce_plugin'
-			) );
+			), 9999 );
 
 			add_filter( 'mce_buttons', array (
 				$this,
 				'register_mce_button'
-			) );
+			), 9999 );
 		}
 
 		// Shows keybinding in fullscreen button tooltip.

@@ -532,23 +532,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Add color palette for overlays to the target.
+		 * Add alpha component to background color palettes
 		 *
-		 * @param {object} $target      jQuery object of the target element.
-		 * @param {string} value        The value of the color.
-		 * @param {string} bgColorClass The color class string.
+		 * @param {jQuery Object} $target The target jQuery object
+		 * @param {string} value          Background color value
+		 * @param {string} bgColorClass   Background Color class
 		 */
-		paletteAddOverlayAlpha( $target, value, bgColorClass ) {
-			var image = $target.attr( 'data-image-url' ),
-				color = value;
-
-			BG.Controls.addStyle(
-				$target,
-				'background-image',
-				self.getOverlayImage( color ) + ', url("' + image + '")'
-			);
-		},
-
 		paletteAddAlpha( $target, value, bgColorClass ) {
 			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
 				$head = $( tinyMCE.activeEditor.iframeElement )
@@ -570,6 +559,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
 		},
 
+		/**
+		 * Obtains the alpha ( opacity ) value of an RGBA string.
+		 *
+		 * @param {string} color RGBA Color String.
+		 * @returns {string} Alpha value of a color
+		 */
 		alphaFromColor: function( color ) {
 			var alpha = 1;
 
@@ -581,6 +576,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return alpha;
 		},
 
+		/**
+		 * Determine the color class, if any, that matches an RGB(A) String.
+		 *
+		 * @param {string} color RGB(A) color string
+		 * @returns {string} The color class associated with this color string.
+		 */
 		classFromColor: function( color ) {
 			var colors = BoldgridEditor.colors.defaults,
 				neutralColor = BoldgridEditor.colors.neutral,
@@ -605,6 +606,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 
 			return colorClass;
+		},
+
+		/**
+		 * Add color palette for overlays to the target.
+		 *
+		 * @param {object} $target      jQuery object of the target element.
+		 * @param {string} value        The value of the color.
+		 * @param {string} bgColorClass The color class string.
+		 */
+		paletteAddOverlayAlpha( $target, value, bgColorClass ) {
+			var image = $target.attr( 'data-image-url' ),
+				color = value;
+
+			BG.Controls.addStyle(
+				$target,
+				'background-image',
+				self.getOverlayImage( color ) + ', url("' + image + '")'
+			);
 		},
 
 		/**

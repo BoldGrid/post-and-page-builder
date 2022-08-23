@@ -65,6 +65,7 @@ import { Industry } from './industry';
 								gridblockTitle = $gridblock.data( 'title' ) ?
 									$gridblock.data( 'title' ).toUpperCase() :
 									'';
+
 							if ( -1 === gridblockTitle.indexOf( filterValue ) ) {
 								$gridblock.hide();
 							} else {

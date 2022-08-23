@@ -36,7 +36,7 @@ export class Component {
 		$container.$body.prepend( $newSection );
 
 		BG.Service.component.scrollToElement( $newSection, 200 );
-		BG.Service.popover.section.transistionSection( $newSection );
+		BG.Service.popover.section.transitionSection( $newSection );
 	}
 }
 new Component().init();

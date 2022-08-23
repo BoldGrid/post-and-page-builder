@@ -219,12 +219,14 @@ class Boldgrid_Editor_Assets {
 			)
 		);
 
-		$maybe_enqueue_animate = $this->maybe_enqueue_animate();
-
-		if ( $maybe_enqueue_animate ) {
-			wp_enqueue_script( 'animate-js',
-				plugins_url( '/assets/js/animate.js', BOLDGRID_EDITOR_ENTRY ),
-			array( 'jquery' ), BOLDGRID_EDITOR_VERSION, true );
+		// Only enque the animate.css if it's needed.
+		if ( $this->maybe_enqueue_animate() ) {
+			wp_enqueue_style(
+				'animatecss',
+				plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
+				array(),
+				BOLDGRID_EDITOR_VERSION
+			);
 		}
 
 		// Enqueue Styles that which depend on version.
@@ -379,6 +381,7 @@ class Boldgrid_Editor_Assets {
 			'default_container'      => Boldgrid_Editor_Builder::get_page_container(),
 			'shortcodes'             => $shortcode_keys,
 			'current_theme'          => get_stylesheet(),
+			'has_theme_buttons'      => BoldGrid_Editor_Builder::has_theme_buttons(),
 			'fontWeightNames'        => apply_filters(
 				'boldgrid_editor_font_weight_names',
 				array(

@@ -28,6 +28,8 @@ class Public {
 
 	/**
 	 * Add pallette color classes to overlay.
+	 *
+	 * @since 1.19.0
 	 */
 	addPalletteOverlayAlpha() {
 		var $alphaOverlayElements = $( '[data-bg-overlaycolor-alpha]' );
@@ -54,6 +56,11 @@ class Public {
 		} );
 	}
 
+	/**
+	 * Add Alpha opacity to palette based BG Colors.
+	 *
+	 * @since 1.19.0
+	 */
 	addPaletteAlphas() {
 		var $bgAlphaElements = $( '[data-bg-uuid]' ),
 			postImageHeaders = $( '.main .post > header' );
