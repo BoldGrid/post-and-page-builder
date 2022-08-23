@@ -26,28 +26,10 @@ class Public {
 		return this;
 	}
 
-	addPaletteAlphas() {
-		var $bgAlphaElements = $( '[data-bg-uuid]' );
-
-		$bgAlphaElements.each( function() {
-			var $this = $( this ),
-				uuid = $this.data( 'bg-uuid' ),
-				$style = $( `<style id="${uuid}-inline-css"></style>` ),
-				bgColor = $this.css( 'background-color' ),
-				css = '';
-
-			bgColor = bgColor.replace( ')', ',' + $this.data( 'alpha' ) + ')' );
-
-			css += `.${uuid} { background-color: ${bgColor} !important; }`;
-
-			$style.html( css );
-
-			$( 'head' ).append( $style );
-		} );
-	}
-
 	/**
 	 * Add pallette color classes to overlay.
+	 *
+	 * @since 1.19.0
 	 */
 	addPalletteOverlayAlpha() {
 		var $alphaOverlayElements = $( '[data-bg-overlaycolor-alpha]' );
@@ -74,6 +56,11 @@ class Public {
 		} );
 	}
 
+	/**
+	 * Add Alpha opacity to palette based BG Colors.
+	 *
+	 * @since 1.19.0
+	 */
 	addPaletteAlphas() {
 		var $bgAlphaElements = $( '[data-bg-uuid]' ),
 			postImageHeaders = $( '.main .post > header' );
