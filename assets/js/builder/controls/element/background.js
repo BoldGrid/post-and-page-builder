@@ -531,6 +531,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			);
 		},
 
+		/**
+		 * Add alpha component to background color palettes
+		 *
+		 * @param {jQuery Object} $target The target jQuery object
+		 * @param {string} value          Background color value
+		 * @param {string} bgColorClass   Background Color class
+		 */
 		paletteAddAlpha( $target, value, bgColorClass ) {
 			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
 				$head = $( tinyMCE.activeEditor.iframeElement )
@@ -552,6 +559,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
 		},
 
+		/**
+		 * Obtains the alpha ( opacity ) value of an RGBA string.
+		 *
+		 * @param {string} color RGBA Color String.
+		 * @returns {string} Alpha value of a color
+		 */
 		alphaFromColor: function( color ) {
 			var alpha = 1;
 
@@ -563,6 +576,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return alpha;
 		},
 
+		/**
+		 * Determine the color class, if any, that matches an RGB(A) String.
+		 *
+		 * @param {string} color RGB(A) color string
+		 * @returns {string} The color class associated with this color string.
+		 */
 		classFromColor: function( color ) {
 			var colors = BoldgridEditor.colors.defaults,
 				neutralColor = BoldgridEditor.colors.neutral,
@@ -576,7 +595,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			}
 
 			for ( let key in colors ) {
-				if ( colors[key] === color ) {
+				if ( colors[key].replace( /\s/g, '' ) === color ) {
 					colorClass = parseInt( key ) + 1;
 					break;
 				}
@@ -605,64 +624,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				'background-image',
 				self.getOverlayImage( color ) + ', url("' + image + '")'
 			);
-		},
-
-		paletteAddAlpha( $target, value, bgColorClass ) {
-			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
-				$head = $( tinyMCE.activeEditor.iframeElement )
-					.contents()
-					.find( 'head' ),
-				css;
-
-			if ( $target.attr( 'data-bg-uuid' ) ) {
-				uuid = $target.attr( 'data-bg-uuid' );
-			} else {
-				$target.attr( 'data-bg-uuid', uuid );
-				$target.addClass( uuid );
-			}
-
-			$head.find( '#' + uuid + '-inline-style' ).remove();
-
-			css = `.${bgColorClass}.${uuid} {background-color: ${value} !important;}`;
-
-			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
-		},
-
-		alphaFromColor: function( color ) {
-			var alpha = 1;
-
-			if ( color.includes( 'rgba' ) ) {
-				alpha = color.replace( /rgba\(\d{1,3}\,\d{1,3}\,\d{1,3}\,(.*\))/, '$1' );
-				alpha = alpha.replace( ')', '' );
-			}
-
-			return alpha;
-		},
-
-		classFromColor: function( color ) {
-			var colors = BoldgridEditor.colors.defaults,
-				neutralColor = BoldgridEditor.colors.neutral,
-				colorClass = false;
-
-			if ( color.includes( 'rgba' ) ) {
-				color = color.replace( /(rgba\(\d{1,3}\,\d{1,3}\,\d{1,3})(.*\))/, '$1)' );
-				color = color.replace( 'rgba', 'rgb' );
-			} else {
-				return colorClass;
-			}
-
-			for ( let key in colors ) {
-				if ( colors[key].replace( /\s/g, '' ) === color ) {
-					colorClass = parseInt( key ) + 1;
-					break;
-				}
-			}
-
-			if ( color === neutralColor ) {
-				colorClass = 'neutral';
-			}
-
-			return colorClass;
 		},
 
 		/**
