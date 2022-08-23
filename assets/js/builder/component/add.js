@@ -213,6 +213,13 @@ export class Add {
 		this.openCustomization( component, $inserted );
 	}
 
+	/**
+	 * Prepend the currently selected Node with a jQuery element.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param  {jQuery} $html Element.
+	 */
 	prependSelection( $html ) {
 		let $currentNode = $( BG.mce.selection.getNode() ),
 			$closestColumn = $currentNode.closest( '[class*="col-"]' );
