@@ -122,7 +122,7 @@ export class Section extends Base {
 	addNewSection() {
 		let $newSection = $( this.emptySectionTemplate() );
 		this.getWrapTarget().after( $newSection );
-		this.transistionSection( $newSection );
+		this.transitionSection( $newSection );
 	}
 
 	/**
@@ -131,7 +131,7 @@ export class Section extends Base {
 	 * @since 1.2.7
 	 * @param jQuery $newSection.
 	 */
-	transistionSection( $newSection, color ) {
+	transitionSection( $newSection, color ) {
 		IMHWPB['tinymce_undo_disabled'] = true;
 
 		color = color || '#eeeeee';

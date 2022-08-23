@@ -137,7 +137,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				title: 'Button',
 				type: 'design',
 				icon: require( './icon.svg' ),
-				onInsert: 'prependColumn',
+				onInsert: 'prependSelection',
 				getDragElement: () => $( this.getTemplate() )
 			};
 

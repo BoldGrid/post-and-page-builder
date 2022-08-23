@@ -191,9 +191,14 @@ export class Add {
 			this.prependContent( $html );
 
 			this.scrollToElement( $html, 200 );
-			BG.Service.popover.section.transistionSection( $html );
+			BG.Service.popover.section.transitionSection( $html );
 
 			// Call the function.
+		} else if ( 'prependSelection' === component.onInsert ) {
+			this.prependSelection( $html );
+
+			this.scrollToElement( $html, 200 );
+			BG.Service.popover.section.transitionSection( $html );
 		} else if ( component.onInsert ) {
 			component.onInsert( $html );
 
@@ -206,6 +211,30 @@ export class Add {
 		$inserted.removeClass( 'bg-inserted-component' );
 
 		this.openCustomization( component, $inserted );
+	}
+
+	prependSelection( $html ) {
+		let $currentNode = $( BG.mce.selection.getNode() ),
+			$closestColumn = $currentNode.closest( '[class*="col-"]' );
+
+		if ( ! $closestColumn.length ) {
+			let $newSection = $( `
+				<div class="boldgrid-section">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							</div>
+						</div>
+					</div>
+				</div>
+			` );
+
+			BG.Controls.$container.$body.prepend( $newSection );
+			$firstColumn = $newSection.find( '[class*="col-md-"]' );
+			$firstColumn.prepend( $html );
+		} else {
+			$currentNode.prepend( $html );
+		}
 	}
 
 	/**
