@@ -72,6 +72,7 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 
 				// Save Markup
 				$row_html = self::outer_HTML( $potential_row );
+
 				$rows[] = self::format_gridblock_data( $post, $row_html );
 			}
 		}
@@ -85,13 +86,13 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		$shortcode_translated_html = wpautop( $html );
 
 		return array (
-			'template' => $post->post_title,
-			'html' => $shortcode_translated_html,
+			'template'     => $post->post_title,
+			'html'         => $shortcode_translated_html,
 			'preview_html' => self::run_shortcodes( $shortcode_translated_html ),
-			'type' => 'bg_block' === $post->post_type ? 'library' : 'saved',
-			'status' => ! empty( $post ) && $post->post_status ? $post->post_status : 'publish',
-			'is_post' => ! empty( $post ) ? 'post' === $post->post_type : false,
-			'str_length' => strlen( $shortcode_translated_html ),
+			'type'         => 'bg_block' === $post->post_type ? 'library' : 'saved',
+			'status'       => ! empty( $post ) && $post->post_status ? $post->post_status : 'publish',
+			'is_post'      => ! empty( $post ) ? 'post' === $post->post_type : false,
+			'str_length'   => strlen( $shortcode_translated_html ),
 		);
 	}
 
