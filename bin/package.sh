@@ -1,4 +1,5 @@
 echo "Copying to Build Directory"
+rm -Rf build
 mkdir -p build/post-and-page-builder
 cp -R --remove-destination . build/post-and-page-builder >/dev/null 2>&1
 cd build/post-and-page-builder
