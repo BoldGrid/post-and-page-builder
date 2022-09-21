@@ -505,7 +505,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		_setupNewRow: function() {
 			var $target = self.getTarget(),
-				$cells  = $target.find( 'td' );
+				$cells = $target.find( 'td' );
 
 			$cells.each( function() {
 				var $this = $( this ),
