@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 1.21.2
+Stable tag: 1.21.2-rc1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,15 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.21.2 =
+* Bug Fix: If Block is in draft mode do not show in the Block Library [#403](https://github.com/BoldGrid/post-and-page-builder/issues/403)
+* Bug Fix: If you add a new row to a table when there's a heading in it, it breaks the added row [#438](https://github.com/BoldGrid/post-and-page-builder/issues/438)
+* Bug Fix: Hover Boxes - Show Hover Background on mobile devices [#448](https://github.com/BoldGrid/post-and-page-builder/issues/448)
+* Bug Fix: Script Debug creates an error loading the tinymce_tables JS file [#445](https://github.com/BoldGrid/post-and-page-builder/issues/445)
+* Bug Fix: PPB + Gravity Forms Conflict on Front End [#444](https://github.com/BoldGrid/post-and-page-builder/issues/444)
+* Bug Fix: Conflict with Simple File List plugin [#443](https://github.com/BoldGrid/post-and-page-builder/issues/443)
+* Bug Fix: Modern Events Calendar carousel loads the wrong image size with 1.21.x [#446](https://github.com/BoldGrid/post-and-page-builder/issues/446)
 
 = 1.21.1 =
 * Bug Fix: add extra button classes for button selector to improve compatibility with imh-responsive theme [#437](https://github.com/BoldGrid/post-and-page-builder/issues/437)
