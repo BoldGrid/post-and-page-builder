@@ -389,9 +389,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				}:hover {background-size: cover !important; background-position: 50%, 50% !important;}`;
 				self._addHeadingStyle( hoverBgClassName + '-bg-size', css );
 
-				css = '@media (hover: none) {';
-				css += `.${hoverBgClassName} { background-image: url('${hoverBgUrl}') !important; } }`;
-				self._addHeadingStyle( hoverBgClassName + '-mobie-image', css );
+				css = '@media screen and (max-width: 991px) {';
+				css += `.${hoverBgClassName}.hover-mobile-bg { background-image: url('${
+					hoverBgUrl
+				}') !important; } }`;
+				self._addHeadingStyle( hoverBgClassName + '-mobile-image', css );
 			} );
 		},
 

@@ -411,8 +411,8 @@ class Public {
 			}
 			css += '}';
 
-			css  += '@media (hover: none) {';
-			css += `.${hoverBoxClass} { background-image: url('${hoverBgUrl}') !important; } }`;
+			css  += '@media screen and (max-width: 991px) {';
+			css += `.${hoverBoxClass}.hover-mobile-bg { background-image: url('${hoverBgUrl}') !important; } }`;
 		} );
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
 	}
