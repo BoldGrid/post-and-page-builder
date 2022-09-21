@@ -270,6 +270,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					BG.CONTROLS.Color.updateTableBackgrounds( self.getTarget() );
 					self._setupChangeColsRows();
 					self._setupChangeHeadingLabels();
+					self._setupNewRow();
 				}
 
 				// Bind to Row Deletion
@@ -491,6 +492,28 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			$target.find( 'th, td' ).each( ( _, col ) => {
 				$( col ).css( 'width', widthVal + '%' );
+			} );
+		},
+
+		/**
+		 * Setup New Row
+		 *
+		 * Prevents new rows from being un-editable when the previous row
+		 * contains an <h*> tag.
+		 *
+		 * @since 1.21.2
+		 */
+		_setupNewRow: function() {
+			var $target = self.getTarget(),
+				$cells  = $target.find( 'td' );
+
+			$cells.each( function() {
+				var $this = $( this ),
+					$headingCells = $this.find( 'h1, h2, h3, h4, h5, h6' );
+
+				if ( 0 !== $headingCells.length && 0 === $headingCells.html().length ) {
+					$headingCells.remove();
+				}
 			} );
 		},
 
