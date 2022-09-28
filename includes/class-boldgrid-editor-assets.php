@@ -179,9 +179,7 @@ class Boldgrid_Editor_Assets {
 			return true;
 		}
 
-		$post_content = apply_filters( 'the_content', $post->post_content );
-
-		if ( preg_match( '/class=".*wow.*"/', $post_content ) ) {
+		if ( preg_match( '/class=".*wow.*"/', $post->post_content ) ) {
 			return true;
 		} else {
 			return false;

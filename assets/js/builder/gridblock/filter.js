@@ -39,6 +39,8 @@ BOLDGRID.EDITOR.GRIDBLOCK = BOLDGRID.EDITOR.GRIDBLOCK || {};
 
 					if ( 'library' !== this.type ) {
 						self.removeInvalidGridblocks( this, gridblockId );
+					} else if ( 'publish' !== this.status ) {
+						self.removeGridblock( gridblockId );
 					}
 				} );
 
