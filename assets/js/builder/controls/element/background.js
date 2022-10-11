@@ -1249,6 +1249,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} else if ( ! hoverColor && ! hoverBgImageUrl ) {
 					$currentSelection.css( 'background-color', 'rgba(0,0,0,0)' );
 				}
+			} else if ( 'gradients' === type ) {
+				$currentSelection.css( 'background-image', $target.css( 'background-image' ) );
 			} else {
 				$currentSelection.css( 'background-color', bgColor );
 				if ( bgImageUrl && overlayColor ) {
