@@ -1010,8 +1010,15 @@ IMHWPB.Editor = function( $ ) {
 		return $markup.html();
 	};
 
+	/**
+	 * Adjust button classes to match customizer changes.
+	 *
+	 * @param {string} markup The markup to be adjusted
+	 * @returns {string} The markup with the adjusted button classes
+	 */
 	this.adjust_button_classes = function( markup ) {
-		var $markup = $( markup );
+		var $markup = $( markup ),
+			buttons;
 
 		$markup.find( '.menu-item.btn' ).each( function() {
 			var $this = $( this );
@@ -1040,6 +1047,22 @@ IMHWPB.Editor = function( $ ) {
 			} );
 
 			$this.find( 'a' ).addClass( 'btn' );
+		} );
+
+		buttons = {
+			primary: $markup.find( '.button-primary' ),
+			secondary: $markup.find( '.button-secondary' )
+		},
+		buttonClasses = BoldgridEditor.builder_config.theme_buttons;
+
+		buttons.primary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.primary );
+		} );
+
+		buttons.secondary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.secondary );
 		} );
 
 		return $markup.html();
