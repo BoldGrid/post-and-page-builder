@@ -721,6 +721,7 @@ IMHWPB.Editor = function( $ ) {
 			if ( e.content ) {
 				e.content = self.reset_anchor_spaces( '<div>' + e.content + '</div>', false );
 				e.content = BG.Service.sanitize.cleanup( e.content );
+				self.adjust_button_classes( tinymce.activeEditor.getBody() );
 
 				if ( 'on' === userFullscreenSetting ) {
 					$( '#post-status-info' ).css( { 'position': 'fixed', 'bottom': -10000 } );
@@ -1004,6 +1005,64 @@ IMHWPB.Editor = function( $ ) {
 			styleString = 'linear-gradient(to left, ' + color + ', ' + color + '), url("' + image + '")';
 
 			$this.css( 'background-image', styleString );
+		} );
+
+		return $markup.html();
+	};
+
+	/**
+	 * Adjust button classes to match customizer changes.
+	 *
+	 * @param {string} markup The markup to be adjusted
+	 * @returns {string} The markup with the adjusted button classes
+	 */
+	this.adjust_button_classes = function( markup ) {
+		var $markup = $( markup ),
+			buttons;
+
+		$markup.find( '.menu-item.btn' ).each( function() {
+			var $this = $( this );
+
+			if ( $this.hasClass( 'button-primary' ) ) {
+				$this.removeClass( 'button-primary' );
+				$this.find( 'a' ).attr( 'class', BoldgridEditor.builder_config.theme_buttons.primary );
+			}
+
+			if ( $this.hasClass( 'button-secondary' ) ) {
+				$this.removeClass( 'button-secondary' );
+				$this.find( 'a' ).addClass( 'button-secondary' );
+				$this.find( 'a' ).attr( 'class', BoldgridEditor.builder_config.theme_buttons.secondary );
+			}
+
+			$this.removeClass( 'btn' );
+
+			$this.addClass( 'item-has-btn' );
+
+			$this.removeClass( function( index, className ) {
+				return ( className.match( /(^|\s)btn\S+/g ) || [] ).join( ' ' );
+			} );
+
+			$this.removeClass( function( index, className ) {
+				return ( className.match( /(^|\s)hvr-\S+/g ) || [] ).join( ' ' );
+			} );
+
+			$this.find( 'a' ).addClass( 'btn' );
+		} );
+
+		buttons = {
+			primary: $markup.find( '.button-primary' ),
+			secondary: $markup.find( '.button-secondary' )
+		},
+		buttonClasses = BoldgridEditor.builder_config.theme_buttons;
+
+		buttons.primary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.primary );
+		} );
+
+		buttons.secondary.each( function() {
+			var $button = $( this );
+			$button.attr( 'class', buttonClasses.secondary );
 		} );
 
 		return $markup.html();
