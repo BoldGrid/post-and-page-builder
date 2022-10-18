@@ -1,4 +1,13 @@
 .wp-admin.wp-core-ui {
+	&.rtl {
+		.editor-panel {
+			.boldgrid-tooltip-wrap {
+				left: 20px;
+				right: auto;
+			}
+		}
+
+	}
 	.boldgrid-tooltip {
 		margin-top: 2px;
 		position: absolute;
