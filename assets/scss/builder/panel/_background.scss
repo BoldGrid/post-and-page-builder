@@ -46,11 +46,13 @@
 		}
 
 		&[data-type="hover-image"] .settings {
-			display: block;
+			display: flex;
+			justify-content: center;
 		}
 
 		&[data-type="image"] .settings {
-			display: block;
+			display: flex;
+			justify-content: center;
 		}
 
 		.settings {
@@ -81,6 +83,8 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
+		display: flex;
+		justify-content: center;
 	}
 
 	.filter {

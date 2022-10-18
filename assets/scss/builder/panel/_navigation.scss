@@ -1,11 +1,18 @@
 .editor-panel .panel-body .customize {
 	margin-left: 65px;
+	margin-right: 5px;
+	.directional-control {
+		.units {
+			position: relative;
+			margin-right: 28px;
+		}
+	}
 }
 
 .customize-navigation {
 	position: absolute;
-	top: 0;
 	bottom: 0;
+	left: 0;
 	background-color: $panel-color;
 	width: 60px;
 	z-index: 999;

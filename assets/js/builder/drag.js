@@ -27,6 +27,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 	self.resizeOverlay = wp.template( 'boldgrid-editor-mce-tools' )();
 	self.find( 'html' ).append( self.resizeOverlay );
 	self.original_selector_strings = {};
+	self.isRtl = self.$body.hasClass( 'rtl' );
 
 	self.scrollInterval = false;
 
@@ -1533,7 +1534,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			// and the row size is more than the max row size.
 			// and this is the first element in the stack.
 			// exit.
-			if ( self.resize.left && valid_larger ) {
+			var isLeftResize = self.isRtl ? self.resize.right : self.resize.left;
+			if ( isLeftResize && valid_larger ) {
 				var column_stack = self.find_column_stack( $row, self.resize.element[0] );
 				if ( self.resize.element[0] == column_stack.stack[0].object ) {
 					return false;
@@ -1576,8 +1578,10 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			if ( valid_smaller || valid_larger ) {
 				var column_stack = self.find_column_stack( $row, self.resize.element[0] );
 
+				var resizeFirstItem = self.isRtl ? self.resize.right : self.resize.left;
+
 				// If your resizing from the left and this is the first item in the stack.
-				if ( self.resize.left && self.resize.element[0] == column_stack.stack[0].object && made_smaller ) {
+				if ( resizeFirstItem && self.resize.element[0] == column_stack.stack[0].object && made_smaller ) {
 					if ( 12 >= row_size ) {
 						self.change_column_size( self.resize.element, false );
 						self.resize.sibling = $( '<div>' ).addClass( self.getNewColumnString() );
@@ -1615,10 +1619,11 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				//  and your making it larger
 				//  and this is a descktop view.
 				// And this is the last column in the row.
+				var resizeLastItem  = self.isRtl ? self.resize.left : self.resize.right;
 				var last_col_in_row =
 					column_stack.stack[column_stack.stack.length - 1].object == self.resize.element[0];
 				if (
-					self.resize.right &&
+					resizeLastItem &&
 					12 == row_size &&
 					valid_larger &&
 					( 'col-md' == self.active_resize_class || 'col-lg' == self.active_resize_class ) &&
@@ -1631,7 +1636,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				// And im making myself smaller.
 				// And Im the last item in the stack.
 				// Add a column.
-				if ( 12 >= row_size && self.resize.right && last_col_in_row && made_smaller ) {
+
+				if ( 12 >= row_size && resizeLastItem && last_col_in_row && made_smaller ) {
 					self.change_column_size( self.resize.element, false );
 					self.resize.sibling = $( '<div>' ).addClass( self.getNewColumnString() );
 					$row.append( self.resize.sibling );
@@ -2850,14 +2856,14 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			var border_hover = self.get_border_mouse_location( $element, event.originalEvent.clientX );
 			var $sibling = null;
 
-			if ( border_hover.left ) {
-				$sibling = $element.prevAll( self.column_selectors_string ).first();
+			self.isRtl = $( 'body' ).hasClass( 'rtl' );
 
+			if ( ( ! self.isRtl && border_hover.left ) || ( self.isRtl && border_hover.right ) ) {
+				$sibling = $element.prevAll( self.column_selectors_string ).first();
 				// Add borders before and after
 				$element.addClass( 'resize-border-left-imhwpb' );
-			} else if ( border_hover.right ) {
+			} else if ( ( !self.isRtl && border_hover.right ) || ( self.isRtl && border_hover.left ) ) {
 				$sibling = $element.nextAll( self.column_selectors_string ).first();
-
 				// Add borders before and after
 				$element.addClass( 'resize-border-right-imhwpb' );
 			}

@@ -1,4 +1,14 @@
 /*************** Icon Panel ********************/
+.rtl {
+	.editor-panel[data-type='icon'] {
+		.panel-selection {
+			text-align: right;
+			.name {
+				margin-right: 6px;
+			}
+		}
+	}
+}
 .editor-panel[data-type='icon'] {
 	width: 335px;
 
