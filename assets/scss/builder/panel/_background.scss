@@ -42,7 +42,8 @@
 		}
 
 		&[data-type="gradients"] .settings{
-			display: block;
+			display: flex;
+			justify-content: center;
 		}
 
 		&[data-type="hover-image"] .settings {

@@ -134,6 +134,12 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.21.3 =
+* Bug Fix: Block Component text obscured in RTL Languages [#158](https://github.com/BoldGrid/post-and-page-builder/issues/158)
+* Bug Fix: PX option in Font > Size & Spacing [#415](https://github.com/BoldGrid/post-and-page-builder/issues/415)
+* Bug Fix: Gradient Controls no longer load [#426](https://github.com/BoldGrid/post-and-page-builder/issues/426)
+* Bug Fix: Buttons in menus in custom footers have hover effect in editor and are incorrect size [#460](https://github.com/BoldGrid/post-and-page-builder/issues/460)
+
 = 1.21.2 =
 * Bug Fix: If Block is in draft mode do not show in the Block Library [#403](https://github.com/BoldGrid/post-and-page-builder/issues/403)
 * Bug Fix: If you add a new row to a table when there's a heading in it, it breaks the added row [#438](https://github.com/BoldGrid/post-and-page-builder/issues/438)
