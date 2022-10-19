@@ -750,6 +750,11 @@ iframe[src^="https://maps.google.com"] {
     color: #23282d;
 }
 
+html[dir=rtl] .popover-imhwpb .popover-menu-imhwpb ul li.action-list {
+    padding-left: 37px;
+    padding-right: 0px;
+}
+
 .popover-menu-imhwpb ul li.hover-imhwpb,
 .left-popover-imhwpb .popover-menu-imhwpb  ul {
     top: 35%;

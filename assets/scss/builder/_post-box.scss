@@ -12,13 +12,27 @@
 	margin-right: 208px;
 }
 
+.rtl #poststuff #post-body.columns-2 {
+	margin-right: 0;
+}
+
 #post-body.columns-2 #postbox-container-1 {
 	margin-right: -214px;
+}
+
+.rtl #post-body.columns-2 #postbox-container-1 {
+	margin-right: 0;
+	margin-left: -214px;
 }
 
 #wpcontent,
 #wpfooter {
 	margin-left: 142px;
+}
+.rtl #wpcontent,
+.rtl #wpfooter {
+	margin-left: 0;
+	margin-right: 142px;
 }
 
 #post-body.columns-2 #postbox-container-1,
