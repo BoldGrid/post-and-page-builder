@@ -1,3 +1,24 @@
+.rtl {
+	.color-panel,
+	.editor-panel {
+		right: auto;
+		left: 45px;
+		.panel-title {
+			.close-icon {
+				right: auto;
+				left: 25px;
+			}
+		}
+	}
+	.editor-panel[data-type='add'] {
+		.component-heading {
+			.dashicons {
+				left: 13px;
+				right: auto;
+			}
+		}
+	}
+}
 .editor-panel[data-type='add'] {
 	transition: opacity 0.25s;
 

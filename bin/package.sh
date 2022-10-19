@@ -1,12 +1,10 @@
 echo "Copying to Build Directory"
 rm -Rf build
 mkdir -p build/post-and-page-builder
-cp -R --remove-destination . build/post-and-page-builder >/dev/null 2>&1
+rsync -azPq --exclude "bin/" --exclude ".git/" --exclude ".github/" --exclude "node_modules/" --exclude "build/" . build/post-and-page-builder
 cd build/post-and-page-builder
 echo "Removing unwanted files"
-rm -Rf .git
-rm -Rf .github
-rm -Rf build
+
 rm -Rf tests
 rm -Rf apigen
 rm -Rf coverage

@@ -1,4 +1,20 @@
 /*************** Text Settings Panel ********************/
+.rtl {
+	.boldgrid-control.typography-control {
+		.font-color-control {
+			.value {
+				left: 0;
+				right: auto;
+			}
+		}
+		.directional-control {
+			.units {
+				left: 0;
+				right: auto;
+			}
+		}
+	}
+}
 .boldgrid-control.typography-control {
 	padding-bottom: 15px;
 

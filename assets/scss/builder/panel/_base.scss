@@ -1,3 +1,10 @@
+.rtl {
+	.color-panel,
+	.editor-panel {
+		right: auto;
+		left: 45px;
+	}
+}
 .color-panel,
 .editor-panel {
 	font-family: 'Open Sans', sans-serif;

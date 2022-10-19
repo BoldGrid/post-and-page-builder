@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.21.2
+Stable tag: 1.21.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,12 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.21.3 =
+* Bug Fix: Block Component text obscured in RTL Languages [#158](https://github.com/BoldGrid/post-and-page-builder/issues/158)
+* Bug Fix: PX option in Font > Size & Spacing [#415](https://github.com/BoldGrid/post-and-page-builder/issues/415)
+* Bug Fix: Gradient Controls no longer load [#426](https://github.com/BoldGrid/post-and-page-builder/issues/426)
+* Bug Fix: Buttons in menus in custom footers have hover effect in editor and are incorrect size [#460](https://github.com/BoldGrid/post-and-page-builder/issues/460)
 
 = 1.21.2 =
 * Bug Fix: If Block is in draft mode do not show in the Block Library [#403](https://github.com/BoldGrid/post-and-page-builder/issues/403)

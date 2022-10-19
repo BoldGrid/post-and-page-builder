@@ -99,7 +99,7 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#outline-control":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#eb6a7711d451a6f007789f665af167b9be1fa362"
+  resolved "https://github.com/BoldGrid/controls#90cd9b641c90ad38433d8c39bfa938b7c3a965fd"
   dependencies:
     "@boldgrid/components" "^2.16.8"
     Buttons "https://github.com/alexwolfe/Buttons"

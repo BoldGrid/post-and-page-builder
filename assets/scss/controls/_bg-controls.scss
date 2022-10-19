@@ -1,3 +1,12 @@
+.rtl {
+	.editor-panel {
+		.mdc-checkbox {
+			label {
+				margin-right: 30px;
+			}
+		}
+	}
+}
 .editor-panel {
 	.mdc-switch {
 		top: 5px;

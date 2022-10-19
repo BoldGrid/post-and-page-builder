@@ -452,7 +452,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					} else {
 						BG.Controls.addStyle( $target, 'background-color', value );
 					}
-
 					self.setImageSelection( selectionType, $target.css( 'background' ) );
 					BOLDGRID.EDITOR.CONTROLS.SectionDividers.detectFillColors();
 				}
@@ -1067,11 +1066,18 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 				if (
 					type.length &&
+					! type.includes( 'gradients' ) &&
 					( type.includes( 'image' ) || type.includes( 'color' ) || type.includes( 'pattern' ) )
 				) {
 					let selectionType = $target.attr( 'data-image-url' ) ? 'image' : 'color';
 					$currentSelection.attr( 'data-type', selectionType );
 					self.setImageSelection( selectionType, bgColor );
+				}
+
+				if ( type.length && type.includes( 'gradients' ) ) {
+					let selectionType = 'gradients';
+					$currentSelection.attr( 'data-type', selectionType );
+					self.setImageSelection( selectionType, $target.css( 'background-image' ) );
 				}
 
 				if (
@@ -1249,6 +1255,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} else if ( ! hoverColor && ! hoverBgImageUrl ) {
 					$currentSelection.css( 'background-color', 'rgba(0,0,0,0)' );
 				}
+			} else if ( 'gradients' === type ) {
+				$currentSelection.css( 'background-image', $target.css( 'background-image' ) );
 			} else {
 				$currentSelection.css( 'background-color', bgColor );
 				if ( bgImageUrl && overlayColor ) {

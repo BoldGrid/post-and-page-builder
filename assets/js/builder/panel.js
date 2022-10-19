@@ -140,9 +140,18 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 				centerWidth = windowWidth / 2 - width / 2,
 				centerHeight = windowHeight / 2 - height / 2;
 
+			if ( $( 'body' ).hasClass( 'rtl' ) ) {
+				this.$element.css( {
+					top: centerHeight,
+					right: centerWidth,
+					left: 'auto'
+				} );
+			}
+
 			this.$element.css( {
 				top: centerHeight,
-				left: centerWidth
+				left: centerWidth,
+				right: 'auto'
 			} );
 		},
 
