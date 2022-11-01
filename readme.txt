@@ -134,6 +134,9 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.21.4 =
+* Update: Updated boldgrid/library to 2.13.10
+
 = 1.21.3 =
 * Bug Fix: Block Component text obscured in RTL Languages [#158](https://github.com/BoldGrid/post-and-page-builder/issues/158)
 * Bug Fix: PX option in Font > Size & Spacing [#415](https://github.com/BoldGrid/post-and-page-builder/issues/415)
