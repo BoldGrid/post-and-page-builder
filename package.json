@@ -70,7 +70,7 @@
 		"stylelint": "^9.0.0"
 	},
 	"dependencies": {
-		"@boldgrid/controls": "https://github.com/BoldGrid/controls#outline-control",
+		"@boldgrid/controls": "0.14.0",
 		"@boldgrid/components": "^2.16.16",
 		"@boldgrid/fourpan": "^1.1.1",
 		"animate.css": "^3.7.0",
@@ -91,7 +91,7 @@
 		"extract-text-webpack-plugin": "4.0.0-beta.0",
 		"file-loader": "^1.1.5",
 		"font-awesome": "^4.7.0",
-		"html-webpack-plugin": "^3.0.0",
+		"html-webpack-plugin": "^4.0.0",
 		"imports-loader": "^0.8.0",
 		"istyping": "^1.0.0",
 		"jquery": "1.12.4",
