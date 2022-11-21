@@ -71,9 +71,9 @@ export class Add {
 	 * @return {jQuery} jQuery Control object.
 	 */
 	createUI() {
-		let post_type = $( '#post_type' ).val();
+		let postType = $( '#post_type' ).val();
 
-		if ( 'crio_page_header' === post_type ) {
+		if ( 'crio_page_header' === postType ) {
 
 			// Remove 'Layout & Structuring' from crio_page_header post types.
 			BoldgridEditor.plugin_configs.component_controls.types = [
@@ -115,6 +115,13 @@ export class Add {
 					title: 'Widgets'
 				}
 			];
+		}
+
+		// Sliders don't really work for the new Mega Menus. Get rid of them for now.
+		for ( let i = this.components.length - 1; 0 <= i; i-- ) {
+			if ( 'crio_custom_submenu' === postType && this.components[i].name.includes( 'slider' ) ) {
+				this.components.splice( i, 1 );
+			}
 		}
 
 		if ( this.$ui ) {
