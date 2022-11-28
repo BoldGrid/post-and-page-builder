@@ -18,6 +18,9 @@ export class Add {
 		this.iconClasses = 'genericon genericon-plus add-element-trigger';
 		this.selectors = [ 'html' ];
 
+		// C
+		this.excludedComponents = [ 'slider', 'wp_nav_menu' ];
+
 		// Panel Configurations.
 		this.panel = {
 			title: 'Add Block Component',
@@ -117,11 +120,17 @@ export class Add {
 			];
 		}
 
-		// Sliders don't really work for the new Mega Menus. Get rid of them for now.
+		// Some componenents do not work for mega menus. Remove them.
 		for ( let i = this.components.length - 1; 0 <= i; i-- ) {
-			if ( 'crio_custom_submenu' === postType && this.components[i].name.includes( 'slider' ) ) {
-				this.components.splice( i, 1 );
+			if ( 'crio_custom_submenu' !== postType ) {
+				continue;
 			}
+
+			this.excludedComponents.forEach( excludedComponent => {
+				if ( this.components[i].name.includes( excludedComponent ) ) {
+					this.components.splice( i, 1 );
+				}
+			} );
 		}
 
 		if ( this.$ui ) {
