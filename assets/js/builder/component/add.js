@@ -18,7 +18,7 @@ export class Add {
 		this.iconClasses = 'genericon genericon-plus add-element-trigger';
 		this.selectors = [ 'html' ];
 
-		// C
+		// Components to be ecluded from mega menu items.
 		this.excludedComponents = [ 'slider', 'wp_nav_menu' ];
 
 		// Panel Configurations.
