@@ -29,7 +29,7 @@ export class Page {
 	 */
 	updateUnsplashHotlinks() {
 		var $button = this.$page.find( '.button-secondary.update-unsplash-hotlinks' );
-		$button.on( 'click', function( event ) {
+		$button.on( 'click', ( event ) => {
 			event.preventDefault();
 			$.ajax( {
 				url: ajaxurl,
@@ -38,14 +38,40 @@ export class Page {
 					nonce: $button.data( 'nonce' ),
 					action: 'update_unsplash_hotlinks'
 				},
-				success: function( response ) {
+				success: ( response ) => {
 					if ( response.success ) {
 						console.log( response );
 						$button.text( 'Updated' );
+						if ( response.data ) {
+							this.$page.find( '.update-unsplash-results' ).html(
+								this.formatUnsplashResults( response.data )
+							);
+						}
 					}
 				}
 			} );
 		} );
+	}
+
+	formatUnsplashResults( data ) {
+		var results = `<p>Updated ${data.new_hotlinks} out of ${data.old_hotlinks} images.</p>`,
+			failedPosts;
+		if ( ! data.failed_hotlinks ) {
+			return results;
+		}
+
+		failedPosts = '<ul>';
+		for ( const post in data.failed_hotlinks ) {
+			failedPosts += `<li><ul>Post ID:${post} failed to update the following URLs:`;
+			for ( const hotlink in data.failed_hotlinks[ post ] ) {
+				failedPosts += `<li>${data.failed_hotlinks[ post ][hotlink]}</li>`;
+			}
+			failedPosts += '</ul></li>';
+		}
+		failedPosts += '</ul>';
+
+		return results + failedPosts;
+
 	}
 
 	/**

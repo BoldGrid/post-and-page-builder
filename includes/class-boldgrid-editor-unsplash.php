@@ -51,7 +51,46 @@ class Boldgrid_Editor_Unsplash {
 
 		$this->find_all_hotlinks();
 
-		wp_send_json_success( array( 'success' => true ) );
+		$this->fetch_new_hotlinks();
+
+		error_log( 'new_hotlinks: ' . json_encode( $this->new_hotlinks ) );
+
+		$this->update_posts_content();
+
+		$data = $this->generate_count_data();
+
+		error_log( json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+
+		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Generate Count Data.
+	 *
+	 * @since 1.21.4
+	 */
+	public function generate_count_data() {
+		$data = array(
+			'old_hotlinks'    => 0,
+			'new_hotlinks'    => 0,
+			'failed_hotlinks' => array(),
+		);
+
+		foreach ( $this->old_hotlinks as $post_id => $hotlinks ) {
+			foreach ( $hotlinks as $hotlink ) {
+				$data['old_hotlinks']++;
+
+				//error_log( json_encode( $this->new_hotlinks[ $post_id ][ $hotlink ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+
+				if ( isset( $this->new_hotlinks[ $post_id ][ $hotlink ] ) ) {
+					$data['new_hotlinks']++;
+				} else {
+					$data['failed_hotlinks'][ $post_id ][] = $hotlink;
+				}
+			}
+		}
+
+		return $data;
 	}
 
 	/**
@@ -77,10 +116,6 @@ class Boldgrid_Editor_Unsplash {
 		foreach ( $posts as $post ) {
 			$this->find_hotlinks( $post );
 		}
-
-		$this->fetch_new_hotlinks();
-
-		$this->update_posts_content();
 	}
 
 	/**
@@ -135,6 +170,8 @@ class Boldgrid_Editor_Unsplash {
 		$height   = $this->height_from_url( $hotlink );
 
 		$photo_url = $this->get_photo( $photo_id );
+
+		error_log( 'photo_url: ' . json_encode( $photo_url ) );
 
 		if ( false === $photo_url ) {
 			return false;

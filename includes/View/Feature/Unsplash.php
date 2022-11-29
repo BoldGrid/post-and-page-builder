@@ -51,5 +51,6 @@ class Unsplash extends \Boldgrid\Library\Library\Ui\Feature {
 		$nonce = wp_create_nonce( 'update_unsplash_hotlinks' );
 
 		$this->content .= '<p style="text-align:right;"><a class="button-secondary update-unsplash-hotlinks" data-nonce="' . esc_attr( $nonce ) . '">' . esc_html__( 'Update Unsplash Hotlinks', 'boldgrid-editor' ) . '</a></p>';
+		$this->content .= '<div class="update-unsplash-results"></div>';
 	}
 }
