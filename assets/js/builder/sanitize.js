@@ -27,10 +27,30 @@ export class Sanitize {
 		var $markup = $( '<div>' + markup + '</div>' );
 		this.removeClasses( $markup );
 		this.cleanupButtons( $markup );
+		this.flagMegaMenus( $markup );
 
 		BG.Service.event.emit( 'cleanup', $markup );
 
 		return $markup.html();
+	}
+
+	/**
+	 * Flag Mega Menus.
+	 *
+	 * Adds the .mega-menu-item to all .boldgrid-sections if this is a mega menu item.
+	 *
+	 * @since 1.21.4
+	 *
+	 * @param {string} $markup Markup to flag.
+	 */
+	flagMegaMenus( $markup ) {
+		var $boldgridSections = $markup.find( '.boldgrid-section' );
+
+		if ( 'crio_custom_submenu' !== BoldgridEditor.post_type ) {
+			return;
+		}
+
+		$boldgridSections.addClass( 'mega-menu-item' );
 	}
 
 	/**

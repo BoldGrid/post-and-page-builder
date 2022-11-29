@@ -129,7 +129,7 @@ class Menu extends \WP_Widget {
 			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
 				&& 0 !== $registered_locations[ $instance['bgc_menu_location_id'] ]
 				? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
-			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
 			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
@@ -143,7 +143,7 @@ class Menu extends \WP_Widget {
 			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . '">';
 
 			$menu_id = $registered_locations[ $instance['bgc_menu_location_id'] ];
-			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], [ 'menu_class' => 'flex-row ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ] );
+			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
 			echo '</div>';
 		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
 			?>
