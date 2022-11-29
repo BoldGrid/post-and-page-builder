@@ -181,9 +181,13 @@ class Settings {
 		$editor = new Card\Editor();
 		$editor->init();
 
-		return [
-			'premium' => $premium->printCard( false ),
-			'editor' => $editor->printCard( false ),
-		];
+		$utilities = new Card\Utilities();
+		$utilities->init();
+
+		return array(
+			'premium'   => $premium->printCard( false ),
+			'editor'    => $editor->printCard( false ),
+			'utilities' => $utilities->printCard( false ),
+		);
 	}
 }

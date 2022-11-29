@@ -1,6 +1,7 @@
 {
     "require": {
-        "boldgrid/library": "^2.13.9"
+        "boldgrid/library": "^2.13.9",
+        "unsplash/unsplash": "^3.2"
     },
     "scripts": {
         "post-autoload-dump": [

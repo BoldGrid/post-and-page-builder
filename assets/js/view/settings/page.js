@@ -19,6 +19,33 @@ export class Page {
 	 */
 	init() {
 		this.setPageHTML();
+		this.updateUnsplashHotlinks();
+	}
+
+	/**
+	 * Update the Unsplash hotlinks.
+	 *
+	 * @since 1.21.4
+	 */
+	updateUnsplashHotlinks() {
+		var $button = this.$page.find( '.button-secondary.update-unsplash-hotlinks' );
+		$button.on( 'click', function( event ) {
+			event.preventDefault();
+			$.ajax( {
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					nonce: $button.data( 'nonce' ),
+					action: 'update_unsplash_hotlinks'
+				},
+				success: function( response ) {
+					if ( response.success ) {
+						console.log( response );
+						$button.text( 'Updated' );
+					}
+				}
+			} );
+		} );
 	}
 
 	/**
@@ -32,6 +59,7 @@ export class Page {
 			<div class="bgppb-page__body">
 				${BoldgridEditor.cards.premium}
 				${BoldgridEditor.cards.editor}
+				${BoldgridEditor.cards.utilities}
 			</div>
 		` );
 

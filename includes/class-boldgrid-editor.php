@@ -185,6 +185,7 @@ class Boldgrid_Editor {
 
 		$editor = false;
 		$boldgrid_editor_ajax           = new Boldgrid_Editor_Ajax();
+		$boldgrid_editor_unsplash       = new Boldgrid_Editor_Unsplash( $this->config );
 		$boldgrid_editor_crop           = new Boldgrid_Editor_Crop();
 		$boldgrid_editor_builder        = new Boldgrid_Editor_Builder();
 		$builder_styles                 = new Boldgrid_Editor_Builder_Styles();
@@ -320,6 +321,7 @@ class Boldgrid_Editor {
 		add_action( 'wp_ajax_boldgrid_get_saved_blocks', array( $boldgrid_editor_ajax, 'get_saved_blocks' ) );
 		add_action( 'wp_ajax_suggest_crop_crop', array( $boldgrid_editor_crop, 'crop' ) );
 		add_action( 'wp_ajax_suggest_crop_get_dimensions', array( $boldgrid_editor_crop, 'get_dimensions' ) );
+		add_action( 'wp_ajax_update_unsplash_hotlinks', array( $boldgrid_editor_unsplash, 'update_hotlinks_ajax' ) );
 
 		// Save a users selection for enabling draggable.
 		add_action( 'wp_ajax_boldgrid_draggable_enabled', array( $boldgrid_editor_ajax, 'ajax_draggable_enabled' ) );
