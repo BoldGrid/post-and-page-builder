@@ -38,8 +38,18 @@ class Unsplash extends \Boldgrid\Library\Library\Ui\Feature {
 			'boldgrid-editor'
 		) . '</p>';
 
+		$this->content .= '<p style="font-weight:bold">' . esc_html__(
+			'It is HIGHLY recommended that you perform a backup before running the update.',
+			'boldgrid-editor'
+		) . '</p>';
+
+		$this->content .= '<p>' . esc_html__(
+			'If you are using a CDN or a caching plugin, you may need to clear your cache after updating the formats.',
+			'boldgrid-editor'
+		) . '</p>';
+
 		$nonce = wp_create_nonce( 'update_unsplash_hotlinks' );
 
-		$this->content .= '<p style="text-align:right;"><a class="button-secondary update-unsplash-hotlinks" data-nonce="' . $nonce . '">' . esc_html__( 'Update Unsplash Hotlinks', 'boldgrid-editor' ) . '</a></p>';
+		$this->content .= '<p style="text-align:right;"><a class="button-secondary update-unsplash-hotlinks" data-nonce="' . esc_attr( $nonce ) . '">' . esc_html__( 'Update Unsplash Hotlinks', 'boldgrid-editor' ) . '</a></p>';
 	}
 }
