@@ -56,7 +56,7 @@
 						<li data-type="{{type}}" data-color1="{{image.color1}}" data-color2="{{image.color2}}"
 							data-direction="{{image.direction}}" class='selection' style="background-image: {{image.css}}"></li>
 					<# } else if( 'image' == type ) { #>
-						<li data-type="{{type}}" data-image-url="https://source.unsplash.com/{{image}}/1920x1080" class='selection' style="background-image: url(https://source.unsplash.com/{{image}}/320x180)"></li>
+						<li data-type="{{type}}" data-image-url="{{image}}" class='selection' style="background-image: url({{image}})"></li>
 					<# } else { #>
 						<li data-type="{{type}}" data-image-url="{{image}}" class='selection' style="background-image: url({{image}})"></li>
 					<# } #>
