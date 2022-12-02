@@ -623,6 +623,14 @@ import { Palette } from './color/palette';
 				} );
 			} );
 
+			// Add neutral color to palette.
+			if ( BoldgridEditor.colors.neutral ) {
+				colors.push( {
+					color: BoldgridEditor.colors.neutral,
+					paletteNum: 'neutral'
+				} );
+			}
+
 			return colors;
 		},
 
