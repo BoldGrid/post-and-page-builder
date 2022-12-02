@@ -417,6 +417,11 @@ import { Palette } from './color/palette';
 				backgroundColors['color' + ( index + 1 ) + '-' + 'background-color'] = this;
 			} );
 
+			// Add neutral color to list of BG Color Presets.
+			if ( BoldgridEditor.colors.neutral ) {
+				backgroundColors['colorneutral-background-color'] = BoldgridEditor.colors.neutral;
+			}
+
 			return backgroundColors;
 		},
 
