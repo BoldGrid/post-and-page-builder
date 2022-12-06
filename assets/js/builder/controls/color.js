@@ -212,6 +212,7 @@ import { Palette } from './color/palette';
 		 */
 		getColorClass: function( type, index ) {
 			var seperator = 'text-contrast' === type ? '-' : '';
+			seperator = 'neutral' === index ? '-' : seperator;
 			return 'color' + seperator + index + '-' + type;
 		},
 
@@ -419,7 +420,7 @@ import { Palette } from './color/palette';
 
 			// Add neutral color to list of BG Color Presets.
 			if ( BoldgridEditor.colors.neutral ) {
-				backgroundColors['colorneutral-background-color'] = BoldgridEditor.colors.neutral;
+				backgroundColors['color-neutral-background-color'] = BoldgridEditor.colors.neutral;
 			}
 
 			return backgroundColors;

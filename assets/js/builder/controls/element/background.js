@@ -433,6 +433,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					}
 
 					if ( 'class' === type ) {
+						console.log( {
+							value: value,
+							'text-contrast-color': BG.CONTROLS.Color.getColorClass( 'text-contrast', value )
+						} );
 						$target
 							.addClass( 'bg-background-color' )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', value ) )
@@ -1119,7 +1123,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					imageUrl = $this.attr( 'data-image-url' ),
 					imageSrc = $this.css( 'background-image' ),
 					background = $this.css( 'background' ),
-					bgUuid = $target.attr( 'data-bg-uuid' );
+					bgUuid = $target.attr( 'data-bg-uuid' ),
+					value;
 
 				if ( $this.hasClass( 'selected' ) ) {
 					self.removeColorClasses( $target );
@@ -1155,9 +1160,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					self.setImageBackground( imageUrl );
 				} else if ( 'color' === $this.data( 'type' ) ) {
 					$target.addClass( $this.data( 'class' ) );
-					$target.addClass(
-						BG.CONTROLS.Color.getColorClass( 'text-contrast', $this.data( 'class' ).replace( /\D/g, '' ) )
-					);
+					value = $this.data( 'class' );
+					value = value.includes( 'neutral' ) ? 'neutral' : value.replace( /\D/g, '' );
+					$target.addClass( BG.CONTROLS.Color.getColorClass( 'text-contrast', value ) );
 					$target.addClass( 'bg-background-color' );
 					BG.Controls.addStyle( $target, 'background-image', '' );
 					self.setDefaultBackgroundColors();
