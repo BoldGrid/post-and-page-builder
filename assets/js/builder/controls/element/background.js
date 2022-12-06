@@ -433,10 +433,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					}
 
 					if ( 'class' === type ) {
-						console.log( {
-							value: value,
-							'text-contrast-color': BG.CONTROLS.Color.getColorClass( 'text-contrast', value )
-						} );
 						$target
 							.addClass( 'bg-background-color' )
 							.addClass( BG.CONTROLS.Color.getColorClass( 'background-color', value ) )
