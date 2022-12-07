@@ -18,6 +18,9 @@ export class Add {
 		this.iconClasses = 'genericon genericon-plus add-element-trigger';
 		this.selectors = [ 'html' ];
 
+		// Components to be excluded from mega menu items.
+		this.excludedComponents = [ 'slider', 'wp_nav_menu' ];
+
 		// Panel Configurations.
 		this.panel = {
 			title: 'Add Block Component',
@@ -71,9 +74,9 @@ export class Add {
 	 * @return {jQuery} jQuery Control object.
 	 */
 	createUI() {
-		let post_type = $( '#post_type' ).val();
+		let postType = $( '#post_type' ).val();
 
-		if ( 'crio_page_header' === post_type ) {
+		if ( 'crio_page_header' === postType ) {
 
 			// Remove 'Layout & Structuring' from crio_page_header post types.
 			BoldgridEditor.plugin_configs.component_controls.types = [
@@ -115,6 +118,19 @@ export class Add {
 					title: 'Widgets'
 				}
 			];
+		}
+
+		// Some componenents do not work for mega menus. Remove them.
+		for ( let i = this.components.length - 1; 0 <= i; i-- ) {
+			if ( 'crio_custom_submenu' !== postType ) {
+				continue;
+			}
+
+			this.excludedComponents.forEach( excludedComponent => {
+				if ( this.components[i].name.includes( excludedComponent ) ) {
+					this.components.splice( i, 1 );
+				}
+			} );
 		}
 
 		if ( this.$ui ) {

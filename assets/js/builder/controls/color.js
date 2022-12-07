@@ -212,6 +212,7 @@ import { Palette } from './color/palette';
 		 */
 		getColorClass: function( type, index ) {
 			var seperator = 'text-contrast' === type ? '-' : '';
+			seperator = 'neutral' === index ? '-' : seperator;
 			return 'color' + seperator + index + '-' + type;
 		},
 
@@ -416,6 +417,11 @@ import { Palette } from './color/palette';
 			$.each( BoldgridEditor.colors.defaults, function( index ) {
 				backgroundColors['color' + ( index + 1 ) + '-' + 'background-color'] = this;
 			} );
+
+			// Add neutral color to list of BG Color Presets.
+			if ( BoldgridEditor.colors.neutral ) {
+				backgroundColors['color-neutral-background-color'] = BoldgridEditor.colors.neutral;
+			}
 
 			return backgroundColors;
 		},
@@ -622,6 +628,14 @@ import { Palette } from './color/palette';
 					paletteNum: colorNum
 				} );
 			} );
+
+			// Add neutral color to palette.
+			if ( BoldgridEditor.colors.neutral ) {
+				colors.push( {
+					color: BoldgridEditor.colors.neutral,
+					paletteNum: 'neutral'
+				} );
+			}
 
 			return colors;
 		},

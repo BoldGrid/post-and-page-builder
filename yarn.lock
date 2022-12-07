@@ -87,15 +87,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.16.16":
-  version "2.16.16"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.16.tgz#b4245839c57dc9e06d904c495fd13a99365e42d4"
-  integrity sha512-FJNQ4L+XUkAL7xFEbtPbZvTaQDi0Oh7edX0J4X3XPP8hwZ8yn8ElYg53hvUmPn4kN3J+f/zfbXW+iRPNc7gq1Q==
-
-"@boldgrid/components@^2.16.8":
-  version "2.16.9"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.9.tgz#3fe60f6c40bf9c499ffeeb46abcff5b77f8b5de3"
-  integrity sha512-S9l+QOHrl+drnu++mRmNnBv0YvMPI22gxJv/OcKVIraOYeS7rGaQXZoTEuBb6cMxjK1sWmM1i0wa6Gu0+bZ9Dg==
+"@boldgrid/components@^2.16.21", "@boldgrid/components@^2.16.8":
+  version "2.16.21"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.21.tgz#a33c4af3b300e891b57fdaff0d07f68706d63d71"
+  integrity sha512-U4UHDowcySuPU5FNH1NfDWRwkXIbGETNwkCFu+I0rw+kIm6NW7VdOY+sUI0nX8Cq83jDrPNO3PIXGFtMbx5xHw==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#outline-control":
   version "0.13.1"

@@ -121,7 +121,9 @@ class Boldgrid_Editor_Theme {
 	 */
 	public function body_color_links( $configs ) {
 		if ( ! empty( $configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'] ) ) {
-			$configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'][] = '.boldgrid-shortcode .widget a';
+			$configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'][] = '.boldgrid-shortcode .widget a:not( .btn )';
+			$configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'][] = '.boldgrid-section.mega-menu-item .boldgrid-shortcode .widget a:not( .btn )';
+			$configs['customizer']['controls']['bgtfw_body_link_color']['choices']['selectors'][] = '.boldgrid-section.mega-menu-item .boldgrid-shortcode .widget a:not( .btn ) > *';
 		}
 
 		return $configs;

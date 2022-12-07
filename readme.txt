@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.21.3
+Stable tag: 1.22.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,11 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.22.0 =
+* New Feature: Added support for theme's neutral color in color picker, and background color presets.
+* Update: Updated boldgrid/components library to support Crio Pro Custom Sub Menus.
+* Update: Updated Unsplash hotlinks.
 
 = 1.21.3 =
 * Bug Fix: Block Component text obscured in RTL Languages [#158](https://github.com/BoldGrid/post-and-page-builder/issues/158)
