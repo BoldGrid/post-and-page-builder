@@ -591,9 +591,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			if ( color.includes( 'rgba' ) ) {
 				color = color.replace( /(rgba\(\d{1,3}\,\d{1,3}\,\d{1,3})(.*\))/, '$1)' );
 				color = color.replace( 'rgba', 'rgb' );
-			} else {
+			} else if ( ! color.includes( 'rgb' ) ) {
 				return colorClass;
 			}
+
+			color = color.replace( /\s/g, '' );
 
 			for ( let key in colors ) {
 				if ( colors[key].replace( /\s/g, '' ) === color ) {
@@ -755,8 +757,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					name = $this.attr( 'name' ),
 					type = $this.attr( 'data-type' );
 
-				if ( 'class' === type ) {
-					value = BoldgridEditor.colors.defaults[value - 1];
+				if ( 'class' === type && 'neutral' !== value ) {
+					value = 'var(--color-' + BoldgridEditor.colors.defaults[value - 1] + ')';
+				} else if ( 'class' === type && 'neutral' === value ) {
+					value = 'var(--color-neutral)';
 				}
 
 				if ( 'gradient-color-1' === name ) {
@@ -1167,11 +1171,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					BG.Controls.addStyle( $target, 'background-repeat', 'repeat' );
 					BG.Controls.addStyle( $target, 'background-image', imageSrc );
 				} else if ( 'gradients' === $this.data( 'type' ) ) {
-					BG.Controls.addStyle( $target, 'background-image', imageSrc );
 					$target
 						.attr( 'data-bg-color-1', $this.data( 'color1' ) )
 						.attr( 'data-bg-color-2', $this.data( 'color2' ) )
 						.attr( 'data-bg-direction', $this.data( 'direction' ) );
+					BG.Controls.addStyle( $target, 'background-image', self.createGradientCss( $target ) );
 				} else {
 					BG.Controls.addStyle( $target, 'background-image', imageSrc );
 				}
@@ -1555,16 +1559,12 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setPaletteGradients: function() {
 			var combos = [];
 			if ( BoldgridEditor.colors.defaults && BoldgridEditor.colors.defaults.length ) {
-				$.each( [ 0, 1 ], function() {
-					var color1, color2, direction;
-					color1 =
-						BoldgridEditor.colors.defaults[
-							Math.floor( Math.random() * BoldgridEditor.colors.defaults.length )
-						];
-					color2 =
-						BoldgridEditor.colors.defaults[
-							Math.floor( Math.random() * BoldgridEditor.colors.defaults.length )
-						];
+				$.each( [ 0, 1, 2 ], function() {
+					var color1, color2, pos1, pos2, direction;
+					pos1 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
+					pos2 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
+					color1 = 'var( --color-' + pos1 + ' )';
+					color2 = 'var( --color-' + pos2 + ' )';
 					if ( color1 !== color2 ) {
 						direction = self.randomGradientDirection();
 						combos.push( {
