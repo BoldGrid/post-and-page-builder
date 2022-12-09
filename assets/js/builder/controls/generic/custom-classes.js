@@ -76,19 +76,19 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 		bindClasses() {
 			var panel = BG.Panel,
 				$target = BG.Menu.getCurrentTarget(),
-				currentClasses = $target.attr( 'custom-classes' );
+				currentClasses = $target.attr( 'data-custom-classes' );
 
 			panel.$element
 				.find( '[name="custom-classes"]' )
 				.on( 'input', function() {
 					var $this = $( this ),
-						customClasses = $target.attr( 'custom-classes' ),
+						customClasses = $target.attr( 'data-custom-classes' ),
 						value = $this.val();
 
 					value = value.replace( ',', ' ' );
 
 					$target.removeClass( customClasses );
-					$target.attr( 'custom-classes', value );
+					$target.attr( 'data-custom-classes', value );
 					$target.addClass( value );
 				} )
 				.val( currentClasses );
