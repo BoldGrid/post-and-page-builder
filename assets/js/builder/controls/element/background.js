@@ -758,9 +758,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					type = $this.attr( 'data-type' );
 
 				if ( 'class' === type && 'neutral' !== value ) {
-					value = 'var(--color-' + BoldgridEditor.colors.defaults[value - 1] + ')';
+					value = 'var( --color-' + BoldgridEditor.colors.defaults[value - 1] + ' )';
 				} else if ( 'class' === type && 'neutral' === value ) {
-					value = 'var(--color-neutral)';
+					value = 'var( --color-neutral )';
 				}
 
 				if ( 'gradient-color-1' === name ) {
