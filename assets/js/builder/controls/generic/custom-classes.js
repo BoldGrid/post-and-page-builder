@@ -92,8 +92,6 @@ BOLDGRID.EDITOR.CONTROLS.GENERIC = BOLDGRID.EDITOR.CONTROLS.GENERIC || {};
 					$target.addClass( value );
 				} )
 				.val( currentClasses );
-
-			panel.$element.find( '.custom-classes' ).show();
 		}
 	};
 
