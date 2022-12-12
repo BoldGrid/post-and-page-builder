@@ -757,13 +757,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					name = $this.attr( 'name' ),
 					type = $this.attr( 'data-type' );
 
-				console.log( {
-					method: '_setupGradientColor',
-					value: value,
-					type: type,
-					name: name
-				} );
-
 				if ( 'class' === type && 'neutral' !== value ) {
 					value = 'var( --color-' + value + ' )';
 				} else if ( 'class' === type && 'neutral' === value ) {
@@ -958,13 +951,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @param jQuery $element.
 		 */
 		createGradientCss: function( $element ) {
-			console.log( {
-				method: 'createGradientCss',
-				$element: $element,
-				direction: $element.attr( 'data-bg-direction' ),
-				color1: $element.attr( 'data-bg-color-1' ),
-				color2: $element.attr( 'data-bg-color-2' )
-			} );
 			return (
 				'linear-gradient(' +
 				$element.attr( 'data-bg-direction' ) +
