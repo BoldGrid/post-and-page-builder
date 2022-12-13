@@ -758,7 +758,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					type = $this.attr( 'data-type' );
 
 				if ( 'class' === type && 'neutral' !== value ) {
-					value = 'var( --color-' + BoldgridEditor.colors.defaults[value - 1] + ' )';
+					value = 'var( --color-' + value + ' )';
 				} else if ( 'class' === type && 'neutral' === value ) {
 					value = 'var( --color-neutral )';
 				}
