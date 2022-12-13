@@ -757,10 +757,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					name = $this.attr( 'name' ),
 					type = $this.attr( 'data-type' );
 
-				if ( 'class' === type && 'neutral' !== value ) {
-					value = 'var( --color-' + value + ' )';
-				} else if ( 'class' === type && 'neutral' === value ) {
-					value = 'var( --color-neutral )';
+				if ( BoldgridEditor.is_crio ) {
+					if ( 'class' === type && 'neutral' !== value ) {
+						value = 'var( --color-' + value + ' )';
+					} else if ( 'class' === type && 'neutral' === value ) {
+						value = 'var( --color-neutral )';
+					}
+				} else if ( 'class' === type ) {
+					value = BoldgridEditor.colors.defaults[value - 1];
 				}
 
 				if ( 'gradient-color-1' === name ) {
@@ -1559,12 +1563,16 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setPaletteGradients: function() {
 			var combos = [];
 			if ( BoldgridEditor.colors.defaults && BoldgridEditor.colors.defaults.length ) {
-				$.each( [ 0, 1, 2 ], function() {
+				$.each( [ 0, 1 ], function() {
 					var color1, color2, pos1, pos2, direction;
 					pos1 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
 					pos2 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
 					color1 = 'var( --color-' + pos1 + ' )';
 					color2 = 'var( --color-' + pos2 + ' )';
+					if ( ! BoldgridEditor.is_crio ) {
+						color1 = BoldgridEditor.colors.defaults[pos1 - 1];
+						color2 = BoldgridEditor.colors.defaults[pos2 - 1];
+					}
 					if ( color1 !== color2 ) {
 						direction = self.randomGradientDirection();
 						combos.push( {
