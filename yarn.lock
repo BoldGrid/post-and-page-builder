@@ -87,10 +87,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.16.21", "@boldgrid/components@^2.16.8":
-  version "2.16.21"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.21.tgz#a33c4af3b300e891b57fdaff0d07f68706d63d71"
-  integrity sha512-U4UHDowcySuPU5FNH1NfDWRwkXIbGETNwkCFu+I0rw+kIm6NW7VdOY+sUI0nX8Cq83jDrPNO3PIXGFtMbx5xHw==
+"@boldgrid/components@^2.16.22", "@boldgrid/components@^2.16.8":
+  version "2.16.22"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.22.tgz#29e4d4477a9f104ea71626fa2a02b9ee5bcfefae"
+  integrity sha512-nsGLblUwVukOO0VOt9HeJws4bmyHVkASMAZKOkBdX+H26/dh65D1SA6UuSPOaVKzOdtT961VcC6LIEUF2NgFIA==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#outline-control":
   version "0.13.1"
