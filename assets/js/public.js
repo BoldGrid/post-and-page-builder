@@ -395,6 +395,7 @@ class Public {
 				hoverBgSize = 'background-size: auto auto  !important; background-repeat: repeat  !important;';
 			}
 
+			css  += '@media screen and (min-width: 992px) {';
 			css += `.${hoverBoxClass}:hover {`;
 
 			if ( hoverOverlay && hoverBgUrl ) {
@@ -407,13 +408,29 @@ class Public {
 				css += hoverBgSize;
 			} else if ( hoverBgColor ) {
 				css += `background-color: ${hoverBgColor} !important;`;
-				css += 'background-image: none !important; }';
+				css += 'background-image: none !important;';
 			}
+			css += '}';
 			css += '}';
 
 			css  += '@media screen and (max-width: 991px) {';
-			css += `.${hoverBoxClass}.hover-mobile-bg { background-image: url('${hoverBgUrl}') !important; } }`;
+
+			if ( hoverOverlay && hoverBgUrl ) {
+				css += `.${hoverBoxClass}.hover-mobile-bg, .${hoverBoxClass}.hover-mobile-bg:hover { `;
+				css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${hoverOverlay} ), url('${hoverBgUrl}') !important;`;
+				css += `background-position: 50% ${hoverBgPos}% !important;`;
+				css += '}';
+			} else if ( ! hoverBgUrl && hoverBgColor ) {
+				css += `.${hoverBoxClass}.hover-mobile-bg, .${hoverBoxClass}.hover-mobile-bg:hover { `;
+				css += `background-color: ${hoverBgColor} !important;`;
+				css += 'background-image: none !important;';
+				css += '}';
+			} else {
+				css += `.${hoverBoxClass}.hover-mobile-bg { background-image: url('${hoverBgUrl}') !important; }`;
+			}
+			css += '}';
 		} );
+
 		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
 	}
 
