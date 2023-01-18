@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.22.2-rc1
+Stable tag: 1.22.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.22.2 =
+* Bug Fix: Hover Boxes do not work with Column Shapes [#495](https://github.com/BoldGrid/post-and-page-builder/issues/495)
+* Bug Fix: Hover Boxes - mobile doesn't show the Hover Background when the option is checked [#499](https://github.com/BoldGrid/post-and-page-builder/issues/499)
 
 = 1.22.1 =
 * Bug Fix: Custom CSS classes added do not show in popover after refresh [#410](https://github.com/BoldGrid/post-and-page-builder/issues/410)
