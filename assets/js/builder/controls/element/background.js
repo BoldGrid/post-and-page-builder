@@ -112,7 +112,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					hoverBgSize = hoverBgSize ? hoverBgSize : 'cover',
 					hoverBgPos = $hoverBox.attr( 'data-hover-bg-position' ),
 					hoverBgPos = hoverBgPos ? hoverBgPos : '50',
-					hoverColor = $hoverBox.attr( 'data-hover-bg-color' );
+					hoverBgColor = $hoverBox.attr( 'data-hover-bg-color' );
 
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
@@ -146,16 +146,35 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
 				}
 
-				if ( hoverColor && hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover { background-color: ${hoverColor} !important; }`;
+				if ( hoverBgColor && hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
-				} else if ( hoverColor && ! hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover { background-color: ${hoverColor} !important; }`;
+				} else if ( hoverBgColor && ! hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
 
 					css = `.${hoverBoxClass}:hover {background-image: unset !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
 				}
+
+				css = '@media screen and (max-width: 991px) {';
+				if ( hoverBoxClass && hoverBgUrl && hoverOverlay ) {
+					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
+					css += `.${hoverBoxClass}.hover-mobile-bg {background-image: ${hoverCss} !important; }`;
+					css += `.${hoverBoxClass}.hover-mobile-bg:hover {background-image: ${
+						hoverCss
+					} !important; }`;
+				} else if ( hoverBoxClass && ! hoverBgUrl && hoverBgColor ) {
+					css += `.${hoverBoxClass}.hover-mobile-bg {
+						background-color: ${hoverBgColor} !important;
+						background-image: none !important;
+					}`;
+				} else {
+					css += `.${hoverBoxClass}.hover-mobile-bg { background-image: url('${
+						hoverBgUrl
+					}') !important; } }`;
+				}
+				$head.append( `<style id="${hoverBoxClass}-mobile-image">${css}</style>` );
 			} );
 		},
 
@@ -373,7 +392,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$hoverBgs.each( function() {
 				var hoverBgClassName = $( this ).attr( 'data-hover-bg-class' ),
 					hoverBgUrl = $( this ).attr( 'data-hover-image-url' ),
-					hoverOverlay = $( this ).attr( 'data-hover-bg-overlaycolor' );
+					hoverOverlay = $( this ).attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgColor = $( this ).attr( 'data-hover-bg-color' );
 
 				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
 					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
@@ -390,9 +410,24 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				self._addHeadingStyle( hoverBgClassName + '-bg-size', css );
 
 				css = '@media screen and (max-width: 991px) {';
-				css += `.${hoverBgClassName}.hover-mobile-bg { background-image: url('${
-					hoverBgUrl
-				}') !important; } }`;
+				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
+					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
+					css += `.${hoverBgClassName}.hover-mobile-bg {background-image: ${
+						hoverCss
+					} !important; }`;
+					css += `.${hoverBgClassName}.hover-mobile-bg:hover {background-image: ${
+						hoverCss
+					} !important; }`;
+				} else if ( hoverBgClassName && ! hoverBgUrl && hoverBgColor ) {
+					css += `.${hoverBgClassName}.hover-mobile-bg {
+						background-color: ${hoverBgColor} !important;
+						background-image: none !important;
+					}`;
+				} else {
+					css += `.${hoverBgClassName}.hover-mobile-bg { background-image: url('${
+						hoverBgUrl
+					}') !important; } }`;
+				}
 				self._addHeadingStyle( hoverBgClassName + '-mobile-image', css );
 			} );
 		},
@@ -1258,12 +1293,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				} else if ( bgImageUrl ) {
 					$currentSelection.css( 'background-image', `url('${bgImageUrl}')` );
 				}
+				self._setupHoverBoxes();
 			} else if ( 'hover-color' === type ) {
 				if ( hoverColor && ! hoverBgImageUrl ) {
 					$currentSelection.css( 'background-color', hoverColor );
 				} else if ( ! hoverColor && ! hoverBgImageUrl ) {
 					$currentSelection.css( 'background-color', 'rgba(0,0,0,0)' );
 				}
+				self._setupHoverBoxes();
 			} else if ( 'gradients' === type ) {
 				$currentSelection.css( 'background-image', $target.css( 'background-image' ) );
 			} else {
@@ -1518,6 +1555,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$hoverColorControl = BG.Panel.$element.find( 'input[name="section-hover-background-color"]' );
 				$hoverColorControl.prev( 'label' ).css( 'background-color', hoverColor );
 				$hoverColorControl.val( hoverColor ).attr( 'value', hoverColor );
+				self._setupHoverBoxes();
 			}
 		},
 
