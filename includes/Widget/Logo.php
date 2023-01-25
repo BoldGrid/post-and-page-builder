@@ -85,7 +85,8 @@ class Logo extends \WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$logo_switch_val = isset( $instance['bgc_logo_switch'] ) ? $instance['bgc_logo_switch'] : 'site_logo';
-		$alt_logo = isset( $instance['bgc_alt_logo'] );
+		$alt_logo        = isset( $instance['bgc_alt_logo'] );
+		$alt_logo_url    = ! empty( $instance['bgc_alt_logo_url'] ) ? $instance['bgc_alt_logo_url'] : '';
 		if ( 'site_logo' === $logo_switch_val ) {
 			$logo_id = get_theme_mod( 'custom_logo' );
 		} else {
@@ -261,6 +262,7 @@ class Logo extends \WP_Widget {
 	public function print_alt_logo( $instance ) {
 		$name              = 'crio-premium-alt-logo-preview';
 		$field_name        = $this->get_field_name( 'bgc_alt_logo' );
+		$url_field_name    = $this->get_field_name( 'bgc_alt_logo_url' );
 		$selected_alt_logo = ! empty( $instance['bgc_alt_logo'] ) ? $instance['bgc_alt_logo'] : '';
 		$image_size        = 'full';
 		$image_attributes  = wp_get_attachment_image_src( $selected_alt_logo, $image_size );
@@ -278,6 +280,7 @@ class Logo extends \WP_Widget {
 			<div>
 				<a href="#" class="crio_premium_image_button"><img src="<?php echo esc_attr( $image_attributes[0] ); ?>" style="max-width:95%;display:block;" /></a>
 				<input type="hidden" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" value="<?php echo esc_attr( $selected_alt_logo ); ?>" />
+				<input type="hidden" class="bgc-alt-logo-url" name="<?php echo $url_field_name; ?>" id="<?php echo $url_field_name; ?>" value="<?php echo esc_attr( $image_attributes[0] ); ?>" />
 				<p class="crio_premium_image_desc" style="display:inline-block"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
 				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:inline-block"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
 			</div>
@@ -288,6 +291,7 @@ class Logo extends \WP_Widget {
 			<div>
 				<a href="#" class="crio_premium_image_button button"><?php esc_html_e( 'Upload Image', 'boldgrid-editor' ); ?></a>
 				<input type="hidden" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" value="<?php echo esc_attr( $selected_alt_logo ); ?>" />
+				<input type="hidden" class="bgc-alt-logo-url" name="<?php echo $url_field_name; ?>" id="<?php echo $url_field_name; ?>" value="" />
 				<p class="crio_premium_image_desc" style="display:none"><?php esc_html_e( 'Click the image to edit or update', 'boldgrid-editor' ); ?></p>
 				<a href="#" class="crio_premium_remove_image_button" style="display:inline-block;display:none"><?php esc_html_e( 'Remove Image', 'boldgrid-editor' ); ?></a>
 			</div>

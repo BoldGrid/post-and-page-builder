@@ -375,7 +375,6 @@ export class Instance {
 			data[el.name] = el.checked ? 1 : 0;
 		} );
 
-		let values = encodeURIComponent( JSON.stringify( data ) );
 		this.panelEdit = true;
 
 		// Adds 'h' class to the parent shortcode wrapper.
@@ -389,6 +388,29 @@ export class Instance {
 
 			$shortcodeWrapper.addClass( headingType );
 		}
+
+		$( BOLDGRID.EDITOR.mce.getBody() )
+			.find( '.bg-control-element' )
+			.find( '.bgc-alt-logo' )
+			.remove();
+
+		if ( data.hasOwnProperty( 'widget-boldgrid_component_logo[][bgc_alt_logo_url]' ) ) {
+			let altLogoUrl = data['widget-boldgrid_component_logo[][bgc_alt_logo_url]'];
+			console.log( {
+				altLogoUrl: altLogoUrl,
+				bgControlElement: $( BOLDGRID.EDITOR.mce.getBody() ).find( '.bg-control-element' )
+			} );
+
+			$( BOLDGRID.EDITOR.mce.getBody() )
+				.find( '.bg-control-element' )
+				.prepend(
+					`<div class="bgc-alt-logo" style="display:none;background-image:url(${
+						altLogoUrl
+					})" data-image-url="${altLogoUrl}"></div>`
+				);
+		}
+
+		let values = encodeURIComponent( JSON.stringify( data ) );
 
 		this.update( `[boldgrid_component type="${this.component.name}" opts="${values}"]` );
 	}
