@@ -130,13 +130,10 @@ class Boldgrid_Editor {
 		register_widget( '\\Boldgrid\\PPB\\Widget\\SiteDescription' );
 		register_widget( '\\Boldgrid\\PPB\\Widget\\Logo' );
 
-		/*
-		 * This widget is currently disabled, because I need to create
-		 * additional widgets to go with it, such as AuthorAvatar, PostDate,
-		 * PostTime, Tags, etc.
-		 *
-		 * register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
-		 */
+		register_widget( '\\Boldgrid\\PPB\\Widget\\AuthorMeta' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PostDate' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PostCategories' );
+		register_widget( '\\Boldgrid\\PPB\\Widget\\PostTags' );
 	}
 
 	/**

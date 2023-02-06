@@ -56,16 +56,30 @@ return array(
 				'type' => 'header',
 			),
 		),
-		/*
-		 * This componenet is temporarily disabled until the rest of the
-		 * post meta components are ready.
-		 * 'wp_boldgrid_component_author_meta' => array(
-		 *	'js_control' => array(
-		 *		'icon' => '<span class="dashicons dashicons-admin-post"></span>',
-		 *		'type' => 'header',
-		 *	),
-		 *),
-		 */
+		'wp_boldgrid_component_author_meta' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-admin-users"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_post_date' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-calendar-alt"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_post_categories' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-category"></span>',
+				'type' => 'header',
+			),
+		),
+		'wp_boldgrid_component_post_tags' => array(
+			'js_control' => array(
+				'icon' => '<span class="dashicons dashicons-tagcloud"></span>',
+				'type' => 'header',
+			),
+		),
 		'wp_archives' => array(
 			'js_control' => array(
 				'icon' => '<span class="dashicons dashicons-archive"></span>'
