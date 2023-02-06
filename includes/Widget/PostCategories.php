@@ -1,8 +1,8 @@
 <?php
 /**
-* File: AuthorMeta.php
+* File: PostCategories.php
 *
-* Create an AuthorMeta component.
+* Create an PostCategories component.
 *
 * @since      1.0.0
 * @package    Boldgrid_Components
@@ -20,7 +20,7 @@ namespace Boldgrid\PPB\Widget;
 *
 * @since 1.0.0
 */
-class AuthorMeta extends \WP_Widget {
+class PostCategories extends \WP_Widget {
 
 	/**
 	 * Default widget wrappers.
@@ -29,10 +29,10 @@ class AuthorMeta extends \WP_Widget {
 	 * @var array
 	 */
 	public static $widgetArgs = array(
-		'before_title' => '',
-		'after_title' => '',
+		'before_title'  => '',
+		'after_title'   => '',
 		'before_widget' => '<div class="widget">',
-		'after_widget' => '</div>',
+		'after_widget'  => '</div>',
 	);
 
 	/**
@@ -51,11 +51,11 @@ class AuthorMeta extends \WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'boldgrid_component_author_meta',
-			__( 'Author Meta', 'boldgrid-editor' ),
+			'boldgrid_component_post_categories',
+			__( 'Post Categories', 'boldgrid-editor' ),
 			array(
-				'classname'   => 'bgc-author-meta',
-				'description' => __( 'Inserts the chosen meta data for a post\'s author into your header.', 'boldgrid-editor' )
+				'classname' => 'bgc-post-categories',
+				'description' => __( 'Inserts the post categories.', 'boldgrid-editor' ),
 			)
 		);
 	}
@@ -84,37 +84,56 @@ class AuthorMeta extends \WP_Widget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance ) {
-		$selected_align = ! empty( $instance['bgc_author_meta_alignment'] ) ? $instance['bgc_author_meta_alignment'] : 'center';
+		$selected_align = ! empty( $instance['bgc_post_categories_align'] ) ? $instance['bgc_post_categories_align'] : 'center';
 		$align_class    = $this->get_align_class( $selected_align );
+
 		?>
-		<div class="bgc_component_author_meta" style="display:flex; justify-content:<?php echo esc_attr( $align_class ); ?>">
-			<?php $this->print_author_meta( 'display_name' ); ?>
+		<div class="bgc_component_post_categories" style="display:flex; justify-content:<?php echo esc_attr( $align_class ); ?>">
+			<?php $this->print_categories(); ?>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Print Author Meta
+	 * Print Categories
 	 *
 	 * @since 1.14.0
 	 *
-	 * @param string $meta_name The name of the meta field to display.
 	 */
-	public function print_author_meta( $meta_name ) {
+	public function print_categories() {
 		global $post;
+		$single_cat_icon   = get_theme_mod( 'bgtfw_posts_cat_icon' );
+		$multiple_cat_icon = get_theme_mod( 'bgtfw_posts_cats_icon' );
+		if ( 'post' === get_post_type() ) {
+			/* translators: used between each category list item, there is a space after the comma */
+			$categories_list  = get_the_category_list( esc_html__( ', ', 'boldgrid-editor' ) );
+			$categories_count = count( explode( ', ', $categories_list ) );
 
-		if ( $post ) {
-			$meta_data = get_the_author_meta( $meta_name, $post->post_author );
-		} else {
-			$meta_data = get_the_author_meta( $meta_name );
+			if ( $categories_list ) {
+				$class = 'singular';
+				$icon  = $single_cat_icon;
+
+				if ( $categories_count > 1 ) {
+					$icon = $multiple_cat_icon;
+					$class = 'multiple';
+				}
+
+				// Note: get_the_category_list already internally performs it's own escaping and cleanup, which is stored in the variable $categories_list.
+				printf(
+					'<span class="cat-links %1$s"><i class="fa fa-fw fa-%2$s" aria-hidden="true"></i> %3$s</span>',
+					esc_attr( $class ),
+					esc_attr( $icon ),
+					$categories_list // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+			}
 		}
 
-		if ( ! $meta_data ) {
-			$meta_data = '[' . strtoupper( str_replace( '_', ' ', $meta_name ) ) . ']';
+		if ( ! $post ) {
+			printf(
+				'<span class="tags-links"><i class="fa fa-fw fa-%1$s" aria-hidden="true"></i><a>[CATEGORIES]</a></span>',
+				esc_attr( $single_cat_icon ),
+			);
 		}
-		?>
-		<p class="bgc_author_meta <?php echo esc_attr( $meta_name ); ?>"><?php echo esc_html( $meta_data ); ?></p>
-		<?php
 	}
 
 	/**
@@ -153,31 +172,31 @@ class AuthorMeta extends \WP_Widget {
 	 * @param array $instance Widget instance configs.
 	 */
 	public function print_alignment_control( $instance ) {
-		$field_name     = $this->get_field_name( 'bgc_author_meta_alignment' );
-		$selected_align = ! empty( $instance['bgc_author_meta_alignment'] ) ? $instance['bgc_author_meta_alignment'] : 'center';
+		$field_name     = $this->get_field_name( 'bgc_post_categories_align' );
+		$selected_align = ! empty( $instance['bgc_post_categories_align'] ) ? $instance['bgc_post_categories_align'] : 'center';
 		?>
 		<h4><?php _e( 'Choose Alignment', 'boldgrid-editor' ); ?></h4>
 		<div class="buttonset bgc">
 			<input class="switch-input screen-reader-text bgc" type="radio" value="left"
 				name="<?php echo $field_name; ?>"
-				id="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_left' ); ?>"
+				id="<?php echo $this->get_field_id( 'bgc_post_categories_align_left' ); ?>"
 				<?php echo 'left' === $selected_align ? 'checked' : ''; ?>
 			>
-				<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_left' ); ?>"><span class="dashicons dashicons-editor-alignleft"></span>Left</label>
+				<label class="switch-label switch-label-on " for="<?php echo $this->get_field_id( 'bgc_post_categories_align_left' ); ?>"><span class="dashicons dashicons-editor-alignleft"></span>Left</label>
 
 			<input class="switch-input screen-reader-text bgc" type="radio" value="center"
 				name="<?php echo $field_name; ?>"
-				id="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_center' ); ?>"
+				id="<?php echo $this->get_field_id( 'bgc_post_categories_align_center' ); ?>"
 				<?php echo 'center' === $selected_align ? 'checked' : ''; ?>
 			>
-				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_center' ); ?>"><span class="dashicons dashicons-editor-aligncenter"></span>Center</label>
+				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_post_categories_align_center' ); ?>"><span class="dashicons dashicons-editor-aligncenter"></span>Center</label>
 
 			<input class="switch-input screen-reader-text bgc" type="radio" value="right"
 				name="<?php echo $field_name; ?>"
-				id="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_right' ); ?>"
+				id="<?php echo $this->get_field_id( 'bgc_post_categories_align_right' ); ?>"
 				<?php echo 'right' === $selected_align ? 'checked' : ''; ?>
 			>
-				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_author_meta_alignment_right' ); ?>"><span class="dashicons dashicons-editor-alignright"></span>Right</label>
+				<label class="switch-label switch-label-off bgc" for="<?php echo $this->get_field_id( 'bgc_post_categories_align_right' ); ?>"><span class="dashicons dashicons-editor-alignright"></span>Right</label>
 		</div>
 		<?php
 	}
