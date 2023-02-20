@@ -20,7 +20,7 @@ import { Typography } from '@boldgrid/controls';
 		iconClasses: 'fa fa-arrows-h',
 
 		selectors: [
-			'p, h1, h2, h3, h4, h5, h6, a, table, section, ul, ol, dl, blockquote, .boldgrid-shortcode, .bgc-heading *, span'
+			'p, h1, h2, h3, h4, h5, h6, a, table, section, ul:not(.nav-tabs), ol, dl, blockquote, .boldgrid-shortcode, .bgc-heading *, span'
 		],
 
 		// Ignore images clicked in paragraphs.

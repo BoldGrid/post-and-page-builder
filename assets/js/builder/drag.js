@@ -297,8 +297,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'a:not(p a)',
 		'img:not(p img):not(a img)',
 		'p:not(blockquote p)',
-		'button:not(p button):not(a button)',
-		'ul',
+		'button:not(p button):not(a button):not(.nav-link)',
+		'ul:not(.nav-tabs)',
 		'pre',
 		'ol',
 		'dl',
@@ -347,10 +347,10 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		 ******************************************************************/
 		'img:not(.row .row img):not(p img):not(a img)',
 		'p:not(.row .row p):not(blockquote p)',
-		'button:not(.row .row button):not(p button):not(a button)',
+		'button:not(.row .row button):not(p button):not(a button):not(.nav-link)',
 
 		// Lists.
-		'ul:not(.row .row ul):not(.draggable-tools-imhwpb ul)',
+		'ul:not(.row .row ul):not(.draggable-tools-imhwpb ul):not(.nav-tabs)',
 		'ol:not(.row .row ol)',
 		'dl:not(.row .row dl)',
 
@@ -413,7 +413,7 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'.row .row button:not(p button):not(a button)',
 
 		// Lists.
-		'.row .row ul',
+		'.row .row ul:not(.nav-tabs)',
 		'.row .row ol',
 		'.row .row dl',
 
@@ -450,8 +450,8 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		'> a',
 		'> img',
 		'> p',
-		'> button',
-		'> ul',
+		'> button:not(.nav-link)',
+		'> ul:not(.nav-tabs)',
 		'> ol',
 		'> dl',
 		'> form',
