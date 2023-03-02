@@ -46,6 +46,20 @@ export class Component {
 				)
 		};
 
+		this.tabs = {
+			name: 'premium-tabs',
+			title: 'tabs',
+			type: 'structure',
+			icon: '<span class="dashicons dashicons-block-default"></span>',
+			insertType: 'popup',
+			priority: 90,
+			onClick: () =>
+				window.open(
+					BoldgridEditor.plugin_configs.urls.premium_key + '?source=plugin-add-component-tabs',
+					'_blank'
+				)
+		};
+
 		this.postList = {
 			name: 'premium-post-list',
 			title: 'Post Snippet',
@@ -72,6 +86,7 @@ export class Component {
 			BG.Service.component.register( this.rowSlider );
 			BG.Service.component.register( this.sectionSlider );
 			BG.Service.component.register( this.postList );
+			BG.Service.component.register( this.tabs );
 		} );
 	}
 }
