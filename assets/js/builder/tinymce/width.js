@@ -99,9 +99,13 @@ export class Width {
 	 * @since 1.6
 	 */
 	updateIframeUrl( url ) {
+		var isResizable = ! BoldgridEditor.is_boldgrid_theme || 'post' === BoldgridEditor.post_type;
+
+		isResizable = BoldgridEditor.is_crio ? false : isResizable;
+
 		url = url || BoldgridEditor.site_url;
 
-		if ( ! BoldgridEditor.is_boldgrid_theme || 'post' === BoldgridEditor.post_type ) {
+		if ( isResizable ) {
 			if ( ! this.$resizeiframe ) {
 				this.$resizeiframe = this.createIframe();
 			}
