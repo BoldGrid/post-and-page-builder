@@ -19,7 +19,7 @@ export class Add {
 		this.selectors = [ 'html' ];
 
 		// Components to be excluded from mega menu items.
-		this.excludedComponents = [ 'slider', 'wp_nav_menu' ];
+		this.excludedComponents = [ 'slider', 'wp_nav_menu', 'tabs' ];
 
 		// Panel Configurations.
 		this.panel = {

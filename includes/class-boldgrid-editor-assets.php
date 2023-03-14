@@ -518,6 +518,8 @@ class Boldgrid_Editor_Assets {
 			'jquery-ui-slider',
 			'jquery-ui-droppable',
 			'jquery-ui-selectmenu',
+			'jquery-effects-core',
+			'jquery-effects-highlight',
 			'wp-color-picker',
 			'jquery-masonry',
 			'wp-util',

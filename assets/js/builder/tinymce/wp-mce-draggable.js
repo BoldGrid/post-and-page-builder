@@ -303,6 +303,19 @@ IMHWPB.WP_MCE_Draggable = function() {
 	};
 
 	this.updateResizingIframe = function() {
+		if ( BoldgridEditor.is_crio ) {
+			let style = BG.Controls.$container.$body.attr( 'style' );
+
+			// replace max-width: attribute with max-width:100%!important;
+			if ( style.includes( 'max-width:' ) ) {
+				style = style.replace( /max-width:.*?;/, 'max-width:100%!important;' );
+			} else {
+				style += 'max-width:100%!important;';
+			}
+
+			BG.Controls.$container.$body.attr( 'style', style );
+		}
+
 		if ( BG.Service.editorWidth.resizable ) {
 
 			/**

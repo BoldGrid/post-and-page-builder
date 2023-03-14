@@ -196,6 +196,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			var self = this;
 
 			this.$container.on( 'click', function( e ) {
+				var $alreadyVisible = self.$menu.find( 'li[data-action]' ).filter( ':visible' );
+
 				self.$menu.find( 'li[data-action]' ).hide();
 
 				if ( ! self.$menu.items.length ) {
@@ -211,6 +213,13 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 					//If a panel is open.
 					BOLDGRID.EDITOR.Menu.reactivateMenu();
 				} );
+
+				// Highlight newly visible menu items.
+				self.$menu
+					.find( 'li[data-action]' )
+					.filter( ':visible' )
+					.not( $alreadyVisible )
+					.effect( 'highlight', { color: '#f95b26' }, 1000 );
 
 				self._closeOpenControl();
 
