@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.22.3-rc2
+Stable tag: 1.23.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,11 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.23.0 =
+* New Feature: Added support for PPB Premium's new "Tabbed Content Block".
+* New Feature: Highlight effect added to floating menu when a control is added to the menu.
+* Bug Fix: Blog posts look full width in editor even when set to fixed [#518](https://github.com/BoldGrid/post-and-page-builder/issues/518)
 
 = 1.22.2 =
 * Bug Fix: Hover Boxes do not work with Column Shapes [#495](https://github.com/BoldGrid/post-and-page-builder/issues/495)
