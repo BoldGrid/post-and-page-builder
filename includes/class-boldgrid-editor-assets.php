@@ -313,9 +313,10 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
 		$current_theme = wp_get_theme();
+		$theme_version = $current_theme->get( 'Version' );
 		$is_crio = false;
 		if ( $current_theme->exists() ) {
-			$theme_name = $current_theme->get( 'Name' );
+			$theme_name    = $current_theme->get( 'Name' );
 			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
 				$is_crio = true;
 			}
@@ -351,6 +352,7 @@ class Boldgrid_Editor_Assets {
 			'is_boldgrid_theme'      => $is_bg_theme,
 			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
 			'is_crio'                => $is_crio,
+			'theme_version'		     => $theme_version,
 			'is_add_new'             => 'post-new.php' === $pagenow,
 			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
 			'post'                   => (array) $post,

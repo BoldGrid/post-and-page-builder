@@ -246,6 +246,7 @@ class Boldgrid_Editor_Builder {
 		$paths[] = $template_path . '/gridblock.php';
 		$paths[] = $template_path . '/information.php';
 		$paths[] = $template_path . '/background.php';
+		$paths[] = $template_path . '/background-legacy.php';
 		$paths[] = $template_path . '/box.php';
 		$paths[] = $template_path . '/panel.php';
 		$paths[] = $template_path . '/upgrade-notice.php';
