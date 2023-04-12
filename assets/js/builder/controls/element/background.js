@@ -45,6 +45,25 @@ import { gte as semverGte } from 'semver';
 
 		availableHoverEffects: [ 'background-hover-fixed' ],
 
+		panelSections: [
+			{
+				name: 'background-color',
+				controlId: 'bgColor'
+			},
+			{
+				name: 'background-image',
+				controlId: 'bgImage'
+			},
+			{
+				name: 'background-blending',
+				controlId: 'bgBlending'
+			},
+			{
+				name: 'unknown',
+				controlId: 'bgUnknown'
+			}
+		],
+
 		menuDropDown: {
 			title: 'Background',
 			options: [
@@ -68,7 +87,9 @@ import { gte as semverGte } from 'semver';
 		},
 
 		init: function() {
-			BOLDGRID.EDITOR.Controls.registerControl( this );
+			if ( this.loadLegacyControl() ) {
+				BOLDGRID.EDITOR.Controls.registerControl( this );
+			}
 		},
 
 		panel: {
@@ -328,12 +349,17 @@ import { gte as semverGte } from 'semver';
 
 			self.$target = $target;
 
+			self.initPanelSections();
+
+			console.log( { panelSections: self.panelSections } );
+
 			// Remove all content from the panel.
 			panel.clear();
 
 			panel.$element.find( '.panel-body' ).html(
 				template( {
-					navItems: navItems
+					navItems: navItems,
+					panelSections: self.panelSections
 				} )
 			);
 
@@ -341,8 +367,26 @@ import { gte as semverGte } from 'semver';
 
 			self.bindNavItems();
 
+			panel.$element.find( '.ui-sortable' ).sortable( {
+				handle: '.dashicons-move'
+			} );
+
 			// Open Panel.
 			panel.open( self );
+		},
+
+		initPanelSections: function() {
+			for ( let i = self.panelSections.length - 1; 0 <= i; i-- ) {
+				let section = self.panelSections[i],
+					control = self.controls.get( section.controlId );
+
+				if ( control ) {
+					self.panelSections[i].control = self.controls.get( section.controlId );
+					self.panelSections[i].content = self.controls.get( section.controlId ).render();
+				} else {
+					self.panelSections.splice( i, 1 );
+				}
+			}
 		},
 
 		bindNavItems() {
@@ -354,7 +398,9 @@ import { gte as semverGte } from 'semver';
 			$panelSections.removeClass( 'active' );
 
 			$navItems.first().addClass( 'active' );
-			$panelSections.first().addClass( 'active' );
+			$panelSections
+				.filter( `[data-nav-target="${$navItems.first().attr( 'data-nav-target' )}"]` )
+				.addClass( 'active' );
 
 			$navItems.on( 'click', function() {
 				var $clickedItem = $( this );
@@ -363,7 +409,7 @@ import { gte as semverGte } from 'semver';
 
 				$panelSections.removeClass( 'active' );
 				$panelSections
-					.filter( `[data-nav-target="${$clickedItem.attr( 'data-target' )}"]` )
+					.filter( `[data-nav-target="${$clickedItem.attr( 'data-nav-target' )}"]` )
 					.addClass( 'active' );
 			} );
 		},
@@ -373,7 +419,7 @@ import { gte as semverGte } from 'semver';
 				{
 					target: 'background-color',
 					label: 'Background Color',
-					icon: 'admin-customizer'
+					icon: 'color-picker'
 				},
 				{
 					target: 'background-image',
@@ -383,12 +429,149 @@ import { gte as semverGte } from 'semver';
 				{
 					target: 'background-blending',
 					label: 'Background Blending',
-					icon: 'admin-customizer'
+					icon: 'image-filter'
 				}
 			];
+		},
+
+		controls: {
+			get: function( control ) {
+				if ( self.controls.hasOwnProperty( control ) ) {
+					return self.controls[control];
+				} else {
+					return false;
+				}
+			},
+
+			bgColor: {
+				getTargetColors: function( $target ) {
+					var bgColors = [],
+						classList = $target.attr( 'class' ),
+						colorClass = classList.match( /color-|(\d|neutral)-background-color/ ),
+						dataAlpha = $target.attr( 'data-alpha' );
+
+					// If the target has the new data-bgColorSet attribute, use that.
+					if ( $target.attr( 'data-bgColorSet' ) ) {
+						bgColors = JSON.parse( $target.attr( 'data-bgColorSet' ) );
+
+						// If the target has a color palette overlay on a bg image, use that.
+					} else if ( $target.attr( 'data-bg-overlaycolor' ) ) {
+						bgColors = [
+							[
+								$target.attr( 'data-bg-overlaycolor-class' ) ?
+									$target.attr( 'data-bg-overlaycolor-class' ) :
+									$target.attr( 'data-bg-overlaycolor' ),
+								$target.attr( 'data-bg-overlaycolor-alpha' ),
+								0
+							]
+						];
+
+						// If the target has a gradient, use that.
+					} else if ( $target.attr( 'data-bg-color-1' ) ) {
+						bgColors = [
+							[ $target.attr( 'data-bg-color-1' ), 1, 0 ],
+							[ $target.attr( 'data-bg-color-2' ), 1, 1 ]
+						];
+
+						// If the target has a color class, use that.
+					} else if ( colorClass ) {
+						bgColors = [ [ colorClass[1], 'undefined' !== typeof dataAlpha ? dataAlpha : 1, 0 ] ];
+
+						// Else use the background-color property.
+					} else {
+						bgColors = [ [ $target.css( 'background-color' ), 1, 0 ] ];
+					}
+
+					return bgColors;
+				},
+
+				normalizeColor: function( color ) {
+					var normalizedColor = color.replace( /\s/g, '' );
+
+					console.log( 'color w/ no spaces: ' + normalizedColor );
+
+					normalizedColor = normalizedColor.replace( /var\(--color-(\d|neutral)\)/g, '$1' );
+
+					console.log( 'color after replace: ' + normalizedColor );
+
+					return normalizedColor;
+				},
+
+				getColorType: function( color ) {
+					if ( color.match( /^rgb/ ) || color.match( /^#/ ) || color.match( /^hsl/ ) ) {
+						return 'color';
+					} else {
+						return 'class';
+					}
+				},
+				renderColorControl: function( colorArray, index ) {
+					var color = self.controls.bgColor.normalizeColor( colorArray[0] ),
+						alpha = colorArray[1],
+						position = colorArray[2],
+						colorType = self.controls.bgColor.getColorType( color ),
+						$control;
+
+					if ( 'class' === colorType ) {
+						color = `rgba( var(--color-${color}-raw), ${alpha} )`;
+					}
+
+					$control = $(
+						`<li>
+								<span class="dashicons dashicons-move"></span>
+								<label for="bg-color-${index}" class="color-preview" style="background-color:${color}"></label>
+								<input type="text" data-property="background-color" name="bg-color-${
+									index
+								}" class="color-control" value="${color}" data-type="${color}">
+								<input type="number" name="bg-color-position-${
+									index
+								}" min="0" max="1" step="0.05" class="gradient-position-control" value="${
+							position
+						}">
+								<input type="hidden" name="bg-color-alpha-${position}" class='color-alpha-control' value="${alpha}">
+								<span data-bg-color-pos="${position}" class="dashicons dashicons-trash"></span>
+							</li>`
+					);
+
+					console.log( { colorArray, color, alpha, position, index } );
+
+					return $control;
+				},
+				render: function() {
+					var $target = self.$target,
+						bgColorControls = self.controls.bgColor,
+						targetColors = bgColorControls.getTargetColors( $target ),
+						$controls = $(
+							`<div class="bg-color-control">
+							'<ul class="ui-sortable"></ul>'
+							</div>`
+						);
+
+					targetColors.forEach( ( color, index ) => {
+						$controls.find( 'ul' ).append( bgColorControls.renderColorControl( color, index ) );
+					} );
+
+					console.log( { targetColors: targetColors, $controls } );
+
+					return $controls.get( 0 ).outerHTML;
+				}
+			},
+			bgImage: {
+				render: function() {
+					return 'background-image';
+				}
+			},
+			bgBlending: {
+				render: function() {
+					return 'background-image';
+				}
+			}
 		}
 	};
 
 	BOLDGRID.EDITOR.CONTROLS.Background.init();
 	self = BOLDGRID.EDITOR.CONTROLS.Background;
+
+	if ( ! self.loadLegacyControl() ) {
+		delete BOLDGRID.EDITOR.CONTROLS.Background;
+	}
 } )( jQuery );

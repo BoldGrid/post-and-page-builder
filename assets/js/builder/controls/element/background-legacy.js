@@ -12,7 +12,7 @@ import { lt as semverLt } from 'semver';
 		BG = BOLDGRID.EDITOR;
 
 	BOLDGRID.EDITOR.CONTROLS.Background = {
-		name: 'background-legacy',
+		name: 'background',
 
 		tooltip: 'Background Legacy',
 
@@ -68,7 +68,9 @@ import { lt as semverLt } from 'semver';
 		},
 
 		init: function() {
-			BOLDGRID.EDITOR.Controls.registerControl( this );
+			if ( this.loadLegacyControl() ) {
+				BOLDGRID.EDITOR.Controls.registerControl( this );
+			}
 		},
 
 		panel: {
@@ -1845,4 +1847,8 @@ import { lt as semverLt } from 'semver';
 
 	BOLDGRID.EDITOR.CONTROLS.Background.init();
 	self = BOLDGRID.EDITOR.CONTROLS.Background;
+
+	if ( ! self.loadLegacyControl() ) {
+		delete BOLDGRID.EDITOR.CONTROLS.Background;
+	}
 } )( jQuery );

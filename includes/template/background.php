@@ -6,9 +6,9 @@
 			</div>
 		<# }); #>
 	</div>
-	<div class='background-design'>
-		<div class="background-panel-section" data-target="background-color">Background Color</div>
-		<div class="background-panel-section" data-target="background-image">Background Image</div>
-		<div class="background-panel-section" data-target="background-blending">Background Blending</div>
+	<div class='background-design non-legacy'>
+		<# _.each( data.panelSections, function ( panelSection ) { #>
+			<div data-nav-target="{{panelSection.name}}" class="background-panel-section">{{{panelSection.content}}}</div>
+		<# }); #>
 	</div>
 </script>

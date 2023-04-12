@@ -1,5 +1,5 @@
 /*************** Background Panel ********************/
-.editor-panel[data-type="background-legacy"] {
+.editor-panel[data-type="background"] {
 	img {
 		max-width: 100%;
 	}
@@ -299,10 +299,14 @@
 }
 
 .editor-panel[data-type="background"] {
-	.background-panel-section {
-		display: none;
-		&.active {
-			display: block;
+	.background-design.non-legacy {
+		margin-left: 60px;
+		padding: 10px;
+		.background-panel-section {
+			display: none;
+			&.active {
+				display: block;
+			}
 		}
 	}
 	.background-nav {
