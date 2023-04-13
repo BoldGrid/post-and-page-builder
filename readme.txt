@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 1.23.0
+Stable tag: 1.23.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,11 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.23.1=
+* Bug Fix: Remove 'Used Blocks' option from Add Block screen [#401](https://github.com/BoldGrid/post-and-page-builder/issues/401)
+* Bug Fix: border-width: 0 added to elements randomly [#459](https://github.com/BoldGrid/post-and-page-builder/issues/459)
+* BUg Fix: Border visual bug in admin [#512](https://github.com/BoldGrid/post-and-page-builder/issues/512)
 
 = 1.23.0 =
 * New Feature: Added support for PPB Premium's new "Tabbed Content Block".
