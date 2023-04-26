@@ -4,6 +4,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 // Import Semver.
 import { gte as semverGte } from 'semver';
+import { GradientPicker } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 ( function( $ ) {
 	'use strict';
@@ -59,8 +61,8 @@ import { gte as semverGte } from 'semver';
 				controlId: 'bgBlending'
 			},
 			{
-				name: 'unknown',
-				controlId: 'bgUnknown'
+				name: 'background-gradient',
+				controlId: 'bgGradient'
 			}
 		],
 
@@ -553,6 +555,36 @@ import { gte as semverGte } from 'semver';
 					console.log( { targetColors: targetColors, $controls } );
 
 					return $controls.get( 0 ).outerHTML;
+				}
+			},
+			bgGradient: {
+				render: function() {
+					const [ gradient, setGradient ] = useState( null );
+
+					return (
+						<GradientPicker
+							__nextHasNoMargin
+							value={gradient}
+							onChange={currentGradient => setGradient( currentGradient )}
+							gradients={[
+								{
+									name: 'JShine',
+									gradient: 'linear-gradient(135deg,#12c2e9 0%,#c471ed 50%,#f64f59 100%)',
+									slug: 'jshine'
+								},
+								{
+									name: 'Moonlit Asteroid',
+									gradient: 'linear-gradient(135deg,#0F2027 0%, #203A43 0%, #2c5364 100%)',
+									slug: 'moonlit-asteroid'
+								},
+								{
+									name: 'Rastafarie',
+									gradient: 'linear-gradient(135deg,#1E9600 0%, #FFF200 0%, #FF0000 100%)',
+									slug: 'rastafari'
+								}
+							]}
+						/>
+					);
 				}
 			},
 			bgImage: {
