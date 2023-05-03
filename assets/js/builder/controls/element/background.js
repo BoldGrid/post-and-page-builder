@@ -116,10 +116,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
-						'background-size: cover !important; background-repeat: "unset  !important";';
+						'background-size: cover !important; background-repeat: "no-repeat !important";';
 				} else {
 					hoverBgSize =
-						'background-size: auto auto !important; background-repeat: repeat  !important;';
+						'background-size: auto auto !important; background-repeat: repeat !important;';
 				}
 
 				if ( hoverOverlay && hoverBgUrl ) {
@@ -406,7 +406,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 				css = `.${
 					hoverBgClassName
-				}:hover {background-size: cover !important; background-position: 50%, 50% !important;}`;
+				}:hover {background-size: cover !important; background-repeat: no-repeat !important; background-position: 50%, 50% !important;}`;
 				self._addHeadingStyle( hoverBgClassName + '-bg-size', css );
 
 				css = '@media screen and (max-width: 991px) {';
@@ -1022,14 +1022,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 						css =
 							'.' +
 							hoverBgId +
-							':hover { background-size: auto auto  !important; background-repeat: repeat  !important; }';
+							':hover { background-size: auto auto  !important; background-repeat: repeat !important; }';
 						self._addHeadingStyle( hoverBgId + '-bg-size', css );
 						$target.attr( 'data-hover-bg-size', 'tiled' );
-					} else if ( 'cover' == $this.val() ) {
+					} else {
 						css =
 							'.' +
 							hoverBgId +
-							':hover { background-size: cover  !important; background-repeat: "unset  !important"; }';
+							':hover { background-size: cover !important; background-repeat: "no-repeat !important"; }';
 						self._addHeadingStyle( hoverBgId + '-bg-size', css );
 						$target.attr( 'data-hover-bg-size', 'cover' );
 					}
@@ -1045,7 +1045,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					BG.Controls.addStyle( $target, 'background-repeat', 'repeat' );
 				} else if ( 'cover' === $this.val() ) {
 					BG.Controls.addStyle( $target, 'background-size', 'cover' );
-					BG.Controls.addStyle( $target, 'background-repeat', 'unset' );
+					BG.Controls.addStyle( $target, 'background-repeat', 'no-repeat' );
 				}
 			} );
 		},
@@ -1343,6 +1343,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				BG.Controls.addStyle( $target, 'background', '' );
 				self.updateBackgroundImage();
 				BG.Controls.addStyle( $target, 'background-size', 'cover' );
+				BG.Controls.addStyle( $target, 'background-repeat', 'no-repeat' );
 				BG.Controls.addStyle( $target, 'background-position', '50% 50%' );
 			}
 		},
