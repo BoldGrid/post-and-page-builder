@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 1.23.1
+Stable tag: 1.23.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,9 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.23.2 =
+* Update: Support patch for Crio Premium's logo resizing tool [#526](https://github.com/BoldGrid/post-and-page-builder/pull/526)
 
 = 1.23.1=
 * Bug Fix: Remove 'Used Blocks' option from Add Block screen [#401](https://github.com/BoldGrid/post-and-page-builder/issues/401)
