@@ -85,7 +85,7 @@ class Logo extends \WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$logo_switch_val = isset( $instance['bgc_logo_switch'] ) ? $instance['bgc_logo_switch'] : 'site_logo';
-		$alt_logo = isset( $instance['bgc_alt_logo'] );
+		$alt_logo        = ! empty( $instance['bgc_alt_logo'] );
 		if ( 'site_logo' === $logo_switch_val ) {
 			$logo_id = get_theme_mod( 'custom_logo' );
 		} else {
@@ -94,7 +94,7 @@ class Logo extends \WP_Widget {
 
 		$align_class = ! empty( $instance['bgc_logo_alignment'] ) ? $this->get_align_class( $instance['bgc_logo_alignment'] ) : 'center';
 
-		echo '<a class="bgc_logo' . ( $alt_logo ? '' : ' custom-logo-link' ) . '" style="display:flex;justify-content:' . $align_class . ';" href="'. get_home_url() . '">';
+		echo '<a class="bgc_logo' . ( $alt_logo ? ' alt-logo' : ' custom-logo-link' ) . '" style="display:flex;justify-content:' . $align_class . ';" href="'. get_home_url() . '">';
 		if ( wp_get_attachment_image( $logo_id, 'full' ) ) {
 			echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo' ) );
 		} else {
