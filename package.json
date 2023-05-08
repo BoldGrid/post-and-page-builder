@@ -9,7 +9,6 @@
 		"start-js": "webpack-dev-server --colors",
 		"karmadev": "karma start karma.config.js",
 		"start-css": "gulp watch",
-		"precommit": "lint-staged && npm test",
 		"build-webpack": "cross-env NODE_ENV=production webpack",
 		"format-js": "prettier-eslint \"assets/js/builder/**/*.js\" --write",
 		"format-sass": "stylelint \"assets/scss/**/*.scss\" --fix --syntax scss",
