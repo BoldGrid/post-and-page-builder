@@ -7,18 +7,16 @@
  * font-family-controls.min.css
  */
 
+const { error } = require('console');
+
 var gulp = require( 'gulp' ),
 	cssnano = require( 'gulp-cssnano' ),
 	rename = require( 'gulp-rename' ),
-	sass = require( 'gulp-sass' ),
-	debug = require( 'gulp-debug' ),
+	sass = require('gulp-sass')(require('sass')),
 	uglify = require( 'gulp-uglify' ),
 	concat = require( 'gulp-concat' ),
-	sequence = require( 'run-sequence' ),
-	del = require( 'del' ),
 	fs = require( 'fs' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
-	gutil = require( 'gutil' ),
 	pump = require( 'pump' );
 
 // Configs.
@@ -60,7 +58,7 @@ gulp.task( 'fontFamilyCss', () => {
 
 
 // Compile sass files.
-gulp.task( 'sass', function() {
+gulp.task( 'sass', function( cb ) {
 	gulp
 		.src( [
 			config.dist + '/assets/scss/**/*.scss',
@@ -88,22 +86,7 @@ gulp.task( 'sass', function() {
 		)
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( config.dist + '/assets/css' ) );
-} );
-
-gulp.task( 'merge-webpack', function() {
-	gulp
-		.src( [
-			config.dist + '/assets/css/editor.min.css',
-			config.dist + '/assets/dist/editor.min.css'
-		] )
-		.pipe(
-			autoprefixer( {
-				browsers: [ '> 5%' ],
-				cascade: false
-			} )
-		)
-		.pipe( concat( 'editor.min.css' ) )
-		.pipe( gulp.dest( config.dist + '/assets/css/' ) );
+		cb();
 } );
 
 gulp.task( 'jsmin-media', function( cb ) {
@@ -140,9 +123,7 @@ gulp.task( 'jsmin-editor', function( cb ) {
 	);
 } );
 
-gulp.task( 'build', function( cb ) {
-	sequence( [ 'sass', 'jsmin-editor', 'jsmin-media' ], cb );
-} );
+gulp.task( 'build', gulp.series( 'sass', 'jsmin-editor', 'jsmin-media' ) );
 
 gulp.task( 'watch', function() {
 	gulp.watch( config.src + 'assets/scss/**/*', [ 'sass' ] );

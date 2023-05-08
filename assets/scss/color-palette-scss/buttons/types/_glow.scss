@@ -77,7 +77,8 @@ $ubtn-default-glow-color: #2c9adb !default;
 * a button.
 */
 
-#{$ubtn-namespace}-glow {
+.palette-primary #{$ubtn-namespace}-glow.button-primary,
+.palette-primary #{$ubtn-namespace}-glow.button-secondary {
   @if($ubtn-use-compass) {
     @include glow(glowing);
 
@@ -107,7 +108,8 @@ $ubtn-default-glow-color: #2c9adb !default;
 * Create colors for glowing buttons
 */
 
-#{$ubtn-namespace}-glow {
+.palette-primary #{$ubtn-namespace}-glow.button-primary,
+.palette-primary #{$ubtn-namespace}-glow.button-secondary {
   @each $ubtn-color in $ubtn-colors {
     $ubtn-name: nth($ubtn-color, 1);
     $ubtn-background: nth($ubtn-color, 2);

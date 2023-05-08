@@ -5,14 +5,16 @@
 * (ex. .button-large, .button-small, etc.)
 */
 @each $ubtn-size in $ubtn-sizes {
-  $ubtn-size-name: nth($ubtn-size, 1);
-  $ubtn-size-multiplier: nth($ubtn-size, 2);
-  $ubtn-size-namespace: #{$ubtn-namespace}-#{$ubtn-size-name};
+	$ubtn-size-name: nth($ubtn-size, 1);
+	$ubtn-size-multiplier: nth($ubtn-size, 2);
+	$ubtn-size-namespace: #{$ubtn-namespace}-#{$ubtn-size-name};
 
-  #{$ubtn-size-namespace} {
-    font-size: $ubtn-font-size * $ubtn-size-multiplier;
-    height: $ubtn-height * $ubtn-size-multiplier;
-    line-height: $ubtn-height * $ubtn-size-multiplier;
-    padding: 0 ($ubtn-height * $ubtn-size-multiplier);
+	#{$ubtn-size-namespace},
+	.palette-primary #{$ubtn-size-namespace}.button-primary:not(.menu-item ),
+	.palette-primary #{$ubtn-size-namespace}.button-secondary:not(.menu-item )  {
+	  font-size: $ubtn-font-size * $ubtn-size-multiplier;
+	  height: $ubtn-height * $ubtn-size-multiplier !important;
+	  line-height: $ubtn-height * $ubtn-size-multiplier;
+	  padding: 0 ($ubtn-height * $ubtn-size-multiplier);
+	}
   }
-}

@@ -112,7 +112,11 @@ var webpackConfig = {
 			$: 'jquery',
 			jQuery: 'jquery'
 		} )
-	]
+	],
+
+	stats: {
+		errorDetails: true
+	}
 };
 
 if ( config.devServer.proxy ) {
