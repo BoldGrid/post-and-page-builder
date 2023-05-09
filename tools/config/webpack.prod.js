@@ -152,7 +152,9 @@ module.exports = {
 		}),
 
 		new CleanWebpackPlugin({
+			dry: true,
 			protectWebpackAssets: false,
+			cleanOnceBeforeBuildPatterns: [],
 			cleanAfterEveryBuildPatterns: ['*.LICENSE.txt'],
 		}),
 	],
