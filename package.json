@@ -44,6 +44,7 @@
 		"@wordpress/eslint-plugin": "^14.5.0",
 		"babel-loader": "^9.1.2",
 		"babel-minify-webpack-plugin": "^0.3.1",
+		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^11.0.0",
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.7.3",
@@ -86,7 +87,7 @@
 		"webpack-dev-server": "^4.13.3"
 	},
 	"dependencies": {
-		"@boldgrid/components": "^2.16.24",
+		"@boldgrid/components": "^2.16.25",
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#ppb-dev",
 		"@boldgrid/fourpan": "^1.1.1",
 		"animate.css": "^3.7.0",

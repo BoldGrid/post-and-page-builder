@@ -3,6 +3,7 @@ const webpack = require( 'webpack' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const srcDir = path.resolve( __dirname, '../..' );
 const distDir = path.resolve( __dirname, '../..' );
@@ -49,12 +50,12 @@ module.exports = {
 			},
 			{
 				test: /\.svg$/,
-				loader: 'svg-inline-loader'
+				loader: 'svg-inline-loader',
 			},
 			{
 				test: /\.js$/,
-				use: [ 'babel-loader' ],
-				include: [ srcDir ]
+				use: ['babel-loader'],
+				include: [ srcDir ],
 			},
 			{
 				test: /\.(scss|css)$/,
@@ -62,13 +63,25 @@ module.exports = {
 					MiniCssExtractPlugin.loader,
 					'css-loader',
 					{
-						loader: "sass-loader",
+						loader: 'sass-loader',
 						options: {
-							implementation: require.resolve("sass")
+							implementation: require.resolve( 'sass' ),
 						},
-					}
+					},
+					'postcss-loader'
 				],
-			}
+			},
+			{
+				test: /\.(jpg|jpeg|png|gif)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'static/[name].[hash].[ext]',
+						},
+					},
+				],
+			},
 		]
 	},
 
@@ -83,7 +96,7 @@ module.exports = {
 				from: srcDir + '/node_modules/font-awesome/fonts',
 				to: fontsDir,
 				globOptions: {
-					ignore: [ 'fontawesome-webfont.svg' ],
+					ignore: [ '**/fontawesome-webfont.svg' ],
 				}
 			},
 			{
@@ -121,9 +134,9 @@ module.exports = {
 			]
 		} ),
 
-		new webpack.ProvidePlugin( {
+		new webpack.ProvidePlugin({
 			$: 'jquery',
-			jQuery: 'jquery'
+			jQuery: 'jquery',
 		} ),
 
 		new MiniCssExtractPlugin( {
@@ -136,6 +149,18 @@ module.exports = {
 			emitWarning: false,
 			emitError: false,
 			failOnError: false,
-		})
+		}),
+
+		new CleanWebpackPlugin({
+			protectWebpackAssets: false,
+			cleanAfterEveryBuildPatterns: ['*.LICENSE.txt'],
+		}),
 	],
+
+	stats: {
+		builtAt: true,
+		moduleAssets: false,
+		colors: true,
+		errors: false
+	}
 };
