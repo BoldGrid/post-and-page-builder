@@ -74,6 +74,7 @@
 		"prettier-eslint-cli": "^7.1.0",
 		"pump": "^3.0.0",
 		"raw-loader": "^4.0.2",
+		"remove-files-webpack-plugin": "^1.5.0",
 		"resolve-url-loader": "^5.0.0",
 		"sass": "^1.62.1",
 		"sass-loader": "^13.2.2",

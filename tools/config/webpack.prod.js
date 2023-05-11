@@ -3,7 +3,8 @@ const webpack = require( 'webpack' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const ESLintPlugin = require('eslint-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const RemovePlugin = require('remove-files-webpack-plugin');
+
 
 const srcDir = path.resolve( __dirname, '../..' );
 const distDir = path.resolve( __dirname, '../..' );
@@ -28,7 +29,7 @@ module.exports = {
 	output: {
 		filename: './assets/dist/[name].min.js',
 		path: distDir,
-		publicPath: '/'
+		publicPath: '/',
 	},
 
 	externals: {
@@ -151,11 +152,42 @@ module.exports = {
 			failOnError: false,
 		}),
 
-		new CleanWebpackPlugin({
-			dry: true,
-			protectWebpackAssets: false,
-			cleanOnceBeforeBuildPatterns: [],
-			cleanAfterEveryBuildPatterns: ['*.LICENSE.txt'],
+		new RemovePlugin({
+			after: {
+				test: [
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							return new RegExp(/\.LICENSE\.txt$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: true
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							return new RegExp( /\/static\//, 'mi' ).test( absoluteItemPath );
+						},
+						recursive: true
+
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							return new RegExp(/\.png$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: false
+					},
+				],
+			}
 		}),
 	],
 
@@ -163,6 +195,5 @@ module.exports = {
 		builtAt: true,
 		moduleAssets: false,
 		colors: true,
-		errors: false
 	}
 };
