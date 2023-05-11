@@ -1030,7 +1030,7 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#ppb-dev":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#c84f408474031265312ef8533e0c88dd1c9e8696"
+  resolved "https://github.com/BoldGrid/controls#c49d9be9b8dc8f8fbe9c2ada2cb4525d00435de2"
   dependencies:
     "@babel/core" "7.21.4"
     "@babel/eslint-parser" "^7.21.3"
