@@ -158,7 +158,10 @@ module.exports = {
 					{
 						folder: srcDir,
 						method: (absoluteItemPath) => {
-							if( absoluteItemPath.includes( 'node_modules' ) ) {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
 								return false;
 							}
 							return new RegExp(/\.LICENSE\.txt$/, 'mi').test( absoluteItemPath );
@@ -168,10 +171,13 @@ module.exports = {
 					{
 						folder: srcDir,
 						method: (absoluteItemPath) => {
-							if( absoluteItemPath.includes( 'node_modules' ) ) {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
 								return false;
 							}
-							return new RegExp( /\/static\//, 'mi' ).test( absoluteItemPath );
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp( /\/static/, 'mi' ).test( absoluteItemPath );
 						},
 						recursive: true
 
@@ -179,7 +185,10 @@ module.exports = {
 					{
 						folder: srcDir,
 						method: (absoluteItemPath) => {
-							if( absoluteItemPath.includes( 'node_modules' ) ) {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
 								return false;
 							}
 							return new RegExp(/\.png$/, 'mi').test( absoluteItemPath );
