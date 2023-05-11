@@ -59,24 +59,23 @@ gulp.task( 'fontFamilyCss', () => {
 
 // Compile sass files.
 gulp.task( 'sass', function( cb ) {
-	gulp
+	return gulp
 		.src( [
-			config.dist + '/assets/scss/**/*.scss',
+			config.dist + 'assets/scss/**/*.scss',
 			'!' + config.src + 'assets/scss/color-palette-scss/**/*'
 		] )
 		.pipe(
-			sass( {
+			sass.sync( {
 				includePaths: [ config.dist + 'assets/scss/' ]
 			} ).on( 'error', sass.logError )
 		)
 		.pipe( sass.sync().on( 'error', sass.logError ) )
 		.pipe(
 			autoprefixer( {
-				browsers: [ '> 1%', 'Last 2 versions' ],
 				cascade: false
 			} )
 		)
-		.pipe( gulp.dest( config.dist + '/assets/css' ) )
+		.pipe( gulp.dest( config.dist + 'assets/css' ) )
 		.pipe(
 			cssnano( {
 				discardComments: { removeAll: true },
@@ -85,16 +84,15 @@ gulp.task( 'sass', function( cb ) {
 			} )
 		)
 		.pipe( rename( { suffix: '.min' } ) )
-		.pipe( gulp.dest( config.dist + '/assets/css' ) );
-		cb();
+		.pipe( gulp.dest( config.dist + 'assets/css' ) );
 } );
 
 gulp.task( 'jsmin-media', function( cb ) {
 	pump(
 		[
 			gulp.src( [
-				'!' + config.src + 'assets/js/media/**/*.min.js',
-				config.src + 'assets/js/media/**/*.js'
+				config.src + 'assets/js/media/**/*.js',
+				'!' + config.src + 'assets/js/media/**/*.min.js'
 			] ),
 			uglify(),
 			rename( {
@@ -107,11 +105,12 @@ gulp.task( 'jsmin-media', function( cb ) {
 } );
 
 gulp.task( 'jsmin-editor', function( cb ) {
+	console.log( config.src + 'assets/js/editor/**/*.min.js' );
 	pump(
 		[
 			gulp.src( [
+				config.src + 'assets/js/editor/**/*.js',
 				'!' + config.src + 'assets/js/editor/**/*.min.js',
-				config.src + 'assets/js/editor/**/*.js'
 			] ),
 			uglify(),
 			rename( {
@@ -123,7 +122,24 @@ gulp.task( 'jsmin-editor', function( cb ) {
 	);
 } );
 
-gulp.task( 'build', gulp.series( 'sass', 'jsmin-editor', 'jsmin-media' ) );
+gulp.task( 'merge-webpack', function( cb ) {
+	gulp
+		.src( [
+			config.dist + 'assets/css/editor.min.css',
+			config.dist + 'assets/dist/editor.min.css'
+		] )
+		.pipe(
+			autoprefixer( {
+				cascade: false
+			} )
+		)
+		.pipe( concat( 'editor.min.css' ) )
+		.pipe( gulp.dest( config.dist + 'assets/css/' ) );
+
+		cb();
+} );
+
+gulp.task( 'build', gulp.series( 'sass', 'jsmin-editor', 'jsmin-media', 'merge-webpack' ) );
 
 gulp.task( 'watch', function() {
 	gulp.watch( config.src + 'assets/scss/**/*', [ 'sass' ] );
