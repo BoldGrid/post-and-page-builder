@@ -2,7 +2,6 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const ESLintPlugin = require('eslint-webpack-plugin');
 const RemovePlugin = require('remove-files-webpack-plugin');
 
 
@@ -143,14 +142,6 @@ module.exports = {
 		new MiniCssExtractPlugin( {
 			filename: 'assets/dist/[name].min.css',
 		} ),
-
-		new ESLintPlugin({
-			extensions: ['js'],
-			exclude: 'node_modules',
-			emitWarning: false,
-			emitError: false,
-			failOnError: false,
-		}),
 
 		new RemovePlugin({
 			after: {
