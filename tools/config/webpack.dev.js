@@ -1,14 +1,20 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const config = require( './local.dev.js' );
+const ESLintPlugin = require('eslint-webpack-plugin');
+const RemovePlugin = require('remove-files-webpack-plugin');
 
-const distDir = path.resolve( __dirname, '../..' );
+
 const srcDir = path.resolve( __dirname, '../..' );
+const distDir = path.resolve( __dirname, '../..' );
+const fontsDir = distDir + '/assets/fonts/';
+const jsonDir = distDir + '/assets/json/';
+const cssDir = distDir + '/assets/css/';
+const scssDir = distDir + '/assets/scss/';
 
-var webpackConfig = {
-	mode: 'development',
+module.exports = {
+	mode: 'production',
 
 	context: srcDir,
 
@@ -19,21 +25,11 @@ var webpackConfig = {
 		classic: './assets/js/classic.js',
 		settings: './assets/js/settings.js'
 	},
-	output: {
-		filename: './[name].js',
-		path: distDir + './assets/dist',
-		publicPath: '/'
-	},
 
-	devServer: {
-		contentBase: path.resolve( __dirname, '../..' ),
+	output: {
+		filename: './assets/dist/[name].min.js',
+		path: distDir,
 		publicPath: '/',
-		historyApiFallback: true,
-		port: 4000,
-		overlay: {
-			errors: true,
-			warnings: true
-		}
 	},
 
 	externals: {
@@ -42,10 +38,6 @@ var webpackConfig = {
 
 	module: {
 		rules: [
-			{
-				test: /\.ejs$/,
-				loader: 'ejs-loader'
-			},
 			{
 				test: /\.html$/,
 				use: [
@@ -58,69 +50,159 @@ var webpackConfig = {
 				]
 			},
 			{
-				test: /\.js$/,
-				loader: 'babel-loader'
-			},
-			{
 				test: /\.svg$/,
-				loader: 'svg-inline-loader'
+				loader: 'svg-inline-loader',
 			},
 			{
 				test: /\.js$/,
-				enforce: 'pre',
-				exclude: /node_modules/,
-				loader: 'eslint-loader',
-				options: {
-					configFile: srcDir + '/.eslintrc.js',
-					emitWarning: true
-				}
+				use: ['babel-loader'],
+				include: [ srcDir ],
 			},
 			{
 				test: /\.(scss|css)$/,
 				use: [
-					{
-						loader: 'style-loader'
-					},
-					{
-						loader: 'css-loader'
-					},
+					MiniCssExtractPlugin.loader,
+					'css-loader',
 					{
 						loader: 'sass-loader',
 						options: {
-							includePaths: [ 'node_modules' ]
-						}
-					}
-				]
+							implementation: require.resolve( 'sass' ),
+						},
+					},
+					'postcss-loader'
+				],
 			},
 			{
-				test: /\.(jpg|jpeg|png|gif|ico)$/,
-				loader: 'url-loader',
-				query: {
-					limit: 10000, // Use data url for assets <= 10KB
-					name: 'static/images/[name].[hash].[ext]'
-				}
-			}
+				test: /\.(jpg|jpeg|png|gif)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'static/[name].[hash].[ext]',
+						},
+					},
+				],
+			},
 		]
 	},
 
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
+		new CopyWebpackPlugin({
+			patterns: [
+			{
+				from: require.resolve( 'jquery.stellar/jquery.stellar.js' ),
+				to: distDir + '/assets/js/jquery-stellar'
+			},
+			{
+				from: srcDir + '/node_modules/font-awesome/fonts',
+				to: fontsDir,
+				globOptions: {
+					ignore: [ '**/fontawesome-webfont.svg' ],
+				}
+			},
+			{
+				from: require.resolve( 'font-awesome/css/font-awesome.min.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( '@boldgrid/controls/dist/static/sass.worker.js' ),
+				to: distDir + '/assets/js/sass-js'
+			},
+			{
+				from: require.resolve( '@boldgrid/components/dist/css/components.min.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( '@boldgrid/components/dist/css/components.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( 'animate.css/animate.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( 'animate.css/animate.min.css' ),
+				to: cssDir
+			},
+			{
+				from: require.resolve( '@boldgrid/controls/src/controls/typography/family/google-fonts.json' ),
+				to: jsonDir
+			},
+			{
+				from: 'node_modules/@boldgrid/controls/dist/scss/color-palette-scss',
+				to: path.resolve( scssDir, 'color-palette-scss' )
+			}
+			]
+		} ),
 
-		new webpack.NamedModulesPlugin(),
-
-		new webpack.ProvidePlugin( {
+		new webpack.ProvidePlugin({
 			$: 'jquery',
-			jQuery: 'jquery'
-		} )
+			jQuery: 'jquery',
+		} ),
+
+		new MiniCssExtractPlugin( {
+			filename: 'assets/dist/[name].min.css',
+		} ),
+
+		new ESLintPlugin({
+			extensions: ['js'],
+			exclude: 'node_modules',
+			emitWarning: false,
+			emitError: false,
+			failOnError: false,
+		}),
+
+		new RemovePlugin({
+			after: {
+				test: [
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp(/\.LICENSE\.txt$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: true
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp( /\/static/, 'mi' ).test( absoluteItemPath );
+						},
+						recursive: true
+
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp(/\.png$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: false
+					},
+				],
+			}
+		}),
 	],
 
 	stats: {
-		errorDetails: true
+		builtAt: true,
+		moduleAssets: false,
+		colors: true,
 	}
 };
-
-if ( config.devServer.proxy ) {
-	webpackConfig.devServer.proxy = config.devServer.proxy;
-}
-
-module.exports = webpackConfig;
