@@ -9,7 +9,8 @@
   $ubtn-shape-name: nth($ubtn-shape, 1);
   $ubtn-shape-radius: nth($ubtn-shape, 2);
 
-  #{$ubtn-namespace}-#{$ubtn-shape-name} {
+  .palette-primary #{$ubtn-namespace}-#{$ubtn-shape-name}.button-primary,
+  .palette-primary #{$ubtn-namespace}-#{$ubtn-shape-name}.button-secondary {
     @if($ubtn-use-compass) {
       @include border-radius($ubtn-shape-radius);
     }
