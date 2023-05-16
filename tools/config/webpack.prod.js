@@ -29,6 +29,7 @@ module.exports = {
 		filename: './assets/dist/[name].min.js',
 		path: distDir,
 		publicPath: '/',
+		assetModuleFilename: 'static/[name][ext][query]'
 	},
 
 	externals: {
@@ -43,7 +44,9 @@ module.exports = {
 					{
 						loader: 'html-loader',
 						options: {
-							minimize: true
+							minimize: true,
+							sources: false,
+							esModule: false,
 						}
 					}
 				]
@@ -72,16 +75,9 @@ module.exports = {
 				],
 			},
 			{
-				test: /\.(jpg|jpeg|png|gif)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: 'static/[name].[hash].[ext]',
-						},
-					},
-				],
-			},
+				test: /\.(jpg|jpeg|png|gif|ico)$/,
+				type: 'asset',
+			}
 		]
 	},
 
