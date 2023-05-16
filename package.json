@@ -5,10 +5,12 @@
 	"main": "assets/js/editor.js",
 	"scripts": {
 		"start-css": "gulp watch",
-		"build-webpack": "webpack build --progress=profile",
+		"build-webpack": "webpack build --mode=production --progress=profile",
+		"dev-webpack": "webpack build --mode=development --progress=profile",
 		"format-js": "prettier-eslint \"assets/js/builder/**/*.js\" --write",
 		"format-sass": "stylelint \"assets/scss/**/*.scss\" --fix --syntax scss",
 		"build": "npm run build-webpack && gulp build",
+		"dev": "npm run dev-webpack && gulp build",
 		"test": "cross-env NODE_ENV=test karma start karma.config.js --single-run"
 	},
 	"repository": {

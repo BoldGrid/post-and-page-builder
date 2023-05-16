@@ -4,7 +4,6 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const RemovePlugin = require('remove-files-webpack-plugin');
 
-
 const srcDir = path.resolve( __dirname, '../..' );
 const distDir = path.resolve( __dirname, '../..' );
 const fontsDir = distDir + '/assets/fonts/';
@@ -13,9 +12,11 @@ const cssDir = distDir + '/assets/css/';
 const scssDir = distDir + '/assets/scss/';
 
 module.exports = {
-	mode: 'production',
+	mode: 'development',
 
 	context: srcDir,
+
+	cache: true,
 
 	entry: {
 		public: './assets/js/public.js',
