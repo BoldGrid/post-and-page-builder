@@ -12,3 +12,10 @@
 .mdc-menu.enhanced-select {
 	z-index: 99999999;
 }
+.mdc-select {
+	--mdc-theme-primary: #f95b26;
+	.mdc-list-item--selected {
+		color: #000;
+	}
+}
+
