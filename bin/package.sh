@@ -42,6 +42,7 @@ rm -f stylelint.config.js
 rm -f .stylelintignore
 rm -f CONTRIBUTING.md
 rm -f post-and-page-builder.zip
+rm -f babel.config.json
 
 echo "Creating Zip File"
 cd ..

@@ -6,7 +6,8 @@
 * real life button.
 */
 
-#{$ubtn-namespace}-3d {
+.palette-primary #{$ubtn-namespace}-3d.button-primary,
+.palette-primary #{$ubtn-namespace}-3d.button-secondary {
   position: relative;
   top: 0;
 
@@ -51,7 +52,8 @@
 * Create colors for buttons
 * (.button-primary, .button-secondary, etc.)
 */
-#{$ubtn-namespace}-3d {
+.palette-primary #{$ubtn-namespace}-3d.button-primary,
+.palette-primary #{$ubtn-namespace}-3d.button-secondary {
   @each $ubtn-color in $ubtn-colors {
     $ubtn-name: nth($ubtn-color, 1);
     $ubtn-background: nth($ubtn-color, 2);

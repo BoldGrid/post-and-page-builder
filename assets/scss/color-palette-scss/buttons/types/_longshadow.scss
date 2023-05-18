@@ -68,6 +68,8 @@
 */
 
 #{$ubtn-namespace}-longshadow,
+.palette-primary #{$ubtn-namespace}-longshadow.button-primary,
+.palette-primary #{$ubtn-namespace}-longshadow.button-secondary,
 #{$ubtn-namespace}-longshadow-right {
   @include longshadow(right);
 }

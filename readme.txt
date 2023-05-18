@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 1.23.2
+Stable tag: 1.24.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,75 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.24.0 =
+* Update: Updated plugin build from NodeJS v10.19.0 to v14.19.3
+* Update: Updated the following dependancies:
+	* babel-core          6.26.0 => 7.21.4
+	* babel-loader        7.1.2  => 9.1.2
+	* copy-webpack-plugin 4.5.1  => 11.0.0
+	* css-loader		  0.28.7 => 6.7.3
+	* eslint			  4.19.1 => 7.32.0
+	* eventemitter3       3.1.0  => 5.0.0
+	* file-loader         1.1.5  => 6.2.0
+	* gulp                3.9.1  => 4.0.2
+	* gulp-autoprefix     5.0.0  => 8.0.0
+	* gulp-concat         2.6.0  => 2.6.1
+	* gulp-cssnano        2.1.1  => 2.1.3
+	* gulp-rename         1.2.2  => 2.0.0
+	* gulp-sass           4.0.0  => 5.1.0
+	* gulp-uglify         3.0.0  => 3.0.2
+	* jquery              1.12.4 => 3.6.4
+	* jquery-ui-dist      1.12.1 => 1.13.2
+	* karma               2.0.4  => 2.7.5
+	* postcss-loader      2.1.6  => 7.2.4
+	* prettier            1.8.2  => 2.8.8
+	* prettier-eslint     8.2.2  => 15.0.1
+	* prettier-eslint-cli 4.4.0  => 7.1.0
+	* sass-loader         6.0.7  => 13.2.2
+	* webpack             4.0.0  => 5.81.0
+	* webpack-cli         2.0.12 => 5.0.2
+	* webpack-dev-server  3.11.2 => 4.13.3
+* Update: Replaced the following dependancies:
+	* babel-eslint => @babel/eslint-parser 7.21.3
+	* eslint-config-wordpress => @wordpress/eslint-plugin 14.5.0
+	* eslint-plugin-html => eslint-webpack-plugin 4.0.1
+	* babel-polyfill, babel-preset-es2015, babel-preset-stage-0 => @babel/preset-env 7.21.4
+	* html-webpack-plugin => html-loader 4.2.0
+* Update: Removed the following dependancies:
+	* babel-minify-webpack-plugin
+	* cross-env
+	* del
+	* eslint-loader
+	* extract-loader
+	* extract-text-webpack-plugin
+	* gulp-Debug
+	* gutil
+	* husky
+	* imports-loader
+	* jasmine-core
+	* karma-chrome-launcher
+	* karma-es6-shim
+	* karma-jasmine
+	* karma-phantomjs-launcher
+	* karma-spec-reporter
+	* karma-webpack
+	* lint-staged
+	* npm-run-all
+	* resolve-url-loader
+	* run-sequence
+	* style-loader
+	* stylelint-config-standard
+	* stylelint
+	* url-loader
+
+* Update: added the following dependancies:
+	* @babel/plugin-proposal-export-default-from 7.18.0
+	* postcss ^8.4.23
+	* raw-loader ^4.0.2
+	* remove-files-webpack-plugin ^1.5.0
+	* sass	^1.62.1"
+	* svg-inline-loader	^0.8.2"
 
 = 1.23.2 =
 * Update: Support patch for Crio Premium's logo resizing tool [#526](https://github.com/BoldGrid/post-and-page-builder/pull/526)

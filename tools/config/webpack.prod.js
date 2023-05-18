@@ -1,13 +1,12 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
+const RemovePlugin = require('remove-files-webpack-plugin');
+
 
 const srcDir = path.resolve( __dirname, '../..' );
 const distDir = path.resolve( __dirname, '../..' );
-const nodeModules = path.resolve( __dirname, '../../node_modules' );
 const fontsDir = distDir + '/assets/fonts/';
 const jsonDir = distDir + '/assets/json/';
 const cssDir = distDir + '/assets/css/';
@@ -29,7 +28,8 @@ module.exports = {
 	output: {
 		filename: './assets/dist/[name].min.js',
 		path: distDir,
-		publicPath: '/'
+		publicPath: '/',
+		assetModuleFilename: 'static/[name][ext][query]'
 	},
 
 	externals: {
@@ -39,82 +39,51 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.ejs$/,
-				loader: 'ejs-loader'
-			},
-			{
 				test: /\.html$/,
 				use: [
 					{
 						loader: 'html-loader',
 						options: {
-							minimize: true
+							minimize: true,
+							sources: false,
+							esModule: false,
 						}
 					}
 				]
 			},
 			{
 				test: /\.svg$/,
-				loader: 'svg-inline-loader'
+				loader: 'svg-inline-loader',
 			},
 			{
 				test: /\.js$/,
-				use: [ 'babel-loader' ]
-			},
-			{
-				test: /\.js$/,
-				enforce: 'pre',
-				exclude: /node_modules/,
-				loader: 'eslint-loader',
-				options: {
-					emitWarning: true
-				}
+				use: ['babel-loader'],
+				include: [ srcDir ],
 			},
 			{
 				test: /\.(scss|css)$/,
-				use: ExtractTextPlugin.extract( {
-					fallback: 'style-loader',
-					use: [
-						{
-							loader: 'css-loader',
-							options: {
-								minimize: true
-							}
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader',
+					{
+						loader: 'sass-loader',
+						options: {
+							implementation: require.resolve( 'sass' ),
 						},
-						{
-							loader: 'sass-loader',
-							options: {
-								includePaths: [ nodeModules ]
-							}
-						},
-						{
-							loader: 'postcss-loader',
-							options: {
-								plugins: ( loader ) => [
-									require( 'autoprefixer' )
-								]
-							}
-						}
-					]
-				} )
+					},
+					'postcss-loader'
+				],
 			},
 			{
 				test: /\.(jpg|jpeg|png|gif|ico)$/,
-				loader: 'url-loader',
-				query: {
-					limit: 10000, // Use data url for assets <= 10KB
-					name: 'static/[name].[hash].[ext]'
-				}
+				type: 'asset',
 			}
 		]
 	},
 
 	plugins: [
-		new MinifyPlugin(),
-
-		new webpack.NamedModulesPlugin(),
-
-		new CopyWebpackPlugin( [
+		new CopyWebpackPlugin({
+			patterns: [
 			{
 				from: require.resolve( 'jquery.stellar/jquery.stellar.js' ),
 				to: distDir + '/assets/js/jquery-stellar'
@@ -122,7 +91,9 @@ module.exports = {
 			{
 				from: srcDir + '/node_modules/font-awesome/fonts',
 				to: fontsDir,
-				ignore: [ 'fontawesome-webfont.svg' ]
+				globOptions: {
+					ignore: [ '**/fontawesome-webfont.svg' ],
+				}
 			},
 			{
 				from: require.resolve( 'font-awesome/css/font-awesome.min.css' ),
@@ -156,13 +127,69 @@ module.exports = {
 				from: 'node_modules/@boldgrid/controls/dist/scss/color-palette-scss',
 				to: path.resolve( scssDir, 'color-palette-scss' )
 			}
-		] ),
-
-		new webpack.ProvidePlugin( {
-			$: 'jquery',
-			jQuery: 'jquery'
+			]
 		} ),
 
-		new ExtractTextPlugin( 'assets/dist/[name].min.css' )
-	]
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			jQuery: 'jquery',
+		} ),
+
+		new MiniCssExtractPlugin( {
+			filename: 'assets/dist/[name].min.css',
+		} ),
+
+		new RemovePlugin({
+			after: {
+				test: [
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp(/\.LICENSE\.txt$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: true
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp( /\/static/, 'mi' ).test( absoluteItemPath );
+						},
+						recursive: true
+
+					},
+					{
+						folder: srcDir,
+						method: (absoluteItemPath) => {
+							if ( absoluteItemPath.includes( 'node_modules' ) ) {
+								return false;
+							}
+							if ( absoluteItemPath.includes( 'vendor' ) ) {
+								return false;
+							}
+							return new RegExp(/\.png$/, 'mi').test( absoluteItemPath );
+						},
+						recursive: false
+					},
+				],
+			}
+		}),
+	],
+
+	stats: {
+		builtAt: true,
+		moduleAssets: false,
+		colors: true,
+	}
 };
