@@ -43,6 +43,7 @@ export class Notice extends Base {
 		this.settings = this.getDefaults();
 
 		this.templateMarkup = _.template(templateHtml)({
+			iconUrl: BoldgridEditor.plugin_url + '/assets/image/notice/plugin-icon-editor.png',
 			nonce: BoldgridEditor.setupNonce,
 			stepper: this.getStepper(),
 		});
