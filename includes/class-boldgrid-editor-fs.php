@@ -20,6 +20,15 @@
  */
 class Boldgrid_Editor_Fs {
 
+	/**
+	 * WP Filesystem.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var WP_Filesystem_Base Global WP Filesystem instance.
+	 */
+	public $wp_filesystem;
+
 	public function __construct() {
 		$this->wp_filesystem = $this->init();
 

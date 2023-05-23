@@ -21,6 +21,15 @@
 class Boldgrid_Components_Shortcode {
 
 	/**
+	 * Config.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var array
+	 */
+	public $config = array();
+
+	/**
 	 * Initialize Component configurations.
 	 *
 	 * @since 1.8.0
