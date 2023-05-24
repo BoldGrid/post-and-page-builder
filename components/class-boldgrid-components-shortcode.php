@@ -207,7 +207,7 @@ class Boldgrid_Components_Shortcode {
 			add_action( 'wp_ajax_boldgrid_shortcode_' . $tag , function () {
 				Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
 
-				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : null;
+				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : '';
 				$html = do_shortcode( $text );
 
 				wp_send_json( array(
