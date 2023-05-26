@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76990479024571ebf2400d3157517596",
+    "content-hash": "70f06a358f811a7e31ccde93c24ced6f",
     "packages": [
         {
             "name": "boldgrid/library",
-            "version": "dev-php8.2-fixes",
+            "version": "2.13.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/boldgrid/library",
-                "reference": "1c043150ddcc12325a5f474f6c9f0aca9ef17732"
+                "url": "https://github.com/BoldGrid/library.git",
+                "reference": "ec1da4d4a6029968407b8f04c61417af4f5e4487"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BoldGrid/library/zipball/ec1da4d4a6029968407b8f04c61417af4f5e4487",
+                "reference": "ec1da4d4a6029968407b8f04c61417af4f5e4487",
+                "shasum": ""
             },
             "require-dev": {
                 "yoast/phpunit-polyfills": "^1.0"
@@ -23,11 +29,7 @@
                     "Boldgrid\\Library\\Util\\": "src/Util"
                 }
             },
-            "scripts": {
-                "post-autoload-dump": [
-                    "yarn && yarn run cpx 'node_modules/jquery-toggles/toggles.min.js' 'build/' && yarn run cpx 'node_modules/jquery-toggles/css/toggles-full.css' 'build/' && yarn run rimraf node_modules"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -55,15 +57,13 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
-            "time": "2023-05-22T18:45:37+00:00"
+            "time": "2023-05-23T20:04:34+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "boldgrid/library": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

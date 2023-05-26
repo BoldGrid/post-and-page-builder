@@ -1,12 +1,6 @@
 {
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/boldgrid/library"
-        }
-    ],
     "require": {
-        "boldgrid/library": "dev-php8.2-fixes"
+        "boldgrid/library": "2.13.11"
     },
     "scripts": {
         "post-autoload-dump": [
