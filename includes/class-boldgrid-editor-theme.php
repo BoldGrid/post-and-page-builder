@@ -327,10 +327,6 @@ class Boldgrid_Editor_Theme {
 			}
 		}
 
-		if ( 'pattern' === get_theme_mod( 'boldgrid_background_type' ) && ! empty( $pattern ) ) {
-			$mce['body_class'] .= ' custom-background';
-		}
-
 		$body_background_color = get_theme_mod( $body_background_theme_mod );
 		$body_background_color = explode( ':', $body_background_color );
 		$body_background_color = array_shift( $body_background_color );
