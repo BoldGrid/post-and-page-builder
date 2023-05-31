@@ -21,6 +21,15 @@
 class Boldgrid_Components_Shortcode {
 
 	/**
+	 * Config.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var array
+	 */
+	public $config = array();
+
+	/**
 	 * Initialize Component configurations.
 	 *
 	 * @since 1.8.0
@@ -198,7 +207,7 @@ class Boldgrid_Components_Shortcode {
 			add_action( 'wp_ajax_boldgrid_shortcode_' . $tag , function () {
 				Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
 
-				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : null;
+				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : '';
 				$html = do_shortcode( $text );
 
 				wp_send_json( array(

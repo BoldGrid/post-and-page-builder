@@ -20,6 +20,15 @@
  */
 class Boldgrid_Controls_Page_Title {
 
+	/**
+	 * Configs.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var array
+	 */
+	public $configs = array();
+
 	public static $default_configs = array(
 		'visible_by_default' => true,
 		'enabled' => true,

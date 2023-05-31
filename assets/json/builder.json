@@ -131,10 +131,6 @@
             {
                 "slug": "library",
                 "title": "Block Library"
-            },
-            {
-                "slug": "saved",
-                "title": "Used Blocks"
             }
         ]
     },

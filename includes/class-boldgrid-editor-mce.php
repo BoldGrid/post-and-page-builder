@@ -21,6 +21,15 @@
 class Boldgrid_Editor_MCE {
 
 	/**
+	 * Configs.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var array
+	 */
+	public $configs = array();
+
+	/**
 	 * Initialize class and set class properties.
 	 *
 	 * @since 1.4.7

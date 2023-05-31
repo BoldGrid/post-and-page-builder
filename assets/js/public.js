@@ -1,7 +1,7 @@
 var $ = window.jQuery;
 var self;
 
-import 'imports-loader?this=>window!wowjs';
+import wow from 'wowjs';
 
 class Public {
 
@@ -567,7 +567,7 @@ class Public {
 	 * @since 1.8.0
 	 */
 	initWowJs() {
-		this.wowJs = new window.WOW( {
+		this.wowJs = new wow.WOW( {
 			live: false,
 			mobile: false
 		} );

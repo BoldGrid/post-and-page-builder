@@ -20,6 +20,15 @@
  */
 class Boldgrid_Editor_Assets {
 
+	/**
+	 * Configs.
+	 *
+	 * @since 1.24.1
+	 *
+	 * @var array
+	 */
+	public $configs = array();
+
 	public function __construct( $configs ) {
 		return $this->configs = $configs;
 	}

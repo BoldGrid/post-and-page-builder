@@ -29,7 +29,7 @@ export class Form {
 			} );
 
 			$el.replaceWith( matMenu.render() );
-			$( matMenu.select.menu_.root_ ).addClass( 'mdc-menu--supports-icon' );
+			$( matMenu.select.menu.root ).addClass( 'mdc-menu--supports-icon' );
 		} );
 
 		this.$form = $html;
