@@ -616,7 +616,7 @@ class Boldgrid_Editor_Assets {
 		wp_register_style( 'editor-css-imhwpb', self::editor_css_url(), array(), BOLDGRID_EDITOR_VERSION );
 
 		wp_enqueue_style( 'animatecss',
-		plugins_url( '/assets/css/animate.min.css', $plugin_file ), array(), BOLDGRID_EDITOR_VERSION );
+		plugins_url( '/assets/css/animate.min.css', $plugin_file ), array( 'wp-components' ), BOLDGRID_EDITOR_VERSION );
 
 		wp_enqueue_style( 'boldgrid-components',
 			plugins_url( '/assets/css/components' . $suffix . '.css', $plugin_file ), array(),

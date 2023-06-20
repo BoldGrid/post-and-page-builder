@@ -36,8 +36,18 @@ module.exports = {
 		jquery: 'jQuery'
 	},
 
+	resolve: {
+		extensions: [ '', '.js', '.jsx' ],
+	},
+
 	module: {
 		rules: [
+			{
+				test: /\.m?js/,
+				resolve: {
+					fullySpecified: false
+				}
+			},
 			{
 				test: /\.html$/,
 				use: [
@@ -56,8 +66,11 @@ module.exports = {
 				loader: 'svg-inline-loader',
 			},
 			{
-				test: /\.js$/,
+				test: /\.(js|jsx)$/,
 				use: ['babel-loader'],
+				resolve: {
+					extensions: [".js", ".jsx"]
+				},
 				include: [ srcDir ],
 			},
 			{

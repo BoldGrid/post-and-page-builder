@@ -1,16 +1,3 @@
-$menu-color: #32373c;
-$panel-color: #32373c;
-$success-color: darkgreen;
-$boldgrid-primary: #121212;
-$boldgrid-color: #f95b26;
-$hover-color: #f95b26;
-$tooltip-color: #717171;
-$panel-selection-color: #eee;
-$heading-text-color: #32373c;
-$title-border-color: rgba(218, 218, 218, 0.4);
-$gridblock-color: #32373c;
-$darkened-boldgrid-color: darken( $boldgrid-color, 10% );
-
 :root {
 	--COLOR-1: var(--color-1);
 	--COLOR-1-RAW: var(--color-1-raw);

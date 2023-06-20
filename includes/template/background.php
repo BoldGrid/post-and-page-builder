@@ -8,7 +8,7 @@
 	</div>
 	<div class='background-design non-legacy'>
 		<# _.each( data.panelSections, function ( panelSection ) { #>
-			<div data-nav-target="{{panelSection.name}}" class="background-panel-section">{{{panelSection.content}}}</div>
+			<div id="{{panelSection.controlId}}" data-nav-target="{{panelSection.name}}" class="background-panel-section">{{{panelSection.content}}}</div>
 		<# }); #>
 	</div>
 </script>

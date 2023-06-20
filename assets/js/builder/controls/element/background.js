@@ -1,11 +1,12 @@
+/* eslint.global-strict: 0 */
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 // Import Semver.
 import { gte as semverGte } from 'semver';
-import { GradientPicker } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
+import { BoldgridPanel } from 'boldgrid-panel';
 
 ( function( $ ) {
 	'use strict';
@@ -47,25 +48,6 @@ import { useState } from '@wordpress/element';
 
 		availableHoverEffects: [ 'background-hover-fixed' ],
 
-		panelSections: [
-			{
-				name: 'background-color',
-				controlId: 'bgColor'
-			},
-			{
-				name: 'background-image',
-				controlId: 'bgImage'
-			},
-			{
-				name: 'background-blending',
-				controlId: 'bgBlending'
-			},
-			{
-				name: 'background-gradient',
-				controlId: 'bgGradient'
-			}
-		],
-
 		menuDropDown: {
 			title: 'Background',
 			options: [
@@ -98,20 +80,9 @@ import { useState } from '@wordpress/element';
 			title: 'Background',
 			height: '625px',
 			width: '450px',
-			scrollTarget: '.presets',
-			customizeSupport: [
-				'margin',
-				'padding',
-				'border',
-				'width',
-				'box-shadow',
-				'animation',
-				'border-radius',
-				'blockAlignment',
-				'device-visibility',
-				'customClasses'
-			],
-			sizeOffset: -230
+			noSlimScroll: true,
+			scrollTarget: '.boldgrid-panel__content',
+			sizeOffset: 0
 		},
 
 		/**
@@ -129,9 +100,15 @@ import { useState } from '@wordpress/element';
 			var loadControl = false,
 				minCrioVersion = '2.20.0',
 				isCrio = BoldgridEditor.is_crio,
-				themeIsGte = semverGte( BoldgridEditor.theme_version, minCrioVersion );
+				themeIsGte;
 
-			if ( isCrio && themeIsGte ) {
+			if ( ! isCrio ) {
+				return false;
+			}
+
+			themeIsGte = semverGte( BoldgridEditor.theme_version, minCrioVersion )
+
+			if ( themeIsGte ) {
 				loadControl = true;
 			}
 
@@ -190,7 +167,7 @@ import { useState } from '@wordpress/element';
 		},
 
 		/**
-		 * Open the editor panel for a given selector and stor element as target.
+		 * Open the editor panel for a given selector and store element as target.
 		 *
 		 * @since 1.8.0
 		 *
@@ -245,62 +222,6 @@ import { useState } from '@wordpress/element';
 
 			self._setupMenuReactivate();
 			self._setupMenuClick();
-			self._setupCustomizeLeave();
-			self._setupCustomization();
-		},
-
-		/**
-		 * Bind Event: Clicking Settings.
-		 *
-		 * @since 1.2.7
-		 */
-		_setupCustomization: function() {
-			var panel = BG.Panel;
-
-			panel.$element.on( 'click', '.current-selection .settings .panel-button.customizer', function(
-				e
-			) {
-				e.preventDefault();
-				self.openCustomization();
-			} );
-		},
-
-		/**
-		 * Bind Event: When the user leaves customization.
-		 *
-		 * @since 1.2.7
-		 */
-		_setupCustomizeLeave: function() {
-			var panel = BG.Panel;
-
-			panel.$element.on( 'click', '.background-design .back .panel-button', function( e ) {
-				e.preventDefault();
-
-				panel.$element.find( '.preset-wrapper' ).show();
-				panel.$element.find( '.background-design .customize' ).hide();
-				panel.initScroll();
-				panel.scrollToSelected();
-				BG.Service.customize.navigation.disable();
-			} );
-		},
-
-		/**
-		 * Open the customization view.
-		 *
-		 * @since 1.2.7
-		 */
-		openCustomization: function() {
-			var dataType = BG.Panel.$element.find( '.current-selection' ).attr( 'data-type' );
-
-			BG.Panel.$element.find( '.preset-wrapper' ).hide();
-			BG.Panel.$element.find( '.background-design .customize' ).show();
-			BG.Panel.$element.find( '.preset-wrapper' ).attr( 'data-type', dataType );
-			BG.Panel.enterCustomization();
-			BG.Panel.customizeOpenEvent();
-
-			BG.Panel.createScrollbar( '.customize', {
-				height: self.panel.height
-			} );
 		},
 
 		/**
@@ -346,28 +267,18 @@ import { useState } from '@wordpress/element';
 		 */
 		openPanel: function( $target ) {
 			var panel = BG.Panel,
-				template = wp.template( 'boldgrid-editor-background' ),
-				navItems = self.getNavItems();
+				template = wp.template( 'boldgrid-editor-background' )
 
 			self.$target = $target;
-
-			self.initPanelSections();
 
 			console.log( { panelSections: self.panelSections } );
 
 			// Remove all content from the panel.
 			panel.clear();
 
-			panel.$element.find( '.panel-body' ).html(
-				template( {
-					navItems: navItems,
-					panelSections: self.panelSections
-				} )
-			);
+			panel.$element.find( '.panel-body' ).html();
 
 			self.setElementType();
-
-			self.bindNavItems();
 
 			panel.$element.find( '.ui-sortable' ).sortable( {
 				handle: '.dashicons-move'
@@ -375,66 +286,50 @@ import { useState } from '@wordpress/element';
 
 			// Open Panel.
 			panel.open( self );
-		},
 
-		initPanelSections: function() {
-			for ( let i = self.panelSections.length - 1; 0 <= i; i-- ) {
-				let section = self.panelSections[i],
-					control = self.controls.get( section.controlId );
+			console.log( panel.$element.find( '.panel-body' ).get( 0 ) );
+			console.log( self.$target );
+			const bgRoot = createRoot( panel.$element.find( '.panel-body' ).get( 0 ) );
 
-				if ( control ) {
-					self.panelSections[i].control = self.controls.get( section.controlId );
-					self.panelSections[i].content = self.controls.get( section.controlId ).render();
-				} else {
-					self.panelSections.splice( i, 1 );
-				}
-			}
-		},
+			const colorVariables = {
+				'color-1': 'var(--color-1)',
+				'color-2': 'var(--color-2)',
+				'color-3': 'var(--color-3)',
+				'color-4': 'var(--color-4)',
+				'color-5': 'var(--color-5)',
+				'color-neutral': 'var(--color-neutral )',
+			};
 
-		bindNavItems() {
-			var panel = BG.Panel,
-				$navItems = panel.$element.find( '.background-nav-item' ),
-				$panelSections = panel.$element.find( '.background-panel-section' );
-
-			$navItems.removeClass( 'active' );
-			$panelSections.removeClass( 'active' );
-
-			$navItems.first().addClass( 'active' );
-			$panelSections
-				.filter( `[data-nav-target="${$navItems.first().attr( 'data-nav-target' )}"]` )
-				.addClass( 'active' );
-
-			$navItems.on( 'click', function() {
-				var $clickedItem = $( this );
-				$navItems.removeClass( 'active' );
-				$clickedItem.addClass( 'active' );
-
-				$panelSections.removeClass( 'active' );
-				$panelSections
-					.filter( `[data-nav-target="${$clickedItem.attr( 'data-nav-target' )}"]` )
-					.addClass( 'active' );
-			} );
-		},
-
-		getNavItems: function() {
-			return [
+			const usedComponents = [
 				{
-					target: 'background-color',
-					label: 'Background Color',
-					icon: 'color-picker'
+					name: 'BoldgridBackgroundColor',
+					props: { colorVariables, target: $( 'body' ) },
+					navClass: 'dashicons dashicons-art',
+					Component: null
 				},
 				{
-					target: 'background-image',
-					label: 'Background Image',
-					icon: 'format-image'
+					name: 'BoldgridBackgroundImage',
+					props: {},
+					navClass: 'dashicons dashicons-format-image',
+					Component: null
 				},
 				{
-					target: 'background-blending',
-					label: 'Background Blending',
-					icon: 'image-filter'
+					name: 'BoldgridHoverEffects',
+					props: { colorVariables },
+					navClass: 'fa fa-hand-pointer-o',
+					Component: null
 				}
 			];
+
+			return bgRoot.render(
+				<BoldgridPanel type="background" usedComponents={usedComponents} target={self.$target} />
+			);
 		},
+
+		mountReactComponents: function() {
+			
+		},
+
 
 		controls: {
 			get: function( control ) {
@@ -558,39 +453,17 @@ import { useState } from '@wordpress/element';
 				}
 			},
 			bgGradient: {
-				render: function() {
-					const [ gradient, setGradient ] = useState( null );
-
-					return (
-						<GradientPicker
-							__nextHasNoMargin
-							value={gradient}
-							onChange={currentGradient => setGradient( currentGradient )}
-							gradients={[
-								{
-									name: 'JShine',
-									gradient: 'linear-gradient(135deg,#12c2e9 0%,#c471ed 50%,#f64f59 100%)',
-									slug: 'jshine'
-								},
-								{
-									name: 'Moonlit Asteroid',
-									gradient: 'linear-gradient(135deg,#0F2027 0%, #203A43 0%, #2c5364 100%)',
-									slug: 'moonlit-asteroid'
-								},
-								{
-									name: 'Rastafarie',
-									gradient: 'linear-gradient(135deg,#1E9600 0%, #FFF200 0%, #FF0000 100%)',
-									slug: 'rastafari'
-								}
-							]}
-						/>
-					);
+				render: () => {
+					return '<div class="bg-gradient-control"></div>';
+				},
+				mount: ($section) => {
+					
 				}
 			},
 			bgImage: {
-				render: function() {
+				render: () => {
 					return 'background-image';
-				}
+				},
 			},
 			bgBlending: {
 				render: function() {

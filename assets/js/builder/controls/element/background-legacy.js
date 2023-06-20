@@ -108,18 +108,22 @@ import { lt as semverLt } from 'semver';
 			var loadControl = false,
 				maxCrioVersion = '2.20.0',
 				isCrio = BoldgridEditor.is_crio,
-				themeIsLt = semverLt( BoldgridEditor.theme_version, maxCrioVersion );
-
-			if ( ! isCrio || themeIsLt ) {
-				loadControl = true;
-			}
+				themeIsLt;
 
 			console.log( {
-				loadControl,
-				isCrio,
-				themeIsLt,
+				themeVersion: BoldgridEditor.theme_version,
 				maxCrioVersion
 			} );
+
+			if ( ! isCrio ) {
+				return true;
+			}
+
+			themeIsLt = semverLt( BoldgridEditor.theme_version, maxCrioVersion );
+
+			if ( ! themeIsLt ) {
+				loadControl = true;
+			}
 
 			return loadControl;
 		},
