@@ -110,11 +110,6 @@ import { lt as semverLt } from 'semver';
 				isCrio = BoldgridEditor.is_crio,
 				themeIsLt;
 
-			console.log( {
-				themeVersion: BoldgridEditor.theme_version,
-				maxCrioVersion
-			} );
-
 			if ( ! isCrio ) {
 				return true;
 			}

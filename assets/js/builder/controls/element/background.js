@@ -112,13 +112,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				loadControl = true;
 			}
 
-			console.log( {
-				loadControl,
-				isCrio,
-				themeIsGte,
-				minCrioVersion
-			} );
-
 			return loadControl;
 		},
 
@@ -287,8 +280,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 			// Open Panel.
 			panel.open( self );
 
-			console.log( panel.$element.find( '.panel-body' ).get( 0 ) );
-			console.log( self.$target );
 			const bgRoot = createRoot( panel.$element.find( '.panel-body' ).get( 0 ) );
 
 			const colorVariables = {
@@ -300,22 +291,24 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				'color-neutral': 'var(--color-neutral )',
 			};
 
+			const savedColors = BoldgridEditor.saved_colors;
+
 			const usedComponents = [
 				{
 					name: 'BoldgridBackgroundColor',
-					props: { colorVariables, target: $( 'body' ) },
+					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'dashicons dashicons-art',
 					Component: null
 				},
 				{
 					name: 'BoldgridBackgroundImage',
-					props: {},
+					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'dashicons dashicons-format-image',
 					Component: null
 				},
 				{
 					name: 'BoldgridHoverEffects',
-					props: { colorVariables },
+					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'fa fa-hand-pointer-o',
 					Component: null
 				}
@@ -385,11 +378,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				normalizeColor: function( color ) {
 					var normalizedColor = color.replace( /\s/g, '' );
 
-					console.log( 'color w/ no spaces: ' + normalizedColor );
-
 					normalizedColor = normalizedColor.replace( /var\(--color-(\d|neutral)\)/g, '$1' );
-
-					console.log( 'color after replace: ' + normalizedColor );
 
 					return normalizedColor;
 				},
@@ -429,8 +418,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 							</li>`
 					);
 
-					console.log( { colorArray, color, alpha, position, index } );
-
 					return $control;
 				},
 				render: function() {
@@ -446,8 +433,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 					targetColors.forEach( ( color, index ) => {
 						$controls.find( 'ul' ).append( bgColorControls.renderColorControl( color, index ) );
 					} );
-
-					console.log( { targetColors: targetColors, $controls } );
 
 					return $controls.get( 0 ).outerHTML;
 				}
