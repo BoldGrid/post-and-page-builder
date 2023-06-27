@@ -264,8 +264,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 			self.$target = $target;
 
-			console.log( { panelSections: self.panelSections } );
-
 			// Remove all content from the panel.
 			panel.clear();
 
