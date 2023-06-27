@@ -116,7 +116,7 @@ import { lt as semverLt } from 'semver';
 
 			themeIsLt = semverLt( BoldgridEditor.theme_version, maxCrioVersion );
 
-			if ( ! themeIsLt ) {
+			if ( themeIsLt ) {
 				loadControl = true;
 			}
 
