@@ -4039,10 +4039,10 @@ body-scroll-lock@^3.1.5:
   resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
   integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
-boldgrid-panel@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.0.12.tgz#93a740139fe89fa821603b8007ea03397045cadb"
-  integrity sha512-vBUVy95w5M8zOaZImJA1I9ozxP6mGbzslIUMCMgxpH8+PkkcT2xYcoNQQ264+fAwJGxM0chHmQiSjkRVEXB8fw==
+boldgrid-panel@^1.0.20:
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.0.20.tgz#20a4794f6109d5684a0bdd24f850765df1c9dc63"
+  integrity sha512-w7YMUZJEvrUsnuk8HDa1a8vfhtgnO8roSvcv7eQZnyzl31JL/SXW34sEAtK1IRxfZ1iqhalbFsGVDWeokrhsbQ==
 
 "boldgrid-theme-framework@https://github.com/BoldGrid/boldgrid-theme-framework.git#dev":
   version "2.2.0-rc.4"

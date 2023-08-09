@@ -81,7 +81,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 			height: '625px',
 			width: '450px',
 			noSlimScroll: true,
-			scrollTarget: '.boldgrid-panel__content',
+			scrollTarget: '.panel-body',
 			sizeOffset: 0
 		},
 
@@ -278,7 +278,9 @@ import { BoldgridPanel } from 'boldgrid-panel';
 			// Open Panel.
 			panel.open( self );
 
-			const bgRoot = createRoot( panel.$element.find( '.panel-body' ).get( 0 ) );
+			panel.$element.find( '.panel-body' ).append( '<div class="bg-background-react-container"></div>' );
+
+			const bgRoot = createRoot( panel.$element.find( '.bg-background-react-container' ).get( 0 ) );
 
 			const colorVariables = {
 				'color-1': 'var(--color-1)',

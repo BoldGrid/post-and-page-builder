@@ -29,6 +29,7 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			//This._setupPanelResize();
 			this._setupCustomizeLeave();
 			this._setupCustomizeDefault();
+			this._lockPanelScroll();
 			this._setupAutoCenter();
 			this._setupEscapeClose();
 
@@ -173,6 +174,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 * @param  {object} config   Configuration.
 		 */
 		createScrollbar: function( selector, config ) {
+
+			console.log( { selector } );
 
 			// Default height of scroll is the height of body minus this number.
 			var sizeOffset = -66,
@@ -557,9 +560,6 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 * @since 1.3
 		 */
 		_lockPanelScroll: function() {
-			if ( self.currentControl.panel.noSlimScroll ) {
-				return;
-			}
 			if ( window.addEventListener ) {
 				this.$element[0].addEventListener( 'DOMMouseScroll', self._onWheel, false );
 				this.$element[0].addEventListener( 'mousewheel', self._onWheel, false );
@@ -573,6 +573,14 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 */
 		_onWheel: function( e ) {
 			e = e || window.event;
+
+			if (
+				self.currentControl &&
+				self.currentControl.panel &&
+				true === self.currentControl.panel.noSlimScroll
+			) {
+				return;
+			}
 
 			if ( e.preventDefault ) {
 				e.preventDefault();
@@ -658,10 +666,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			this._setupCustomize( control );
 			BG.Tooltip.renderTooltips();
 			this.$element.show();
-			this._lockPanelScroll();
 			this.initScroll( control );
 			this.preselect();
-
 			this.scrollToSelected();
 			this.collapseSelection();
 			this.showOverlay();
