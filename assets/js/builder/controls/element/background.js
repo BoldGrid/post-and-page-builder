@@ -206,6 +206,97 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		},
 
 		/**
+		 * Setup Legacy Hover Boxes.
+		 *
+		 * @since 1.17.0
+		 */
+		_setupLegacyHoverBoxes() {
+			var css = '',
+				$head = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'head' ),
+				$body = $( tinyMCE.activeEditor.iframeElement )
+					.contents()
+					.find( 'body' ),
+				$hoverBoxes = $body.find( '.has-hover-bg' );
+
+			$hoverBoxes.each( ( index, hoverBox ) => {
+				var $hoverBox = $( hoverBox ),
+					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
+					hoverBgUrl = $hoverBox.attr( 'data-hover-image-url' ),
+					hoverOverlay = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgSize = $hoverBox.attr( 'data-hover-bg-size' ),
+					hoverBgSize = hoverBgSize ? hoverBgSize : 'cover',
+					hoverBgPos = $hoverBox.attr( 'data-hover-bg-position' ),
+					hoverBgPos = hoverBgPos ? hoverBgPos : '50',
+					hoverBgColor = $hoverBox.attr( 'data-hover-bg-color' );
+
+				if ( 'cover' === hoverBgSize ) {
+					hoverBgSize =
+						'background-size: cover !important; background-repeat: "unset  !important";';
+				} else {
+					hoverBgSize =
+						'background-size: auto auto !important; background-repeat: repeat  !important;';
+				}
+
+				if ( hoverOverlay && hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover {`;
+					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
+						hoverOverlay
+					} ), url('${hoverBgUrl}') !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+				} else if ( hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover {`;
+					css += `background-image: url('${hoverBgUrl}') !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+				}
+
+				if ( hoverBgColor && hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+				} else if ( hoverBgColor && ! hoverBgUrl ) {
+					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+
+					css = `.${hoverBoxClass}:hover {background-image: unset !important; }`;
+					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+				}
+
+				css = '@media screen and (max-width: 991px) {';
+				if ( hoverBoxClass && hoverBgUrl && hoverOverlay ) {
+					let overlayImage = 'linear-gradient(to left, ' + hoverOverlay + ', ' + hoverOverlay + ')';
+					let hoverCss = overlayImage + ', url("' + hoverBgUrl + '")';
+					css += `.${hoverBoxClass}.hover-mobile-bg {background-image: ${hoverCss} !important; }`;
+					css += `.${hoverBoxClass}.hover-mobile-bg:hover {background-image: ${
+						hoverCss
+					} !important; }`;
+				} else if ( hoverBoxClass && ! hoverBgUrl && hoverBgColor ) {
+					css += `.${hoverBoxClass}.hover-mobile-bg {
+						background-color: ${hoverBgColor} !important;
+						background-image: none !important;
+					}`;
+				} else {
+					css += `.${hoverBoxClass}.hover-mobile-bg { background-image: url('${
+						hoverBgUrl
+					}') !important; } }`;
+				}
+				$head.append( `<style id="${hoverBoxClass}-mobile-image">${css}</style>` );
+			} );
+		},
+
+		/**
 		 * Setup Init.
 		 *
 		 * @since 1.2.7
@@ -213,6 +304,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-background"]' );
 
+			self._setupLegacyHoverBoxes();
 			self._setupMenuReactivate();
 			self._setupMenuClick();
 		},
@@ -260,7 +352,8 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		 */
 		openPanel: function( $target ) {
 			var panel = BG.Panel,
-				template = wp.template( 'boldgrid-editor-background' )
+				template = wp.template( 'boldgrid-editor-background' ),
+				selectedComponent = 'BoldgridBackgroundColor';
 
 			self.$target = $target;
 
@@ -293,29 +386,36 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 			const savedColors = BoldgridEditor.saved_colors;
 
+			if ( self.$target.css( 'background-image' ).includes( 'url' ) ) {
+				selectedComponent = 'BoldgridBackgroundImage';
+			}
+
 			const usedComponents = [
 				{
 					name: 'BoldgridBackgroundColor',
 					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'dashicons dashicons-art',
+					title: 'Background Color',
 					Component: null
 				},
 				{
 					name: 'BoldgridBackgroundImage',
 					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'dashicons dashicons-format-image',
+					title: 'Background Image',
 					Component: null
 				},
 				{
 					name: 'BoldgridHoverEffects',
 					props: { colorVariables, savedColors, target: self.$target },
 					navClass: 'fa fa-hand-pointer-o',
+					title: 'Hover Effects',
 					Component: null
 				}
 			];
 
 			return bgRoot.render(
-				<BoldgridPanel type="background" usedComponents={usedComponents} target={self.$target} />
+				<BoldgridPanel type="background" selectedComponent={selectedComponent} usedComponents={usedComponents} target={self.$target} />
 			);
 		},
 

@@ -181,7 +181,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			var sizeOffset = -66,
 				$target = this.$element.find( selector );
 
-			if ( config && config.sizeOffset ) {
+			// If the config has a sizeOffset, use that instead.
+			if ( config && 'undefined' !== typeof config.sizeOffset ) {
 				sizeOffset = config.sizeOffset;
 			}
 
