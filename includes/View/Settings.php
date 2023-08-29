@@ -151,7 +151,24 @@ class Settings {
 	 * @since 1.9.0
 	 */
 	public function formActionRoute() {
-		if ( ! empty( $_REQUEST['bgppb-form-action'] ) && current_user_can( 'manage_options' ) ) {
+
+		// User must be authenticated
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Only handle ppb form actions
+		if ( empty( $_REQUEST['bgppb-form-action'] ) ) {
+			return;
+		}
+
+		// Only accept forms with a nonce
+		if ( empty( $_REQUEST['bgppb-form-action-nonce'] ) ) {
+			return;
+		}
+
+		// Validate the nonce
+		if ( wp_verify_nonce( $_REQUEST['bgppb-form-action-nonce'], 'bgppb_form_action_nonce' ) ) {
 			$action = sanitize_text_field( $_REQUEST['bgppb-form-action'] );
 			do_action( 'bgppb_form_' . $action );
 		}
@@ -159,6 +176,9 @@ class Settings {
 
 	/**
 	 * Handle the form submission for default editor.
+	 *
+	 * This action is called by the formActionRoute method.
+	 * Nonce validation is handled by the formActionRoute method.
 	 *
 	 * @since 1.9.0
 	 */
