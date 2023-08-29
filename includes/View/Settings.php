@@ -171,8 +171,6 @@ class Settings {
 		if ( wp_verify_nonce( $_REQUEST['bgppb-form-action-nonce'], 'bgppb_form_action_nonce' ) ) {
 			$action = sanitize_text_field( $_REQUEST['bgppb-form-action'] );
 			do_action( 'bgppb_form_' . $action );
-		} else {
-			return;
 		}
 	}
 
