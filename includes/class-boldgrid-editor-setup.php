@@ -64,7 +64,15 @@ class Boldgrid_Editor_Setup {
 	 * @return boolean Display Notice?
 	 */
 	public static function has_bg_control_notice() {
-		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.25.0-rc1' ) && ! self::check_and_dismiss( 'bg_control' );
+		$is_crio       = false;
+		$current_theme = wp_get_theme();
+		if ( $current_theme->exists() ) {
+			$theme_name    = $current_theme->get( 'Name' );
+			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
+				$is_crio = true;
+			}
+		}
+		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.25.0-rc1' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
 	}
 
 	/**
