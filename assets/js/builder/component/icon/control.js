@@ -189,6 +189,36 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Check if the target is the child of a hover box element.
+		 * 
+		 * @param {JQuery} $target Target Element
+		 * @returns {boolean} True if the target is a hover child.
+		 */
+		isHoverChild: function( $target ) {
+			var $parent = $target.parent();
+
+			if ( $parent.hasClass( 'has-hover-bg' ) || $parent.hasClass( 'has-hover-color' ) || $parent.hasClass( 'has-hover-image' )) {
+				return true;
+			}
+
+			if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length 
+				|| 0 !== $parent.closest( 'div[class*="col"].has-hover-color' ).length
+				|| 0 !== $parent.closest( 'div[class*="col"].has-hover-image' ).length
+			) {
+				return true;	
+			}
+			
+			if ( $target.is( 'div.row' ) && ( 0 !== $parent.parents( '.has-hover-bg' ).length
+				|| 0 !== $parent.parents( '.has-hover-color' ).length 
+				|| 0 !== $parent.parents( '.has-hover-image' ).length )
+			) {
+				return true;
+			}
+
+			return false;
+		},
+
+		/**
 		 * Open the panel, setting the content.
 		 *
 		 * @since 1.2.7
@@ -197,18 +227,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			var $panel = BG.Panel.$element,
 				$menu = BG.Controls.$menu,
 				$target = $menu.targetData[self.name],
-				$parent = $target.parent(),
 				hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-				isHoverChild = false,
-				$selected;
+				isHoverChild = false;
 
-			if ( $parent.hasClass( 'has-hover-bg' ) ) {
-				isHoverChild = true;
-			} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {
-				isHoverChild = true;
-			} else if ( $target.is( 'div.row' ) && 0 !== $parent.parents( 'has-hover-bg' ).length ) {
-				isHoverChild = true;
-			}
+			isHoverChild = self.isHoverChild( $target );
 
 			if ( ! isHoverChild && -1 !== hoverVisibilityIndex ) {
 				this.panel.customizeSupport.splice( hoverVisibilityIndex, 1 );
