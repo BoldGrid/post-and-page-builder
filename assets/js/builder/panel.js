@@ -573,6 +573,12 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		_onWheel: function( e ) {
 			e = e || window.event;
 
+			/**
+			 * New controls using the BoldgridPanel
+			 * React component do not use the slimScroll module
+			 * that legacy controls do. Therefore, we have to check for
+			 * this.
+			 */
 			if (
 				self.currentControl &&
 				self.currentControl.panel &&
