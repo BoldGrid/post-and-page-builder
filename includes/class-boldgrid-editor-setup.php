@@ -57,9 +57,9 @@ class Boldgrid_Editor_Setup {
 	}
 
 	/**
-	 * Should we display the new BG Control Notice?
+	 * Should we display the new Background Control Notice?
 	 *
-	 * @since 1.9.0
+	 * @since 1.25.0
 	 *
 	 * @return boolean Display Notice?
 	 */

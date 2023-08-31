@@ -409,8 +409,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		 * @param $target Current Target.
 		 */
 		openPanel: function( $target ) {
-			var panel = BG.Panel,
-				template = wp.template( 'boldgrid-editor-background' ),
+			var panel             = BG.Panel,
 				selectedComponent = 'BoldgridBackgroundColor';
 
 			self.$target = $target;
