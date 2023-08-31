@@ -230,11 +230,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.2.7
 		 */
 		openPanel: function() {
-			var $panel = BG.Panel.$element,
-				$menu = BG.Controls.$menu,
-				$target = $menu.targetData[self.name],
+			var $panel               = BG.Panel.$element,
+				$menu                = BG.Controls.$menu,
+				$target              = $menu.targetData[self.name],
 				hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-				isHoverChild = false;
+				isHoverChild         = false;
 
 			isHoverChild = self.isHoverChild( $target );
 
