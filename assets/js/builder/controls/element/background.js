@@ -1,4 +1,13 @@
-/* eslint.global-strict: 0 */
+/**
+ * File: assets/js/builder/controls/element/background.js
+ * 
+ * Background Control
+ * 
+ * This is the new version of the background control panel
+ * which uses react to generate the controls.
+ *
+ * @since 1.25.0
+ */
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};

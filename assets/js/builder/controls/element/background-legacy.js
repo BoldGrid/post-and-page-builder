@@ -1,3 +1,15 @@
+/**
+ * File: assets/js/builder/controls/element/background-legacy.js
+ * 
+ * Legacy Background Control
+ * 
+ * This file was moved from assets/js/builder/controls/element/background.js
+ * 
+ * This file is used for legacy or non-crio themes that are not
+ * supported by the new background control.
+ *
+ * @since 1.25.0
+ */
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
@@ -26,7 +38,7 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.25.0
 		 * @type {string}
 		 */
-		tooltip: 'Background Legacy',
+		tooltip: 'Background',
 
 		/**
 		 * uploadFrame.
