@@ -45,7 +45,10 @@ export class Advanced {
 	/**
 	 * Check if the target is the child of a hover box element.
 	 * 
+	 * @since 1.25.0
+	 *
 	 * @param {JQuery} $target Target Element
+	 *
 	 * @returns {boolean} True if the target is a hover child.
 	 */
 	isHoverChild( $target ) {
