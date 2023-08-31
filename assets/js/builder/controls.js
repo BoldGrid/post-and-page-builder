@@ -266,6 +266,10 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 
 			// Bind each menu control.
 			$.each( this.controls, function() {
+				/*
+				 * For each given control, check for a loadLegacyControl method.
+				 * If it does exist, that method will determine whether it loads or not.
+				 */
 				if ( ! this.hasOwnProperty( 'loadLegacyControl' ) || this.loadLegacyControl() ) {
 					self.setupControl( this );
 				}

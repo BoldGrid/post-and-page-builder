@@ -191,16 +191,21 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		/**
 		 * Check if the target is the child of a hover box element.
 		 * 
+		 * @since 1.25.0
+		 * 
 		 * @param {JQuery} $target Target Element
+		 *
 		 * @returns {boolean} True if the target is a hover child.
 		 */
 		isHoverChild: function( $target ) {
 			var $parent = $target.parent();
 
+			// Check if the target is a hover element.
 			if ( $parent.hasClass( 'has-hover-bg' ) || $parent.hasClass( 'has-hover-color' ) || $parent.hasClass( 'has-hover-image' )) {
 				return true;
 			}
 
+			// Check if the target is inside a column that is a hover element.
 			if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length 
 				|| 0 !== $parent.closest( 'div[class*="col"].has-hover-color' ).length
 				|| 0 !== $parent.closest( 'div[class*="col"].has-hover-image' ).length
@@ -208,6 +213,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				return true;	
 			}
 			
+			// If the target is a row, it's parent will be a container, so ensure it's grandparent is a hover element.
 			if ( $target.is( 'div.row' ) && ( 0 !== $parent.parents( '.has-hover-bg' ).length
 				|| 0 !== $parent.parents( '.has-hover-color' ).length 
 				|| 0 !== $parent.parents( '.has-hover-image' ).length )

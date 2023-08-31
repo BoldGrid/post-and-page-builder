@@ -12,39 +12,109 @@ import { lt as semverLt } from 'semver';
 		BG = BOLDGRID.EDITOR;
 
 	BOLDGRID.EDITOR.CONTROLS.Background = {
+		/**
+		 * Name.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		name: 'background',
 
+		/**
+		 * Tooltip.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		tooltip: 'Background Legacy',
 
+		/**
+		 * uploadFrame.
+		 * 
+		 * @since 1.25.0
+		 * @type {wp.media.view.MediaFrame | null }
+		 */
 		uploadFrame: null,
 
+
+		/**
+		 * Priority.
+		 * 
+		 * @since 1.25.0
+		 * @type {number}
+		 */
 		priority: 10,
 
 		/**
 		 * Currently controlled element.
 		 *
+		 * @since 1.25.0
 		 * @type {$} Jquery Element.
 		 */
 		$target: null,
 
 		/**
 		 * Tracking of clicked elements.
-		 * @type {Object}
+		 * 
+		 * @since 1.25.0
+		 * @type {Object<number, Array<HTMLElement>>}
 		 */
 		layerEvent: { latestTime: 0, targets: [] },
 
+		/**
+		 * Element Type.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		elementType: '',
 
+		/**
+		 * Is Hover Image
+		 * 
+		 * @since 1.25.0
+		 * @type {boolean}
+		 */
 		isHoverImage: false,
 
+		/**
+		 * Icon Classes
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		iconClasses: 'genericon genericon-picture',
 
+		/**
+		 * Selectors.
+		 * 
+		 * @since 1.25.0
+		 * @type {Array<string>}
+		 */
 		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]', '.bg-box' ],
 
+		/**
+		 * Available Effects.
+		 * 
+		 * @since 1.25.0
+		 * @type {Array<string>}
+		 */
 		availableEffects: [ 'background-parallax', 'background-fixed' ],
 
+		/**
+		 * Available Hover Effects.
+		 * 
+		 * @since 1.25.0
+		 * @type {Array<string>}
+		 */
 		availableHoverEffects: [ 'background-hover-fixed' ],
 
+		/**
+		 * Menu Dropdown Config.
+		 * 
+		 * @since 1.25.0
+		 * @type {Object<title: string, options: Array<Object<name: string, class: string>>>}
+		 */
 		menuDropDown: {
 			title: 'Background',
 			options: [
@@ -67,12 +137,13 @@ import { lt as semverLt } from 'semver';
 			]
 		},
 
-		init: function() {
-			if ( this.loadLegacyControl() ) {
-				BOLDGRID.EDITOR.Controls.registerControl( this );
-			}
-		},
-
+		/**
+		 * Panel Confg.
+		 * 
+		 * @since 1.25.0
+		 * 
+		 * @type {Object<title: string, height: string, width: string, scrollTarget: string, customizeSupport: Array<string>, sizeOffset: number>}
+		 */
 		panel: {
 			title: 'Background',
 			height: '625px',
@@ -94,33 +165,42 @@ import { lt as semverLt } from 'semver';
 		},
 
 		/**
+		 * Control Init
+		 * 
+		 * @since 1.25.0
+		 */
+		init: function() {
+			if ( this.loadLegacyControl() ) {
+				BOLDGRID.EDITOR.Controls.registerControl( this );
+			}
+		},
+
+		/**
 		 * Load Legacy Control
 		 *
 		 * This determines whether or not to load this control based on
 		 * a set of conditions. This is run in legacy controls, and in new
 		 * controls that have a legacy version.
 		 *
-		 * @since SINCEVERSION
+		 * @since 1.25.0
 		 *
 		 * @return {boolean} Whether or not to load this control.
 		 */
 		loadLegacyControl() {
-			var loadControl = false,
-				maxCrioVersion = '2.20.0',
-				isCrio = BoldgridEditor.is_crio,
-				themeIsLt;
+			var maxCrioVersion = '2.20.0', // Crio 2.20.0 is the first version to support the new BG control.
+				isCrio         = BoldgridEditor.is_crio;
 
+			// The new BG control doesn't work with non-crio themes, so load this instead.
 			if ( ! isCrio ) {
 				return true;
 			}
 
-			themeIsLt = semverLt( BoldgridEditor.theme_version, maxCrioVersion );
-
-			if ( themeIsLt ) {
-				loadControl = true;
+			// Load legacy controls if we're using a Crio theme that is less than the max version.
+			if ( semverLt( BoldgridEditor.theme_version, maxCrioVersion ) ) {
+				return true;
 			}
 
-			return loadControl;
+			return false;
 		},
 
 		/**
@@ -129,25 +209,25 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.17.0
 		 */
 		_setupHoverBoxes() {
-			var css = '',
-				$head = $( tinyMCE.activeEditor.iframeElement )
+			var css         = '',
+				$head       = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
 					.find( 'head' ),
-				$body = $( tinyMCE.activeEditor.iframeElement )
+				$body       = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
 					.find( 'body' ),
 				$hoverBoxes = $body.find( '.has-hover-bg' );
 
 			$hoverBoxes.each( ( index, hoverBox ) => {
-				var $hoverBox = $( hoverBox ),
+				var $hoverBox     = $( hoverBox ),
 					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
-					hoverBgUrl = $hoverBox.attr( 'data-hover-image-url' ),
-					hoverOverlay = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
-					hoverBgSize = $hoverBox.attr( 'data-hover-bg-size' ),
-					hoverBgSize = hoverBgSize ? hoverBgSize : 'cover',
-					hoverBgPos = $hoverBox.attr( 'data-hover-bg-position' ),
-					hoverBgPos = hoverBgPos ? hoverBgPos : '50',
-					hoverBgColor = $hoverBox.attr( 'data-hover-bg-color' );
+					hoverBgUrl    = $hoverBox.attr( 'data-hover-image-url' ),
+					hoverOverlay  = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
+					hoverBgSize   = hoverBgSize ? hoverBgSize : 'cover',
+					hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
+					hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
+					hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
 
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
@@ -158,7 +238,7 @@ import { lt as semverLt } from 'semver';
 				}
 
 				if ( hoverOverlay && hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover {`;
+					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
 						hoverOverlay
 					} ), url('${hoverBgUrl}') !important; }`;
@@ -170,7 +250,7 @@ import { lt as semverLt } from 'semver';
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
 					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
 				} else if ( hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover {`;
+					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: url('${hoverBgUrl}') !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
 
@@ -261,6 +341,8 @@ import { lt as semverLt } from 'semver';
 		 * When the user clicks Add Image open the media library.
 		 *
 		 * @since 1.2.7
+		 *
+		 * @param {boolean} isHoverImage Whether or not this is a hover image.
 		 */
 		_setupAddImage: function( isHoverImage = false ) {
 			var addMediaClass = isHoverImage ? '.add-hover-image-controls' : '.add-image-controls';
@@ -312,7 +394,7 @@ import { lt as semverLt } from 'semver';
 		},
 
 		/**
-		 * Open the editor panel for a given selector and stor element as target.
+		 * Open the editor panel for a given selector and store element as target.
 		 *
 		 * @since 1.8.0
 		 *
@@ -332,7 +414,7 @@ import { lt as semverLt } from 'semver';
 		 *
 		 * @since 1.8.0
 		 *
-		 * @param  {object} event DOM Event
+		 * @param {MouseEvent} event DOM Event
 		 */
 		elementClick( event ) {
 			if ( self.layerEvent.latestTime !== event.timeStamp ) {
@@ -426,13 +508,13 @@ import { lt as semverLt } from 'semver';
 
 			$hoverBgs.each( function() {
 				var hoverBgClassName = $( this ).attr( 'data-hover-bg-class' ),
-					hoverBgUrl = $( this ).attr( 'data-hover-image-url' ),
-					hoverOverlay = $( this ).attr( 'data-hover-bg-overlaycolor' ),
-					hoverBgColor = $( this ).attr( 'data-hover-bg-color' );
+					hoverBgUrl       = $( this ).attr( 'data-hover-image-url' ),
+					hoverOverlay     = $( this ).attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgColor     = $( this ).attr( 'data-hover-bg-color' );
 
 				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
 					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
-					css = `.${hoverBgClassName}:hover {background-image: ${hoverCss} !important; }`;
+					css          = `.${hoverBgClassName}:hover {background-image: ${hoverCss} !important; }`;
 					self._addHeadingStyle( hoverBgClassName + '-image', css );
 				} else {
 					css = `.${hoverBgClassName}:hover {background-image: url('${hoverBgUrl}') !important; }`;
@@ -447,7 +529,7 @@ import { lt as semverLt } from 'semver';
 				css = '@media screen and (max-width: 991px) {';
 				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
 					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
-					css += `.${hoverBgClassName}.hover-mobile-bg {background-image: ${
+					css         += `.${hoverBgClassName}.hover-mobile-bg {background-image: ${
 						hoverCss
 					} !important; }`;
 					css += `.${hoverBgClassName}.hover-mobile-bg:hover {background-image: ${
@@ -605,9 +687,9 @@ import { lt as semverLt } from 'semver';
 		/**
 		 * Add alpha component to background color palettes
 		 *
-		 * @param {jQuery Object} $target The target jQuery object
-		 * @param {string} value          Background color value
-		 * @param {string} bgColorClass   Background Color class
+		 * @param {jQuery Object} $target      The target jQuery object
+		 * @param {string}        value        Background color value
+		 * @param {string}        bgColorClass Background Color class
 		 */
 		paletteAddAlpha( $target, value, bgColorClass ) {
 			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
@@ -633,7 +715,10 @@ import { lt as semverLt } from 'semver';
 		/**
 		 * Obtains the alpha ( opacity ) value of an RGBA string.
 		 *
+		 * @since 1.25.0
+		 *
 		 * @param {string} color RGBA Color String.
+		 *
 		 * @returns {string} Alpha value of a color
 		 */
 		alphaFromColor: function( color ) {
@@ -649,14 +734,17 @@ import { lt as semverLt } from 'semver';
 
 		/**
 		 * Determine the color class, if any, that matches an RGB(A) String.
+		 * 
+		 * @since 1.25.0
 		 *
 		 * @param {string} color RGB(A) color string
+		 *
 		 * @returns {string} The color class associated with this color string.
 		 */
 		classFromColor: function( color ) {
-			var colors = BoldgridEditor.colors.defaults,
+			var colors       = BoldgridEditor.colors.defaults,
 				neutralColor = BoldgridEditor.colors.neutral,
-				colorClass = false;
+				colorClass   = false;
 
 			if ( color.includes( 'rgba' ) ) {
 				color = color.replace( /(rgba\(\d{1,3}\,\d{1,3}\,\d{1,3})(.*\))/, '$1)' );
@@ -684,6 +772,8 @@ import { lt as semverLt } from 'semver';
 		/**
 		 * Add color palette for overlays to the target.
 		 *
+		 * @since 1.25.0
+		 *
 		 * @param {object} $target      jQuery object of the target element.
 		 * @param {string} value        The value of the color.
 		 * @param {string} bgColorClass The color class string.
@@ -708,7 +798,7 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'click', '.background-design .overlay-color .default-color', function( e ) {
-				var $this = $( this ),
+				var $this   = $( this ),
 					$target = self.getTarget();
 
 				e.preventDefault();
@@ -735,10 +825,10 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'change', '.background-design [name="overlay-color"]', function() {
-				var $this = $( this ),
-					type = $this.attr( 'data-type' ),
-					value = $this.val(),
-					$target = self.getTarget(),
+				var $this          = $( this ),
+					type           = $this.attr( 'data-type' ),
+					value          = $this.val(),
+					$target        = self.getTarget(),
 					classFromColor = self.classFromColor( value ),
 					alphaFromColor = self.alphaFromColor( value );
 
@@ -762,9 +852,9 @@ import { lt as semverLt } from 'semver';
 			} );
 
 			panel.$element.on( 'change', '.background-design [name="hover-overlay-color"]', function() {
-				var $this = $( this ),
-					type = $this.attr( 'data-type' ),
-					value = $this.val(),
+				var $this   = $( this ),
+					type    = $this.attr( 'data-type' ),
+					value   = $this.val(),
 					$target = self.getTarget();
 
 				if ( 'class' === type ) {
@@ -785,8 +875,7 @@ import { lt as semverLt } from 'semver';
 		updateBackgroundImage: function() {
 			var $target = self.getTarget(),
 				overlay = $target.attr( 'data-bg-overlaycolor' ),
-				hoverOverlay = $target.attr( 'data-hover-bg-overlaycolor' ),
-				image = $target.attr( 'data-image-url' );
+				image   = $target.attr( 'data-image-url' );
 
 			if ( overlay && image ) {
 				BG.Controls.addStyle(
@@ -805,8 +894,10 @@ import { lt as semverLt } from 'semver';
 		 * Create gradient overlay string.
 		 *
 		 * @since 1.2.7
-		 * @param string color.
-		 * @return string color.
+		 *
+		 * @param {string} color.
+		 *
+		 * @return {string} color.
 		 */
 		getOverlayImage: function( color ) {
 			return 'linear-gradient(to left, ' + color + ', ' + color + ')';
@@ -821,11 +912,11 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'change', '.background-design [name^="gradient-color"]', function() {
-				var $this = $( this ),
+				var $this   = $( this ),
 					$target = self.getTarget(),
-					value = $this.val(),
-					name = $this.attr( 'name' ),
-					type = $this.attr( 'data-type' );
+					value   = $this.val(),
+					name    = $this.attr( 'name' ),
+					type    = $this.attr( 'data-type' );
 
 				if ( BoldgridEditor.is_crio ) {
 					if ( 'class' === type && 'neutral' !== value ) {
@@ -884,10 +975,13 @@ import { lt as semverLt } from 'semver';
 		 * Button to remove an image.
 		 *
 		 * @since 1.12.0
+		 * 
+		 * @param {MouseEvent} e    DOM Event
+		 * @param {string}     type Type of image to remove.
 		 */
 		_removeImage( e, type ) {
-			var $target = self.getTarget(),
-				bgHoverClass = $target.attr( 'data-hover-bg-class' ),
+			var $target         = self.getTarget(),
+				bgHoverClass    = $target.attr( 'data-hover-bg-class' ),
 				styleIdSuffixes = [ 'image', 'bg-size', 'mobile-image', 'position', 'bg-color' ];
 
 			if ( 'hover-image' === type ) {
@@ -947,7 +1041,7 @@ import { lt as semverLt } from 'semver';
 				'change',
 				'.background-design input[name="mobile-only-visibility"]',
 				function() {
-					var $this = $( this ),
+					var $this   = $( this ),
 						$target = self.getTarget(),
 						classes = [ 'hover-mobile-bg' ];
 
@@ -973,7 +1067,7 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'change', '.background-design input[name="scroll-effects"]', function() {
-				var $this = $( this ),
+				var $this   = $( this ),
 					$target = self.getTarget();
 
 				if ( 'none' === $this.val() ) {
@@ -988,7 +1082,7 @@ import { lt as semverLt } from 'semver';
 				'change',
 				'.background-design input[name="hover-scroll-effects"]',
 				function() {
-					var $this = $( this ),
+					var $this   = $( this ),
 						$target = self.getTarget();
 
 					if ( 'none' === $this.val() ) {
@@ -1010,7 +1104,7 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'change', '.background-design input[name="bg-direction"]', function() {
-				var $this = $( this ),
+				var $this   = $( this ),
 					$target = self.getTarget();
 
 				$target.attr( 'data-bg-direction', $this.val() );
@@ -1022,7 +1116,7 @@ import { lt as semverLt } from 'semver';
 		 * Create the css needed for a linear gradient.
 		 *
 		 * @since 1.2.7
-		 * @param jQuery $element.
+		 * @param {jQuery} $element Selected element.
 		 */
 		createGradientCss: function( $element ) {
 			return (
@@ -1048,10 +1142,10 @@ import { lt as semverLt } from 'semver';
 				'change',
 				'.background-design input[name="hover-background-size"]',
 				function() {
-					var $this = $( this ),
-						$target = self.getTarget(),
+					var $this     = $( this ),
+						$target   = self.getTarget(),
 						hoverBgId = $target.attr( 'data-hover-bg-class' ),
-						css = '';
+						css       = '';
 
 					if ( 'tiled' === $this.val() ) {
 						css =
@@ -1072,7 +1166,7 @@ import { lt as semverLt } from 'semver';
 			);
 
 			panel.$element.on( 'change', '.background-design input[name="background-size"]', function() {
-				var $this = $( this ),
+				var $this   = $( this ),
 					$target = self.getTarget();
 
 				if ( 'tiled' === $this.val() ) {
@@ -1116,13 +1210,13 @@ import { lt as semverLt } from 'semver';
 			panel.$element.on( 'click', '.background-design .filter', function( e ) {
 				e.preventDefault();
 
-				let $this = $( this ),
-					type = $this.data( 'type' ),
-					label = $this.data( 'label' ),
-					$currentSelection = panel.$element.find( '.current-selection' ),
+				let $this                   = $( this ),
+					type                    = $this.data( 'type' ),
+					label                   = $this.data( 'label' ),
+					$currentSelection       = panel.$element.find( '.current-selection' ),
 					$presetsBackgroundColor = panel.$element.find( '.presets .background-color.section' ),
-					$target = self.getTarget(),
-					bgColor = $target.css( 'background-color' );
+					$target                 = self.getTarget(),
+					bgColor                 = $target.css( 'background-color' );
 
 				panel.$element.find( '.filter' ).removeClass( 'selected' );
 				$this.addClass( 'selected' );
@@ -1175,7 +1269,7 @@ import { lt as semverLt } from 'semver';
 		 * Remove all color classes.
 		 *
 		 * @since 1.2.7
-		 * @param jQuery $target.
+		 * @param {jQuery} $target Currently selected target.
 		 */
 		removeColorClasses: function( $target ) {
 			$target.removeClass( 'bg-background-color' );
@@ -1192,12 +1286,12 @@ import { lt as semverLt } from 'semver';
 			var panel = BG.Panel;
 
 			panel.$element.on( 'click', '.background-design .presets .selection', function() {
-				var $this = $( this ),
-					$target = self.getTarget(),
-					imageUrl = $this.attr( 'data-image-url' ),
-					imageSrc = $this.css( 'background-image' ),
+				var $this      = $( this ),
+					$target    = self.getTarget(),
+					imageUrl   = $this.attr( 'data-image-url' ),
+					imageSrc   = $this.css( 'background-image' ),
 					background = $this.css( 'background' ),
-					bgUuid = $target.attr( 'data-bg-uuid' ),
+					bgUuid     = $target.attr( 'data-bg-uuid' ),
 					value;
 
 				if ( $this.hasClass( 'selected' ) ) {
@@ -1262,19 +1356,20 @@ import { lt as semverLt } from 'semver';
 		 * Activate a filter.
 		 *
 		 * @since 1.2.7
-		 * @param string type.
+		 *
+		 * @param {string} type The selected filter type.
 		 */
 		activateFilter: function( type ) {
 			var backgroundImageProp,
 				filterFound = false,
-				$target = self.getTarget();
+				$target     = self.getTarget();
 
 			BG.Panel.$element.find( '.current-selection .filter' ).each( function() {
-				var $this = $( this ),
+				var $this       = $( this ),
 					filterTypes = $this.data( 'type' );
 
 				if ( type && -1 !== filterTypes.indexOf( type ) ) {
-					$this.click();
+					$this.trigger( 'click' );
 					filterFound = true;
 					return false;
 				}
@@ -1285,13 +1380,13 @@ import { lt as semverLt } from 'semver';
 				if ( backgroundImageProp && 'none' !== backgroundImageProp ) {
 
 					// Image filter selection hack, trouble selecting array data type.
-					BG.Panel.$element.find( '.filter[data-type]:first-of-type' ).click();
+					BG.Panel.$element.find( '.filter[data-type]:first-of-type' ).trigger( 'click' );
 					filterFound = true;
 				}
 			}
 
 			if ( false === filterFound ) {
-				BG.Panel.$element.find( '.filter[data-default="1"]' ).click();
+				BG.Panel.$element.find( '.filter[data-default="1"]' ).trigger( 'click' );
 			}
 		},
 
@@ -1299,18 +1394,20 @@ import { lt as semverLt } from 'semver';
 		 * Set Image selection.
 		 *
 		 * @since 1.2.7
-		 * @param string type.
-		 * @param string prop.
+		 *
+		 * @param {string}  type         Type of image.
+		 * @param {string}  prop         Image property.
+		 * @param {boolean} isHoverImage Is Hover Image.
 		 */
 		setImageSelection: function( type, prop, isHoverImage ) {
 			var $currentSelection = BG.Panel.$element.find( '.current-selection' ),
-				$target = self.getTarget(),
-				bgImageUrl = $target.attr( 'data-image-url' ),
-				bgColor = $target.css( 'background-color' ),
-				overlayColor = $target.attr( 'data-bg-overlaycolor' ),
+				$target           = self.getTarget(),
+				bgImageUrl        = $target.attr( 'data-image-url' ),
+				bgColor           = $target.css( 'background-color' ),
+				overlayColor      = $target.attr( 'data-bg-overlaycolor' ),
 				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
-				hoverBgImageUrl = $target.attr( 'data-hover-image-url' ),
-				hoverColor = $target.attr( 'data-hover-bg-color' );
+				hoverBgImageUrl   = $target.attr( 'data-hover-image-url' ),
+				hoverColor        = $target.attr( 'data-hover-bg-color' );
 
 			$currentSelection.css( 'background', '' );
 
@@ -1357,11 +1454,12 @@ import { lt as semverLt } from 'semver';
 		 * Set Image background.
 		 *
 		 * @since 1.2.7
-		 * @param string url.
-		 * @param isHoverImage Is Hover Image.
+		 *
+		 * @param {string}  url          URL of the image.
+		 * @param {boolean} isHoverImage Is Hover Image.
 		 */
 		setImageBackground: function( url, isHoverImage = false ) {
-			var $target = self.getTarget(),
+			var $target    = self.getTarget(),
 				hvrBgClass = $target.attr( 'data-hover-bg-class' );
 
 			if ( isHoverImage && ! hvrBgClass ) {
@@ -1397,7 +1495,7 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.2.7
 		 */
 		_initVerticleSlider: function() {
-			var $target = self.getTarget(),
+			var $target     = self.getTarget(),
 				defaultPosY = $target.css( 'background-position-y' ),
 				defaultPosX = $target.css( 'background-position-x' );
 
@@ -1489,11 +1587,11 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.2.7
 		 */
 		setDefaultOverlayColor: function() {
-			var $target = self.getTarget(),
-				$overlayColorSection = BG.Panel.$element.find( '.overlay-color' ),
+			var $target                   = self.getTarget(),
+				$overlayColorSection      = BG.Panel.$element.find( '.overlay-color' ),
 				$hoverOverlayColorSeciont = BG.Panel.$element.find( '.hover-overlay-color' ),
-				hoverOverlayColor = $target.attr( 'data-hover-bg-overlaycolor' ),
-				overlayColor = $target.attr( 'data-bg-overlaycolor' );
+				hoverOverlayColor         = $target.attr( 'data-hover-bg-overlaycolor' ),
+				overlayColor              = $target.attr( 'data-bg-overlaycolor' );
 
 			if ( overlayColor ) {
 				$overlayColorSection
@@ -1515,7 +1613,7 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.2.7
 		 */
 		setSize: function() {
-			var $input = BG.Panel.$element.find( 'input[name="background-size"]' ),
+			var $input  = BG.Panel.$element.find( 'input[name="background-size"]' ),
 				$target = self.getTarget();
 
 			if ( -1 === $target.css( 'background-size' ).indexOf( 'cover' ) ) {
@@ -1547,7 +1645,7 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.2.7
 		 */
 		setDefaultDirection: function() {
-			var $target = self.getTarget(),
+			var $target   = self.getTarget(),
 				direction = $target.attr( 'data-bg-direction' );
 
 			if ( self.backgroundIsGradient( $target.css( 'background-image' ) ) && direction ) {
@@ -1615,8 +1713,8 @@ import { lt as semverLt } from 'semver';
 			var gradientData = [];
 
 			$.each( BoldgridEditor.sample_backgrounds.default_gradients, function() {
-				var color1 = this.colors[0],
-					color2 = this.colors[1],
+				var color1    = this.colors[0],
+					color2    = this.colors[1],
 					direction = self.randomGradientDirection();
 
 				gradientData.push( {
@@ -1638,8 +1736,8 @@ import { lt as semverLt } from 'semver';
 			if ( BoldgridEditor.colors.defaults && BoldgridEditor.colors.defaults.length ) {
 				$.each( [ 0, 1 ], function() {
 					var color1, color2, pos1, pos2, direction;
-					pos1 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
-					pos2 = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
+					pos1   = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
+					pos2   = Math.floor( Math.random() * BoldgridEditor.colors.defaults.length ) + 1;
 					color1 = 'var( --color-' + pos1 + ' )';
 					color2 = 'var( --color-' + pos2 + ' )';
 					if ( ! BoldgridEditor.is_crio ) {
@@ -1664,11 +1762,13 @@ import { lt as semverLt } from 'semver';
 		},
 
 		/**
-		 * Is the given url a gradient.
+		 * Is the given background a gradient.
 		 *
 		 * @since 1.2.7
-		 * @param string backgroundUrl.
-		 * @return boolean.
+		 *
+		 * @param {string} backgroundUrl Background Image style string.
+		 *
+		 * @return {boolean} True if gradient.
 		 */
 		backgroundIsGradient: function( backgroundUrl ) {
 			return -1 !== backgroundUrl.indexOf( 'linear-gradient' ) && -1 === backgroundUrl.indexOf( 'url' );
@@ -1680,14 +1780,13 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.2.7
 		 */
 		preselectBackground: function( keepFilter ) {
-			var type = 'color',
-				$target = self.getTarget(),
-				backgroundColor = $target.css( 'background-color' ),
-				backgroundUrl = $target.css( 'background-image' ),
-				hoverBackgroundUrl = $target.attr( 'data-hover-image-url' ),
+			var type              = 'color',
+				$target           = self.getTarget(),
+				backgroundColor   = $target.css( 'background-color' ),
+				backgroundUrl     = $target.css( 'background-image' ),
 				$currentSelection = BG.Panel.$element.find( '.current-selection' ),
-				hasGradient = self.backgroundIsGradient( backgroundUrl ),
-				matchFound = false;
+				hasGradient       = self.backgroundIsGradient( backgroundUrl ),
+				matchFound        = false;
 
 			//@TODO: update the preview screen when pressing back from the customize section.
 
@@ -1696,9 +1795,9 @@ import { lt as semverLt } from 'semver';
 			$currentSelection.css( 'background-color', backgroundColor );
 
 			BG.Panel.$element.find( '.selection' ).each( function() {
-				var $this = $( this ),
+				var $this         = $( this ),
 					selectionType = $this.data( 'type' ),
-					dataClass = $this.data( 'class' );
+					dataClass     = $this.data( 'class' );
 
 				switch ( selectionType ) {
 					case 'color':
@@ -1708,7 +1807,7 @@ import { lt as semverLt } from 'semver';
 							'none' === $target.css( 'background-image' )
 						) {
 							$this.addClass( 'selected' );
-							type = selectionType;
+							type       = selectionType;
 							matchFound = true;
 							self.activateFilter( type );
 							return false;
@@ -1719,7 +1818,7 @@ import { lt as semverLt } from 'semver';
 
 							//Found a match.
 							$this.addClass( 'selected' );
-							type = selectionType;
+							type       = selectionType;
 							matchFound = true;
 							self.activateFilter( type );
 							return false;
@@ -1731,7 +1830,7 @@ import { lt as semverLt } from 'semver';
 
 							//Found a match.
 							$this.addClass( 'selected' );
-							type = selectionType;
+							type       = selectionType;
 							matchFound = true;
 							self.activateFilter( type );
 							return false;
@@ -1772,9 +1871,9 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.17.0
 		 */
 		setElementVisibility() {
-			var $target = self.getTarget(),
+			var $target    = self.getTarget(),
 				visibility = $target.hasClass( 'hover-mobile-bg' ) ? 'hover' : 'default',
-				$radios = BG.Panel.$element.find( '.mobile-only-visibility input' );
+				$radios    = BG.Panel.$element.find( '.mobile-only-visibility input' );
 
 			$radios.each( function() {
 				if ( $( this ).val() === visibility ) {
@@ -1791,7 +1890,8 @@ import { lt as semverLt } from 'semver';
 		 * @since 1.8.0
 		 *
 		 * @param  {jQuery} $element Jquery Element.
-		 * @return {string}          Element.
+		 *
+		 * @return {string} Element Type.
 		 */
 		checkElementType: function( $element ) {
 			let type = '';
@@ -1813,10 +1913,10 @@ import { lt as semverLt } from 'semver';
 		 *
 		 * @since 1.2.7
 		 *
-		 * @param $target Current Target.
+		 * @param {JQuery Object} $target Current Target.
 		 */
 		openPanel: function( $target ) {
-			var panel = BG.Panel,
+			var panel    = BG.Panel,
 				template = wp.template( 'boldgrid-editor-background-legacy' );
 
 			self.$target = $target;
@@ -1847,6 +1947,7 @@ import { lt as semverLt } from 'semver';
 	BOLDGRID.EDITOR.CONTROLS.Background.init();
 	self = BOLDGRID.EDITOR.CONTROLS.Background;
 
+	// Prevent two controls from being loaded with the same name.
 	if ( ! self.loadLegacyControl() ) {
 		delete BOLDGRID.EDITOR.CONTROLS.Background;
 	}
