@@ -15,12 +15,28 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		BG = BOLDGRID.EDITOR;
 
 	BOLDGRID.EDITOR.CONTROLS.Background = {
+		/**
+		 * Name.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		name: 'background',
 
+		/**
+		 * Tooltip.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		tooltip: 'Background',
 
-		uploadFrame: null,
-
+		/**
+		 * Priority.
+		 * 
+		 * @since 1.25.0
+		 * @type {number}
+		 */
 		priority: 10,
 
 		/**
@@ -36,18 +52,36 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		 */
 		layerEvent: { latestTime: 0, targets: [] },
 
+		/**
+		 * Element Type.
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		elementType: '',
 
-		isHoverImage: false,
-
+		/**
+		 * Icon Classes
+		 * 
+		 * @since 1.25.0
+		 * @type {string}
+		 */
 		iconClasses: 'genericon genericon-picture',
 
+		/**
+		 * Selectors.
+		 * 
+		 * @since 1.25.0
+		 * @type {Array<string>}
+		 */
 		selectors: [ '.boldgrid-section', '.row', '[class*="col-md-"]', '.bg-box' ],
 
-		availableEffects: [ 'background-parallax', 'background-fixed' ],
-
-		availableHoverEffects: [ 'background-hover-fixed' ],
-
+		/**
+		 * Menu Dropdown Config.
+		 * 
+		 * @since 1.25.0
+		 * @type {Object<title: string, options: Array<Object<name: string, class: string>>>}
+		 */
 		menuDropDown: {
 			title: 'Background',
 			options: [
@@ -70,12 +104,13 @@ import { BoldgridPanel } from 'boldgrid-panel';
 			]
 		},
 
-		init: function() {
-			if ( this.loadLegacyControl() ) {
-				BOLDGRID.EDITOR.Controls.registerControl( this );
-			}
-		},
-
+		/**
+		 * Panel Config.
+		 * 
+		 * @since 1.25.0
+		 * 
+		 * @type {Object<title: string, height: string, width: string, noSlimScroll: boolean, scrollTarget: string, sizeOffset: number>}
+		 */
 		panel: {
 			title: 'Background',
 			height: '625px',
@@ -86,39 +121,49 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		},
 
 		/**
+		 * Control Init
+		 * 
+		 * @since 1.25.0
+		 */
+		init: function() {
+			if ( this.loadLegacyControl() ) {
+				BOLDGRID.EDITOR.Controls.registerControl( this );
+			}
+		},
+
+		/**
 		 * Load Legacy Control
 		 *
 		 * This determines whether or not to load this control based on
 		 * a set of conditions. This is run in legacy controls, and in new
 		 * controls that have a legacy version.
 		 *
-		 * @since SINCEVERSION
+		 * @since 1.25.0
 		 *
 		 * @return {boolean} Whether or not to load this control.
 		 */
 		loadLegacyControl() {
-			var loadControl = false,
-				minCrioVersion = '2.20.0',
-				isCrio = BoldgridEditor.is_crio,
-				themeIsGte;
+			var minCrioVersion = '2.20.0', // Crio 2.20.0 is the first version to support the new BG control.
+				isCrio         = BoldgridEditor.is_crio;
 
+			// If the theme is not Crio, don't load this control.
 			if ( ! isCrio ) {
 				return false;
 			}
 
-			themeIsGte = semverGte( BoldgridEditor.theme_version, minCrioVersion )
-
-			if ( themeIsGte ) {
-				loadControl = true;
+			// If the theme is Crio, and the version is greater than or equal to the minimum version, load this control.
+			if ( semverGte( BoldgridEditor.theme_version, minCrioVersion ) ) {
+				return true;
 			}
 
-			return loadControl;
+			return false;
 		},
 
 		/**
 		 * Get the current target.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
+		 *
 		 * @return {jQuery} Element.
 		 */
 		getTarget: function() {
@@ -128,7 +173,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * When the user clicks on a menu item, update the available options.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 */
 		onMenuClick: function() {
 			self.updateMenuOptions();
@@ -137,7 +182,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * Update the avilable options in the background drop down.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 */
 		updateMenuOptions: function() {
 			let availableOptions = [];
@@ -153,7 +198,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		 * When a menu item is reopened because a user clicked on another similar element
 		 * Update the available options.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 */
 		_setupMenuReactivate: function() {
 			self.$menuItem.on( 'reactivate', self.updateMenuOptions );
@@ -162,7 +207,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * Open the editor panel for a given selector and store element as target.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 *
 		 * @param  {string} selector Selector.
 		 */
@@ -178,9 +223,9 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * When the user clicks on an element within the mce editor record the element clicked.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 *
-		 * @param  {object} event DOM Event
+		 * @param  {MouseEvent} event DOM Event
 		 */
 		elementClick( event ) {
 			if ( self.layerEvent.latestTime !== event.timeStamp ) {
@@ -194,7 +239,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * Bind each of the sub menu items.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 */
 		_setupMenuClick() {
 			BG.Menu.$element
@@ -207,29 +252,33 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 		/**
 		 * Setup Legacy Hover Boxes.
+		 * 
+		 * In order for hover boxes created in the old
+		 * method to be shown in the editor, we still
+		 * have to set them up here.
 		 *
-		 * @since 1.17.0
+		 * @since 1.25.0
 		 */
 		_setupLegacyHoverBoxes() {
-			var css = '',
-				$head = $( tinyMCE.activeEditor.iframeElement )
+			var css         = '',
+				$head       = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
 					.find( 'head' ),
-				$body = $( tinyMCE.activeEditor.iframeElement )
+				$body       = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
 					.find( 'body' ),
 				$hoverBoxes = $body.find( '.has-hover-bg' );
 
 			$hoverBoxes.each( ( index, hoverBox ) => {
-				var $hoverBox = $( hoverBox ),
+				var $hoverBox     = $( hoverBox ),
 					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
-					hoverBgUrl = $hoverBox.attr( 'data-hover-image-url' ),
-					hoverOverlay = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
-					hoverBgSize = $hoverBox.attr( 'data-hover-bg-size' ),
-					hoverBgSize = hoverBgSize ? hoverBgSize : 'cover',
-					hoverBgPos = $hoverBox.attr( 'data-hover-bg-position' ),
-					hoverBgPos = hoverBgPos ? hoverBgPos : '50',
-					hoverBgColor = $hoverBox.attr( 'data-hover-bg-color' );
+					hoverBgUrl    = $hoverBox.attr( 'data-hover-image-url' ),
+					hoverOverlay  = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
+					hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
+					hoverBgSize   = hoverBgSize ? hoverBgSize : 'cover',
+					hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
+					hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
+					hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
 
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
@@ -240,7 +289,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				}
 
 				if ( hoverOverlay && hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover {`;
+					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
 						hoverOverlay
 					} ), url('${hoverBgUrl}') !important; }`;
@@ -252,7 +301,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
 					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
 				} else if ( hoverBgUrl ) {
-					css = `.${hoverBoxClass}:hover {`;
+					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: url('${hoverBgUrl}') !important; }`;
 					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
 
@@ -299,7 +348,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * Setup Init.
 		 *
-		 * @since 1.2.7
+		 * @since 1.25.0
 		 */
 		setup: function() {
 			self.$menuItem = BG.Menu.$element.find( '[data-action="menu-background"]' );
@@ -312,7 +361,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 		/**
 		 * Find out what type of element we're controlling the background of.
 		 *
-		 * @since 1.8.0
+		 * @since 1.25.0
 		 */
 		setElementType: function() {
 			self.elementType = this.checkElementType( self.$target );
@@ -373,8 +422,10 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 			panel.$element.find( '.panel-body' ).append( '<div class="bg-background-react-container"></div>' );
 
+			// This will be the element that the React App attaches to.
 			const bgRoot = createRoot( panel.$element.find( '.bg-background-react-container' ).get( 0 ) );
 
+			// TODO: Create a dynamic way of setting this to support other themes.
 			const colorVariables = {
 				'color-1': 'var(--color-1)',
 				'color-2': 'var(--color-2)',
@@ -386,6 +437,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 			const savedColors = BoldgridEditor.saved_colors;
 
+			// This ensures that the background image panel shows if there is a background image set.
 			if ( self.$target.css( 'background-image' ).includes( 'url' ) ) {
 				selectedComponent = 'BoldgridBackgroundImage';
 			}
@@ -418,144 +470,6 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				<BoldgridPanel type="background" selectedComponent={selectedComponent} usedComponents={usedComponents} target={self.$target} />
 			);
 		},
-
-		mountReactComponents: function() {
-			
-		},
-
-
-		controls: {
-			get: function( control ) {
-				if ( self.controls.hasOwnProperty( control ) ) {
-					return self.controls[control];
-				} else {
-					return false;
-				}
-			},
-
-			bgColor: {
-				getTargetColors: function( $target ) {
-					var bgColors = [],
-						classList = $target.attr( 'class' ),
-						colorClass = classList.match( /color-|(\d|neutral)-background-color/ ),
-						dataAlpha = $target.attr( 'data-alpha' );
-
-					// If the target has the new data-bgColorSet attribute, use that.
-					if ( $target.attr( 'data-bgColorSet' ) ) {
-						bgColors = JSON.parse( $target.attr( 'data-bgColorSet' ) );
-
-						// If the target has a color palette overlay on a bg image, use that.
-					} else if ( $target.attr( 'data-bg-overlaycolor' ) ) {
-						bgColors = [
-							[
-								$target.attr( 'data-bg-overlaycolor-class' ) ?
-									$target.attr( 'data-bg-overlaycolor-class' ) :
-									$target.attr( 'data-bg-overlaycolor' ),
-								$target.attr( 'data-bg-overlaycolor-alpha' ),
-								0
-							]
-						];
-
-						// If the target has a gradient, use that.
-					} else if ( $target.attr( 'data-bg-color-1' ) ) {
-						bgColors = [
-							[ $target.attr( 'data-bg-color-1' ), 1, 0 ],
-							[ $target.attr( 'data-bg-color-2' ), 1, 1 ]
-						];
-
-						// If the target has a color class, use that.
-					} else if ( colorClass ) {
-						bgColors = [ [ colorClass[1], 'undefined' !== typeof dataAlpha ? dataAlpha : 1, 0 ] ];
-
-						// Else use the background-color property.
-					} else {
-						bgColors = [ [ $target.css( 'background-color' ), 1, 0 ] ];
-					}
-
-					return bgColors;
-				},
-
-				normalizeColor: function( color ) {
-					var normalizedColor = color.replace( /\s/g, '' );
-
-					normalizedColor = normalizedColor.replace( /var\(--color-(\d|neutral)\)/g, '$1' );
-
-					return normalizedColor;
-				},
-
-				getColorType: function( color ) {
-					if ( color.match( /^rgb/ ) || color.match( /^#/ ) || color.match( /^hsl/ ) ) {
-						return 'color';
-					} else {
-						return 'class';
-					}
-				},
-				renderColorControl: function( colorArray, index ) {
-					var color = self.controls.bgColor.normalizeColor( colorArray[0] ),
-						alpha = colorArray[1],
-						position = colorArray[2],
-						colorType = self.controls.bgColor.getColorType( color ),
-						$control;
-
-					if ( 'class' === colorType ) {
-						color = `rgba( var(--color-${color}-raw), ${alpha} )`;
-					}
-
-					$control = $(
-						`<li>
-								<span class="dashicons dashicons-move"></span>
-								<label for="bg-color-${index}" class="color-preview" style="background-color:${color}"></label>
-								<input type="text" data-property="background-color" name="bg-color-${
-									index
-								}" class="color-control" value="${color}" data-type="${color}">
-								<input type="number" name="bg-color-position-${
-									index
-								}" min="0" max="1" step="0.05" class="gradient-position-control" value="${
-							position
-						}">
-								<input type="hidden" name="bg-color-alpha-${position}" class='color-alpha-control' value="${alpha}">
-								<span data-bg-color-pos="${position}" class="dashicons dashicons-trash"></span>
-							</li>`
-					);
-
-					return $control;
-				},
-				render: function() {
-					var $target = self.$target,
-						bgColorControls = self.controls.bgColor,
-						targetColors = bgColorControls.getTargetColors( $target ),
-						$controls = $(
-							`<div class="bg-color-control">
-							'<ul class="ui-sortable"></ul>'
-							</div>`
-						);
-
-					targetColors.forEach( ( color, index ) => {
-						$controls.find( 'ul' ).append( bgColorControls.renderColorControl( color, index ) );
-					} );
-
-					return $controls.get( 0 ).outerHTML;
-				}
-			},
-			bgGradient: {
-				render: () => {
-					return '<div class="bg-gradient-control"></div>';
-				},
-				mount: ($section) => {
-					
-				}
-			},
-			bgImage: {
-				render: () => {
-					return 'background-image';
-				},
-			},
-			bgBlending: {
-				render: function() {
-					return 'background-image';
-				}
-			}
-		}
 	};
 
 	BOLDGRID.EDITOR.CONTROLS.Background.init();
