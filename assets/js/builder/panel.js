@@ -175,8 +175,6 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		 */
 		createScrollbar: function( selector, config ) {
 
-			console.log( { selector } );
-
 			// Default height of scroll is the height of body minus this number.
 			var sizeOffset = -66,
 				$target = this.$element.find( selector );
