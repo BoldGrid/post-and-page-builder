@@ -449,14 +449,15 @@ class Boldgrid_Editor_Assets {
 	 * @return array JS Variables.
 	 */
 	public function get_shared_vars() {
-		return [
-			'plugin_url' => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
-			'plugin_configs' => Boldgrid_Editor_Service::get( 'config' ),
-			'globalSettings' => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
-			'customPostTypes' => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
-			'pluginVersion' => BOLDGRID_EDITOR_VERSION,
-			'editor_override' => Boldgrid_Editor_Setting::get_editor_override(),
-		];
+		return array(
+			'bgppb_form_action_nonce' => wp_create_nonce( 'bgppb_form_action_nonce' ),
+			'plugin_url'              => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
+			'plugin_configs'          => Boldgrid_Editor_Service::get( 'config' ),
+			'globalSettings'          => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
+			'customPostTypes'         => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
+			'pluginVersion'           => BOLDGRID_EDITOR_VERSION,
+			'editor_override'         => Boldgrid_Editor_Setting::get_editor_override(),
+		);
 	}
 
 	/**
