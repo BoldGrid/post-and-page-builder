@@ -234,7 +234,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$menu                = BG.Controls.$menu,
 				$target              = $menu.targetData[self.name],
 				hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' ),
-				isHoverChild         = false;
+				isHoverChild         = false,
+				$selected;
 
 			isHoverChild = self.isHoverChild( $target );
 
