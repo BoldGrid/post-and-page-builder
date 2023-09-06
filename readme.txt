@@ -134,6 +134,9 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.25.0 =
+* New Feature: New background controls with a new Color Picker and Gradient Picker. [#528](https://github.com/BoldGrid/post-and-page-builder/issues/528)
+
 = 1.24.2 =
 * Security Fix: Patch CSRF vulnerability in the submitDefaultEditor function [#540](https://github.com/BoldGrid/post-and-page-builder/issues/540)
 
