@@ -13,7 +13,11 @@
 		<h4>My Colors</h4>
 		<ul class='colors my-colors'>
 			<li class='panel-selection custom-color'><i class="fa fa-plus" aria-hidden="true"></i></li>
-			<# _.each( data.customColors, function ( customColor, index ) { #>
+			<# _.each( data.customColors, function ( customColor, index ) { 
+				if ( customColor.includes( 'linear-gradient' ) ) {
+					return;
+				}
+				#>
 				<li data-type="custom" data-index="{{index}}" data-preset="{{customColor}}" style='background-color:{{customColor}}' class="panel-selection"></li>
 			<# }); #>
 		</ul>

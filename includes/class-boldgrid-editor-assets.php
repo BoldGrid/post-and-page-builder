@@ -322,9 +322,10 @@ class Boldgrid_Editor_Assets {
 		$boldgrid_settings['api_key'] = $config['api_key'];
 
 		$current_theme = wp_get_theme();
+		$theme_version = $current_theme->get( 'Version' );
 		$is_crio = false;
 		if ( $current_theme->exists() ) {
-			$theme_name = $current_theme->get( 'Name' );
+			$theme_name    = $current_theme->get( 'Name' );
 			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
 				$is_crio = true;
 			}
@@ -360,6 +361,7 @@ class Boldgrid_Editor_Assets {
 			'is_boldgrid_theme'      => $is_bg_theme,
 			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
 			'is_crio'                => $is_crio,
+			'theme_version'		     => $theme_version,
 			'is_add_new'             => 'post-new.php' === $pagenow,
 			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
 			'post'                   => (array) $post,
@@ -615,7 +617,7 @@ class Boldgrid_Editor_Assets {
 		wp_register_style( 'editor-css-imhwpb', self::editor_css_url(), array(), BOLDGRID_EDITOR_VERSION );
 
 		wp_enqueue_style( 'animatecss',
-		plugins_url( '/assets/css/animate.min.css', $plugin_file ), array(), BOLDGRID_EDITOR_VERSION );
+		plugins_url( '/assets/css/animate.min.css', $plugin_file ), array( 'wp-components' ), BOLDGRID_EDITOR_VERSION );
 
 		wp_enqueue_style( 'boldgrid-components',
 			plugins_url( '/assets/css/components' . $suffix . '.css', $plugin_file ), array(),

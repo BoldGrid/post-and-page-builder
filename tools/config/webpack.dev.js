@@ -18,6 +18,10 @@ module.exports = {
 
 	cache: true,
 
+	resolve: {
+		extensions: [ '', '.js', '.jsx' ],
+	},
+
 	entry: {
 		public: './assets/js/public.js',
 		editor: './assets/js/editor.js',
@@ -44,6 +48,12 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				test: /\.m?js/,
+				resolve: {
+					fullySpecified: false
+				}
+			},
+			{
 				test: /\.html$/,
 				use: [
 					{
@@ -60,8 +70,11 @@ module.exports = {
 				loader: 'svg-inline-loader',
 			},
 			{
-				test: /\.js$/,
+				test: /\.(js|jsx)$/,
 				use: ['babel-loader'],
+				resolve: {
+					extensions: [".js", ".jsx"]
+				},
 				include: [ srcDir ],
 			},
 			{
@@ -195,5 +208,6 @@ module.exports = {
 		moduleAssets: false,
 		colors: true,
 		errorDetails: true,
-	}
+	},
+	watch: true
 };

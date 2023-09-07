@@ -9,7 +9,16 @@
 	}
 }
 
-.customize-navigation {
+.editor-panel .boldgrid-panel-nav__item:hover {
+	.boldgrid-tooltip {
+		display: block;
+		right: 40px !important;
+		top: 50% !important;
+		transform: translateY(-50%);
+	}
+}
+
+.customize-navigation, .background-nav {
 	position: absolute;
 	bottom: 0;
 	left: 0;

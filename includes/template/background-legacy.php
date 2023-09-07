@@ -1,4 +1,4 @@
-<script type="text/html" id="tmpl-boldgrid-editor-background">
+<script type="text/html" id="tmpl-boldgrid-editor-background-legacy">
 	<div class='background-design'>
 		<div class='preset-wrapper'>
 			<div class='current-selection'>

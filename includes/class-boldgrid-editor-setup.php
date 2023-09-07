@@ -40,6 +40,7 @@ class Boldgrid_Editor_Setup {
 		 */
 		return [
 			[ 'name' => 'editor_choice', 'enabled' => self::has_editor_choice_notice() ],
+			[ 'name' => 'bg_control', 'enabled' => self::has_bg_control_notice() ],
 			[ 'name' => 'intro', 'enabled' => ! self::is_notice_dismissed( 'editor_choice' ) && ! $setup ],
 		];
 	}
@@ -53,6 +54,25 @@ class Boldgrid_Editor_Setup {
 	 */
 	public static function has_editor_choice_notice() {
 		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.9.0-rc.0' ) && ! self::check_and_dismiss( 'editor_choice' );
+	}
+
+	/**
+	 * Should we display the new Background Control Notice?
+	 *
+	 * @since 1.25.0
+	 *
+	 * @return boolean Display Notice?
+	 */
+	public static function has_bg_control_notice() {
+		$is_crio       = false;
+		$current_theme = wp_get_theme();
+		if ( $current_theme->exists() ) {
+			$theme_name    = $current_theme->get( 'Name' );
+			if ( 'Crio' === $theme_name || 'Prime' === $theme_name ) {
+				$is_crio = true;
+			}
+		}
+		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.25.0-rc1' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
 	}
 
 	/**

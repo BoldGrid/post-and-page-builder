@@ -179,7 +179,8 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			var sizeOffset = -66,
 				$target = this.$element.find( selector );
 
-			if ( config && config.sizeOffset ) {
+			// If the config has a sizeOffset, use that instead.
+			if ( config && 'undefined' !== typeof config.sizeOffset ) {
 				sizeOffset = config.sizeOffset;
 			}
 
@@ -572,6 +573,20 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 		_onWheel: function( e ) {
 			e = e || window.event;
 
+			/**
+			 * New controls using the BoldgridPanel
+			 * React component do not use the slimScroll module
+			 * that legacy controls do. Therefore, we have to check for
+			 * this.
+			 */
+			if (
+				self.currentControl &&
+				self.currentControl.panel &&
+				true === self.currentControl.panel.noSlimScroll
+			) {
+				return;
+			}
+
 			if ( e.preventDefault ) {
 				e.preventDefault();
 			}
@@ -658,7 +673,6 @@ BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 			this.$element.show();
 			this.initScroll( control );
 			this.preselect();
-
 			this.scrollToSelected();
 			this.collapseSelection();
 			this.showOverlay();

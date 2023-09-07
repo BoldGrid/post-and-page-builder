@@ -1,5 +1,6 @@
 import { EditorChoice } from './editor-choice';
 import { Intro } from './intro';
+import { BgControl } from './bg-control';
 
 /**
  * Load one time notices, on first editor load.
@@ -14,7 +15,10 @@ export class Loader {
 			intro: Intro,
 
 			// eslint-disable-next-line
-			editor_choice: EditorChoice
+			editor_choice: EditorChoice,
+
+			// eslint-disable-next-line
+			bg_control: BgControl
 		};
 	}
 

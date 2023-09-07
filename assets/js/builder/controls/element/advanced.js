@@ -43,6 +43,42 @@ export class Advanced {
 	}
 
 	/**
+	 * Check if the target is the child of a hover box element.
+	 * 
+	 * @since 1.25.0
+	 *
+	 * @param {JQuery} $target Target Element
+	 *
+	 * @returns {boolean} True if the target is a hover child.
+	 */
+	isHoverChild( $target ) {
+		var $parent = $target.parent();
+
+		// Check if the target is a hover element.
+		if ( $parent.hasClass( 'has-hover-bg' ) || $parent.hasClass( 'has-hover-color' ) || $parent.hasClass( 'has-hover-image' )) {
+			return true;
+		}
+
+		// Check if the target is inside a column that is a hover element.
+		if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length 
+			|| 0 !== $parent.closest( 'div[class*="col"].has-hover-color' ).length
+			|| 0 !== $parent.closest( 'div[class*="col"].has-hover-image' ).length
+		) {
+			return true;	
+		}
+		
+		// If the target is a row, it's parent will be a container, so ensure it's grandparent is a hover element.
+		if ( $target.is( 'div.row' ) && ( 0 !== $parent.parents( '.has-hover-bg' ).length
+			|| 0 !== $parent.parents( '.has-hover-color' ).length 
+			|| 0 !== $parent.parents( '.has-hover-image' ).length )
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Open the palette customization panel.
 	 *
 	 * @since 1.6.0
@@ -63,13 +99,7 @@ export class Advanced {
 			$parent = $target.parents( '.boldgrid-section' );
 		}
 
-		if ( $parent.hasClass( 'has-hover-bg' ) ) {
-			isHoverChild = true;
-		} else if ( 0 !== $parent.closest( 'div[class*="col"].has-hover-bg' ).length ) {
-			isHoverChild = true;
-		} else if ( $target.is( 'div.row' ) && 0 !== $parent.parents( 'has-hover-bg' ).length ) {
-			isHoverChild = true;
-		}
+		isHoverChild = this.isHoverChild( $target );
 
 		hoverVisibilityIndex = this.panel.customizeSupport.indexOf( 'hoverVisibility' );
 

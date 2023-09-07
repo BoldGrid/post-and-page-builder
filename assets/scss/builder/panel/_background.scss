@@ -297,3 +297,30 @@
 		}
 	}
 }
+
+.editor-panel[data-type="background"] {
+	.background-design.non-legacy {
+		margin-left: 60px;
+		padding: 10px;
+		.background-panel-section {
+			display: none;
+			&.active {
+				display: block;
+			}
+		}
+	}
+	.background-nav {
+		display: block;
+		.background-nav-item {
+			width: 60px;
+			span.dashicons {
+				color: white;
+				font-size:30px;
+				text-align: center;
+				width: 60px;
+				height: 40px;
+				padding-top: 10px;
+			}
+		}
+	}
+}
