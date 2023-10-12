@@ -1151,10 +1151,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.16.2", "@boldgrid/components@^2.16.25", "@boldgrid/components@^2.16.29":
-  version "2.16.29"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.29.tgz#bd78df832ffbfe32f76eb462885840852aeb1943"
-  integrity sha512-x9t1Xc/2ZvFSFqMfh0VkgcEmAKXrevLyIWunUSTKlqZ44/zaSfnZ34WOvWh3iRqPRMy6HVGPdcAVV+Q60Qy0Jw==
+"@boldgrid/components@^2.16.2", "@boldgrid/components@^2.16.25", "@boldgrid/components@^2.16.30":
+  version "2.16.30"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.30.tgz#e07a8a2b961aaa742a258df9de23aac697ce4d62"
+  integrity sha512-39c8M6EMVC1h8xwFV45uOp46m6YK8p9y82K3wnyeDOtIeujuUbJ8Up2XbVw3rfFDvgviHUarPIXmd7XbSqiGzA==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#ppb-dev":
   version "0.13.1"
