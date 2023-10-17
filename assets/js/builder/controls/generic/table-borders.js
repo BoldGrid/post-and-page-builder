@@ -311,9 +311,14 @@ import template from '../../../../../includes/template/customize/table-borders.h
 					property[`border-top-${styleSuffix}`]    = value;
 					property[`border-bottom-${styleSuffix}`] = value;
 
+					window.BOLDGRID.CONTROLS.addStyles(
+						$this,
+						property
+					);
+
 					if ( ! value && 'style' === styleSuffix ) {
 						window.BOLDGRID.CONTROLS.addStyles(
-							$this.find( nodeTypes ),
+							$this,
 							{
 								'border-top-width': '',
 								'border-bottom-width': '',
