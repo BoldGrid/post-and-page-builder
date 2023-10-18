@@ -92,6 +92,52 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 	};
 
 	/**
+	 * Find all content elements that are not in columns and wrap them.
+	 * 
+	 * @since 1.25.1
+	 */
+	let wrapUncolumnedElements = function() {
+		var wrap,
+			group = [],
+			contentSelector = [
+				'p',
+				'h1',
+				'h2',
+				'h3',
+				'h4',
+				'h5',
+				'h6',
+				'h7'
+			].join( ',' );
+
+		wrap = function() {
+			$( group ).each( ( _, el ) => {
+				$( el ).wrap( '<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12"></div>' );
+				$( el ).removeAttr( 'class' );
+				let contents = $( el ).find( 'p' ).text();
+				$( el ).html( contents );
+			} );
+			group = [];
+		};
+
+		self.$context.find( 'div.row > *' ).each( function() {
+			var $this = $( this );
+			// Do not wrap next page marker or tinyMCE bookmarks.
+			if (
+				$this.is( contentSelector ) &&
+				! $this.find( '.mce-wp-nextpage' ).length &&
+				! $this.find( '.mce_SELRES_start' ).length
+			) {
+				group.push( this );
+			} else {
+				wrap();
+			}
+		} );
+
+		wrap();
+	};
+
+	/**
 	 * Update content within context.
 	 *
 	 * @since 1.2.7
@@ -105,6 +151,9 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 
 		// Wrap sibling content elements not in rows, into rows.
 		wrapElementGroup();
+
+		// Wrap content elements not in columns, into columns.
+		wrapUncolumnedElements();
 
 		// Add Class boldgrid-section to all parent of containers.
 		addSectionClass();
