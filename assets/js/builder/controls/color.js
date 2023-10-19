@@ -21,7 +21,7 @@ import { Palette } from './color/palette';
 
 		transparentColors: [ 'rgba(0, 0, 0, 0)', 'transparent' ],
 
-		colorClasses: [ 'color1-color', 'color2-color', 'color3-color', 'color4-color', 'color5-color' ],
+		colorClasses: [ 'color1-color', 'color2-color', 'color3-color', 'color4-color', 'color5-color', 'color-neutral-color' ],
 
 		textContrastClasses: [
 			'color-neutral-text-default',
@@ -52,7 +52,8 @@ import { Palette } from './color/palette';
 			'color2-border-color',
 			'color3-border-color',
 			'color4-border-color',
-			'color5-border-color'
+			'color5-border-color',
+			'color-neutral-border-color'
 		],
 
 		outlineColorClasses: [
@@ -60,7 +61,8 @@ import { Palette } from './color/palette';
 			'color2-outline-color',
 			'color3-outline-color',
 			'color4-outline-color',
-			'color5-outline-color'
+			'color5-outline-color',
+			'color-neutral-outline-color'
 		],
 
 		customColors: BoldgridEditor.saved_colors,
