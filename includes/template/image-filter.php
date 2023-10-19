@@ -1,7 +1,7 @@
 <script type="text/html" id="tmpl-boldgrid-editor-image-filter">
 	<div class='remote-image-error'>
 		<h2>Error Loading Image</h2>
-		<p>This image filter control only works on images uploaded to this Wordpress.
+		<p>This image filter control only works on images uploaded to this WordPress.
 		Try replacing this image with an image from your media library to use this control.</p>
 	</div>
 	<div class='choices image-filter'>
