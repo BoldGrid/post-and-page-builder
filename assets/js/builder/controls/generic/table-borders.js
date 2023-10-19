@@ -250,14 +250,26 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				let nodes = $target.find( nodeTypes );
 				nodes.each( function() {
 					var $this = $( this );
-					$this.css( `border-right-${styleSuffix}`, value );
-					$this.css( `border-left-${styleSuffix}`, value );
+
+					let property                            = {};
+					property[`border-right-${styleSuffix}`] = value;
+					property[`border-left-${styleSuffix}`]  = value;
+
+					window.BOLDGRID.CONTROLS.addStyles(
+						$this,
+						property
+					);
 
 					if ( ! value && 'style' === styleSuffix ) {
-						$this.css( 'border-left-width', '' );
-						$this.css( 'border-right-width', '' );
-						$this.css( 'border-left-color', '' );
-						$this.css( 'border-right-color', '' );
+						window.BOLDGRID.CONTROLS.addStyles(
+							$this,
+							{
+								'border-left-width': '',
+								'border-right-width': '',
+								'border-left-color': '',
+								'border-right-color': ''
+							}
+						);
 					}
 				} );
 			}
@@ -267,14 +279,25 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				rows.each( function() {
 					var $this = $( this );
 
-					$this.find( nodeTypes ).css( `border-top-${styleSuffix}`, value );
-					$this.find( nodeTypes ).css( `border-bottom-${styleSuffix}`, value );
+					let property                             = {};
+					property[`border-top-${styleSuffix}`]    = value;
+					property[`border-bottom-${styleSuffix}`] = value;
+
+					window.BOLDGRID.CONTROLS.addStyles(
+						$this.find( nodeTypes ),
+						property
+					);
 
 					if ( ! value && 'style' === styleSuffix ) {
-						$this.find( nodeTypes ).css( 'border-top-width', '' );
-						$this.find( nodeTypes ).css( 'border-bottom-width', '' );
-						$this.find( nodeTypes ).css( 'border-top-color', '' );
-						$this.find( nodeTypes ).css( 'border-bottom-color', '' );
+						window.BOLDGRID.CONTROLS.addStyles(
+							$this.find( nodeTypes ),
+							{
+								'border-top-width': '',
+								'border-bottom-width': '',
+								'border-top-color': '',
+								'border-bottom-color': ''
+							}
+						);
 					}
 				} );
 			}
@@ -283,14 +306,26 @@ import template from '../../../../../includes/template/customize/table-borders.h
 				let nodes = $target.find( 'thead' ).find( nodeTypes );
 				nodes.each( function() {
 					var $this = $( this );
-					$this.css( `border-bottom-${styleSuffix}`, value );
-					$this.css( `border-top-${styleSuffix}`, value );
+
+					let property                             = {};
+					property[`border-top-${styleSuffix}`]    = value;
+					property[`border-bottom-${styleSuffix}`] = value;
+
+					window.BOLDGRID.CONTROLS.addStyles(
+						$this,
+						property
+					);
 
 					if ( ! value && 'style' === styleSuffix ) {
-						$this.css( 'border-bottom-width', '' );
-						$this.css( 'border-bottom-color', '' );
-						$this.css( 'border-top-width', '' );
-						$this.css( 'border-top-color', '' );
+						window.BOLDGRID.CONTROLS.addStyles(
+							$this,
+							{
+								'border-top-width': '',
+								'border-bottom-width': '',
+								'border-top-color': '',
+								'border-bottom-color': ''
+							}
+						);
 					}
 				} );
 			}
