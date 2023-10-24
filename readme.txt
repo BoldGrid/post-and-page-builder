@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 1.25.0
+Stable tag: 1.25.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,15 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.25.1 =
+* Bug Fix: Editor is not detecting animations on content [#538](https://github.com/BoldGrid/post-and-page-builder/issues/538)
+* Bug Fix: Opening Advanced Controls adds a box shadow to every element [#535](https://github.com/BoldGrid/post-and-page-builder/issues/535)
+* Bug Fix: Tables are very wide on iOS mobile devices (12, chrome) [#520](https://github.com/BoldGrid/post-and-page-builder/issues/520)
+* Bug Fix: Color Neutral doesn't get removed when a new color is selected [#527](https://github.com/BoldGrid/post-and-page-builder/issues/527)
+* Bug Fix: Tables - color palette borders do not stay on page save [#546](https://github.com/BoldGrid/post-and-page-builder/issues/546)
+* Bug Fix: Adding a new row with a heading removes the column code [#547](https://github.com/BoldGrid/post-and-page-builder/issues/547)
+* Bug Fix: WordPress spelled with lower p on image filter error message [#555](https://github.com/BoldGrid/post-and-page-builder/issues/555)
 
 = 1.25.0 =
 * New Feature: New background controls with a new Color Picker and Gradient Picker. [#528](https://github.com/BoldGrid/post-and-page-builder/issues/528)
