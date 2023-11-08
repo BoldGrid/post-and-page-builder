@@ -452,12 +452,30 @@ class Boldgrid_Editor_Assets {
 		return array(
 			'bgppb_form_action_nonce' => wp_create_nonce( 'bgppb_form_action_nonce' ),
 			'plugin_url'              => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
+			'onb_videos'              => $this->get_onb_videos(),
 			'plugin_configs'          => Boldgrid_Editor_Service::get( 'config' ),
 			'globalSettings'          => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes'         => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
 			'pluginVersion'           => BOLDGRID_EDITOR_VERSION,
 			'editor_override'         => Boldgrid_Editor_Setting::get_editor_override(),
 		);
+	}
+
+	/**
+	 * Get the onboarding videos.
+	 *
+	 * @since 1.9.0
+	 *
+	 * @return array Onboarding videos.
+	 */
+	public function get_onb_videos() {
+		$onb_videos = get_option( 'boldgrid_onb_vidoes', array() );
+
+		if ( isset( $onb_videos['ppb'] ) && ! empty( $onb_videos['ppb'] ) ) {
+			return $onb_videos['ppb'];
+		} else {
+			return array();
+		}
 	}
 
 	/**

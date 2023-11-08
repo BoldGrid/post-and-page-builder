@@ -42,6 +42,7 @@ class Boldgrid_Editor_Setup {
 			[ 'name' => 'editor_choice', 'enabled' => self::has_editor_choice_notice() ],
 			[ 'name' => 'bg_control', 'enabled' => self::has_bg_control_notice() ],
 			[ 'name' => 'intro', 'enabled' => ! self::is_notice_dismissed( 'editor_choice' ) && ! $setup ],
+			[ 'name' => 'onb_videos', 'enabled' => self::has_onb_videos() && ! self::is_notice_dismissed( 'onb_videos' ) ],
 		];
 	}
 
@@ -54,6 +55,23 @@ class Boldgrid_Editor_Setup {
 	 */
 	public static function has_editor_choice_notice() {
 		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.9.0-rc.0' ) && ! self::check_and_dismiss( 'editor_choice' );
+	}
+
+	/**
+	 * Do we have any onboarding videos?
+	 *
+	 * @since 1.26.0
+	 *
+	 * @return boolean Display Notice?
+	 */
+	public static function has_onb_videos() {
+		$onb_videos = get_option( 'boldgrid_onb_vidoes', array() );
+
+		if ( isset( $onb_videos['ppb'] ) && ! empty( $onb_videos['ppb'] ) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
