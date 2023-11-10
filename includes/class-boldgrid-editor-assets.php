@@ -469,7 +469,7 @@ class Boldgrid_Editor_Assets {
 	 * @return array Onboarding videos.
 	 */
 	public function get_onb_videos() {
-		$onb_videos = get_option( 'boldgrid_onb_vidoes', array() );
+		$onb_videos = get_option( 'boldgrid_onboarding_videos', array() );
 
 		if ( isset( $onb_videos['ppb'] ) && ! empty( $onb_videos['ppb'] ) ) {
 			return $onb_videos['ppb'];

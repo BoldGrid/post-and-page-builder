@@ -65,7 +65,7 @@ class Boldgrid_Editor_Setup {
 	 * @return boolean Display Notice?
 	 */
 	public static function has_onb_videos() {
-		$onb_videos = get_option( 'boldgrid_onb_vidoes', array() );
+		$onb_videos = get_option( 'boldgrid_onboarding_videos', array() );
 
 		if ( isset( $onb_videos['ppb'] ) && ! empty( $onb_videos['ppb'] ) ) {
 			return true;
@@ -90,7 +90,7 @@ class Boldgrid_Editor_Setup {
 				$is_crio = true;
 			}
 		}
-		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.25.0-rc1' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
+		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.26.0' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
 	}
 
 	/**

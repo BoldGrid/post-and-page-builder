@@ -4,13 +4,13 @@ export class Notice extends Base {
 	constructor() {
 		super();
 
-		this.name = 'bg_control';
+		this.name = 'onb_videos';
 
 		this.panel = {
 			title: 'BoldGrid Post and Page Builder - Getting Started',
-			height: '400px',
-			width: '800px',
-			disabledClose: false,
+			height: '450px',
+			width: '950px',
+			disabledClose: true,
 			autoCenter: true
 		};
 	}
@@ -27,7 +27,25 @@ export class Notice extends Base {
 		BG.Panel.setContent( this.getHTML() );
 		BG.Panel.centerPanel();
 		BG.Panel.$element.show();
+		this.bindVideoListButtons();
 		this.bindDismissButton();
+	}
+
+	/**
+	 * Bind Video List Buttons
+	 * 
+	 * @since 1.26.0
+	 */
+	bindVideoListButtons() {
+		var $buttons = BG.Panel.$element.find( '.onb-videos-list .button' ),
+			$iframe  = BG.Panel.$element.find( 'iframe' );
+
+		$buttons.on( 'click', ( e ) => {
+			var $button = $( e.currentTarget ),
+				videoId = $button.data( 'video-id' );
+
+			$iframe.attr( 'src', `https://www.youtube.com/embed/${videoId}` );
+		} );
 	}
 
 	/**
@@ -44,7 +62,7 @@ export class Notice extends Base {
 		videos.forEach( ( video ) => {
 			html += `
 				<li class="onb-video-list-item">
-					<span data-video-id="${video.id}" class="onb-video-list-item-link">${video.title}</span>
+					<span data-video-id="${video.id}" class="button button-secondary">${video.title}</span>
 				</li>
 			`;
 		} );
@@ -64,18 +82,22 @@ export class Notice extends Base {
 	getVideoEmbedHTML() {
 		var videos = BoldgridEditor.onb_videos ? BoldgridEditor.onb_videos : [];
 
-		if ( empty( videos ) ) {
+		if ( 0 === videos.length ) {
 			return '';
 		}
 		
 		return `
 			<div class="onb-video-embed" data-video-id="${videos[0].id}">
 				<iframe
-					width="560"
-					height="315"
+					width="577"
+					height="325"
 					src="https://www.youtube.com/embed/${videos[0].id}"
-					frameborder="0">
+					frameborder="0"
+					allowfullscreen>
 				</iframe>
+				<p class="buttons" style="margin: 10px">
+					<a class='btn bg-editor-button btn-rounded bg-primary-color dismiss'>Okay, Got It!</a>
+				</p>
 			</div>
 		`;
 	}
@@ -88,11 +110,11 @@ export class Notice extends Base {
 	 * @return {string} Template markup.
 	 */
 	getHTML() {
-		var videoListHTML  = this.getVideoListHTML();
+		var videoListHTML  = this.getVideoListHTML(),
 			videoEmbedHTML = this.getVideoEmbedHTML();
 
 		return `
-			<div class="onb-videos-notice base-notice">
+			<div class="onb-videos-notice market-notice base-notice">
 				<div class="onb-videos-list-container">${videoListHTML}</div>
 				<div class="onb-active-video-container">${videoEmbedHTML}</div>
 			</div>
