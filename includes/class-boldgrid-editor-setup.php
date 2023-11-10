@@ -90,7 +90,7 @@ class Boldgrid_Editor_Setup {
 				$is_crio = true;
 			}
 		}
-		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.26.0' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
+		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.25.0-rc1' ) && ! self::check_and_dismiss( 'bg_control' ) && $is_crio;
 	}
 
 	/**
