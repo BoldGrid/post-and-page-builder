@@ -1,3 +1,5 @@
+import { OnbVideos } from '../notice/onb-videos/';
+
 window.BOLDGRID = window.BOLDGRID || {};
 BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
 BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
@@ -22,6 +24,10 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		menuDropDown: {
 			title: 'Help',
 			options: [
+				{
+					name: 'Tutorials',
+					class: 'action font-awesome fa-video-camera onb-videos',
+				},
 				{
 					name: 'Editing Guide',
 					class: 'action font-awesome fa-question support-center'
@@ -66,6 +72,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		setup: function() {
 			BG.Menu.$element
 				.find( '.bg-editor-menu-dropdown' )
+				.on( 'click', '.action.onb-videos', self.openOnbVideos )
 				.on( 'click', '.action.support-center', () => self.openTab( 'supportCenter' ) )
 				.on( 'click', '.action.bg-editor-information', self.iconHelp )
 				.on( 'click', '.action.bg-user-community', () => self.openTab( 'userCommunity' ) );
@@ -78,6 +85,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		iconHelp: function() {
 			BG.CONTROLS.Information.activate();
+		},
+
+		/**
+		 * Open the Onboarding Videos notice.
+		 */
+		openOnbVideos() {
+			new OnbVideos().init( false );
 		}
 	};
 

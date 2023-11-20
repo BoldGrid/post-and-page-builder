@@ -20,15 +20,70 @@ export class Notice extends Base {
 	 *
 	 * @since 1.26.0
 	 */
-	init() {
+	init( showPointer = true ) {
 		BG.Panel.currentControl = this;
+		// Remove all content from the panel.
+		BG.Panel.clear();
 		BG.Panel.setDimensions( this.panel.width, this.panel.height );
 		BG.Panel.setTitle( this.panel.title );
 		BG.Panel.setContent( this.getHTML() );
 		BG.Panel.centerPanel();
 		BG.Panel.$element.show();
 		this.bindVideoListButtons();
-		this.bindDismissButton();
+		this.bindDismissButton( showPointer );
+	}
+
+	loadAdminPointer() {
+		var $target = $( '#boldgrid-instance-menu .fa-question' ),
+			options = {
+				content: '<h3> Tutorial Videos </h3> <p> You can open up the tutorial videos again by clicking here </p>',
+				position: {
+					edge: 'right',
+					align: 'middle'
+				},
+				close: function() {
+					$.post( ajaxurl, {
+						pointer: 'onb-videos',
+						action: 'dismiss-wp-pointer'
+					} );
+					$target.pointer( 'destroy' );
+				}
+			};
+
+		if ( $( '.editing-blocker' ).is( ':visible' ) ) {
+			$( '#content_ifr' ).contents().one( 'click', () => {
+				console.log( 'clicked iframe' );
+				$target.pointer( options ).pointer( 'open' );
+			} );
+		} else {
+			$target.pointer( options ).pointer( 'open' );
+		}
+	}
+
+	/**
+	 * Bind the event of dismiss to the OKay button.
+	 *
+	 * @since 1.3
+	 */
+	bindDismissButton( showPointer ) {
+		BG.Panel.$element
+			.find( '.bg-upgrade-notice, .setup, .base-notice' )
+			.find( '.dismiss' )
+			.one( 'click', ( e ) => {
+				var nonce = $( e.currentTarget ).data( 'nonce' );
+				super.dismissPanel();
+				if ( showPointer ) {
+					this.ajaxDismiss( nonce );
+					this.loadAdminPointer();
+				}
+			} );
+	}
+
+	ajaxDismiss( nonce ) {
+		$.post( ajaxurl, {
+			nonce: nonce,
+			action: 'boldgrid_editor_dismiss_onb_videos',
+		} );
 	}
 
 	/**
@@ -62,7 +117,7 @@ export class Notice extends Base {
 		videos.forEach( ( video ) => {
 			html += `
 				<li class="onb-video-list-item">
-					<span data-video-id="${video.id}" class="button button-secondary">${video.title}</span>
+					<span data-video-id="${video.VideoId}" class="button button-secondary">${video.Title}</span>
 				</li>
 			`;
 		} );
@@ -81,22 +136,23 @@ export class Notice extends Base {
 	 */
 	getVideoEmbedHTML() {
 		var videos = BoldgridEditor.onb_videos ? BoldgridEditor.onb_videos : [];
+		var nonce  = BoldgridEditor.onb_videos_nonce;
 
 		if ( 0 === videos.length ) {
 			return '';
 		}
 		
 		return `
-			<div class="onb-video-embed" data-video-id="${videos[0].id}">
+			<div class="onb-video-embed" data-video-id="${videos[0].VideoId}">
 				<iframe
 					width="577"
 					height="325"
-					src="https://www.youtube.com/embed/${videos[0].id}"
+					src="https://www.youtube.com/embed/${videos[0].VideoId}"
 					frameborder="0"
 					allowfullscreen>
 				</iframe>
 				<p class="buttons" style="margin: 10px">
-					<a class='btn bg-editor-button btn-rounded bg-primary-color dismiss'>Okay, Got It!</a>
+					<a data-nonce="${nonce}" class='btn bg-editor-button btn-rounded bg-primary-color dismiss'>Okay, Got It!</a>
 				</p>
 			</div>
 		`;

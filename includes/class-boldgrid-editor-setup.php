@@ -160,6 +160,25 @@ class Boldgrid_Editor_Setup {
 		return ! empty( $setup['template']['choice'] ) ? $setup['template']['choice'] : false;
 	}
 
+	public function ajax_dismiss_videos() {
+		// Check the nonce.
+		$nonce_check = check_ajax_referer( 'boldgrid_editor_dismiss_onb_videos', 'nonce', false );
+
+		// If you are not at least a Contributor, you may not submit feedback.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+		}
+
+		if ( 1 !== $nonce_check ) {
+			// Terminate this callback script, with an error message.
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+		}
+
+		$this->check_and_dismiss( 'onb_videos' );
+
+		wp_send_json_success();
+	}
+
 	/**
 	 * Ajax Call save setup settings.
 	 *
