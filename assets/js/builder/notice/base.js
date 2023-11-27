@@ -39,6 +39,25 @@ export class Base {
 	dismissPanel() {
 		let $body = $( 'body' );
 
+		for ( let notice of BoldgridEditor.notices ) {
+			if ( notice.name === this.name ) {
+				notice.enabled = false;
+			}
+		}
+
+		let remainingNotices = 0;
+
+		for ( let notice of BoldgridEditor.notices ) {
+			if ( true === notice.enabled ) {
+				remainingNotices++;
+			}
+		}
+
+		if ( 0 !== remainingNotices ) {
+			BG.NOTICE.Loader.init();
+			return;
+		}
+
 		$body.addClass( 'fadeout-background' );
 		BG.Panel.$element
 			.addClass( 'bounceOutDown' )

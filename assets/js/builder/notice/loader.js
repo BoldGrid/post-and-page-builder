@@ -24,6 +24,12 @@ export class Loader {
 			// eslint-disable-next-line
 			onb_videos: OnbVideos,
 		};
+
+		window.BOLDGRID = window.BOLDGRID || {};
+		BOLDGRID.EDITOR = BOLDGRID.EDITOR || {};
+		BOLDGRID.EDITOR.NOTICE = BOLDGRID.EDITOR.NOTICE || {};
+
+		BOLDGRID.EDITOR.NOTICE.Loader = this;
 	}
 
 	/**
@@ -34,6 +40,10 @@ export class Loader {
 	init() {
 		for ( let notice of BoldgridEditor.notices ) {
 			if ( notice.enabled ) {
+				console.log( {
+					name: notice.name,
+					enabled: notice.enabled,
+				} );
 				$( 'body' ).addClass( 'bg-editor-intro' );
 				setTimeout( () => new this.notices[notice.name]().init() );
 				break;

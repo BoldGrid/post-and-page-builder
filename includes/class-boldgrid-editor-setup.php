@@ -58,6 +58,33 @@ class Boldgrid_Editor_Setup {
 	}
 
 	/**
+	 * Get Onboarding Videos
+	 *
+	 * @return array Onboarding Videos
+	 */
+	public static function get_onboarding_videos() {
+		$onb_videos     = get_option( 'boldgrid_onboarding_videos', array() );
+		$ppb_onb_videos = array();
+
+		foreach ( $onb_videos as $key => $video ) {
+			if ( 'ppb' === $video->Plugin ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$ppb_onb_videos[] = $video;
+			}
+		}
+
+		if ( 0 !== count( $ppb_onb_videos ) ) {
+			usort(
+				$ppb_onb_videos,
+				function( $a, $b ) {
+					return $a->DisplayOrder - $b->DisplayOrder; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				}
+			);
+		}
+
+		return $ppb_onb_videos;
+	}
+
+	/**
 	 * Do we have any onboarding videos?
 	 *
 	 * @since 1.26.0
@@ -65,9 +92,11 @@ class Boldgrid_Editor_Setup {
 	 * @return boolean Display Notice?
 	 */
 	public static function has_onb_videos() {
-		$onb_videos = get_option( 'boldgrid_onboarding_videos', array() );
+		$onb_videos = self::get_onboarding_videos();
 
-		if ( isset( $onb_videos['ppb'] ) && ! empty( $onb_videos['ppb'] ) ) {
+		error_log( json_encode( $onb_videos ) );
+
+		if ( isset( $onb_videos ) && ! empty( $onb_videos ) ) {
 			return true;
 		} else {
 			return false;

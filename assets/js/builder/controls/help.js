@@ -25,10 +25,6 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			title: 'Help',
 			options: [
 				{
-					name: 'Tutorials',
-					class: 'action font-awesome fa-video-camera onb-videos',
-				},
-				{
 					name: 'Editing Guide',
 					class: 'action font-awesome fa-question support-center'
 				},
@@ -50,6 +46,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		init: function() {
+			if ( 0 !== BoldgridEditor.onb_videos.length ) {
+				this.menuDropDown.options.unshift( {
+					name: 'Onboarding Videos',
+					class: 'action font-awesome fa-video-camera onb-videos',
+				} );
+			}
+
 			BOLDGRID.EDITOR.Controls.registerControl( this );
 		},
 

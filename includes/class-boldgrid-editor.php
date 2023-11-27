@@ -259,6 +259,8 @@ class Boldgrid_Editor {
 				$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
 				$this->set_is_boldgrid_theme( $is_boldgrid_theme );
 
+				add_filter( 'ppb_get_onboarding_videos', array( $boldgrid_editor_setup, 'get_onboarding_videos' ) );
+
 				add_action( 'admin_footer', array( $boldgrid_editor_crop, 'admin_footer' ) );
 				add_action( 'load-post.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
 				add_action( 'load-post-new.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
