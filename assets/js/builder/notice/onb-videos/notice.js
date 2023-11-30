@@ -32,6 +32,8 @@ export class Notice extends Base {
 	 * Open the panel.
 	 *
 	 * @since 1.26.0
+	 * 
+	 * @param {boolean} showPointer Show the admin pointer.
 	 */
 	init( showPointer = true ) {
 		BG.Panel.currentControl = this;
@@ -81,6 +83,8 @@ export class Notice extends Base {
 	 * Bind the event of dismiss to the Okay button.
 	 *
 	 * @since 1.26.0
+	 * 
+	 * @param {boolean} showPointer Show the admin pointer.
 	 */
 	bindDismissButton( showPointer ) {
 		BG.Panel.$element

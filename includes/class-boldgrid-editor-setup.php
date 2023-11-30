@@ -60,6 +60,8 @@ class Boldgrid_Editor_Setup {
 	/**
 	 * Get Onboarding Videos
 	 *
+	 * @since 1.26.0
+	 *
 	 * @return array Onboarding Videos
 	 */
 	public static function get_onboarding_videos() {
@@ -94,9 +96,7 @@ class Boldgrid_Editor_Setup {
 	public static function has_onb_videos() {
 		$onb_videos = self::get_onboarding_videos();
 
-		error_log( json_encode( $onb_videos ) );
-
-		if ( isset( $onb_videos ) && ! empty( $onb_videos ) ) {
+		if ( ! empty( $onb_videos ) ) {
 			return true;
 		} else {
 			return false;
@@ -189,17 +189,19 @@ class Boldgrid_Editor_Setup {
 		return ! empty( $setup['template']['choice'] ) ? $setup['template']['choice'] : false;
 	}
 
+	/**
+	 * Admin Ajax call to dismiss the onboarding video notice.
+	 *
+	 * @since 1.26.0
+	 */
 	public function ajax_dismiss_videos() {
-		// Check the nonce.
 		$nonce_check = check_ajax_referer( 'boldgrid_editor_dismiss_onb_videos', 'nonce', false );
 
-		// If you are not at least a Contributor, you may not submit feedback.
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
 		}
 
 		if ( 1 !== $nonce_check ) {
-			// Terminate this callback script, with an error message.
 			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
 		}
 
