@@ -40,10 +40,6 @@ export class Loader {
 	init() {
 		for ( let notice of BoldgridEditor.notices ) {
 			if ( notice.enabled ) {
-				console.log( {
-					name: notice.name,
-					enabled: notice.enabled,
-				} );
 				$( 'body' ).addClass( 'bg-editor-intro' );
 				setTimeout( () => new this.notices[notice.name]().init() );
 				break;

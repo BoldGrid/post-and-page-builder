@@ -91,7 +91,9 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
-		 * Open the Onboarding Videos notice.
+		 * Open the Onboarding Videos Panel.
+		 * 
+		 * @since 1.26.0
 		 */
 		openOnbVideos() {
 			new OnbVideos().init( false );

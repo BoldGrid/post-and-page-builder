@@ -1,5 +1,18 @@
+/**
+ * File: assets/js/builder/notice/onb-videos/notice.js
+ * 
+ * @since 1.26.0
+ * 
+ * @package Editor
+ * @subpackage Notice
+ */
 import { Base } from '../base.js';
 
+/**
+ * Onboarding Videos Notice.
+ * 
+ * @since 1.26.0
+ */
 export class Notice extends Base {
 	constructor() {
 		super();
@@ -33,6 +46,11 @@ export class Notice extends Base {
 		this.bindDismissButton( showPointer );
 	}
 
+	/**
+	 * Load the admin pointer.
+	 * 
+	 * @since 1.26.0
+	 */
 	loadAdminPointer() {
 		var $target = $( '#boldgrid-instance-menu .fa-question' ),
 			options = {
@@ -52,7 +70,6 @@ export class Notice extends Base {
 
 		if ( $( '.editing-blocker' ).is( ':visible' ) ) {
 			$( '#content_ifr' ).contents().one( 'click', () => {
-				console.log( 'clicked iframe' );
 				$target.pointer( options ).pointer( 'open' );
 			} );
 		} else {
@@ -61,9 +78,9 @@ export class Notice extends Base {
 	}
 
 	/**
-	 * Bind the event of dismiss to the OKay button.
+	 * Bind the event of dismiss to the Okay button.
 	 *
-	 * @since 1.3
+	 * @since 1.26.0
 	 */
 	bindDismissButton( showPointer ) {
 		BG.Panel.$element
@@ -79,6 +96,13 @@ export class Notice extends Base {
 			} );
 	}
 
+	/**
+	 * Dismiss the notice via ajax.
+	 * 
+	 * @since 1.26.0
+	 * 
+	 * @param {string} nonce Nonce.
+	 */
 	ajaxDismiss( nonce ) {
 		$.post( ajaxurl, {
 			nonce: nonce,
