@@ -1152,9 +1152,9 @@
     to-fast-properties "^2.0.0"
 
 "@boldgrid/components@^2.16.2", "@boldgrid/components@^2.16.25", "@boldgrid/components@^2.16.31":
-  version "2.16.31"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.31.tgz#47b065549637d1094c877ede50969821b0f6d24e"
-  integrity sha512-e9MdsfYkDt9Tb+2lPqCAIwPoAPoIrLc534WBoDMtJlBa4lUj/vNtOPa0XWwwLQdh9e4UeEO52d+QzhFFRrEYNQ==
+  version "2.16.32"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.32.tgz#d4e69d3e4694007b92e657d867890cca1e1f391e"
+  integrity sha512-hHg4hECvGnpdL9SIm9AAY48LhVwIrDziKZ2Rnpx3N12btNyOJsPgvuHLqrs0v8F0JXgqpamI7yBDzG1zmVQ28A==
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#ppb-dev":
   version "0.13.1"
