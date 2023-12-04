@@ -452,6 +452,8 @@ class Boldgrid_Editor_Assets {
 		return array(
 			'bgppb_form_action_nonce' => wp_create_nonce( 'bgppb_form_action_nonce' ),
 			'plugin_url'              => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
+			'onb_videos'              => apply_filters( 'ppb_get_onboarding_videos', array() ),
+			'onb_videos_nonce'        => wp_create_nonce( 'boldgrid_editor_dismiss_onb_videos' ),
 			'plugin_configs'          => Boldgrid_Editor_Service::get( 'config' ),
 			'globalSettings'          => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes'         => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),

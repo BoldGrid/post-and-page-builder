@@ -42,6 +42,7 @@ class Boldgrid_Editor_Setup {
 			[ 'name' => 'editor_choice', 'enabled' => self::has_editor_choice_notice() ],
 			[ 'name' => 'bg_control', 'enabled' => self::has_bg_control_notice() ],
 			[ 'name' => 'intro', 'enabled' => ! self::is_notice_dismissed( 'editor_choice' ) && ! $setup ],
+			[ 'name' => 'onb_videos', 'enabled' => self::has_onb_videos() && ! self::is_notice_dismissed( 'onb_videos' ) ],
 		];
 	}
 
@@ -54,6 +55,52 @@ class Boldgrid_Editor_Setup {
 	 */
 	public static function has_editor_choice_notice() {
 		return Boldgrid_Editor_Version::is_activated_version_older_than( '1.9.0-rc.0' ) && ! self::check_and_dismiss( 'editor_choice' );
+	}
+
+	/**
+	 * Get Onboarding Videos
+	 *
+	 * @since 1.26.0
+	 *
+	 * @return array Onboarding Videos
+	 */
+	public static function get_onboarding_videos() {
+		$onb_videos     = get_option( 'boldgrid_onboarding_videos', array() );
+		$ppb_onb_videos = array();
+
+		foreach ( $onb_videos as $key => $video ) {
+			if ( 'ppb' === $video->Plugin ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$ppb_onb_videos[] = $video;
+			}
+		}
+
+		if ( 0 !== count( $ppb_onb_videos ) ) {
+			usort(
+				$ppb_onb_videos,
+				function( $a, $b ) {
+					return $a->DisplayOrder - $b->DisplayOrder; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				}
+			);
+		}
+
+		return $ppb_onb_videos;
+	}
+
+	/**
+	 * Do we have any onboarding videos?
+	 *
+	 * @since 1.26.0
+	 *
+	 * @return boolean Display Notice?
+	 */
+	public static function has_onb_videos() {
+		$onb_videos = self::get_onboarding_videos();
+
+		if ( ! empty( $onb_videos ) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -140,6 +187,27 @@ class Boldgrid_Editor_Setup {
 	public static function get_template_choice() {
 		$setup = Boldgrid_Editor_Option::get( 'setup', array() );
 		return ! empty( $setup['template']['choice'] ) ? $setup['template']['choice'] : false;
+	}
+
+	/**
+	 * Admin Ajax call to dismiss the onboarding video notice.
+	 *
+	 * @since 1.26.0
+	 */
+	public function ajax_dismiss_videos() {
+		$nonce_check = check_ajax_referer( 'boldgrid_editor_dismiss_onb_videos', 'nonce', false );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+		}
+
+		if ( 1 !== $nonce_check ) {
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+		}
+
+		$this->check_and_dismiss( 'onb_videos' );
+
+		wp_send_json_success();
 	}
 
 	/**

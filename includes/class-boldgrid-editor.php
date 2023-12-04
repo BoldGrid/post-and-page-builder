@@ -259,6 +259,8 @@ class Boldgrid_Editor {
 				$is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
 				$this->set_is_boldgrid_theme( $is_boldgrid_theme );
 
+				add_filter( 'ppb_get_onboarding_videos', array( $boldgrid_editor_setup, 'get_onboarding_videos' ) );
+
 				add_action( 'admin_footer', array( $boldgrid_editor_crop, 'admin_footer' ) );
 				add_action( 'load-post.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
 				add_action( 'load-post-new.php', array( $boldgrid_editor_builder, 'add_help_tab' ) );
@@ -313,6 +315,7 @@ class Boldgrid_Editor {
 
 		add_action( 'wp_ajax_boldgrid_canvas_image', array( $boldgrid_editor_ajax, 'upload_image_ajax' ) );
 		add_action( 'wp_ajax_boldgrid_editor_setup', array( $boldgrid_editor_setup, 'ajax' ) );
+		add_action( 'wp_ajax_boldgrid_editor_dismiss_onb_videos', array( $boldgrid_editor_setup, 'ajax_dismiss_videos' ) );
 		add_action( 'wp_ajax_boldgrid_editor_save_gridblock', array( $boldgrid_editor_ajax, 'save_gridblock' ) );
 		add_action( 'wp_ajax_boldgrid_redirect_url', array( $boldgrid_editor_ajax, 'get_redirect_url' ) );
 		add_action( 'wp_ajax_boldgrid_generate_blocks', array( $boldgrid_editor_ajax, 'generate_blocks' ) );
