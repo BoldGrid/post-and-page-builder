@@ -48,7 +48,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		init: function() {
 			if ( 0 !== BoldgridEditor.onb_videos.length ) {
 				this.menuDropDown.options.unshift( {
-					name: 'Onboarding Videos',
+					name: 'Tutorial Videos',
 					class: 'action font-awesome fa-video-camera onb-videos',
 				} );
 			}

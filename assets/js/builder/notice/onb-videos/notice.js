@@ -139,8 +139,8 @@ export class Notice extends Base {
 	 * @return {string} Template markup.
 	 */
 	getVideoListHTML() {
-		var videos = BoldgridEditor.onb_videos ? BoldgridEditor.onb_videos : [];
-		var html   = '<ul class="onb-videos-list">';
+		var videos = BoldgridEditor.onb_videos ? BoldgridEditor.onb_videos : [],
+			html   = '<ul class="onb-videos-list">';
 
 		videos.forEach( ( video ) => {
 			html += `
