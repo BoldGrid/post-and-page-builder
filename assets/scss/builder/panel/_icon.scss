@@ -1,6 +1,13 @@
 /*************** Icon Panel ********************/
 .rtl {
 	.editor-panel[data-type='icon'] {
+		.search {
+			margin-left: 20px;
+			margin-right: 20px;
+			.search-input {
+				width: 100%;
+			}
+		}
 		.panel-selection {
 			text-align: right;
 			.name {

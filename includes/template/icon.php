@@ -1,5 +1,8 @@
 <script type="text/html" id="tmpl-boldgrid-editor-icon">
 	<div class='choices icon-control'>
+		<div class='search'>
+			<input type='text' class='search-input' placeholder='Search Icons' />
+		</div>
 		<div class='presets supports-customization'>
 			<ul class="icon-controls">
 			<# _.each( data.presets, function ( preset ) { #>
