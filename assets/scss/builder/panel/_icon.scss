@@ -1,12 +1,9 @@
 /*************** Icon Panel ********************/
 .rtl {
 	.editor-panel[data-type='icon'] {
-		.search {
-			margin-left: 20px;
+		.search-input {
+			width: calc( 100% - 40px );
 			margin-right: 20px;
-			.search-input {
-				width: 100%;
-			}
 		}
 		.panel-selection {
 			text-align: right;
@@ -18,6 +15,11 @@
 }
 .editor-panel[data-type='icon'] {
 	width: 335px;
+
+	.search-input {
+		width: calc( 100% - 40px );
+		margin-left: 20px;
+	}
 
 	.back {
 		margin-bottom: 0;
