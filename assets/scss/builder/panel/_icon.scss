@@ -1,9 +1,14 @@
 /*************** Icon Panel ********************/
 .rtl {
 	.editor-panel[data-type='icon'] {
-		.search-input {
-			width: calc( 100% - 40px );
-			margin-right: 20px;
+		.search {
+			position: fixed;
+			width: 335px;
+			z-index: 2;
+			.search-input {
+				width: calc( 100% - 40px );
+				margin-right: 20px;
+			}
 		}
 		.panel-selection {
 			text-align: right;
@@ -16,9 +21,14 @@
 .editor-panel[data-type='icon'] {
 	width: 335px;
 
-	.search-input {
-		width: calc( 100% - 40px );
-		margin-left: 20px;
+	.search {
+		position: fixed;
+		width: 335px;
+		z-index: 2;
+		.search-input {
+			width: calc( 100% - 40px );
+			margin-left: 20px;
+		}
 	}
 
 	.back {
