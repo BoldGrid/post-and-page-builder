@@ -231,14 +231,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 */
 		setupIconSearch: function() {
 			var $panel               = BG.Panel.$element,
-				$searchInput		 = $panel.find( '.search-input' );
+				$searchInput         = $panel.find( '.search-input' );
 
 			$searchInput.on( 'keyup', function() {
-				var $this = $( this ),
+				var $this  = $( this ),
 					$icons = $panel.find( '.icon-controls .panel-selection' );
 
 				$icons.each( function() {
-					var $icon = $( this ),
+					var $icon     = $( this ),
 						iconClass = $icon.find( 'i' ).attr( 'class' );
 
 					if ( iconClass.indexOf( $this.val() ) > -1 ) {
