@@ -224,6 +224,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			return false;
 		},
 
+		/**
+		 * Setup the icon search.
+		 * 
+		 * @since 1.26.1
+		 */
 		setupIconSearch: function() {
 			var $panel               = BG.Panel.$element,
 				$searchInput		 = $panel.find( '.search-input' );
