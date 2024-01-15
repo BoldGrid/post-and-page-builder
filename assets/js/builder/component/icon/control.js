@@ -225,6 +225,32 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		},
 
 		/**
+		 * Setup the icon search.
+		 * 
+		 * @since 1.26.1
+		 */
+		setupIconSearch: function() {
+			var $panel       = BG.Panel.$element,
+				$searchInput = $panel.find( '.search-input' );
+
+			$searchInput.on( 'keyup', function() {
+				var $this  = $( this ),
+					$icons = $panel.find( '.icon-controls .panel-selection' );
+
+				$icons.each( function() {
+					var $icon     = $( this ),
+						iconClass = $icon.find( 'i' ).attr( 'class' );
+
+					if ( iconClass.indexOf( $this.val() ) > -1 ) {
+						$icon.show();
+					} else {
+						$icon.hide();
+					}
+				} );
+			} );
+		},
+
+		/**
 		 * Open the panel, setting the content.
 		 *
 		 * @since 1.2.7
@@ -256,6 +282,8 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			// Bind Panel Click.
 			self.setupPanelClick();
+
+			self.setupIconSearch();
 
 			// Remove Selections.
 			$panel.find( '.selected' ).removeClass( 'selected' );

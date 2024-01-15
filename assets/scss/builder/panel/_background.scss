@@ -154,7 +154,7 @@
 		}
 	}
 
-	.add-image-controls {
+	.add-image-controls:not( .is-primary ) {
 		padding: 0;
 		background-color: $panel-color;
 		color: #fff;

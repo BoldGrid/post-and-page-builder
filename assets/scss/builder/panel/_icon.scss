@@ -1,6 +1,15 @@
 /*************** Icon Panel ********************/
 .rtl {
 	.editor-panel[data-type='icon'] {
+		.search {
+			position: fixed;
+			width: 335px;
+			z-index: 2;
+			.search-input {
+				width: calc( 100% - 40px );
+				margin-right: 20px;
+			}
+		}
 		.panel-selection {
 			text-align: right;
 			.name {
@@ -12,6 +21,16 @@
 .editor-panel[data-type='icon'] {
 	width: 335px;
 
+	.search {
+		position: fixed;
+		width: 335px;
+		z-index: 2;
+		.search-input {
+			width: calc( 100% - 40px );
+			margin-left: 20px;
+		}
+	}
+
 	.back {
 		margin-bottom: 0;
 	}
@@ -20,6 +39,10 @@
 		width: 123px;
 		height: 42px;
 		text-align: left;
+	}
+
+	.panel-body ul.icon-controls {
+		padding-top: 35px;
 	}
 
 	.panel-body .presets .fa {
