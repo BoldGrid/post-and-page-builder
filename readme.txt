@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 1.26.0
+Stable tag: 1.26.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.26.1 =
+* Improvement: Added search functionality to the Icon control. [105](https://github.com/BoldGrid/post-and-page-builder/issues/105)
+* Bug Fix: Fixed styling of new BG Image control button. [558](https://github.com/BoldGrid/post-and-page-builder/issues/558)
 
 = 1.26.0 =
 * New Feature: Added onboarding tutorial videos.
