@@ -284,7 +284,7 @@ class Boldgrid_Editor_Crop {
 				)
 			);
 
-			if ( false != $asset ) {
+			if ( false !== $asset ) {
 				$crop_details['dst_width']  = $crop_details['width'];
 				$crop_details['dst_height'] = $crop_details['height'];
 
@@ -292,7 +292,8 @@ class Boldgrid_Editor_Crop {
 					'cropDetails' => $crop_details,
 					'path'        => $new_image_path,
 				);
-							// Update the asset.
+
+				// Update the asset.
 				$asset_manager->update_asset(
 					array(
 						'task'       => 'update_entire_asset',
@@ -305,11 +306,12 @@ class Boldgrid_Editor_Crop {
 		}
 
 		echo json_encode(
-			array (
-				'new_image_url' => $new_image_url,
-				'new_image_width' => $new_width,
-				'new_image_height' => $new_height
-			) );
+			array(
+				'new_image_url'    => $new_image_url,
+				'new_image_width'  => $new_width,
+				'new_image_height' => $new_height,
+			)
+		);
 
 		wp_die();
 	}
