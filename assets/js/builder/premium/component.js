@@ -48,7 +48,7 @@ export class Component {
 
 		this.tabs = {
 			name: 'premium-tabs',
-			title: 'tabs',
+			title: 'Tabs',
 			type: 'structure',
 			icon: '<span class="dashicons dashicons-block-default"></span>',
 			insertType: 'popup',
