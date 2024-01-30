@@ -175,7 +175,13 @@ class Boldgrid_Editor_Assets {
 	/**
 	 * Check if the post content includes a string.
 	 *
+	 * This is used to determine if a script should be enqueued.
+	 *
 	 * @since 1.26.2
+	 *
+	 * @param string $string String to check for. Must be regex compatible.
+	 *
+	 * @return boolean Does the post content include the string?
 	 */
 	public function post_content_includes( $string ) {
 		global $post;
