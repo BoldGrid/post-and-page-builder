@@ -1,12 +1,16 @@
+.rtl {
+	.editor-panel .panel-body .customize {
+		.directional-control {
+			.units {
+				position: relative;
+				margin-right: 28px;
+			}
+		}
+	}
+}
 .editor-panel .panel-body .customize {
 	margin-left: 65px;
 	margin-right: 5px;
-	.directional-control {
-		.units {
-			position: relative;
-			margin-right: 28px;
-		}
-	}
 }
 
 .editor-panel .boldgrid-panel-nav__item:hover {
