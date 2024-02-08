@@ -173,22 +173,24 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
-	 * Maybe Enqueue Animate.css
+	 * Check if the post content includes a string.
 	 *
-	 * Checks if post uses the animate.css or not.
+	 * This is used to determine if a script should be enqueued.
 	 *
-	 * @since 1.21.0
+	 * @since 1.26.2
 	 *
-	 * @return bool True if animate.css is to be enqueued.
+	 * @param string $string String to check for. Must be regex compatible.
+	 *
+	 * @return boolean Does the post content include the string?
 	 */
-	public function maybe_enqueue_animate() {
+	public function post_content_includes( $string ) {
 		global $post;
 
 		if ( ! $post ) {
-			return true;
+			return false;
 		}
 
-		if ( preg_match( '/class=".*wow.*"/', $post->post_content ) ) {
+		if ( preg_match( '/' . $string . '/', $post->post_content ) ) {
 			return true;
 		} else {
 			return false;
@@ -203,9 +205,15 @@ class Boldgrid_Editor_Assets {
 	public function front_end() {
 		// Parallax.
 		// @TODO only enqueue if the user is using this.
-		wp_enqueue_script( 'boldgrid-parallax',
-			plugins_url( '/assets/js/jquery-stellar/jquery.stellar.js', BOLDGRID_EDITOR_ENTRY ),
-		array( 'jquery' ),BOLDGRID_EDITOR_VERSION, true );
+		if ( $this->post_content_includes( 'background-parallax' ) ) {
+			wp_enqueue_script(
+				'boldgrid-parallax',
+				plugins_url( '/assets/js/jquery-stellar/jquery.stellar.js', BOLDGRID_EDITOR_ENTRY ),
+				array( 'jquery' ),
+				BOLDGRID_EDITOR_VERSION,
+				true
+			);
+		}
 
 		wp_enqueue_script(
 			'boldgrid-editor-public', self::get_webpack_script( 'public' ),
@@ -227,7 +235,7 @@ class Boldgrid_Editor_Assets {
 		);
 
 		// Only enque the animate.css if it's needed.
-		if ( $this->maybe_enqueue_animate() ) {
+		if ( $this->post_content_includes( 'class=".*wow.*"' ) ) {
 			wp_enqueue_style(
 				'animatecss',
 				plugins_url( '/assets/css/animate.min.css', BOLDGRID_EDITOR_ENTRY ),
