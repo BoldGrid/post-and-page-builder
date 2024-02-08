@@ -273,12 +273,45 @@ class Boldgrid_Editor_Crop {
 		);
 		wp_update_attachment_metadata( $attachment_id, $dimensions );
 
+		if ( defined( 'BOLDGRID_BASE_DIR' ) ) {
+			require_once BOLDGRID_BASE_DIR . '/includes/class-boldgrid-inspirations-asset-manager.php';
+			$asset_manager = new Boldgrid_Inspirations_Asset_Manager();
+
+			$asset = $asset_manager->get_asset(
+				array(
+					'by'            => 'attachment_id',
+					'attachment_id' => $attachment_id,
+				)
+			);
+
+			if ( false !== $asset ) {
+				$crop_details['dst_width']  = $crop_details['width'];
+				$crop_details['dst_height'] = $crop_details['height'];
+
+				$asset['crops'][] = array(
+					'cropDetails' => $crop_details,
+					'path'        => $new_image_path,
+				);
+
+				// Update the asset.
+				$asset_manager->update_asset(
+					array(
+						'task'       => 'update_entire_asset',
+						'asset_id'   => $asset['asset_id'],
+						'asset'      => $asset,
+						'asset_type' => 'image',
+					)
+				);
+			}
+		}
+
 		echo json_encode(
-			array (
-				'new_image_url' => $new_image_url,
-				'new_image_width' => $new_width,
-				'new_image_height' => $new_height
-			) );
+			array(
+				'new_image_url'    => $new_image_url,
+				'new_image_width'  => $new_width,
+				'new_image_height' => $new_height,
+			)
+		);
 
 		wp_die();
 	}
