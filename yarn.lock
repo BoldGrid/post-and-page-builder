@@ -1158,7 +1158,7 @@
 
 "@boldgrid/controls@https://github.com/BoldGrid/controls#ppb-dev":
   version "0.13.1"
-  resolved "https://github.com/BoldGrid/controls#3fa28216cc39b70212be6a21dff9550a89ac291a"
+  resolved "https://github.com/BoldGrid/controls#afc93f52d8678910370c148b037c509d881b9a7d"
   dependencies:
     "@boldgrid/components" "^2.16.25"
     Buttons "https://github.com/BoldGrid/Buttons"
