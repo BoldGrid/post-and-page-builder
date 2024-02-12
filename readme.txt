@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 1.26.1
+Stable tag: 1.26.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,14 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.26.2 =
+* Bug Fix: BG Connect Search - Purchased images do not replace as expected in WP 6.1 [#476](https://github.com/BoldGrid/post-and-page-builder/issues/476)
+* Bug Fix: Fixed typo on tabs upsell [#532](https://github.com/BoldGrid/post-and-page-builder/issues/532)
+* Bug Fix: PX option is cut off from some popovers [#533](https://github.com/BoldGrid/post-and-page-builder/issues/533)
+* Bug Fix: Yoast SEO Sitemaps failing to generate due to warnings from Post and Page Builder [#536](https://github.com/BoldGrid/post-and-page-builder/issues/536)
+* Bug Fix: Stellar.js library loads even when its not used [#517](https://github.com/BoldGrid/post-and-page-builder/issues/517)
+* Bug Fix: Border visual bug in editor [#512](https://github.com/BoldGrid/post-and-page-builder/issues/512)
 
 = 1.26.1 =
 * Improvement: Added search functionality to the Icon control. [105](https://github.com/BoldGrid/post-and-page-builder/issues/105)
