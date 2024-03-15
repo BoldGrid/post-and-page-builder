@@ -140,6 +140,15 @@ class Boldgrid_Components_Shortcode {
 			$widgets = $GLOBALS['wp_widget_factory']->widgets;
 
 			foreach( $widgets as $classname => $widget ) {
+				/*
+				 * If the user is not an admin, skip the 'block'
+				 * widget because it allows the users to add
+				 * arbitrary HTML and JavaScript.
+				 */
+				if ( ! current_user_can( 'manage_options' ) && 'block' === $widget->id_base ) {
+					continue;
+				}
+
 				if ( ! in_array( $widget->id_base, $this->config['skipped_widgets'] ) ) {
 					$name = 'wp_' . $widget->id_base;
 					$widget_config = $this->create_widget_config( $widget, $classname );
