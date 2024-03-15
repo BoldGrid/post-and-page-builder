@@ -1,23 +1,23 @@
 <?php
 /**
-* Class: Boldgrid_Editor_Gridblock_Post
-*
-* Manage GridBlock as a custom post type.
-*
-* @since      1.6
-* @package    Boldgrid_Editor
-* @subpackage Boldgrid_Editor_Gridblock
-* @author     BoldGrid <support@boldgrid.com>
-* @link       https://boldgrid.com
-*/
+ * Class: Boldgrid_Editor_Gridblock_Post
+ *
+ * Manage GridBlock as a custom post type.
+ *
+ * @since      1.6
+ * @package    Boldgrid_Editor
+ * @subpackage Boldgrid_Editor_Gridblock
+ * @author     BoldGrid <support@boldgrid.com>
+ * @link       https://boldgrid.com
+ */
 
 /**
  * Class: Boldgrid_Editor_Gridblock_Post
-*
-* Manage GridBlock as a custom post type.
-*
-* @since      1.6
-*/
+ *
+ * Manage GridBlock as a custom post type.
+ *
+ * @since      1.6
+ */
 class Boldgrid_Editor_Gridblock_Post {
 
 	/**
@@ -39,6 +39,8 @@ class Boldgrid_Editor_Gridblock_Post {
 	 * @since 1.7.0
 	 */
 	public function add_menu_items() {
+		global $submenu;
+
 		add_submenu_page(
 			'edit.php?post_type=bg_block',
 			__( 'All Pages', 'boldgrid-editor' ),
@@ -54,6 +56,32 @@ class Boldgrid_Editor_Gridblock_Post {
 			'edit_pages',
 			'post-new.php?post_type=page'
 		);
+
+		/*
+		 * WordPress 6.5 added a new subpage to the Appearance
+		 * menu item. This essentially allows users to create the
+		 * Gutenberg equivelant of a PPB Block. Since those are
+		 * not compatible with PPB, we are re-directing users to
+		 * the BG Blocks section where they can create Blocks.
+		 */
+		if ( ! isset( $submenu['themes.php'] ) ) {
+			return;
+		}
+
+		foreach ( $submenu['themes.php'] as $key => $item ) {
+			if ( 'edit.php?post_type=wp_block' === $item[2] ) {
+				remove_submenu_page( 'themes.php', 'edit.php?post_type=wp_block' );
+				add_submenu_page(
+					'themes.php',
+					__( 'Patterns', 'boldgrid-editor' ),
+					__( 'Patterns', 'boldgrid-editor' ),
+					'edit_posts',
+					'edit.php?post_type=bg_block',
+					'',
+					2
+				);
+			}
+		}
 	}
 
 	/**
