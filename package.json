@@ -69,7 +69,7 @@
 		"@boldgrid/components": "^2.16.31",
 		"@boldgrid/controls": "https://github.com/BoldGrid/controls#ppb-dev",
 		"@boldgrid/fourpan": "^1.1.1",
-		"@wordpress/components": "^25.0.0",
+		"@wordpress/components": "^25.14.0",
 		"@wordpress/element": "^5.11.0",
 		"animate.css": "^3.7.0",
 		"boldgrid-panel": "^1.0.34",
