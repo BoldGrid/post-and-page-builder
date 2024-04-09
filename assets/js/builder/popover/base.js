@@ -84,6 +84,7 @@ export class Base {
 
 		this._removeBorder();
 		this.$element.$menu.addClass( 'hidden' );
+		this.$element.$aiMenu.addClass( 'hidden' );
 		this.$element.hide();
 		this.$element.trigger( 'hide' );
 		this.$element.removeClass( 'menu-open' );
@@ -127,6 +128,7 @@ export class Base {
 			if ( this.$target && $newTarget[0] !== this.$target[0] ) {
 				this.$element.removeClass( 'menu-open' );
 				this.$element.$menu.addClass( 'hidden' );
+				this.$element.$aiMenu.addClass( 'hidden' );
 			}
 
 			this.$target = this._getParentTarget( $newTarget );
@@ -381,6 +383,25 @@ export class Base {
 	}
 
 	/**
+	 * Has AI Controls
+	 * 
+	 * Whether or not the user has AI Controls.
+	 */
+	_hasBgAi() {
+		var controls = BG.Controls.controls,
+			hasBgAi = false;
+
+		for( var i = 0; i < controls.length; i++ ) {
+			if ( controls[i].name === 'boldgrid-ai' ) {
+				hasBgAi = i;
+				break;
+			}
+		}
+
+		return hasBgAi;
+	}
+
+	/**
 	 * Render the popover after the body.
 	 *
 	 * @since 1.6
@@ -388,14 +409,35 @@ export class Base {
 	 * @return {jQuery} Popover element.
 	 */
 	_render() {
+		let hasBgAi = this._hasBgAi();
+
+		let templateData = {};
+		if ( false !== hasBgAi ) {
+			templateData = {
+				actions: BG.Controls.$container.additional_menu_items,
+				hasBgAi: true,
+				BoldgridAi: BG.Controls.controls[ hasBgAi ]
+			};
+		} else {
+			templateData = {
+				actions: BG.Controls.$container.additional_menu_items,
+				hasBgAi: false
+			};
+		}
+
 		let $popover = $(
-			_.template( this.template )( {
-				actions: BG.Controls.$container.additional_menu_items
-			} )
+			_.template( this.template )( templateData )
 		);
 
-		$popover.$menu = $popover.find( '.popover-menu-imhwpb' );
+		$popover.$menu = $popover.find( '.popover-menu-imhwpb.edit' );
+
+		$popover.$aiMenu = $popover.find( '.popover-menu-imhwpb.bgai' );
+
 		BG.Controls.$container.$body.after( $popover );
+
+		if ( hasBgAi ) {
+			BG.Controls.controls[ hasBgAi ].bindPopoverActions( $popover, this );
+		}
 
 		return $popover;
 	}
@@ -406,15 +448,28 @@ export class Base {
 	 * @since 1.8.0
 	 */
 	_setupMenuClick() {
-		this.$element.find( '.context-menu-imhwpb' ).on( 'click', event => {
+		this.$element.find( '.context-menu-imhwpb.edit' ).on( 'click', event => {
 			event.preventDefault();
 			event.stopPropagation();
 
 			BG.Controls.$container.hide_menus( event );
 
 			this.$element.$menu.toggleClass( 'hidden' );
+			this.$element.$aiMenu.addClass( 'hidden' );
 			BG.Controls.$container.setMenuPosition( this.$element );
-			this._updateMenuState();
+			this._updateMenuState( 'edit' );
+		} );
+
+		this.$element.find( '.context-menu-imhwpb.bgai' ).on( 'click', event => {
+			event.preventDefault();
+			event.stopPropagation();
+
+			BG.Controls.$container.hide_menus( event );
+
+			this.$element.$aiMenu.toggleClass( 'hidden' );
+			this.$element.$menu.addClass( 'hidden' );
+			BG.Controls.$container.setMenuPosition( this.$element );
+			this._updateMenuState( 'bgai' );
 		} );
 	}
 
@@ -423,9 +478,10 @@ export class Base {
 	 *
 	 * @since 1.8.0
 	 */
-	_updateMenuState() {
+	_updateMenuState( $menuClass ) {
+		var $menu = this.$element.find( '.popover-menu-imhwpb.' + $menuClass );
 		this.$element.removeClass( 'menu-open' );
-		if ( false === this.$element.$menu.hasClass( 'hidden' ) ) {
+		if ( false === $menu.hasClass( 'hidden' ) ) {
 			this.event.emit( 'open' );
 			this.$element.addClass( 'menu-open' );
 		}

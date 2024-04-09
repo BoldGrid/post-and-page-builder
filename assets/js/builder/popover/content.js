@@ -29,7 +29,6 @@ export class Content extends Base {
 
 		this.$element.on( 'updatePosition', () => this._onUpdatePosition() );
 		this.$element.find( '.edit-as-row' ).on( 'click', () => this._onEditRow() );
-		this.$element.find( '.boldgrid-ai' ).on( 'click', ( e ) => this._onAI( e ) );
 		this.event.on( 'open', () => this._toggleFontOption() );
 		this.event.on( 'open', () => this._toggleAdvancedOption() );
 		this.event.on( 'open', () => this._toggleCellOptions() );
@@ -49,14 +48,8 @@ export class Content extends Base {
 
 		controlName = $( e.target ).data( 'action' );
 
-		console.log( {
-			e,
-			$target,
-			targetType, 
-		} );
-
 		$target.click();
-		BG.Controls.get( controlName ).openPanel( $target, targetType );
+		//BG.Controls.get( controlName ).openPanel( $target, targetType );
 	}
 
 	_toggleCellOptions() {
