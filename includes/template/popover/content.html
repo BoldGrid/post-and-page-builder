@@ -35,7 +35,7 @@
 						><%=actionProps.label%></li>
 						<% if( 'onMenuAction' === actionProps.click ) {
 							%>
-							<div class="side-menu">
+							<div class="side-menu <%=actionKey%>">
 								<ul>
 									<% _.each( actionProps.items, function ( subActionProps, subActionKey ) { %>
 										<li class="no-select-imhwpb action-list"

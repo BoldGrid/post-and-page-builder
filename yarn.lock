@@ -3238,13 +3238,6 @@
   dependencies:
     "@babel/runtime" "^7.16.0"
 
-"@wordpress/escape-html@^2.55.0":
-  version "2.55.0"
-  resolved "https://registry.yarnpkg.com/@wordpress/escape-html/-/escape-html-2.55.0.tgz#59880ed0940c84e3d083bc4d35d80c5d9df373b5"
-  integrity sha512-usYRUHFAsTcO3RLUfnBr8CSA6fO9swi0rYHh0H+rX0bxVWnoDQQTdTkQ00FfyN8D44Y80CY9/pQLmtoeK3rLNA==
-  dependencies:
-    "@babel/runtime" "^7.16.0"
-
 "@wordpress/eslint-plugin@^14.5.0":
   version "14.7.0"
   resolved "https://registry.yarnpkg.com/@wordpress/eslint-plugin/-/eslint-plugin-14.7.0.tgz#75645f4f6b59d0fecd421cebb6a86a29c0d975d4"
@@ -4053,10 +4046,10 @@ body-scroll-lock@^3.1.5:
   resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
   integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
-boldgrid-panel@1.1.0-alpha.2:
-  version "1.1.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.1.0-alpha.2.tgz#71fbe2ca81819f84fb439907d9acdcc4a43c717c"
-  integrity sha512-rjtbktR7h0kpxk5iwer/fTVyv9kKy0cYudv2nbbmrN156pSl3ewHQbi+Gws+lbDnAqRtR1pyjdwyCyZcnjWr3A==
+boldgrid-panel@1.1.0-alpha.4:
+  version "1.1.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.1.0-alpha.4.tgz#f29ca9f8d3cde30676566f4367aae359a31a2cbf"
+  integrity sha512-cvOFU3CyfUuBRo63bnI7J03lPddnwM+rp9Jsq9iwUfHEq3ThKwkKWUq4ndBKE2kr4PjuGtu0yfTbQ59JUZkdWw==
   dependencies:
     "@wordpress/escape-html" "^2.54.0"
 

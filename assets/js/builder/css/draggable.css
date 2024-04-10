@@ -480,6 +480,20 @@ iframe[src^="https://maps.google.com"] {
     width: 100px;
 }
 
+.popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul {
+    right: auto;
+    left: 160px;
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul li.action-list {
+    width: 25%;
+}
+
 .side-menu-left .popover-imhwpb .popover-menu-imhwpb .side-menu ul {
 	right: auto;
 	left: -100px;
