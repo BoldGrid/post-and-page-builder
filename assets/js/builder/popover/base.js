@@ -172,11 +172,15 @@ export class Base {
 		} );
 
 		BG.Controls.$container.$body.on( 'mouseenter.draggable', this.getSelectorString(), event => {
-			this.debouncedUpdate( event );
+			if ( ! $( event.target ).hasClass( 'bgai' ) ) {
+				this.debouncedUpdate( event );
+			}
 		} );
 
 		BG.Controls.$container.$body.on( 'mouseleave.draggable', this.getSelectorString(), event => {
-			this.debouncedHide( event );
+			if ( ! $( event.target ).hasClass( 'bgai' ) ) {
+				this.debouncedHide( event );
+			}
 		} );
 	}
 
