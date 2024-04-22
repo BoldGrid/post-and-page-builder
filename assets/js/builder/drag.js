@@ -1283,6 +1283,36 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 			buffer = 100;
 
 		if ( $sideMenu.length ) {
+			/**
+			 * Check each $sideMenu height and compare with the boundingClientRect
+			 * to see if it will get hidden by the bottom of the screen. If so,
+			 * add a class to flip the menu.
+			 */
+			$sideMenu.each( function() {
+				var $this = $( this );
+				var sideMenuHeight = $this.find( 'ul' ).children().length * 30;
+				var sideMenuBottom = boundingClientRect.bottom + sideMenuHeight + 200;
+				var htmlHeight = self.$html.height();
+				var screenBottom = window.scrollY + window.innerHeight;
+
+				console.log( {
+					$this,
+					sideMenuHeight,
+					sideMenuBottom,
+					htmlHeight,
+					scrollY: window.scrollY,
+					windowHeight: window.innerHeight,
+					screenBottom
+				} );
+
+				if ( sideMenuBottom > screenBottom ) {
+					$this.addClass( 'menu-align-bottom' );
+					$this.removeClass( 'menu-align-top' );
+				} else {
+					$this.addClass( 'menu-align-top' );
+					$this.removeClass( 'menu-align-bottom' );
+				}
+			} );
 			$currentPopover.removeClass( 'side-menu-left menu-align-left' );
 
 			// If side menu cant fit, point to left.

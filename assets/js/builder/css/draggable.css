@@ -480,10 +480,19 @@ iframe[src^="https://maps.google.com"] {
     width: 100px;
 }
 
+.popover-imhwpb .popover-menu-imhwpb .side-menu.menu-align-top ul {
+    top: -25px;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.menu-align-bottom ul {
+    top: inherit;
+    bottom: 0px;
+}
+
 .popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul {
     right: auto;
     left: 160px;
-    width: 450px;
+    width: 225px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -491,7 +500,7 @@ iframe[src^="https://maps.google.com"] {
 }
 
 .popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul li.action-list {
-    width: 25%;
+    width: 50%;
 }
 
 .side-menu-left .popover-imhwpb .popover-menu-imhwpb .side-menu ul {
@@ -709,7 +718,8 @@ iframe[src^="https://maps.google.com"] {
     opacity: .01;
 }
 
-.popover-imhwpb .popover-menu-imhwpb li[data-action] {
+.popover-imhwpb .popover-menu-imhwpb li[data-action],
+.popover-imhwpb .popover-menu-imhwpb li.side-menu-parent {
 	font-weight: 600;
 }
 
