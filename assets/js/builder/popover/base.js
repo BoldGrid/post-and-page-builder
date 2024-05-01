@@ -283,8 +283,18 @@ export class Base {
 			// Only proceed of if this was the most recently triggered action.
 			if ( 'enter' === this.mostRecentAction ) {
 				this.updatePosition( event );
+				this.updateAiMenu( event );
 			}
 		}, this.debounceTime );
+	}
+
+	updateAiMenu( event ) {
+		const $target   = this.$target,
+			  aiControl = this._hasBgAi();
+
+		if( aiControl ) {
+			BG.Controls.controls[ aiControl ].updatePopoverMenu( this );
+		}
 	}
 
 	/**
