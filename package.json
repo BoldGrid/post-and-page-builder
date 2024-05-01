@@ -72,7 +72,7 @@
 		"@wordpress/components": "^25.0.0",
 		"@wordpress/element": "^5.11.0",
 		"animate.css": "^3.7.0",
-		"boldgrid-panel": "1.1.0-alpha.4",
+		"boldgrid-panel": "1.1.0-alpha.5",
 		"boldgrid-theme-framework": "https://github.com/BoldGrid/boldgrid-theme-framework.git#dev",
 		"bootstrap-sass": "^3.3.7",
 		"eventemitter3": "^5.0.0",
