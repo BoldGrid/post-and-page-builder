@@ -50,6 +50,59 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
+	 * Sanitizes the Gridblock HTML using wp_kses_post.
+	 *
+	 * @param string $html the gridblock's HTML
+	 * @return string sanitized HTML
+	 */
+	public function sanitize_gridblock_html( $html ) {
+		add_filter( 'wp_kses_allowed_html', function( $tags, $context ) {
+			if ( 'post' !== $context ) {
+				return $tags;
+			}
+
+			for ( $i = 1; $i <= 6; $i++ ) {
+				$tags[ 'h' . $i ]['text-milestone'] = true;
+			}
+
+			$tags['p']['text-milestone'] = true;
+
+			$tags['a']['shape'] = true;
+			$tags['a']['tabindex'] = true;
+
+			$tags['div']['gb-background-image'] = 'url(*)';
+			$tags['iframe'] = array(
+				'src' => true,
+				'width' => true,
+				'height' => true,
+				'frameborder' => true,
+				'allowfullscreen' => true,
+				'style' => true,
+			);
+
+			return $tags;
+		}, 10, 2 );
+
+		add_filter( 'safe_style_css', function( $styles ) {
+			return array();
+		} );
+
+		$pattern = $pattern = [
+			'/\s*:\s*/',     // Matches and removes spaces around colons
+			'/\s*;\s*/',     // Matches and removes spaces around semicolons
+			'/;\s*(["\>])/'  // Matches semicolons followed by space and either a quote or a closing tag and removes the semicolon
+		];
+		$replacement = [
+			':',     // Replace spaces around colon with just a colon
+			';',     // Replace spaces around semicolon with just a semicolon
+			'$1'     // Remove the semicolon at the end of declarations
+		];
+		$html = preg_replace( $pattern, $replacement, $html );
+		
+		return wp_kses_post( $html );
+	}
+
+	/**
 	 * Generate gridblocks.
 	 *
 	 * @since 1.7.0
@@ -82,8 +135,11 @@ class Boldgrid_Editor_Ajax {
 				header( "$header: " . $types );
 
 				foreach( $response as &$block ) {
-					$block['preview_html'] = Boldgrid_Layout::run_shortcodes( $block['html'] );
+					$block['preview_html'] = $this->sanitize_gridblock_html(
+						Boldgrid_Layout::run_shortcodes( $block['html'] )
+					);
 					$block['html'] = $block['html'];
+					$block['html'] = $this->sanitize_gridblock_html( $block['html'] );
 				}
 
 				// Count how many times blocks have been generated.
@@ -132,6 +188,13 @@ class Boldgrid_Editor_Ajax {
 			$_POST[ self::$nonces[ $name ] ] : null;
 
 		$valid = wp_verify_nonce( $nonce, self::$nonces[ $name ] );
+
+		error_log( json_encode( array(
+			'nonce' => $nonce,
+			'valid' => $valid,
+			'name' => $name,
+			'nonces' => self::$nonces,
+		) ) );
 
 		if ( ! $valid ) {
 			status_header( 401 );
