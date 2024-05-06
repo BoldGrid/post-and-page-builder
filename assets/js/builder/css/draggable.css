@@ -794,6 +794,12 @@ html[dir=rtl] .popover-imhwpb .popover-menu-imhwpb ul li.action-list {
     left:30px;
 }
 
+.left-popover-imhwpb .popover-menu-imhwpb.menu-align-bottom ul,
+.right-popover-imhwpb .popover-menu-imhwpb.menu-align-bottom ul {
+    top: inherit;
+    bottom: 0%;
+}
+
 .container-fluid {
 	width: 100%;
 }
