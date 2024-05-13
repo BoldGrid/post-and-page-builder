@@ -189,13 +189,6 @@ class Boldgrid_Editor_Ajax {
 
 		$valid = wp_verify_nonce( $nonce, self::$nonces[ $name ] );
 
-		error_log( json_encode( array(
-			'nonce' => $nonce,
-			'valid' => $valid,
-			'name' => $name,
-			'nonces' => self::$nonces,
-		) ) );
-
 		if ( ! $valid ) {
 			status_header( 401 );
 			wp_send_json_error();
