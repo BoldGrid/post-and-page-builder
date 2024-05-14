@@ -85,7 +85,7 @@
 		"jquery.stellar": "^0.6.2",
 		"react": "^18.2.0",
 		"semver": "^7.3.8",
-		"styled-components": "^6.0.0-rc.3",
+		"styled-components": "^6.0.0",
 		"textselect": "^1.0.0",
 		"tinycolor2": "^1.6.0",
 		"wowjs": "^1.1.3",
