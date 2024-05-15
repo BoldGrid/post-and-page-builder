@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.5
 Requires PHP: 5.4
-Stable tag: 1.26.4
+Stable tag: 1.26.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,9 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.26.5 =
+* Bug Fix: Fix GridBlock Vulnerability reported by WordFence [#596](https://github.com/BoldGrid/post-and-page-builder/issues/596)
 
 = 1.26.4 =
 * Bug Fix: Updated the BoldGrid Library to 2.13.13 to resolve a bug with the 'random_password' filter. [#117](https://github.com/BoldGrid/library/issues/117)
