@@ -189,7 +189,7 @@ iframe[src^="https://maps.google.com"] {
   font-size: 12px;
   padding: 5px 6px;
   position: absolute;
-  width: 73px;
+  width: 96px;
 }
 
 .popover-imhwpb,
@@ -334,7 +334,7 @@ iframe[src^="https://maps.google.com"] {
     border-top-color:rgb(213, 78, 33);
 }
 .section-popover-imhwpb {
-	width: 75px;
+	width: 96px;
 }
 .bottom-popover-imhwpb .popover-menu-imhwpb.menu-down ul{
 	bottom: auto;
