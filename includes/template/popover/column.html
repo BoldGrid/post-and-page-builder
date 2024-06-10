@@ -34,6 +34,8 @@
             <ul>
             <% _.each( BoldgridAi.actions, function ( actionProps, actionKey ) { %>
                <li class="no-select-imhwpb action-list <%=actionProps.class ? actionProps.class : ''%>"
+                  data-context="<%=actionProps.context%>"
+                  data-endpoint="<%=actionProps.endpoint%>"
                   data-action-function="<%=actionProps.click%>"
                   <% if( 'onMenuAction' !== actionProps.click ) {%> data-action="<%=actionKey%>" <%}%>
                ><%=actionProps.label%></li>
@@ -44,6 +46,8 @@
                         <% _.each( actionProps.items, function ( subActionProps, subActionKey ) { %>
                            <li class="no-select-imhwpb action-list"
                               data-action-function="<%=subActionProps.click%>"
+                              data-endpoint="<%=subActionProps.endpoint%>"
+                              data-context="<%=subActionProps.context%>"
                               data-action="<%=subActionKey%>">
                               <%=subActionProps.label%>
                            </li>
