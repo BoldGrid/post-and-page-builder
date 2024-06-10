@@ -1278,11 +1278,15 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 		var popoverWidth,
 			totalWidth,
 			boundingClientRect = $currentPopover[0].getBoundingClientRect(),
+			$popoverMenus = $currentPopover.find( '.popover-menu-imhwpb' ),
 			$sideMenu = $currentPopover.find( '.side-menu' ),
 			htmlWidth = self.$html.width(),
 			buffer = 100;
 
+		
+
 		if ( $sideMenu.length ) {
+			$sideMenu.addClass( 'menu-align-bottom' );
 			$currentPopover.removeClass( 'side-menu-left menu-align-left' );
 
 			// If side menu cant fit, point to left.
@@ -1298,6 +1302,25 @@ jQuery.fn.IMHWPB_Draggable = function( settings, $ ) {
 				$currentPopover.addClass( 'menu-align-left' );
 			}
 		}
+
+		/**
+		 * For each $popoverMenu, check to see if it is going to go off-screen.
+		 * If so, open it upwards instead of down.
+		 */
+		$popoverMenus.each( function() {
+			var $this        = $( this ),
+				$ul          = $this.children( 'ul' ),
+				ulBottom     = $ul[0].getBoundingClientRect().bottom + BG.mce.iframeElement.getBoundingClientRect().top,
+				screenBottom = window.innerHeight;
+
+			// If the menu is going off the bottom of the screen, open it upwards.
+			if ( ulBottom > screenBottom ) {
+				$this.addClass( 'menu-align-bottom' );
+			} else {
+				$this.removeClass( 'menu-align-bottom' );
+			}
+		} );
+
 	};
 
 	/**
