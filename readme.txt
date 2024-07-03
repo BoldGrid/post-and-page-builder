@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 1.26.5
+Stable tag: 1.26.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.26.6 =
+* Bug Fix: WP 6.6 - Update link that Appearance > Patterns go to [#605](https://github.com/BoldGrid/post-and-page-builder/issues/605)
+* Bug Fix: WP 6.6 - Interface to add links needs UI improvement [#606](https://github.com/BoldGrid/post-and-page-builder/issues/606)
 
 = 1.26.5 =
 * Bug Fix: Fix GridBlock Vulnerability reported by WordFence [#596](https://github.com/BoldGrid/post-and-page-builder/issues/596)
