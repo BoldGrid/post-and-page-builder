@@ -200,3 +200,14 @@ body.mce-fullscreen.boldgrid-zoomout {
 	}
 }
 
+.mce-inline-toolbar-grp.mce-container {
+	div.mce-flow-layout-item {
+		> div {
+			display: block;
+			.ui-autocomplete-input {
+				display: block;
+			}
+		}
+	}
+}
+
