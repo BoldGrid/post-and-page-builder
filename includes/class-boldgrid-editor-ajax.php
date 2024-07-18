@@ -392,6 +392,19 @@ class Boldgrid_Editor_Ajax {
 		$image_data = str_replace( ' ', '+', $image_data );
 		$data = base64_decode( $image_data );
 
+		/*
+		 * We must validate that the base64 encoded image
+		 * is a valid image and a supported MIME type.
+		 * If it is not, we will return an error.
+		 */
+		$finfo            = new finfo(FILEINFO_MIME_TYPE);
+		$actualMimeType   = $finfo->buffer($data);
+		$valid_mime_types = array_values( get_allowed_mime_types() );
+
+		if ( ! in_array( $actualMimeType, $valid_mime_types ) ) {
+			return array( 'success' => false );
+		}
+
 		$filename = uniqid() . '.' . $extension;
 		$uploaded = wp_upload_bits( $filename, null, $data );
 

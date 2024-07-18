@@ -17,7 +17,7 @@ Official Download Link:
 
 **Requires at least:** 4.7
 
-**Tested up to:** 6.4
+**Tested up to:** 6.6
 
 **License:** GPLv2 or later
 
