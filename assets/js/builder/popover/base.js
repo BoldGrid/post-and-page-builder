@@ -288,9 +288,15 @@ export class Base {
 		}, this.debounceTime );
 	}
 
+	/**
+	 * Update the AI menu.
+	 *
+	 * @since 1.27.0
+	 *
+	 * @param {object} event Event from listeners.
+	 */
 	updateAiMenu( event ) {
-		const $target   = this.$target,
-			  aiControl = this._hasBgAi();
+		const aiControl = this._hasBgAi();
 
 		if( aiControl ) {
 			BG.Controls.controls[ aiControl ].updatePopoverMenu( this );
@@ -398,8 +404,10 @@ export class Base {
 
 	/**
 	 * Has AI Controls
-	 * 
-	 * Whether or not the user has AI Controls.
+	 *
+	 * @since 1.27.0
+	 *
+	 * @return {Boolean} Whether or not the user has AI Controls.
 	 */
 	_hasBgAi() {
 		var controls = BG.Controls.controls,
@@ -491,6 +499,8 @@ export class Base {
 	 * Update the menu classes based on the visibility state.
 	 *
 	 * @since 1.8.0
+	 * 
+	 * @param {string} $menuClass The class of the menu to update.
 	 */
 	_updateMenuState( $menuClass ) {
 		var $menu = this.$element.find( '.popover-menu-imhwpb.' + $menuClass );
