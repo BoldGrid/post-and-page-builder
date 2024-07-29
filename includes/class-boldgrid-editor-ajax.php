@@ -50,6 +50,59 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
+	 * Sanitizes the Gridblock HTML using wp_kses_post.
+	 *
+	 * @param string $html the gridblock's HTML
+	 * @return string sanitized HTML
+	 */
+	public function sanitize_gridblock_html( $html ) {
+		add_filter( 'wp_kses_allowed_html', function( $tags, $context ) {
+			if ( 'post' !== $context ) {
+				return $tags;
+			}
+
+			for ( $i = 1; $i <= 6; $i++ ) {
+				$tags[ 'h' . $i ]['text-milestone'] = true;
+			}
+
+			$tags['p']['text-milestone'] = true;
+
+			$tags['a']['shape'] = true;
+			$tags['a']['tabindex'] = true;
+
+			$tags['div']['gb-background-image'] = 'url(*)';
+			$tags['iframe'] = array(
+				'src' => true,
+				'width' => true,
+				'height' => true,
+				'frameborder' => true,
+				'allowfullscreen' => true,
+				'style' => true,
+			);
+
+			return $tags;
+		}, 10, 2 );
+
+		add_filter( 'safe_style_css', function( $styles ) {
+			return array();
+		} );
+
+		$pattern = $pattern = [
+			'/\s*:\s*/',     // Matches and removes spaces around colons
+			'/\s*;\s*/',     // Matches and removes spaces around semicolons
+			'/;\s*(["\>])/'  // Matches semicolons followed by space and either a quote or a closing tag and removes the semicolon
+		];
+		$replacement = [
+			':',     // Replace spaces around colon with just a colon
+			';',     // Replace spaces around semicolon with just a semicolon
+			'$1'     // Remove the semicolon at the end of declarations
+		];
+		$html = preg_replace( $pattern, $replacement, $html );
+		
+		return wp_kses_post( $html );
+	}
+
+	/**
 	 * Generate gridblocks.
 	 *
 	 * @since 1.7.0
@@ -82,8 +135,11 @@ class Boldgrid_Editor_Ajax {
 				header( "$header: " . $types );
 
 				foreach( $response as &$block ) {
-					$block['preview_html'] = Boldgrid_Layout::run_shortcodes( $block['html'] );
+					$block['preview_html'] = $this->sanitize_gridblock_html(
+						Boldgrid_Layout::run_shortcodes( $block['html'] )
+					);
 					$block['html'] = $block['html'];
+					$block['html'] = $this->sanitize_gridblock_html( $block['html'] );
 				}
 
 				// Count how many times blocks have been generated.
@@ -335,6 +391,19 @@ class Boldgrid_Editor_Ajax {
 
 		$image_data = str_replace( ' ', '+', $image_data );
 		$data = base64_decode( $image_data );
+
+		/*
+		 * We must validate that the base64 encoded image
+		 * is a valid image and a supported MIME type.
+		 * If it is not, we will return an error.
+		 */
+		$finfo            = new finfo(FILEINFO_MIME_TYPE);
+		$actualMimeType   = $finfo->buffer($data);
+		$valid_mime_types = array_values( get_allowed_mime_types() );
+
+		if ( ! in_array( $actualMimeType, $valid_mime_types ) ) {
+			return array( 'success' => false );
+		}
 
 		$filename = uniqid() . '.' . $extension;
 		$uploaded = wp_upload_bits( $filename, null, $data );

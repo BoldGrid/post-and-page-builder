@@ -69,8 +69,9 @@ class Boldgrid_Editor_Gridblock_Post {
 		}
 
 		foreach ( $submenu['themes.php'] as $key => $item ) {
-			if ( 'edit.php?post_type=wp_block' === $item[2] ) {
+			if ( 'edit.php?post_type=wp_block' === $item[2] || 'site-editor.php?path=/patterns' === $item[2] ) {
 				remove_submenu_page( 'themes.php', 'edit.php?post_type=wp_block' );
+				remove_submenu_page( 'themes.php', 'site-editor.php?path=/patterns' );
 				add_submenu_page(
 					'themes.php',
 					__( 'Patterns', 'boldgrid-editor' ),
