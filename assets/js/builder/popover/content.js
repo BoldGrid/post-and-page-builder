@@ -37,19 +37,16 @@ export class Content extends Base {
 	/**
 	 * When clicked, open the Boldgrid AI panel.
 	 * 
-	 * @since 1.8.0
+	 * @since 1.27.0
+	 * 
+	 * @param {Event} e Click Event.
 	 */
 	_onAI( e ) {
-		let controlName,
-			$target    = BG.Service.popover.selection.$target,
-			targetType = this.name;
+		let $target = BG.Service.popover.selection.$target;
 
 		e.stopPropagation();
 
-		controlName = $( e.target ).data( 'action' );
-
 		$target.click();
-		//BG.Controls.get( controlName ).openPanel( $target, targetType );
 	}
 
 	_toggleCellOptions() {
