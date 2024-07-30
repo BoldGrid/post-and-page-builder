@@ -189,7 +189,7 @@ iframe[src^="https://maps.google.com"] {
   font-size: 12px;
   padding: 5px 6px;
   position: absolute;
-  width: 73px;
+  width: 96px;
 }
 
 .popover-imhwpb,
@@ -334,7 +334,7 @@ iframe[src^="https://maps.google.com"] {
     border-top-color:rgb(213, 78, 33);
 }
 .section-popover-imhwpb {
-	width: 75px;
+	width: 96px;
 }
 .bottom-popover-imhwpb .popover-menu-imhwpb.menu-down ul{
 	bottom: auto;
@@ -478,6 +478,29 @@ iframe[src^="https://maps.google.com"] {
     left: auto;
     top: -25px;
     width: 100px;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.menu-align-top ul {
+    top: -25px;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.menu-align-bottom ul {
+    top: inherit;
+    bottom: 0px;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul {
+    right: auto;
+    left: 160px;
+    width: 225px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.popover-imhwpb .popover-menu-imhwpb .side-menu.changeTone ul li.action-list {
+    width: 50%;
 }
 
 .side-menu-left .popover-imhwpb .popover-menu-imhwpb .side-menu ul {
@@ -695,7 +718,8 @@ iframe[src^="https://maps.google.com"] {
     opacity: .01;
 }
 
-.popover-imhwpb .popover-menu-imhwpb li[data-action] {
+.popover-imhwpb .popover-menu-imhwpb li[data-action],
+.popover-imhwpb .popover-menu-imhwpb li.side-menu-parent {
 	font-weight: 600;
 }
 
@@ -739,7 +763,7 @@ iframe[src^="https://maps.google.com"] {
 }
 
 .popover-imhwpb .popover-menu-imhwpb ul {
-    width: 165px;
+    width: 180px;
     background: #FFFFFF;
     border: 2px solid #23282d;
     border-radius: 5px;
@@ -768,6 +792,12 @@ html[dir=rtl] .popover-imhwpb .popover-menu-imhwpb ul li.action-list {
 .top-popover-imhwpb .popover-menu-imhwpb  ul {
     margin-top: -3px;
     left:30px;
+}
+
+.left-popover-imhwpb .popover-menu-imhwpb.menu-align-bottom ul,
+.right-popover-imhwpb .popover-menu-imhwpb.menu-align-bottom ul {
+    top: inherit;
+    bottom: 0%;
 }
 
 .container-fluid {

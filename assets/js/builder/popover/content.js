@@ -34,6 +34,21 @@ export class Content extends Base {
 		this.event.on( 'open', () => this._toggleCellOptions() );
 	}
 
+	/**
+	 * When clicked, open the Boldgrid AI panel.
+	 * 
+	 * @since 1.27.0
+	 * 
+	 * @param {Event} e Click Event.
+	 */
+	_onAI( e ) {
+		let $target = BG.Service.popover.selection.$target;
+
+		e.stopPropagation();
+
+		$target.click();
+	}
+
 	_toggleCellOptions() {
 		let targetIsTable = this.$target.is( 'table, td, th' );
 		this.$element.toggleClass( 'has-table-support', targetIsTable );

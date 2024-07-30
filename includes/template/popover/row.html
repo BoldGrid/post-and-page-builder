@@ -2,7 +2,7 @@
    <span class="popover-imhwpb row-popover-imhwpb right-popover-imhwpb">
       <div title="Drag Row" contenteditable="false" draggable="true" class="no-select-imhwpb drag-handle-imhwpb draggable-button">
 		  <span class="genericon genericon-move" aria-hidden="true"> </span></div>
-      <div class="popover-menu-imhwpb hidden">
+      <div class="popover-menu-imhwpb edit hidden">
          <ul>
             <li class="no-select-imhwpb action-list" data-action="">Edit Row</li>
             <li class="no-select-imhwpb action-list" data-action="duplicate">Clone</li>
@@ -21,6 +21,38 @@
 			<% } ); %>
          </ul>
       </div>
-      <div title="Edit Row" class="context-menu-imhwpb draggable-button"> <span class="genericon genericon-menu" aria-hidden="true"></span></div>
+      <div title="Edit Row" class="context-menu-imhwpb edit draggable-button"> <span class="genericon genericon-menu" aria-hidden="true"></span></div>
+      <% if ( false !== hasBgAi ) { %>
+         <div class="popover-menu-imhwpb bgai hidden">
+            <ul>
+            <% _.each( BoldgridAi.actions, function ( actionProps, actionKey ) { %>
+               <li class="no-select-imhwpb action-list <%=actionProps.class ? actionProps.class : ''%>"
+                  data-context="<%=actionProps.context%>"
+                  data-endpoint="<%=actionProps.endpoint%>"
+                  data-action-function="<%=actionProps.click%>"
+                  <% if( 'onMenuAction' !== actionProps.click ) {%> data-action="<%=actionKey%>" <%}%>
+               ><%=actionProps.label%></li>
+               <% if( 'onMenuAction' === actionProps.click ) {
+                  %>
+                  <div class="side-menu <%=actionKey%>">
+                     <ul>
+                        <% _.each( actionProps.items, function ( subActionProps, subActionKey ) { %>
+                           <li class="no-select-imhwpb action-list"
+                              data-action-function="<%=subActionProps.click%>"
+                              data-context="<%=subActionProps.context%>"
+                              data-endpoint="<%=subActionProps.endpoint%>"
+                              data-action="<%=subActionKey%>">
+                              <%=subActionProps.label%>
+                           </li>
+                        <% } ); %>
+                     </ul>
+                  </div>
+               <% } } ); %>
+         </ul>
+         </div>
+         <div title="Open AI" class="context-menu-imhwpb bgai draggable-button">
+            <span class="AI-icon">AI</span>
+         </div>
+      <% } %>
    </span>
 </div>
