@@ -3049,6 +3049,15 @@
     "@wordpress/dom-ready" "^3.34.0"
     "@wordpress/i18n" "^4.34.0"
 
+"@wordpress/api-fetch@^7.6.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/api-fetch/-/api-fetch-7.7.0.tgz#5e07f9bd433578700aedc7f09ed0b9a1449feb80"
+  integrity sha512-Si/Ep5yXmxTpUT1Fxgd8PjhK6amohcSCUR50QGK9FIeCGoxBZiH7gi+VSvFAZsC2z8XvvP/tJZthB2j/9UHfPA==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@wordpress/i18n" "^5.7.0"
+    "@wordpress/url" "^4.7.0"
+
 "@wordpress/babel-plugin-import-jsx-pragma@^4.17.0":
   version "4.17.0"
   resolved "https://registry.yarnpkg.com/@wordpress/babel-plugin-import-jsx-pragma/-/babel-plugin-import-jsx-pragma-4.17.0.tgz#a648c148a956472848784c9d4e5cf4dca9bc5260"
@@ -3274,6 +3283,13 @@
   dependencies:
     "@babel/runtime" "^7.16.0"
 
+"@wordpress/hooks@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/hooks/-/hooks-4.7.0.tgz#172d101ef3298bbf84b81723c071c0e25b3fdd1a"
+  integrity sha512-EGHMsNCt+PyStm3o1JWujaTA+HKcTxuEXdSHBBFDavzsgOF13bxTf1LpDYgTZJT3K9TSMP983IwfckP5t66pDw==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+
 "@wordpress/html-entities@^3.34.0":
   version "3.34.0"
   resolved "https://registry.yarnpkg.com/@wordpress/html-entities/-/html-entities-3.34.0.tgz#6731812c68a12efe829f95376672e2b1da1c3e29"
@@ -3288,6 +3304,18 @@
   dependencies:
     "@babel/runtime" "^7.16.0"
     "@wordpress/hooks" "^3.34.0"
+    gettext-parser "^1.3.1"
+    memize "^2.1.0"
+    sprintf-js "^1.1.1"
+    tannin "^1.2.0"
+
+"@wordpress/i18n@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/i18n/-/i18n-5.7.0.tgz#fce292bed35c41663bdf9639f1fb4926e8ca3840"
+  integrity sha512-o1cq1zutE5rMAM//Ra1hRfgHuWNBxFtd7XNk+BuAcILRENMaEoqAoGBmGj9lRtOcqAj+cdoWxFjBIxRa67vIrg==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@wordpress/hooks" "^4.7.0"
     gettext-parser "^1.3.1"
     memize "^2.1.0"
     sprintf-js "^1.1.1"
@@ -3373,6 +3401,14 @@
     "@wordpress/keycodes" "^3.34.0"
     memize "^2.1.0"
     rememo "^4.0.2"
+
+"@wordpress/url@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/url/-/url-4.7.0.tgz#e2669f66e3e46e86e34c86067ef355d683916d8c"
+  integrity sha512-c9L3L4+YrygKtf5S7DKFP1wNbFvqPLp8Uub4VgPKWmlZnIB2hsRNXELba5qGHpPmzTg82KwXImRAuHSMrfr+LA==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    remove-accents "^0.5.0"
 
 "@wordpress/warning@^2.34.0":
   version "2.34.0"
@@ -4046,11 +4082,12 @@ body-scroll-lock@^3.1.5:
   resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
   integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
-boldgrid-panel@1.1.0-rc.1:
-  version "1.1.0-rc.1"
-  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.1.0-rc.1.tgz#e6434d7f9b90ceb23e872dab0b73a9df76db3ed7"
-  integrity sha512-spgpyz+auY95RBuUOfS+hWQx3vFFYWwWyZWir+y30xrlh94J6QpIQW7byE/Y8IQINyPiUMiFx4Nx6AcfOd+JYw==
+boldgrid-panel@^1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/boldgrid-panel/-/boldgrid-panel-1.2.2.tgz#c18bb0517d7e2648cce73f4963c67f27642a202f"
+  integrity sha512-kaQTHO0eSElSfT7daSZWax5ZZM75qG1y5SSMt6VQSQUroXSmVjJqU8gccw+hEut+YspOTu6p+TnyUzOMWoTzUw==
   dependencies:
+    "@wordpress/api-fetch" "^7.6.0"
     "@wordpress/escape-html" "^2.54.0"
 
 "boldgrid-theme-framework@https://github.com/BoldGrid/boldgrid-theme-framework.git#dev":
@@ -9857,6 +9894,11 @@ remove-accents@^0.4.2:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/remove-accents/-/remove-accents-0.4.4.tgz#73704abf7dae3764295d475d2b6afac4ea23e4d9"
   integrity sha512-EpFcOa/ISetVHEXqu+VwI96KZBmq+a8LJnGkaeFw45epGlxIZz5dhEEnNZMsQXgORu3qaMoLX4qJCzOik6ytAg==
+
+remove-accents@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/remove-accents/-/remove-accents-0.5.0.tgz#77991f37ba212afba162e375b627631315bed687"
+  integrity sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==
 
 remove-bom-buffer@^3.0.0:
   version "3.0.0"
