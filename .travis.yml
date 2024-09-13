@@ -1,5 +1,5 @@
 language: php
-dist: xenial
+dist: jammy
 notifications:
   email:
     on_success: never
