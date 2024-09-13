@@ -11,7 +11,9 @@
 		"format-sass": "stylelint \"assets/scss/**/*.scss\" --fix --syntax scss",
 		"build": "npm run build-webpack && gulp build",
 		"dev": "npm run dev-webpack && gulp build",
-		"test": "cross-env NODE_ENV=test karma start karma.config.js --single-run"
+		"test": "cross-env NODE_ENV=test karma start karma.config.js --single-run",
+		"update-version": "node bin/update-version.js $(pwd)",
+		"zip": "bin/package.sh"
 	},
 	"repository": {
 		"type": "git",
@@ -72,7 +74,7 @@
 		"@wordpress/components": "^25.0.0",
 		"@wordpress/element": "^5.11.0",
 		"animate.css": "^3.7.0",
-		"boldgrid-panel": "1.1.0-rc.1",
+		"boldgrid-panel": "^1",
 		"boldgrid-theme-framework": "https://github.com/BoldGrid/boldgrid-theme-framework.git#dev",
 		"bootstrap-sass": "^3.3.7",
 		"eventemitter3": "^5.0.0",
