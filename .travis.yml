@@ -23,14 +23,14 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    php: '5.6'
+    php: '7.4'
 - provider: releases
   api_key: "${GITHUB_TOKEN}"
   file: post-and-page-builder.zip
   skip_cleanup: true
   on:
     tags: true
-    php: '5.6'
+    php: '7.4'
 env:
   global:
     secure: Nx5fCiB5e3mr+mCd6OEMEiIs2Mya8aJUI3SniBX1GwhEyjb+86ti2bC77m9mpmU7CiY84DifoX0i1toOkvT58d+zgHZuixWqO8J29KXxYao6N9tli0zbpEZQSw9rxm9/+YRjwwQLuMKTLIKE8nxoVFJuWmrWamG6hXtz+VMuIYg/EPBAJslvygWce68Otdes229bF65kfy04ONzFymP93czcNPktRuDJ+wj9ZTag2zGQ4vDekbm1IIMhlkqMLqfW3vmLVoyxu5aGi4Ap9vEBzNeBLI2S6wKVCu2XeSHbdvTMDp84JL/ujE9NjjQxXbcL1vzF1veQNNo0RRpQpTq81FNZzdII5Ri3w7bhAwe6b0/8TDTkoFWxbZwg0PaNu+p4Rgrn6KZmvihl+Jbmz3IfECRakNYg1XtY3ykDyJpHRwDrkBGjOwpkDfl7TWkk95bY/ghfAVd+G+HuZHiHaaGvG30d6NphdjeQsZ4Pys9wpxGC8N3uLnB4gtlsFq8Nl1biybGsT/nh2dzCQ2Sm28sNpKn0519zHJJaShfonl2eBM67w5WTmoSAWoSra80XX8lB0HI9Dj5pUTLomJ4VW3yJPAEKDKKqonQ5C7crmsPdf1eVLIR02EJaA7Aen4icDkYoWi0LSv2YF/OykLoUXoiWQTk0QPyKoNARIUrFbCM6eww=
