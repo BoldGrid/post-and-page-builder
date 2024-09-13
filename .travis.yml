@@ -1,5 +1,5 @@
 language: php
-dist: jammy
+dist: focal
 notifications:
   email:
     on_success: never
