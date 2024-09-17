@@ -443,7 +443,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 				'color-neutral': 'var(--color-neutral )',
 			};
 
-			const savedColors = BoldgridEditor.saved_colors;
+			const savedColors = self.getSavedColors();
 
 			// This ensures that the background image panel shows if there is a background image set.
 			if ( self.$target.css( 'background-image' ).includes( 'url' ) ) {
@@ -477,6 +477,32 @@ import { BoldgridPanel } from 'boldgrid-panel';
 			return bgRoot.render(
 				<BoldgridPanel type="background" selectedComponent={selectedComponent} usedComponents={usedComponents} target={self.$target} />
 			);
+		},
+
+		/**
+		 * Get Saved Colors from settings
+		 * array or from input field.
+		 *
+		 * @since 1.27.1
+		 * @returns {Array<string>}
+		 */
+		getSavedColors: function() {
+			var customColorInputVal = $( '#custom-color-input' ).val(),
+				savedColors         = BoldgridEditor.saved_colors;
+
+			if ( customColorInputVal ) {
+				try {
+					savedColors = JSON.parse( customColorInputVal );
+					// remove any null values from array.
+					savedColors = savedColors.filter( function( el ) {
+						return el != null;
+					} );
+				} catch ( e ) {
+					// Do nothing.
+				}
+			}
+
+			return savedColors;
 		},
 	};
 
