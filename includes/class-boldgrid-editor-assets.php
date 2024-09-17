@@ -305,6 +305,62 @@ class Boldgrid_Editor_Assets {
 	}
 
 	/**
+	 * Validate the saved colors.
+	 *
+	 * Loop through the array of colors
+	 * and ensure none of them are a null value.
+	 * Each value should be a string.
+	 * If the value is not a string, remove it.
+	 * @since 1.6
+	 *
+	 * @param  array $colors Colors to validate.
+	 * @return array         Validated colors.
+	 */
+	public function validate_saved_colors( $colors ) {
+		$valid_colors = array();
+
+		foreach ( $colors as $color ) {
+			if ( is_string( $color ) && $this->is_valid_color( $color ) ) {
+				$valid_colors[] = $color;
+			}
+		}
+
+		return $valid_colors;
+	}
+
+	/**
+	 * Check if a color is valid.
+	 *
+	 * @since 1.6
+	 *
+	 * @param  string $color Color to check.
+	 * @return boolean       Is the color valid?
+	 */
+	private function is_valid_color( $color ) {
+		// Check for hex color with or without alpha (#RGB, #RRGGBB, #RGBA, #RRGGBBAA)
+		if ( preg_match( '/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{8})$/', $color ) ) {
+			return true;
+		}
+	
+		// Check for rgb or rgba color
+		if ( preg_match( '/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(,\s*(0|1|0?\.\d+))?\s*\)$/', $color ) ) {
+			return true;
+		}
+	
+		// Check for hsl or hsla color
+		if ( preg_match( '/^hsla?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(,\s*(0|1|0?\.\d+))?\s*\)$/', $color ) ) {
+			return true;
+		}
+	
+		// Check for CSS variable (var(--variable-name))
+		if ( preg_match( '/^var\(\s*--[\w-]+\s*\)$/', $color ) ) {
+			return true;
+		}
+	
+		return false;
+	}
+
+	/**
 	 * Get the JS var's to be passed into the builder.
 	 *
 	 * @since 1.6
@@ -365,6 +421,8 @@ class Boldgrid_Editor_Assets {
 			$shortcode_keys[] = 'weforms';
 		}
 
+		$saved_colors = $this->validate_saved_colors( Boldgrid_Editor_Option::get( 'custom_colors', array() ) );
+
 		$vars = array(
 			'is_boldgrid_theme'      => $is_bg_theme,
 			'crio_button_classes'    => apply_filters( 'bgtfw_button_classes', array() ),
@@ -388,7 +446,7 @@ class Boldgrid_Editor_Assets {
 			'icons'                  => json_decode( $fs->get_contents( BOLDGRID_EDITOR_PATH . '/assets/json/font-awesome.json' ), true ),
 			'images'                 => Boldgrid_Editor_Builder::get_post_images(),
 			'colors'                 => Boldgrid_Editor_Theme::get_color_palettes(),
-			'saved_colors'           => Boldgrid_Editor_Option::get( 'custom_colors', array() ),
+			'saved_colors'           => $saved_colors,
 			'block_default_industry' => Boldgrid_Editor_Option::get( 'block_default_industry' ),
 			'internalPageTemplates'  => Boldgrid_Editor_Service::get( 'templater' )->templates,
 			'sample_backgrounds'     => Boldgrid_Editor_Builder::get_background_data(),
