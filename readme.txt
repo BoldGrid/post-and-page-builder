@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 1.27.0
+Stable tag: 1.27.1-rc.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,12 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.27.1 =
+* Bug Fix: New Background Control should not be able to save a null value as a color. [#601](https://github.com/BoldGrid/post-and-page-builder/issues/601)
+* Bug Fix: Cannot create a button with the neutral background color [#607](https://github.com/BoldGrid/post-and-page-builder/issues/607)
+* Bug Fix: Advanced Controls panel show on Tutorial Videos when they should not [#603](https://github.com/BoldGrid/post-and-page-builder/issues/603)
+* Improvement: Improve wording and clarity of table designer 'Heading Labels' section [#619](https://github.com/BoldGrid/post-and-page-builder/issues/619)
 
 = 1.27.0 =
 * New Feature: Added funcionality to support BoldGrid AI for internal testing
