@@ -405,8 +405,14 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 
 			$headingLabelsSection.children().remove();
 
+			$headingLabelsSection.append(
+				`<p class="instructions"
+					style="margin-bottom: 10px;"
+				>Depending on your responsive settings above, these labels will be used to identify the columns on mobile devices.</p>`
+			);
+
 			$targetHeadings.each( function() {
-				var $heading = $( this ),
+				var $heading     = $( this ),
 					headingLabel = $heading.attr( 'data-label' ) ? $heading.attr( 'data-label' ) : '',
 					headingIndex = $heading.index();
 
