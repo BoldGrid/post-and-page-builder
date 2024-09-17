@@ -44,6 +44,7 @@ export class Notice extends Base {
 		BG.Panel.$element.removeClass( 'customize-open' );
 		BG.Panel.$element.find( '.panel-body .customize' ).hide();
 		BG.Service.customize.navigation.disable();
+		BG.Panel.hideFooter();
 
 		BG.Panel.setDimensions( this.panel.width, this.panel.height );
 		BG.Panel.setTitle( this.panel.title );
