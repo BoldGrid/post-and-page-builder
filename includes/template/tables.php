@@ -8,9 +8,6 @@
                     <input type="number" name="tables-number-of-rows" id="tables-number-of-rows" value="4" min="1" max="100" step="1"></label>
             </p>
         </div>
-        <h4>Heading Labels</h4>
-        <div class="section section-heading-labels">
-        </div>
         <h4>General Options</h4>
         <div class="section section-general-options">
             <p class="hide-header">
@@ -35,6 +32,9 @@
             <p class="hide-header-responsive">
                 <label for="hide-header-responsive">
                     <input type="checkbox" class="general-table-option" name="hide-header-responsive" id="hide-header-responsive" value="hide-header-responsive">Hide Header on Responsive Tables</label>
+        </div>
+        <h4>Mobile Heading Labels</h4>
+        <div class="section section-heading-labels">
         </div>
         <h4>Horizontal Text Alignment</h4>
         <div class="section section-text-alignment">
