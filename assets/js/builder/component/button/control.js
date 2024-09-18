@@ -221,7 +221,11 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					self.removeColorClasses();
 					$this.siblings().removeClass( 'selected' );
 					$this.addClass( 'selected' );
-					$target.addClass( 'btn-color-' + $this.attr( 'data-preset' ) );
+					if ( BoldgridEditor.is_crio && 'neutral' === $this.attr( 'data-preset' ) ) {
+						$target.addClass( 'btn-neutral-color' );
+					} else {
+						$target.addClass( 'btn-color-' + $this.attr( 'data-preset' ) );
+					}
 				}
 			);
 		},
