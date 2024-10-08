@@ -490,9 +490,9 @@ class Public {
 			hasBgColor;
 
 		if ( 'bottom' === position && $boldgridSection.parent().is( '#masthead' ) ) {
-			$sibling = $( '#content' ).find( '.boldgrid-section' ).first();
+			$sibling = $( '#content main' ).find( '.boldgrid-section' ).first();
 		} else if ( 'top' === position && $boldgridSection.parent().is( '.bgtfw-footer' ) ) {
-			$sibling = $( '#content' ).find( '.boldgrid-section' ).last();
+			$sibling = $( '#content main' ).find( '.boldgrid-section' ).last();
 		} else if ( 0 === $sibling.length && 'top' === position ) {
 			hasBgColor = false;
 			hasBgColor = $header.find( '.boldgrid-section' ).last().css( 'background-color' );
