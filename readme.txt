@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 1.27.1
+Stable tag: 1.27.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.27.2 =
+* Bug Fix: CPH with Section divider & Sticky Header conflict [#624](https://github.com/BoldGrid/post-and-page-builder/issues/624)
+* Bug Fix: Popovers cut off on edge of screen [#622](https://github.com/BoldGrid/post-and-page-builder/issues/622)
 
 = 1.27.1 =
 * Bug Fix: New Background Control should not be able to save a null value as a color. [#601](https://github.com/BoldGrid/post-and-page-builder/issues/601)

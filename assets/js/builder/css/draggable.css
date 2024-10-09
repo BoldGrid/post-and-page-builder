@@ -814,7 +814,7 @@ html[dir=rtl] .popover-imhwpb .popover-menu-imhwpb ul li.action-list {
 
 html {
 	background-color: #f1f1f1;
-	padding:30px 20px 200px 20px;
+	padding:30px 40px 200px 40px;
 }
 
 @media screen and (max-width: 782px) {
