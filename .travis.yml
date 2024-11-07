@@ -17,6 +17,11 @@ before_script:
 - yarn install
 script:
 - npm run build
+before_deploy:
+  - yes | gem update --system --force
+  - gem install bundler
+  - gem install uri
+  - gem install logger
 deploy:
 - provider: script
   script: chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh && ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
