@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.4
-Stable tag: 1.27.2
+Stable tag: 1.27.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,9 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.27.3 =
+* Bug Fix: Change placeholder provider to placehold.co [#627](https://github.com/BoldGrid/post-and-page-builder/pull/627)
 
 = 1.27.2 =
 * Bug Fix: CPH with Section divider & Sticky Header conflict [#624](https://github.com/BoldGrid/post-and-page-builder/issues/624)
