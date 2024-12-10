@@ -481,6 +481,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					} );
 				}
 			} );
+
+			// Remove primary and secondary buttons from the list if Crio.
+			if ( BoldgridEditor.is_crio ) {
+				self.usedComponents = _.filter( self.usedComponents, function( item ) {
+					return -1 === item.classes.indexOf( 'button-primary' ) && -1 === item.classes.indexOf( 'button-secondary' );
+				} );
+			}
 		},
 
 		/**
