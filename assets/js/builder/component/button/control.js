@@ -437,9 +437,20 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 		 * @since 1.2.7
 		 */
 		toggleFooter: function() {
-			var $target = BG.Menu.getTarget( self );
+			var $target    = BG.Menu.getTarget( self ),
+				showFooter = false;
 
 			if ( $target.hasClass( 'btn' ) ) {
+				showFooter = true;
+			}
+
+			if ( BoldgridEditor.is_crio && 
+				( $target.hasClass( 'button-primary' ) || $target.hasClass( 'button-secondary' ) )
+			) {
+				showFooter = false;
+			}
+
+			if ( showFooter ) {
 				BG.Panel.showFooter();
 			} else {
 				BG.Panel.hideFooter();
@@ -470,6 +481,13 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					} );
 				}
 			} );
+
+			// Remove primary and secondary buttons from the list if Crio.
+			if ( BoldgridEditor.is_crio ) {
+				self.usedComponents = _.filter( self.usedComponents, function( item ) {
+					return -1 === item.classes.indexOf( 'button-primary' ) && -1 === item.classes.indexOf( 'button-secondary' );
+				} );
+			}
 		},
 
 		/**
