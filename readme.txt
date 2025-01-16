@@ -4,7 +4,7 @@ Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 5.4
-Stable tag: 1.27.4
+Stable tag: 1.27.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,10 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.27.5 =
+* Bug Fix: Table Borders do not change with palette [#609](https://github.com/BoldGrid/post-and-page-builder/issues/609)
+* Bug Fix: Fixed height tables break in responsive views. [#632](https://github.com/BoldGrid/post-and-page-builder/issues/632)
 
 = 1.27.4 =
 * Bug Fix: Tables on full width pages but in a fixed container are very narrow on mobile [#604](https://github.com/BoldGrid/post-and-page-builder/issues/604)
