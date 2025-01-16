@@ -230,6 +230,11 @@ import template from '../../../../../includes/template/customize/table-borders.h
 			$colorControl.on( 'change', function() {
 				var $this = $( this );
 
+				// If $this.val() is a single digit or 'neutral' color, then convert it to a color variable.
+				if ( $this.val().length === 1 || $this.val() === 'neutral' ) {
+					$this.val( `var(--color-${$this.val()})` );
+				}
+
 				self.applyBorderStyle( $this.val(), options, 'color' );
 			} );
 		},
