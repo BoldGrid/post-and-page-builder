@@ -57,6 +57,9 @@ class PageTitle extends HeadingWidget {
 		} else {
 			$title = '[ Page Title ]';
 		}
+		if ( is_admin() ) {
+			$title = '[ Page Title ]';
+		}
 
 		parent::__construct(
 			'boldgrid_component_page_title',
