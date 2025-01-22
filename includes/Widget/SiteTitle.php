@@ -172,13 +172,14 @@ class SiteTitle extends HeadingWidget {
 	 * @param  array $instance Widget instance arguments.
 	 */
 	public function widget( $args, $instance )  {
-		$alignment    = ! empty( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
-		$htag         = ! empty( $instance['bgc_heading_type'] ) ? $instance['bgc_heading_type'] : 'h1';
-		$link_to_home = isset( $instance['bgc_link_to_home'] ) && '0' === $instance['bgc_link_to_home'] ? false : true;
-		$styles = 'text-decoration: inherit; font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . $alignment . ';';
-		$home_link_markup   = '<a href ="' . get_home_url() . '" style="' . $styles . '">' . $this->text_string . '</a>';
-		$site_title         = $link_to_home ? $home_link_markup : $this->text_string;
+		$alignment               = ! empty( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
+		$htag                    = ! empty( $instance['bgc_heading_type'] ) ? $instance['bgc_heading_type'] : 'h1';
+		$htag_safe               = $this->escape_htags( $htag );
+		$link_to_home            = isset( $instance['bgc_link_to_home'] ) && '0' === $instance['bgc_link_to_home'] ? false : true;
+		$styles_escaped          = 'text-decoration: inherit; font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . esc_attr( $alignment ) . ';';
+		$home_link_markup_safe   = '<a href ="' . esc_url( get_home_url() ) . '" style="' . $styles_escaped . '">' . esc_html( $this->text_string ) . '</a>';
+		$site_title_safe         = $link_to_home ? $home_link_markup_safe : esc_html( $this->text_string );
 
-		echo '<' . $htag . ' class="bgc_site_title ' . ( $link_to_home ? 'site-title' : '' ) . '" style="' . $styles . '">' . $site_title . '</' . $htag . '>';
+		echo '<' . $htag_safe . ' class="bgc_site_title ' . ( $link_to_home ? 'site-title' : '' ) . '" style="' . $styles_escaped . '">' . $site_title_safe . '</' . $htag_safe . '>';
 	}
 }

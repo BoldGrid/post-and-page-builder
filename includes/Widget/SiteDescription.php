@@ -48,10 +48,11 @@ class SiteDescription extends HeadingWidget {
 	public function widget( $args, $instance )  {
 		$alignment = ! empty( $instance['bgc_title_alignment'] ) ? $instance['bgc_title_alignment'] : 'center';
 		$htag      = ! empty( $instance['bgc_heading_type'] ) ? $instance['bgc_heading_type'] : 'h1';
+		$htag_safe = $this->escape_htags( $htag );
 
-		$styles = 'font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . $alignment . ';';
+		$styles_escaped = 'font-weight: inherit; text-transform: inherit; line-height: inherit; font-family: inherit; font-style: inherit; font-size: inherit; color: inherit; text-align:' . esc_attr( $alignment ) . ';';
 
-		echo '<' . $htag . ' class="bgc_site_description" style="' . $styles . '">' . $this->text_string . '</' . $htag . '>';
+		echo '<' . $htag_safe . ' class="bgc_site_description" style="' . $styles_escaped . '">' . esc_html( $this->text_string ) . '</' . $htag_safe . '>';
 	}
 
 	/**
