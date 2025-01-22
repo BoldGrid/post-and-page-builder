@@ -134,6 +134,9 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.27.6 =
+* Security Update: Resolved a security vulnerability reported by PatchStack [#635](https://github.com/BoldGrid/post-and-page-builder/issues/635)
+
 = 1.27.5 =
 * Bug Fix: Table Borders do not change with palette [#609](https://github.com/BoldGrid/post-and-page-builder/issues/609)
 * Bug Fix: Fixed height tables break in responsive views. [#632](https://github.com/BoldGrid/post-and-page-builder/issues/632)
