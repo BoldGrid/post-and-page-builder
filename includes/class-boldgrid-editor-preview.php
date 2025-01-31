@@ -178,7 +178,9 @@ class Boldgrid_Editor_Preview {
 	public function template_via_url( $template ) {
 		global $post;
 
-		$template_choice = ! empty( $_GET['template_choice'] ) ? $_GET['template_choice'] : false;
+		$template_choice = ! empty( $_GET['template_choice'] ) ?
+			$this->sanitize_template_choice( $_GET['template_choice'] ) :
+			false;
 
 		if ( $post && self::is_template_via_url() ) {
 			$template_choice = ( 'default' === $template_choice ) ? 'page.php' : $template_choice;
@@ -193,6 +195,38 @@ class Boldgrid_Editor_Preview {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Sanitize the template choice.
+	 * 
+	 * This is used to prevent directory traversal attacks
+	 * by ensuring that the template choice is either in the
+	 * theme folder, parent theme folder, theme-compat or
+	 * plugin template folder.
+	 */
+	public static function sanitize_template_choice( $template_choice ) {
+		// Template is in current theme folder.
+		if ( 0 === strpos( realpath( $template_choice ), realpath( STYLESHEETPATH ) ) ) {
+			return true;
+		}
+
+		// Template is in current or parent theme folder.
+		if ( 0 === strpos( realpath( $template_choice ), realpath( TEMPLATEPATH ) ) ) {
+			return true;
+		}
+
+		// Template is in theme-compat folder.
+		if ( 0 === strpos( realpath( $template_choice ), realpath( ABSPATH . WPINC . '/theme-compat/' ) ) ) {
+			return true;
+		}
+
+		// Template is in plugin template folder.
+		if ( 0 === strpos( realpath( $template_choice ), realpath( BOLDGRID_EDITOR_PATH . '/includes/template/' ) ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
