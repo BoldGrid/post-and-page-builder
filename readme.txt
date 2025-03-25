@@ -134,6 +134,9 @@ WordPress Editor.
 
 == Changelog ==
 
+= 1.27.8 =
+* Bug Fix: Fix _load_textdomain_just_in_time notices [#640](https://github.com/BoldGrid/post-and-page-builder/issues/640)
+
 = 1.27.7 =
 * Security Update: Resolved a security vulnerability reported by WordFence [#637](https://github.com/BoldGrid/post-and-page-builder/issues/637)
 
