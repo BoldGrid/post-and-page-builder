@@ -46,6 +46,7 @@ class Boldgrid_Editor {
 	 * Constructor.
 	 */
 	public function __construct() {
+		add_filter( 'doing_it_wrong_trigger_error', array( $this, 'disable_jit_notices' ), 10, 3 );
 		$this->add_ppb_filters();
 
 		$this->is_boldgrid_theme = Boldgrid_Editor_Theme::is_editing_boldgrid_theme();
@@ -64,6 +65,25 @@ class Boldgrid_Editor {
 		}
 
 		Boldgrid_Editor_Service::register( 'config', $config->get_configs() );
+	}
+
+	/**
+	 * Disable Just In Time notices.
+	 *
+	 * @since 1.27.8
+	 *
+	 * @param bool   $doing_it_wrong Whether to trigger the error for _doing_it_wrong.
+	 * @param string $function_name The function that was called.
+	 * @param string $message The message that was passed to _doing_it_wrong.
+	 *
+	 * @return bool $doing_it_wrong Whether to trigger the error for _doing_it_wrong.
+	 */
+	public function disable_jit_notices( $doing_it_wrong, $function_name, $message ) {
+		// if the function is _load_textdomain_just_in_time, return false to prevent the error.
+		if ( '_load_textdomain_just_in_time' === $function_name && false !== strpos( $message, 'boldgrid-editor' ) ) {
+			return false;
+		}
+		return $doing_it_wrong;
 	}
 
 	/**

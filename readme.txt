@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.4
-Stable tag: 1.27.7
+Stable tag: 1.27.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,7 +134,10 @@ WordPress Editor.
 
 == Changelog ==
 
-= 1.27.7 = 
+= 1.27.8 =
+* Bug Fix: Fix _load_textdomain_just_in_time notices [#640](https://github.com/BoldGrid/post-and-page-builder/issues/640)
+
+= 1.27.7 =
 * Security Update: Resolved a security vulnerability reported by WordFence [#637](https://github.com/BoldGrid/post-and-page-builder/issues/637)
 
 = 1.27.6 =
