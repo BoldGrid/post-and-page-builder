@@ -103,6 +103,10 @@ Bugs can be reported either in the [WordPress support forum](https://wordpress.o
 
 The Post and Page Builder is open source software. Join in on our [GitHub repository](https://github.com/BoldGrid/post-and-page-builder/).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/post-and-page-builder)
+
 == Installation ==
 
 = Minimum Requirements =
