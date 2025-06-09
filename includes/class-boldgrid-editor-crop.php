@@ -117,14 +117,50 @@ class Boldgrid_Editor_Crop {
 	 * @return mixed String on success, false on failure.
 	 */
 	public function url_to_path( $url ) {
-		$wp_upload_dir = wp_upload_dir();
-		preg_match( '/(.*)wp-content\/uploads(.*)/', $url, $matches );
+		$uploads = wp_upload_dir();
+		$basedir = $uploads['basedir'];
+		$baseurl = $uploads['baseurl'];
 
-		if( empty( $wp_upload_dir['basedir'] ) || empty( $matches['2'] ) ) {
+		// 1) Make sure the URL actually lives under the uploads URL
+		if ( empty( $basedir ) || empty( $baseurl ) || strpos( $url, $baseurl ) !== 0 ) {
 			return false;
 		}
 
-		return $wp_upload_dir['basedir'] . $matches['2'];
+		// 2) Strip off the base URL, decode any encoded segments, and normalize slashes.
+		$relative = urldecode( substr( $url, strlen( $baseurl ) ) );
+		$relative = str_replace( array( '\\', '/' ), '/', ltrim( $relative, '/\\' ) );
+
+		// 3) Collapse “.” and “..” path segments safely.
+		$parts = array();
+		foreach ( explode( '/', $relative ) as $segment ) {
+			if ( '' === $segment || '.' === $segment ) {
+				continue;
+			}
+			if ( '..' === $segment ) {
+				// go up one directory (if possible)
+				array_pop( $parts );
+			} else {
+				$parts[] = $segment;
+			}
+		}
+
+		// 4) Recombine under the basedir.
+		$full = $basedir . DIRECTORY_SEPARATOR . implode( DIRECTORY_SEPARATOR, $parts );
+
+		// 5) (Optional) Resolve to a real path if the file exists,
+		// and validate it still sits under the uploads folder
+		$real = realpath( $full );
+		if ( $real ) {
+			// realpath returns canonical absolute path
+			$full = $real;
+		}
+
+		// 6) Final safety check: must start with the uploads basedir
+		if ( strpos( $full, $basedir . DIRECTORY_SEPARATOR ) !== 0 ) {
+			return false;
+		}
+
+		return $full;
 	}
 
 	/**
