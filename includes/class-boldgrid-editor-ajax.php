@@ -98,7 +98,6 @@ class Boldgrid_Editor_Ajax {
 			'$1'     // Remove the semicolon at the end of declarations
 		];
 		$html = preg_replace( $pattern, $replacement, $html );
-		
 		return wp_kses_post( $html );
 	}
 
@@ -187,9 +186,10 @@ class Boldgrid_Editor_Ajax {
 		$nonce = ! empty( $_POST[ self::$nonces[ $name ] ] ) ?
 			$_POST[ self::$nonces[ $name ] ] : null;
 
-		$valid = wp_verify_nonce( $nonce, self::$nonces[ $name ] );
+		$valid          = wp_verify_nonce( $nonce, self::$nonces[ $name ] );
+		$valid_referrer = check_ajax_referer( self::$nonces[ $name ], self::$nonces[ $name ], false );
 
-		if ( ! $valid ) {
+		if ( ! $valid || ! $valid_referrer || ! current_user_can( 'edit_posts' ) ) {
 			status_header( 401 );
 			wp_send_json_error();
 		}
@@ -205,10 +205,12 @@ class Boldgrid_Editor_Ajax {
 
 		self::validate_nonce( 'image' );
 		$unsplash_404 = 'https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200';
-
 		$redirectUrls = array();
 		foreach( $urls as $url ) {
-			$response = wp_remote_head( $url );
+			$response = wp_safe_remote_head( esc_url_raw( $url ), array(
+				'timeout'     => 5,
+				'redirection' => 5,
+			) );
 			$headers = is_array( $response ) && ! empty( $response['headers'] ) ? $response['headers']->getAll() : array();
 			$redirectUrl = ! empty( $headers['location'] ) ? $headers['location'] : false;
 			$redirectUrl = ( $redirectUrl !== $unsplash_404 ) ? $redirectUrl : false;

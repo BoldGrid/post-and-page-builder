@@ -295,7 +295,6 @@ class Boldgrid_Editor {
 				add_action( 'admin_enqueue_scripts', array( $boldgrid_editor_builder, 'enqueue_styles' ) );
 
 				// Display and save admin notice state.
-				add_action( 'admin_init', array( $boldgrid_editor_setup, 'reset_editor_action' ) );
 				add_action( 'shutdown', array( $boldgrid_editor_version, 'save_notice_state' ) );
 
 				// Create media modal tabs.
