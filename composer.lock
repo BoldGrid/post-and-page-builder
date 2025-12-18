@@ -57,6 +57,10 @@
                 }
             ],
             "description": "The BoldGrid Library for shared code used in official BoldGrid plugins and themes.",
+            "support": {
+                "issues": "https://github.com/BoldGrid/library/issues",
+                "source": "https://github.com/BoldGrid/library/tree/2.13.13"
+            },
             "time": "2024-04-19T15:37:29+00:00"
         }
     ],
@@ -68,5 +72,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.6.0"
 }
