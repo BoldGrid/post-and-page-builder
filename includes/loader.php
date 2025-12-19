@@ -1,4 +1,9 @@
 <?php
+// Load Composer autoloader first to ensure vendor classes are available
+if ( file_exists( BOLDGRID_EDITOR_PATH . '/vendor/autoload.php' ) ) {
+	require_once BOLDGRID_EDITOR_PATH . '/vendor/autoload.php';
+}
+
 if ( ! class_exists( 'Boldgrid_Editor_Media_Tab' ) ) {
 	require_once BOLDGRID_EDITOR_PATH . '/includes/media/class-boldgrid-editor-media-tab.php';
 }
