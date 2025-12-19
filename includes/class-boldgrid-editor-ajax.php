@@ -233,6 +233,12 @@ class Boldgrid_Editor_Ajax {
 	public function save_key() {
 		self::validate_nonce( 'gridblock_save' );
 
+		// Require administrator privileges to update site-wide Connect key.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			status_header( 403 );
+			wp_send_json_error();
+		}
+
 		$connectKey = ! empty( $_POST['connectKey'] ) ? sanitize_text_field( $_POST['connectKey'] ) : null;
 		$connectKey = false === strpos( $connectKey, '-' ) ? $connectKey : md5( $connectKey );
 
