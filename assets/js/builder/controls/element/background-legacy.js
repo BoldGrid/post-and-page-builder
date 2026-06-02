@@ -232,7 +232,7 @@ import { lt as semverLt } from 'semver';
 
 			$hoverBoxes.each( ( index, hoverBox ) => {
 				var $hoverBox     = $( hoverBox ),
-					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
+					hoverBoxClass = ( $hoverBox.attr( 'data-hover-bg-class' ) || '' ).replace( /[^a-zA-Z0-9_-]/g, '' ),
 					hoverBgUrl    = $hoverBox.attr( 'data-hover-image-url' ),
 					hoverOverlay  = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
 					hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
@@ -254,34 +254,34 @@ import { lt as semverLt } from 'semver';
 					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
 						hoverOverlay
 					} ), url('${hoverBgUrl}') !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-position` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-size` ).text( css ) );
 				} else if ( hoverBgUrl ) {
 					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: url('${hoverBgUrl}') !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-position` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-size` ).text( css ) );
 				}
 
 				if ( hoverBgColor && hoverBgUrl ) {
 					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-color` ).text( css ) );
 				} else if ( hoverBgColor && ! hoverBgUrl ) {
 					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-color` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover {background-image: unset !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 				}
 
 				css = '@media screen and (max-width: 991px) {';
@@ -301,7 +301,7 @@ import { lt as semverLt } from 'semver';
 						hoverBgUrl
 					}') !important; } }`;
 				}
-				$head.append( `<style id="${hoverBoxClass}-mobile-image">${css}</style>` );
+				$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-mobile-image` ).text( css ) );
 			} );
 		},
 
@@ -500,11 +500,13 @@ import { lt as semverLt } from 'semver';
 				$body = $target.parents( 'body' ),
 				$head = $body.parent().find( 'head' );
 
+			styleId = String( styleId ).replace( /[^a-zA-Z0-9_-]/g, '' );
+
 			if ( $head.find( '#' + styleId ).length ) {
 				$head.find( '#' + styleId ).remove();
 			}
 
-			$head.append( '<style id="' + styleId + '">' + css + '</style>' );
+			$head.append( $( '<style></style>' ).attr( 'id', styleId ).text( css ) );
 		},
 
 		/**
@@ -519,7 +521,7 @@ import { lt as semverLt } from 'semver';
 				css = '';
 
 			$hoverBgs.each( function() {
-				var hoverBgClassName = $( this ).attr( 'data-hover-bg-class' ),
+				var hoverBgClassName = ( $( this ).attr( 'data-hover-bg-class' ) || '' ).replace( /[^a-zA-Z0-9_-]/g, '' ),
 					hoverBgUrl       = $( this ).attr( 'data-hover-image-url' ),
 					hoverOverlay     = $( this ).attr( 'data-hover-bg-overlaycolor' ),
 					hoverBgColor     = $( this ).attr( 'data-hover-bg-color' );
@@ -711,7 +713,7 @@ import { lt as semverLt } from 'semver';
 				css;
 
 			if ( $target.attr( 'data-bg-uuid' ) ) {
-				uuid = $target.attr( 'data-bg-uuid' );
+				uuid = String( $target.attr( 'data-bg-uuid' ) ).replace( /[^a-zA-Z0-9_-]/g, '' );
 			} else {
 				$target.attr( 'data-bg-uuid', uuid );
 				$target.addClass( uuid );
@@ -721,7 +723,7 @@ import { lt as semverLt } from 'semver';
 
 			css = `.${bgColorClass}.${uuid} {background-color: ${value} !important;}`;
 
-			$head.append( '<style id="' + uuid + '-inline-style">' + css + '</style>' );
+			$head.append( $( '<style></style>' ).attr( 'id', uuid + '-inline-style' ).text( css ) );
 		},
 
 		/**
