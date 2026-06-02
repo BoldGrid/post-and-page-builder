@@ -952,7 +952,7 @@ IMHWPB.Editor = function( $ ) {
 			var $this       = $( this ),
 				classString = $this.attr( 'class' ),
 				bgClass     = classString.match( /color[\d|\-|\w]*-background-color/ ),
-				uuid        = $this.attr( 'data-bg-uuid' ),
+				uuid        = String( $this.attr( 'data-bg-uuid' ) ).replace( /[^a-zA-Z0-9_-]/g, '' ),
 				alpha       = $this.attr( 'data-alpha' ),
 				$head       = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
@@ -961,7 +961,7 @@ IMHWPB.Editor = function( $ ) {
 				palettePosition,
 				color;
 
-				if ( ! bgClass ) {
+				if ( ! bgClass || ! uuid ) {
 					return;
 				}
 
@@ -979,7 +979,7 @@ IMHWPB.Editor = function( $ ) {
 
 				styleString = 'background-color: ' + color + ' !important;';
 
-				$head.append( '<style id="' + uuid + '-inline-styles">body .' + uuid + ' { ' + styleString + ' }</style>' );
+				$head.append( $( '<style></style>' ).attr( 'id', uuid + '-inline-styles' ).text( 'body .' + uuid + ' { ' + styleString + ' }' ) );
 		} );
 
 		$alphaOverlayElements.each( function() {

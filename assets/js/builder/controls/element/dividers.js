@@ -359,11 +359,17 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				$body = $target.parents( 'body' ),
 				$head = $body.parent().find( 'head' );
 
+			styleId = String( styleId ).replace( /[^a-zA-Z0-9_-]/g, '' );
+
+			if ( ! styleId ) {
+				return;
+			}
+
 			if ( $head.find( '#' + styleId ).length ) {
 				$head.find( '#' + styleId ).remove();
 			}
 
-			$head.append( '<style id="' + styleId + '">' + css + '</style>' );
+			$head.append( $( '<style></style>' ).attr( 'id', styleId ).text( css ) );
 		},
 
 		/**
