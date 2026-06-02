@@ -241,6 +241,10 @@ import { lt as semverLt } from 'semver';
 					hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
 					hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
 
+				if ( ! hoverBoxClass ) {
+					return;
+				}
+
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
 						'background-size: cover !important; background-repeat: "unset  !important";';
@@ -502,6 +506,10 @@ import { lt as semverLt } from 'semver';
 
 			styleId = String( styleId ).replace( /[^a-zA-Z0-9_-]/g, '' );
 
+			if ( ! styleId ) {
+				return;
+			}
+
 			if ( $head.find( '#' + styleId ).length ) {
 				$head.find( '#' + styleId ).remove();
 			}
@@ -525,6 +533,10 @@ import { lt as semverLt } from 'semver';
 					hoverBgUrl       = $( this ).attr( 'data-hover-image-url' ),
 					hoverOverlay     = $( this ).attr( 'data-hover-bg-overlaycolor' ),
 					hoverBgColor     = $( this ).attr( 'data-hover-bg-color' );
+
+				if ( ! hoverBgClassName ) {
+					return;
+				}
 
 				if ( hoverBgClassName && hoverBgUrl && hoverOverlay ) {
 					let hoverCss = self.getOverlayImage( hoverOverlay ) + ', url("' + hoverBgUrl + '")';
@@ -706,7 +718,7 @@ import { lt as semverLt } from 'semver';
 		 * @param {string}        bgColorClass Background Color class
 		 */
 		paletteAddAlpha( $target, value, bgColorClass ) {
-			var uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString(),
+			var uuid = '',
 				$head = $( tinyMCE.activeEditor.iframeElement )
 					.contents()
 					.find( 'head' ),
@@ -714,7 +726,11 @@ import { lt as semverLt } from 'semver';
 
 			if ( $target.attr( 'data-bg-uuid' ) ) {
 				uuid = String( $target.attr( 'data-bg-uuid' ) ).replace( /[^a-zA-Z0-9_-]/g, '' );
-			} else {
+			}
+
+			// Generate a fresh, safe uuid when missing or sanitized to empty.
+			if ( ! uuid ) {
+				uuid = 'bg-alpha-' + Math.floor( Math.random() * 999 + 1 ).toString();
 				$target.attr( 'data-bg-uuid', uuid );
 				$target.addClass( uuid );
 			}

@@ -983,7 +983,7 @@ Release Date: November 14th, 2017
 == Upgrade Notice ==
 
 = 1.27.11 =
-This is a security update.  All users are encouraged to update to this version.
+This is a security update. All users are encouraged to update to this version.
 
 = 1.27.10 =
 This is a security update.  All users are encouraged to update to this version.

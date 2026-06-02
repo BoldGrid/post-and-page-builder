@@ -72,6 +72,10 @@ class Public {
 				bgColor = $this.css( 'background-color' ),
 				css = '';
 
+			if ( ! uuid ) {
+				return;
+			}
+
 			bgColor = bgColor.replace( ')', ',' + $this.data( 'alpha' ) + ')' );
 
 			css += `.${uuid} { background-color: ${bgColor} !important; }`;
@@ -388,6 +392,10 @@ class Public {
 				hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
 				hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
 				hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
+
+			if ( ! hoverBoxClass ) {
+				return;
+			}
 
 			if ( 'cover' === hoverBgSize ) {
 				hoverBgSize = 'background-size: cover  !important; background-repeat: "unset  !important";';
