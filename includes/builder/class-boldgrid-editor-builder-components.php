@@ -51,10 +51,7 @@ class Boldgrid_Editor_Builder_Components {
 			return $components;
 		}
 
-		$dom = new DOMDocument();
-
-		@$dom->loadHTML( $html );
-
+		$dom   = self::create_dom_from_html( $html );
 		$xpath = new DOMXPath( $dom );
 
 		foreach ( self::$component_types as $label => $component_ns ) {
@@ -159,5 +156,32 @@ class Boldgrid_Editor_Builder_Components {
 		}
 
 		return $families;
+	}
+
+	/**
+	 * Load HTML into a DOMDocument without libxml warnings for HTML5 tags.
+	 *
+	 * DOMDocument's HTML parser uses an HTML4 DTD, so tags such as figure emit
+	 * "Tag X invalid in Entity" warnings. libxml_use_internal_errors() keeps
+	 * those out of PHP's error handler (e.g. Query Monitor "suppressed" noise).
+	 *
+	 * @since 1.27.11
+	 *
+	 * @param string $html HTML content.
+	 * @return DOMDocument
+	 */
+	public static function create_dom_from_html( $html ) {
+		$dom             = new DOMDocument();
+		$previous_libxml = libxml_use_internal_errors( true );
+
+		$dom->loadHTML(
+			'<?xml encoding="utf-8" ?>' . $html,
+			LIBXML_HTML_NODEFDTD
+		);
+
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous_libxml );
+
+		return $dom;
 	}
 }
