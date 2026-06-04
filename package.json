@@ -97,5 +97,8 @@
 		"ignore": [
 			"jquery"
 		]
+	},
+	"resolutions": {
+		"eslint-plugin-jsdoc": "^52.0.0"
 	}
 }
