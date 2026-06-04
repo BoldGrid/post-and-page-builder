@@ -280,7 +280,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 
 			$hoverBoxes.each( ( index, hoverBox ) => {
 				var $hoverBox     = $( hoverBox ),
-					hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
+					hoverBoxClass = ( $hoverBox.attr( 'data-hover-bg-class' ) || '' ).replace( /[^a-zA-Z0-9_-]/g, '' ),
 					hoverBgUrl    = $hoverBox.attr( 'data-hover-image-url' ),
 					hoverOverlay  = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
 					hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
@@ -288,6 +288,10 @@ import { BoldgridPanel } from 'boldgrid-panel';
 					hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
 					hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
 					hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
+
+				if ( ! hoverBoxClass ) {
+					return;
+				}
 
 				if ( 'cover' === hoverBgSize ) {
 					hoverBgSize =
@@ -302,34 +306,34 @@ import { BoldgridPanel } from 'boldgrid-panel';
 					css += `background-image: linear-gradient(to left, ${hoverOverlay}, ${
 						hoverOverlay
 					} ), url('${hoverBgUrl}') !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-position` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-size` ).text( css ) );
 				} else if ( hoverBgUrl ) {
 					css  = `.${hoverBoxClass}:hover {`;
 					css += `background-image: url('${hoverBgUrl}') !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { background-position: 50% ${hoverBgPos}% !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-position">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-position` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover { ${hoverBgSize} }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-size">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-size` ).text( css ) );
 				}
 
 				if ( hoverBgColor && hoverBgUrl ) {
 					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-color` ).text( css ) );
 				} else if ( hoverBgColor && ! hoverBgUrl ) {
 					css = `.${hoverBoxClass}:hover { background-color: ${hoverBgColor} !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-bg-color">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-bg-color` ).text( css ) );
 
 					css = `.${hoverBoxClass}:hover {background-image: unset !important; }`;
-					$head.append( `<style id="${hoverBoxClass}-image">${css}</style>` );
+					$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-image` ).text( css ) );
 				}
 
 				css = '@media screen and (max-width: 991px) {';
@@ -350,7 +354,7 @@ import { BoldgridPanel } from 'boldgrid-panel';
 						hoverBgUrl
 					}') !important; } }`;
 				}
-				$head.append( `<style id="${hoverBoxClass}-mobile-image">${css}</style>` );
+				$head.append( $( '<style></style>' ).attr( 'id', `${hoverBoxClass}-mobile-image` ).text( css ) );
 			} );
 		},
 

@@ -30,8 +30,7 @@ class Boldgrid_Editor_Builder_Fonts {
 	 * @return array Fonts being used.
 	 */
 	public function parse_fonts( $html ) {
-		$dom = new DOMDocument();
-		@$dom->loadHTML( $html );
+		$dom   = Boldgrid_Editor_Builder_Components::create_dom_from_html( $html );
 		$xpath = new DOMXPath( $dom );
 
 		return Boldgrid_Editor_Builder_Components::find_fonts( $xpath );

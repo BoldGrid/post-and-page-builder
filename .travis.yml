@@ -9,8 +9,8 @@ notifications:
 php:
 - 7.4
 before_script:
-- nvm install 18.12.1
-- nvm use 18.12.1
+- nvm install 22.22.3
+- nvm use 22.22.3
 - npm install -g gulp-cli
 - composer self-update --1
 - composer install

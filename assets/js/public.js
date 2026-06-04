@@ -67,16 +67,20 @@ class Public {
 
 		$bgAlphaElements.each( function() {
 			var $this = $( this ),
-				uuid = $this.data( 'bg-uuid' ),
-				$style = $( `<style id="${uuid}-inline-css"></style>` ),
+				uuid = String( $this.data( 'bg-uuid' ) ).replace( /[^a-zA-Z0-9_-]/g, '' ),
+				$style = $( '<style></style>' ).attr( 'id', `${uuid}-inline-css` ),
 				bgColor = $this.css( 'background-color' ),
 				css = '';
+
+			if ( ! uuid ) {
+				return;
+			}
 
 			bgColor = bgColor.replace( ')', ',' + $this.data( 'alpha' ) + ')' );
 
 			css += `.${uuid} { background-color: ${bgColor} !important; }`;
 
-			$style.html( css );
+			$style.text( css );
 
 			$( 'head' ).append( $style );
 		} );
@@ -140,7 +144,7 @@ class Public {
 	setFwrContainerRow( $row, $fwrContainer ) {
 		var rowBgColor = $row.css( 'background-color' ),
 			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
-			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
+			$style    = $( '<style></style>' ).attr( 'id', `${fwrUuid}-inline-css` ),
 			rowBgImg = $row.css( 'background-image' ),
 			rowBgSize = $row.css( 'background-size' ) ? $row.css( 'background-size' ) : '',
 			rowBgPos = $row.css( 'background-position' ) ? $row.css( 'background-position' ) : '',
@@ -192,7 +196,7 @@ class Public {
 		rowCss += this.marginAdjustmentCss( $row, fwrUuid );
 		rowCss += '}';
 
-		$style.html( rowCss );
+		$style.text( rowCss );
 		$( 'head' ).append( $style );
 	}
 
@@ -266,7 +270,7 @@ class Public {
 	setFwrContainerCols( $col, $fwrContainer ) {
 		var colBgColor = $col.css( 'background-color' ),
 			fwrUuid   = 'fwr-' + Math.floor( Math.random() * 999 + 1 ).toString(),
-			$style    = $( `<style id="${fwrUuid}-inline-css"></style>` ),
+			$style    = $( '<style></style>' ).attr( 'id', `${fwrUuid}-inline-css` ),
 			colBgImg = $col.css( 'background-image' ),
 			colBgSize = $col.css( 'background-size' ) ? $col.css( 'background-size' ) : '',
 			colBgPos = $col.css( 'background-position' ) ? $col.css( 'background-position' ) : '',
@@ -321,7 +325,7 @@ class Public {
 		}
 		colCss += '}';
 
-		$style.html( colCss );
+		$style.text( colCss );
 		$( 'head' ).append( $style );
 	}
 
@@ -380,7 +384,7 @@ class Public {
 
 		$hoverBoxes.each( ( index, hoverBox ) => {
 			var $hoverBox     = $( hoverBox ),
-				hoverBoxClass = $hoverBox.attr( 'data-hover-bg-class' ),
+				hoverBoxClass = ( $hoverBox.attr( 'data-hover-bg-class' ) || '' ).replace( /[^a-zA-Z0-9_-]/g, '' ),
 				hoverBgUrl    = $hoverBox.attr( 'data-hover-image-url' ),
 				hoverOverlay  = $hoverBox.attr( 'data-hover-bg-overlaycolor' ),
 				hoverBgSize   = $hoverBox.attr( 'data-hover-bg-size' ),
@@ -388,6 +392,10 @@ class Public {
 				hoverBgPos    = $hoverBox.attr( 'data-hover-bg-position' ),
 				hoverBgPos    = hoverBgPos ? hoverBgPos : '50',
 				hoverBgColor  = $hoverBox.attr( 'data-hover-bg-color' );
+
+			if ( ! hoverBoxClass ) {
+				return;
+			}
 
 			if ( 'cover' === hoverBgSize ) {
 				hoverBgSize = 'background-size: cover  !important; background-repeat: "unset  !important";';
@@ -431,7 +439,7 @@ class Public {
 			css += '}';
 		} );
 
-		$( 'head' ).append( `<style id="bg-hoverboxes-css">${css}</style>` );
+		$( 'head' ).append( $( '<style></style>' ).attr( 'id', 'bg-hoverboxes-css' ).text( css ) );
 	}
 
 	/**
