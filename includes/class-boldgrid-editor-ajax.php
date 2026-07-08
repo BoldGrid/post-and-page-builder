@@ -102,6 +102,41 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
+	 * Parse and allowlist License-Types from an upstream BoldGrid API response.
+	 *
+	 * @since 1.27.11
+	 *
+	 * @param array|WP_Error $api_response Remote HTTP response.
+	 * @return array Allowed license type slugs.
+	 */
+	private function get_allowed_license_types( $api_response ) {
+		$allowed_slugs = array( 'basic', 'premium' );
+		$raw           = wp_remote_retrieve_header( $api_response, 'License-Types' );
+
+		if ( is_array( $raw ) ) {
+			$raw = ! empty( $raw ) ? reset( $raw ) : '';
+		}
+
+		if ( ! is_string( $raw ) || '' === $raw ) {
+			return array();
+		}
+
+		$types = json_decode( $raw, true );
+		if ( ! is_array( $types ) ) {
+			return array();
+		}
+
+		$sanitized = array();
+		foreach ( $types as $type ) {
+			if ( is_string( $type ) ) {
+				$sanitized[] = sanitize_key( $type );
+			}
+		}
+
+		return array_values( array_intersect( $sanitized, $allowed_slugs ) );
+	}
+
+	/**
 	 * Generate gridblocks.
 	 *
 	 * @since 1.7.0
@@ -128,14 +163,12 @@ class Boldgrid_Editor_Ajax {
 		) );
 
 		if ( ! is_wp_error( $api_response ) ) {
-			$header = 'License-Types';
 			$response = wp_remote_retrieve_body( $api_response );
 			$response = json_decode( $response, true );
 			$response = $response ? $response : array();
 			if ( ! empty( $response ) ) {
-				$types = wp_remote_retrieve_header( $api_response, $header );
-				$types = $types ? $types : '[]';
-				header( "$header: " . $types );
+				$license_types = $this->get_allowed_license_types( $api_response );
+				header( 'License-Types: ' . wp_json_encode( $license_types ) );
 
 				foreach( $response as &$block ) {
 					$block['preview_html'] = $this->sanitize_gridblock_html(
@@ -259,10 +292,7 @@ class Boldgrid_Editor_Ajax {
 			'body' => array( 'key' => $connectKey ),
 		) );
 
-		$types = wp_remote_retrieve_header( $api_response, 'License-Types' );
-		$types = $types ? $types : '[]';
-		$types = json_decode( $types, true );
-		$types = array_values( array_intersect( $types, array( 'basic', 'premium' ) ) );
+		$types = $this->get_allowed_license_types( $api_response );
 
 		if ( ! empty( $types ) ) {
 
