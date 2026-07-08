@@ -216,25 +216,38 @@ class Boldgrid_Editor_Setup {
 	 * @since 1.5
 	 */
 	public function ajax() {
-		$response = array();
+		Boldgrid_Editor_Ajax::validate_nonce( 'setup', 'manage_options' );
 
-		if ( ! empty( $_POST['bgppb-template'] ) ) {
-			$settings = array(
-				'template' => array(
-					'choice' => ! empty( $_POST['bgppb-template'] ) ?
-						sanitize_text_field( $_POST['bgppb-template'] ) : 'fullwidth'
-				)
-			);
-		}
-
-		Boldgrid_Editor_Ajax::validate_nonce( 'setup' );
-
-		if ( ! empty( $settings ) ) {
-			Boldgrid_Editor_Option::update( 'setup', $settings );
-			wp_send_json_success( $settings );
-		} else {
+		if ( empty( $_POST['bgppb-template'] ) ) {
 			status_header( 400 );
 			wp_send_json_error();
 		}
+
+		if ( ! is_scalar( $_POST['bgppb-template'] ) ) {
+			status_header( 400 );
+			wp_send_json_error();
+		}
+
+		$allowed_templates = array(
+			'fullwidth',
+			'left-sidebar',
+			'right-sidebar',
+			'default',
+			'content-only',
+		);
+		$choice = sanitize_key( wp_unslash( $_POST['bgppb-template'] ) );
+		if ( ! in_array( $choice, $allowed_templates, true ) ) {
+			status_header( 400 );
+			wp_send_json_error();
+		}
+
+		$settings = array(
+			'template' => array(
+				'choice' => $choice,
+			),
+		);
+
+		Boldgrid_Editor_Option::update( 'setup', $settings );
+		wp_send_json_success( $settings );
 	}
 }

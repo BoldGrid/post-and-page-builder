@@ -110,6 +110,10 @@ class Boldgrid_Editor_Ajax {
 		$params = ! empty( $_POST ) ? $_POST : array();
 		$params['color'] = ! empty( $params['color'] ) ? stripslashes( $params['color'] ) : null;
 
+		if ( ! empty( $params['category'] ) && is_scalar( $params['category'] ) ) {
+			$params['category'] = sanitize_key( wp_unslash( $params['category'] ) );
+		}
+
 		self::validate_nonce( 'gridblock_save' );
 		set_time_limit ( 45 );
 
@@ -143,7 +147,9 @@ class Boldgrid_Editor_Ajax {
 
 				// Count how many times blocks have been generated.
 				Boldgrid_Editor_Option::update( 'count_usage_blocks', $times_requested + 1 );
-				Boldgrid_Editor_Option::update( 'block_default_industry', $params['category'] );
+				if ( ! empty( $params['category'] ) ) {
+					Boldgrid_Editor_Option::update( 'block_default_industry', $params['category'] );
+				}
 
 				wp_send_json( $response );
 			}
@@ -178,18 +184,24 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
-	 * Validate image nonce.
+	 * Validate a named AJAX nonce and capability.
 	 *
 	 * @since 1.5
+	 *
+	 * @param string $name       Nonce key from self::$nonces.
+	 * @param string $capability Required capability. Default 'edit_posts'.
 	 */
-	public static function validate_nonce( $name ) {
-		$nonce = ! empty( $_POST[ self::$nonces[ $name ] ] ) ?
-			$_POST[ self::$nonces[ $name ] ] : null;
+	public static function validate_nonce( $name, $capability = 'edit_posts' ) {
+		$nonce_field = self::$nonces[ $name ];
+		$nonce       = null;
+		if ( ! empty( $_POST[ $nonce_field ] ) && is_scalar( $_POST[ $nonce_field ] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_POST[ $nonce_field ] ) );
+		}
 
-		$valid          = wp_verify_nonce( $nonce, self::$nonces[ $name ] );
-		$valid_referrer = check_ajax_referer( self::$nonces[ $name ], self::$nonces[ $name ], false );
+		$valid          = wp_verify_nonce( $nonce, $nonce_field );
+		$valid_referrer = check_ajax_referer( $nonce_field, $nonce_field, false );
 
-		if ( ! $valid || ! $valid_referrer || ! current_user_can( 'edit_posts' ) ) {
+		if ( ! $valid || ! $valid_referrer || ! current_user_can( $capability ) ) {
 			status_header( 401 );
 			wp_send_json_error();
 		}
