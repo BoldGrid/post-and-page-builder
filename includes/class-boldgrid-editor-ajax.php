@@ -158,7 +158,12 @@ class Boldgrid_Editor_Ajax {
 		$params['collection'] = ! $times_requested ? 1 : false;
 
 		// Dont put the parameters in the body breaks wp version < 4.6.
-		$api_response = wp_remote_get( self::get_end_point('gridblock_generate') . '?' . http_build_query( $params ), array(
+		$endpoint = self::get_end_point( 'gridblock_generate' );
+		if ( empty( $endpoint ) ) {
+			wp_send_json_error( null, 500 );
+		}
+
+		$api_response = wp_remote_get( $endpoint . '?' . http_build_query( $params ), array(
 			'timeout' => 30,
 		) );
 
@@ -188,8 +193,7 @@ class Boldgrid_Editor_Ajax {
 			}
 		}
 
-		status_header( 500 );
-		wp_send_json_error();
+		wp_send_json_error( null, 500 );
 	}
 
 	/**
@@ -213,7 +217,23 @@ class Boldgrid_Editor_Ajax {
 	 */
 	public static function get_end_point( $key ) {
 		$config = Boldgrid_Editor_Service::get( 'config' );
-		return $config['asset_server'] . $config['ajax_calls'][ $key ];
+		$base   = ! empty( $config['asset_server'] ) ? $config['asset_server'] : '';
+		$host   = wp_parse_url( $base, PHP_URL_HOST );
+
+		$allowed_hosts = array(
+			'wp-assets.boldgrid.com',
+			'wp-assets-dev.boldgrid.com',
+		);
+
+		if ( empty( $host ) || ! in_array( $host, $allowed_hosts, true ) ) {
+			return '';
+		}
+
+		if ( empty( $config['ajax_calls'][ $key ] ) ) {
+			return '';
+		}
+
+		return untrailingslashit( $base ) . $config['ajax_calls'][ $key ];
 	}
 
 	/**
@@ -265,8 +285,7 @@ class Boldgrid_Editor_Ajax {
 		if ( ! empty( $redirectUrls ) ) {
 			wp_send_json_success( $redirectUrls );
 		} else {
-			status_header( 400 );
-			wp_send_json_error();
+			wp_send_json_error( null, 400 );
 		}
 	}
 
@@ -287,7 +306,12 @@ class Boldgrid_Editor_Ajax {
 		$connectKey = ! empty( $_POST['connectKey'] ) ? sanitize_text_field( $_POST['connectKey'] ) : null;
 		$connectKey = false === strpos( $connectKey, '-' ) ? $connectKey : md5( $connectKey );
 
-		$api_response = wp_remote_get( self::get_end_point('gridblock_industries'), array(
+		$endpoint = self::get_end_point( 'gridblock_industries' );
+		if ( empty( $endpoint ) ) {
+			wp_send_json_error( null, 500 );
+		}
+
+		$api_response = wp_remote_get( $endpoint, array(
 			'timeout' => 10,
 			'body' => array( 'key' => $connectKey ),
 		) );
@@ -306,8 +330,7 @@ class Boldgrid_Editor_Ajax {
 				'key' => $connectKey,
 			) );
 		} else {
-			status_header( 400 );
-			wp_send_json_error();
+			wp_send_json_error( null, 400 );
 		}
 	}
 
@@ -339,8 +362,7 @@ class Boldgrid_Editor_Ajax {
 		if ( ! empty( $post_id ) ) {
 			wp_send_json_success( get_post( $post_id ) );
 		} else {
-			status_header( 400 );
-			wp_send_json_error();
+			wp_send_json_error( null, 400 );
 		}
 	}
 
@@ -367,8 +389,7 @@ class Boldgrid_Editor_Ajax {
 			unset( $response['success'] );
 			wp_send_json_success( $response );
 		} else {
-			status_header( 400 );
-			wp_send_json_error();
+			wp_send_json_error( null, 400 );
 		}
 	}
 

@@ -108,44 +108,48 @@ class Menu extends \WP_Widget {
 
 		$registered_locations = get_nav_menu_locations();
 
+		$location_id = ! empty( $instance['bgc_menu_location_id'] )
+			? sanitize_key( $instance['bgc_menu_location_id'] )
+			: '';
+
 		$this->_register();
 		if ( isset( $instance['bgc_menu_location'] ) && ! $this->location_is_valid( $instance['bgc_menu_location'] ) ) {
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('Menu Location Name can only contain letters, numbers, and spaces.', 'boldgrid-editor' ) ?></p>
 			<?php
-		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $menu_id ) ) {
+		} else if ( $location_id && isset( $menu_id ) ) {
 
-			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+			$menu_ul_id = str_replace( '_', '-', $location_id ) . '-menu';
 
-			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $location_id );
 			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
 
 			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
 			$class    .= ' ' . $ham_class;
 
-			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . ' ' . $align . '">';
+			echo '<div id="' . esc_attr( $location_id ) . '-wrap" class="bgtfw-menu-wrap ' . esc_attr( $ham_class ) . ' ' . esc_attr( $align ) . '">';
 
 			// Make sure that if there is a registerd location already, that it is used.
-			$menu_id = isset( $registered_locations[ $instance['bgc_menu_location_id'] ] )
-				&& 0 !== $registered_locations[ $instance['bgc_menu_location_id'] ]
-				? $registered_locations[ $instance['bgc_menu_location_id'] ] : $menu_id;
-			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
+			$menu_id = isset( $registered_locations[ $location_id ] )
+				&& 0 !== $registered_locations[ $location_id ]
+				? $registered_locations[ $location_id ] : $menu_id;
+			do_action( 'boldgrid_menu_' . $location_id, array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
 			echo '</div>';
-		} else if ( isset( $instance['bgc_menu_location_id'] ) && isset( $registered_locations[ $instance['bgc_menu_location_id'] ] ) ) {
-			$menu_ul_id = str_replace( '_', '-', $instance['bgc_menu_location_id'] ) . '-menu';
+		} else if ( $location_id && isset( $registered_locations[ $location_id ] ) ) {
+			$menu_ul_id = str_replace( '_', '-', $location_id ) . '-menu';
 
-			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $instance['bgc_menu_location_id'] );
+			$ham_control_id = 'bgtfw_menu_hamburger_display_' . str_replace( '_', '-', $location_id );
 			$ham_control_id = preg_replace( '/-(\d{3})/', '_$1', $ham_control_id );
 
 			$ham_class = implode( ' ', get_theme_mod( $ham_control_id, array( 'ham-phone', 'ham-tablet' ) ) );
 			$class    .= ' ' . $ham_class;
 
-			echo '<div id="' . $instance['bgc_menu_location_id'] . '-wrap" class="bgtfw-menu-wrap ' . $ham_class . '">';
+			echo '<div id="' . esc_attr( $location_id ) . '-wrap" class="bgtfw-menu-wrap ' . esc_attr( $ham_class ) . '">';
 
-			$menu_id = $registered_locations[ $instance['bgc_menu_location_id'] ];
-			do_action( 'boldgrid_menu_' . $instance['bgc_menu_location_id'], array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
+			$menu_id = $registered_locations[ $location_id ];
+			do_action( 'boldgrid_menu_' . $location_id, array( 'menu_class' => $menu_direction . ' ' . $class, 'menu' => $menu_id, 'menu_id' => $menu_ul_id ) );
 			echo '</div>';
-		} else if ( isset( $instance['bgc_menu_location_id'] ) ) {
+		} else if ( $location_id ) {
 			?>
 			<p class="bgc_no_menu_notice"><?php echo __('You must choose a menu to display in this location', 'boldgrid-editor' ) ?></p>
 			<?php
