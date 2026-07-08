@@ -423,11 +423,12 @@ class Boldgrid_Editor_Ajax {
 	 */
 	public function upload_image_ajax() {
 		$response = array();
-		$image_data = ! empty( $_POST['image_data'] ) ? $_POST['image_data'] : null;
+		$image_data = ! empty( $_POST['image_data'] ) ? wp_unslash( $_POST['image_data'] ) : null;
 
 		self::validate_nonce( 'image' );
+		Boldgrid_Editor_Upload::require_upload_capability();
 
-		if ( $this->is_base_64( $image_data ) ) {
+		if ( Boldgrid_Editor_Upload::is_base64_image( $image_data ) ) {
 			$response = $this->upload_encoded( $image_data );
 		} else {
 			$response = $this->upload_url( $image_data );
@@ -450,8 +451,7 @@ class Boldgrid_Editor_Ajax {
 	 * @return boolean      Whether or not the image is encoded.
 	 */
 	public function is_base_64( $url ) {
-		preg_match ( '/^data/', $url, $matches );
-		return ! empty( $matches[0] );
+		return Boldgrid_Editor_Upload::is_base64_image( $url );
 	}
 
 	/**
@@ -465,19 +465,31 @@ class Boldgrid_Editor_Ajax {
 	public function upload_url( $image_data ) {
 		global $post;
 
-		$post_id = ! empty( $post->ID ) ? $post->ID : null;
-		$attachment_id = media_sideload_image( $image_data . '&.png', $post_id, null, 'id' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$results = array();
-		if ( ! is_object( $attachment_id ) ) {
-			$results = array(
-				'success' => true,
-				'url' => wp_get_attachment_url( $attachment_id ),
-				'attachment_id' => $attachment_id,
-			);
+		$url = Boldgrid_Editor_Upload::sanitize_remote_image_url( $image_data );
+		if ( false === $url ) {
+			return array( 'success' => false );
 		}
 
-		return $results;
+		$tmp = download_url( $url, 300 );
+		if ( is_wp_error( $tmp ) ) {
+			return array( 'success' => false );
+		}
+
+		$validation = Boldgrid_Editor_Upload::validate_image_file( $tmp );
+		if ( is_wp_error( $validation ) ) {
+			@unlink( $tmp );
+			return array( 'success' => false );
+		}
+
+		$post_id = ! empty( $post->ID ) ? (int) $post->ID : null;
+		$result = Boldgrid_Editor_Upload::create_attachment_from_temp_file( $tmp, $validation, $post_id );
+		@unlink( $tmp );
+
+		return $result;
 	}
 
 	/**
@@ -485,94 +497,41 @@ class Boldgrid_Editor_Ajax {
 	 *
 	 * @since 1.2.3
 	 *
-	 * @param string $_POST['image_data'].
-	 * @param integer $_POST['attachement_id'].
+	 * @param string $image_data Base64 image payload.
 	 */
 	public function upload_encoded( $image_data ) {
-		$attachement_id = ! empty( $_POST['attachement_id'] ) ? (int) $_POST['attachement_id'] : null;
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		// Validate nonce
-		$valid = wp_verify_nonce( $_POST['boldgrid_gridblock_image_ajax_nonce'],
-			'boldgrid_gridblock_image_ajax_nonce' );
-
-		if ( false === $valid ) {
-			wp_die( - 1 );
-		}
-
-		$original_attachment = ( array ) get_post ( $attachement_id );
-
-		$pattern = '/^data:(.*?);base64,/';
-		preg_match ( $pattern, $image_data, $matches );
-		$image_data = preg_replace( $pattern, '', $image_data );
-		$mimeType = ! empty( $matches[1] ) ? $matches[1] : 'image/png';
-		$extension = explode( '/', $mimeType );
-		$extension = ! empty( $extension[1] ) ? $extension[1] : 'png';
-
-		$image_data = str_replace( ' ', '+', $image_data );
-		$data = base64_decode( $image_data );
-
-		/*
-		 * We must validate that the base64 encoded image
-		 * is a valid image and a supported MIME type.
-		 * If it is not, we will return an error.
-		 */
-		$finfo            = new finfo(FILEINFO_MIME_TYPE);
-		$actualMimeType   = $finfo->buffer($data);
-		$valid_mime_types = array_values( get_allowed_mime_types() );
-
-		if ( ! in_array( $actualMimeType, $valid_mime_types ) ) {
+		$parsed = Boldgrid_Editor_Upload::parse_base64_image( $image_data );
+		if ( false === $parsed ) {
 			return array( 'success' => false );
 		}
 
-		$filename = uniqid() . '.' . $extension;
-		$uploaded = wp_upload_bits( $filename, null, $data );
-
-		$response = array( 'success' => false );
-		if ( empty( $uploaded['error'] ) ) {
-
-			// Retrieve the file type from the file name.
-			$wp_filetype = wp_check_filetype( $uploaded['file'], null );
-
-			// Generate the attachment data.
-			unset( $original_attachment['ID'] );
-			unset( $original_attachment['post_name'] );
-			unset( $original_attachment['post_date'] );
-			unset( $original_attachment['post_date_gmt'] );
-			unset( $original_attachment['post_modified'] );
-			unset( $original_attachment['post_modified_gmt'] );
-
-			$attachment = array (
-				'post_mime_type' => $wp_filetype['type'],
-				'guid' => $uploaded['url'],
-			);
-
-			$attachment = array_merge( $original_attachment, $attachment );
-			$post_parent = ! empty( $original_attachment['post_parent'] ) ? $original_attachment['post_parent'] : null;
-
-			/*
-			 * Insert the attachment into the media library.
-			 * $attachment_id is the ID of the entry created in the wp_posts table.
-			*/
-			$attachment_id = wp_insert_attachment(
-				$attachment,
-				$uploaded['file'],
-				$post_parent
-			);
-
-			if ( 0 != $attachment_id ) {
-				$attach_data = wp_generate_attachment_metadata( $attachment_id, $uploaded['file'] );
-				$result = wp_update_attachment_metadata( $attachment_id, $attach_data );
-
-				$response = array(
-					'success' => true,
-					'attachment_id' => $attachment_id,
-					'url' => $uploaded['url'],
-					'images' => Boldgrid_Editor_Builder::get_post_images( $post_parent ),
-				);
-			}
+		$tmp = wp_tempnam( 'boldgrid-canvas-image' );
+		if ( ! $tmp ) {
+			return array( 'success' => false );
 		}
 
-		return $response;
+		if ( false === file_put_contents( $tmp, $parsed['data'] ) ) {
+			@unlink( $tmp );
+			return array( 'success' => false );
+		}
+
+		$validation = Boldgrid_Editor_Upload::validate_image_file( $tmp );
+		if ( is_wp_error( $validation ) ) {
+			@unlink( $tmp );
+			return array( 'success' => false );
+		}
+
+		$source_attachment_id = ! empty( $_POST['attachement_id'] ) ? (int) $_POST['attachement_id'] : 0;
+		$post_parent = Boldgrid_Editor_Upload::get_safe_attachment_parent( $source_attachment_id );
+
+		$result = Boldgrid_Editor_Upload::create_attachment_from_temp_file( $tmp, $validation, $post_parent );
+		@unlink( $tmp );
+
+		return $result;
 	}
 
 }
