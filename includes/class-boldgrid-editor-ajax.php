@@ -21,6 +21,15 @@
 class Boldgrid_Editor_Ajax {
 
 	/**
+	 * Whether Gridblock KSES filters have been registered.
+	 *
+	 * @since 1.27.11
+	 *
+	 * @var bool
+	 */
+	private static $gridblock_kses_filters_registered = false;
+
+	/**
 	 * List of nonces.
 	 *
 	 * @since 1.6
@@ -56,36 +65,7 @@ class Boldgrid_Editor_Ajax {
 	 * @return string sanitized HTML
 	 */
 	public function sanitize_gridblock_html( $html ) {
-		add_filter( 'wp_kses_allowed_html', function( $tags, $context ) {
-			if ( 'post' !== $context ) {
-				return $tags;
-			}
-
-			for ( $i = 1; $i <= 6; $i++ ) {
-				$tags[ 'h' . $i ]['text-milestone'] = true;
-			}
-
-			$tags['p']['text-milestone'] = true;
-
-			$tags['a']['shape'] = true;
-			$tags['a']['tabindex'] = true;
-
-			$tags['div']['gb-background-image'] = 'url(*)';
-			$tags['iframe'] = array(
-				'src' => true,
-				'width' => true,
-				'height' => true,
-				'frameborder' => true,
-				'allowfullscreen' => true,
-				'style' => true,
-			);
-
-			return $tags;
-		}, 10, 2 );
-
-		add_filter( 'safe_style_css', function( $styles ) {
-			return array();
-		} );
+		$this->register_gridblock_kses_filters();
 
 		$pattern = $pattern = [
 			'/\s*:\s*/',     // Matches and removes spaces around colons
@@ -99,6 +79,70 @@ class Boldgrid_Editor_Ajax {
 		];
 		$html = preg_replace( $pattern, $replacement, $html );
 		return wp_kses_post( $html );
+	}
+
+	/**
+	 * Register Gridblock KSES filters once to avoid stacking duplicates.
+	 *
+	 * @since 1.27.11
+	 */
+	private function register_gridblock_kses_filters() {
+		if ( self::$gridblock_kses_filters_registered ) {
+			return;
+		}
+
+		add_filter( 'wp_kses_allowed_html', array( $this, 'filter_gridblock_kses_allowed_html' ), 10, 2 );
+		add_filter( 'safe_style_css', array( $this, 'filter_gridblock_safe_style_css' ) );
+
+		self::$gridblock_kses_filters_registered = true;
+	}
+
+	/**
+	 * Allow additional HTML tags/attributes for Gridblock content.
+	 *
+	 * @since 1.27.11
+	 *
+	 * @param array  $tags    Allowed HTML tags.
+	 * @param string $context KSES context.
+	 * @return array
+	 */
+	public function filter_gridblock_kses_allowed_html( $tags, $context ) {
+		if ( 'post' !== $context ) {
+			return $tags;
+		}
+
+		for ( $i = 1; $i <= 6; $i++ ) {
+			$tags[ 'h' . $i ]['text-milestone'] = true;
+		}
+
+		$tags['p']['text-milestone'] = true;
+
+		$tags['a']['shape'] = true;
+		$tags['a']['tabindex'] = true;
+
+		$tags['div']['gb-background-image'] = 'url(*)';
+		$tags['iframe'] = array(
+			'src' => true,
+			'width' => true,
+			'height' => true,
+			'frameborder' => true,
+			'allowfullscreen' => true,
+			'style' => true,
+		);
+
+		return $tags;
+	}
+
+	/**
+	 * Disable safe style CSS checks for Gridblock content.
+	 *
+	 * @since 1.27.11
+	 *
+	 * @param array $styles Allowed CSS properties.
+	 * @return array
+	 */
+	public function filter_gridblock_safe_style_css( $styles ) {
+		return array();
 	}
 
 	/**
@@ -340,11 +384,15 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.6
 	 */
 	public function save_gridblock() {
-		$title = ! empty( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : null;
-		$type = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : null;
-		$html = ! empty( $_POST['html'] ) ? $_POST['html'] : null;
+		$title = ! empty( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : null;
+		$type = ! empty( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : null;
+		$html = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : null;
 
 		self::validate_nonce( 'gridblock_save' );
+
+		if ( null !== $html ) {
+			$html = $this->sanitize_gridblock_html( $html );
+		}
 
 		$post_id = wp_insert_post( array(
 			'post_title' => $title,

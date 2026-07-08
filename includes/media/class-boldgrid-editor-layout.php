@@ -84,11 +84,13 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 		// In the future we could translate the shortcodes and display them
 		// $shortcode_translated_html = do_shortcode( $row_html );
 		$shortcode_translated_html = wpautop( $html );
+		$preview_html              = self::run_shortcodes( $shortcode_translated_html );
+		$sanitizer                 = new Boldgrid_Editor_Ajax();
 
 		return array (
 			'template'     => $post->post_title,
-			'html'         => $shortcode_translated_html,
-			'preview_html' => self::run_shortcodes( $shortcode_translated_html ),
+			'html'         => $sanitizer->sanitize_gridblock_html( $shortcode_translated_html ),
+			'preview_html' => $sanitizer->sanitize_gridblock_html( $preview_html ),
 			'type'         => 'bg_block' === $post->post_type ? 'library' : 'saved',
 			'status'       => ! empty( $post ) && $post->post_status ? $post->post_status : 'publish',
 			'is_post'      => ! empty( $post ) ? 'post' === $post->post_type : false,
