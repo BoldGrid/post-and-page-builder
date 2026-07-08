@@ -14,11 +14,18 @@
  */
 class Test_Boldgrid_Assets extends WP_UnitTestCase {
 
+	/**
+	 * Config class instance.
+	 *
+	 * @var Boldgrid_Editor_Config
+	 */
+	protected $configClass;
 
 	/**
 	 * Setup the test env
 	 */
-	public function setUp() {
+	public function setUp(): void {
+		parent::setUp();
 		$this->configClass = new Boldgrid_Editor_Config();
 	}
 

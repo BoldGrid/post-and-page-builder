@@ -91,6 +91,42 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 
 	$autoload = require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
+	/**
+	 * Register BoldGrid Library version before Load (Composer 2 installed.json format).
+	 *
+	 * @param string $plugin_file Plugin basename.
+	 */
+	$boldgrid_editor_register_library_version = function( $plugin_file ) {
+		\Boldgrid\Library\Util\Option::init();
+		$libraries = \Boldgrid\Library\Util\Option::get( 'library' );
+		if ( ! empty( $libraries[ $plugin_file ] ) ) {
+			return;
+		}
+
+		$installed_file = plugin_dir_path( __FILE__ ) . 'vendor/composer/installed.json';
+		if ( ! is_readable( $installed_file ) ) {
+			return;
+		}
+
+		$installed = json_decode( file_get_contents( $installed_file ), true );
+		if ( ! is_array( $installed ) ) {
+			return;
+		}
+
+		$packages = isset( $installed['packages'] ) ? $installed['packages'] : $installed;
+		foreach ( $packages as $package ) {
+			if (
+				! empty( $package['name'] ) &&
+				'boldgrid/library' === $package['name'] &&
+				! empty( $package['version_normalized'] )
+			) {
+				\Boldgrid\Library\Util\Option::set( $plugin_file, $package['version_normalized'] );
+				break;
+			}
+		}
+	};
+	$boldgrid_editor_register_library_version( plugin_basename( __FILE__ ) );
+
 	// Load Library.
 	new \Boldgrid\Library\Util\Load(
 		array(

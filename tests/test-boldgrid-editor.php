@@ -20,6 +20,11 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	protected $testClass;
 
 	/**
+	 * Class property $configClass
+	 */
+	protected $configClass;
+
+	/**
 	 * Class property $settings
 	 */
 	protected $settings = array(
@@ -29,7 +34,8 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	/**
 	 * Setup the test env
 	 */
-	public function setUp() {
+	public function setUp(): void {
+		parent::setUp();
 
 		$this->testClass = new Boldgrid_Editor( $this->settings );
 		$this->configClass = new Boldgrid_Editor_Config();
@@ -44,7 +50,7 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 
 		$testClass = new Boldgrid_Editor_MCE( $this->configClass );
 		$allow_empty_tags = $testClass->allow_empty_tags( array() );
-		$this->assertEquals( 'div[*],i[*]', $allow_empty_tags['extended_valid_elements'] );
+		$this->assertEquals( 'div[*],i[*],svg[*],path[*]', $allow_empty_tags['extended_valid_elements'] );
 
 	}
 

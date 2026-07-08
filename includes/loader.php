@@ -9,6 +9,7 @@ require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-config.php'
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-crop.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-ajax.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-upload.php';
+require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-secrets.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-assets.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-mce.php';
 require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-theme.php';

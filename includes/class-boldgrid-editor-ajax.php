@@ -347,8 +347,23 @@ class Boldgrid_Editor_Ajax {
 			wp_send_json_error();
 		}
 
-		$connectKey = ! empty( $_POST['connectKey'] ) ? sanitize_text_field( $_POST['connectKey'] ) : null;
-		$connectKey = false === strpos( $connectKey, '-' ) ? $connectKey : md5( $connectKey );
+		$password = ! empty( $_POST['password'] ) ? (string) wp_unslash( $_POST['password'] ) : '';
+		$user = wp_get_current_user();
+		if ( ! $user || ! $user->exists() || ! wp_check_password( $password, $user->user_pass, $user->ID ) ) {
+			status_header( 403 );
+			wp_send_json_error(
+				array(
+					'message' => __( 'Password confirmation is required to update the Connect Key.', 'boldgrid-editor' ),
+				)
+			);
+		}
+
+		$connectKey = ! empty( $_POST['connectKey'] ) ? sanitize_text_field( wp_unslash( $_POST['connectKey'] ) ) : null;
+
+		if ( empty( $connectKey ) ) {
+			status_header( 400 );
+			wp_send_json_error();
+		}
 
 		$endpoint = self::get_end_point( 'gridblock_industries' );
 		if ( empty( $endpoint ) ) {
@@ -371,7 +386,7 @@ class Boldgrid_Editor_Ajax {
 
 			wp_send_json_success( array(
 				'licenses' => $types,
-				'key' => $connectKey,
+				'has_connect_key' => true,
 			) );
 		} else {
 			wp_send_json_error( null, 400 );

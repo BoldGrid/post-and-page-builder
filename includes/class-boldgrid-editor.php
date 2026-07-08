@@ -102,6 +102,8 @@ class Boldgrid_Editor {
 	 * @since 1.2.7
 	 */
 	public function add_hooks() {
+		Boldgrid_Editor_Secrets::init();
+
 		Boldgrid_Editor_Service::register( 'templater', new Boldgrid_Editor_Templater() );
 
 		if ( ! $this->is_boldgrid_theme ) {

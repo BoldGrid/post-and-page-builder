@@ -383,7 +383,7 @@ class Boldgrid_Editor_Assets {
 		$config = Boldgrid_Editor_Service::get( 'config' );
 		$boldgrid_settings = Boldgrid_Editor_Config::get_mixed_option( 'boldgrid_settings' );
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
-		$boldgrid_settings['api_key'] = $config['api_key'];
+		$boldgrid_settings = Boldgrid_Editor_Secrets::get_public_boldgrid_settings( $boldgrid_settings, $config );
 
 		$current_theme = wp_get_theme();
 		$theme_version = $current_theme->get( 'Version' );
@@ -520,7 +520,9 @@ class Boldgrid_Editor_Assets {
 			'plugin_url'              => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
 			'onb_videos'              => apply_filters( 'ppb_get_onboarding_videos', array() ),
 			'onb_videos_nonce'        => wp_create_nonce( 'boldgrid_editor_dismiss_onb_videos' ),
-			'plugin_configs'          => Boldgrid_Editor_Service::get( 'config' ),
+			'plugin_configs'          => Boldgrid_Editor_Secrets::get_public_plugin_configs(
+				Boldgrid_Editor_Service::get( 'config' )
+			),
 			'globalSettings'          => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes'         => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
 			'pluginVersion'           => BOLDGRID_EDITOR_VERSION,
