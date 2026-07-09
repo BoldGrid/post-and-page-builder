@@ -51,6 +51,8 @@ class Boldgrid_Editor_Ajax {
 	public function ajax_draggable_enabled () {
 		check_ajax_referer( 'boldgrid_draggable_enable', 'security' );
 
+		Boldgrid_Editor_Capability::require_cap( 'edit_theme_options' );
+
 		// Sanitize to boolean.
 		$draggable_enabled = ! empty( $_POST['draggable_enabled'] );
 		set_theme_mod( 'boldgrid_draggable_enabled', $draggable_enabled );
@@ -186,14 +188,15 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.7.0
 	 */
 	public function generate_blocks() {
-		$params = ! empty( $_POST ) ? $_POST : array();
-		$params['color'] = ! empty( $params['color'] ) ? stripslashes( $params['color'] ) : null;
-
-		if ( ! empty( $params['category'] ) && is_scalar( $params['category'] ) ) {
-			$params['category'] = sanitize_key( wp_unslash( $params['category'] ) );
-		}
-
 		self::validate_nonce( 'gridblock_save' );
+
+		$params = array(
+			'category' => ! empty( $_POST['category'] ) && is_scalar( $_POST['category'] )
+				? sanitize_key( wp_unslash( $_POST['category'] ) ) : '',
+			'color'    => ! empty( $_POST['color'] ) && is_scalar( $_POST['color'] )
+				? sanitize_text_field( wp_unslash( $_POST['color'] ) ) : null,
+		);
+
 		set_time_limit ( 45 );
 
 		$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
@@ -229,7 +232,7 @@ class Boldgrid_Editor_Ajax {
 
 				// Count how many times blocks have been generated.
 				Boldgrid_Editor_Option::update( 'count_usage_blocks', $times_requested + 1 );
-				if ( ! empty( $params['category'] ) ) {
+				if ( current_user_can( 'manage_options' ) && '' !== $params['category'] ) {
 					Boldgrid_Editor_Option::update( 'block_default_industry', $params['category'] );
 				}
 
@@ -399,15 +402,19 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.6
 	 */
 	public function save_gridblock() {
-		$title = ! empty( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : null;
-		$type = ! empty( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : null;
-		$html = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : null;
+		$title = ! empty( $_POST['title'] ) && is_scalar( $_POST['title'] )
+			? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : null;
+		$type  = ! empty( $_POST['type'] ) && is_scalar( $_POST['type'] )
+			? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : null;
+		$html  = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : '';
+		if ( ! is_string( $html ) ) {
+			$html = '';
+		}
 
 		self::validate_nonce( 'gridblock_save' );
+		Boldgrid_Editor_Capability::require_cap( 'publish_bg_blocks' );
 
-		if ( null !== $html ) {
-			$html = $this->sanitize_gridblock_html( $html );
-		}
+		$html = $this->sanitize_gridblock_html( $html );
 
 		$post_id = wp_insert_post( array(
 			'post_title' => $title,

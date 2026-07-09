@@ -80,8 +80,60 @@ class Menu extends \WP_Widget {
 	 * @return array               Updated instance config.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = $new_instance;
+		$instance = array();
+
+		if ( isset( $new_instance['bgc_menu_location'] ) ) {
+			$instance['bgc_menu_location'] = sanitize_text_field( $new_instance['bgc_menu_location'] );
+		}
+
+		if ( isset( $new_instance['bgc_menu_location_id'] ) ) {
+			$location_id = sanitize_key( $new_instance['bgc_menu_location_id'] );
+			if ( preg_match( '/^[a-z0-9_-]+$/i', $location_id ) ) {
+				$instance['bgc_menu_location_id'] = $location_id;
+			}
+		}
+
+		if ( isset( $new_instance['bgc_menu'] ) ) {
+			$instance['bgc_menu'] = (int) $new_instance['bgc_menu'];
+		}
+
+		if ( isset( $new_instance['bgc_menu_align'] ) ) {
+			$allowed_align = array( 'left', 'center', 'right' );
+			$align = sanitize_text_field( $new_instance['bgc_menu_align'] );
+			if ( in_array( $align, $allowed_align, true ) ) {
+				$instance['bgc_menu_align'] = $align;
+			}
+		}
+
+		if ( isset( $new_instance['bgc_menu_direction'] ) ) {
+			$allowed_direction = array( 'flex-row', 'flex-column' );
+			$direction = sanitize_text_field( $new_instance['bgc_menu_direction'] );
+			if ( in_array( $direction, $allowed_direction, true ) ) {
+				$instance['bgc_menu_direction'] = $direction;
+			}
+		}
+
 		return $instance;
+	}
+
+	/**
+	 * Resolve a safe menu location id for dynamic hooks.
+	 *
+	 * @param string $location_id Raw location id.
+	 * @return string|false
+	 */
+	protected function get_safe_menu_location_id( $location_id ) {
+		if ( ! is_string( $location_id ) || '' === $location_id ) {
+			return false;
+		}
+
+		$location_id = sanitize_key( $location_id );
+
+		if ( ! preg_match( '/^[a-z0-9_-]+$/i', $location_id ) ) {
+			return false;
+		}
+
+		return $location_id;
 	}
 
 	/**
@@ -109,8 +161,8 @@ class Menu extends \WP_Widget {
 		$registered_locations = get_nav_menu_locations();
 
 		$location_id = ! empty( $instance['bgc_menu_location_id'] )
-			? sanitize_key( $instance['bgc_menu_location_id'] )
-			: '';
+			? $this->get_safe_menu_location_id( $instance['bgc_menu_location_id'] )
+			: false;
 
 		$this->_register();
 		if ( isset( $instance['bgc_menu_location'] ) && ! $this->location_is_valid( $instance['bgc_menu_location'] ) ) {

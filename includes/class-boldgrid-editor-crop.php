@@ -19,6 +19,20 @@
 class Boldgrid_Editor_Crop {
 
 	/**
+	 * Validate crop AJAX requests.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 */
+	private function validate_crop_request( $attachment_id ) {
+		Boldgrid_Editor_Capability::require_cap( 'upload_files' );
+
+		$attachment_id = (int) $attachment_id;
+		if ( ! $attachment_id || ! current_user_can( 'edit_post', $attachment_id ) ) {
+			wp_die( 0 );
+		}
+	}
+
+	/**
 	 * Admin footer.
 	 *
 	 * @since 1.0.8
@@ -40,7 +54,8 @@ class Boldgrid_Editor_Crop {
 			wp_die( 0 );
 		}
 
-		$attachment_id = $_POST['attachment_id'];
+		$attachment_id = (int) $_POST['attachment_id'];
+		$this->validate_crop_request( $attachment_id );
 
 		// Validate our original image's width and height.
 		if ( empty( $_POST['originalWidth'] ) || empty( $_POST['originalHeight'] ) ||
@@ -186,6 +201,8 @@ class Boldgrid_Editor_Crop {
 			echo 'Error: Invalid attachment id.';
 			wp_die();
 		}
+
+		$this->validate_crop_request( $attachment_id );
 
 		// Validate $_POST['cropDetails'].
 		if ( ! isset( $_POST['cropDetails'] ) || ! is_array( $_POST['cropDetails'] ) ) {

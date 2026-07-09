@@ -142,6 +142,8 @@ class Boldgrid_Editor_Gridblock_Post {
 			// 'query_var'           => true,
 			// 'publicly_queryable'  => true,
 			'exclude_from_search' => true,
+			'capability_type'     => 'bg_block',
+			'map_meta_cap'        => true,
 		);
 	}
 
@@ -170,6 +172,8 @@ class Boldgrid_Editor_Gridblock_Post {
 
 		// Registering your Custom Post Type
 		register_post_type( 'bg_block', $args );
+
+		Boldgrid_Editor_Capability::assign_bg_block_caps();
 
 		// Flush rewrite rules if we haven't done so already.
 		if ( ! Boldgrid_Editor_Option::get( 'has_flushed_rewrite' ) ) {
@@ -210,7 +214,7 @@ class Boldgrid_Editor_Gridblock_Post {
 	public function restrict_public_access() {
 		global $post;
 		$post_type = ! empty( $post->post_type ) ? $post->post_type : false;
-		if ( 'bg_block' === $post_type && ! current_user_can( 'edit_posts' ) ) {
+		if ( 'bg_block' === $post_type && ! current_user_can( 'read_bg_block' ) ) {
 			wp_redirect( home_url(), 301 );
 			exit;
 		}
