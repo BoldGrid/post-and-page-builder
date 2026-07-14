@@ -313,27 +313,58 @@ class Boldgrid_Editor_Ajax {
 	 * @since 1.5
 	 */
 	public function get_redirect_url() {
-		$urls = ! empty( $_POST['urls'] ) ? $_POST['urls'] : null;
-
 		self::validate_nonce( 'image' );
+
+		if ( empty( $_POST['urls'] ) || ! is_array( $_POST['urls'] ) ) {
+			status_header( 400 );
+			wp_send_json_error();
+		}
+
+		$urls         = array_slice( array_values( wp_unslash( $_POST['urls'] ) ), 0, Boldgrid_Editor_Url::MAX_REDIRECT_URLS );
 		$unsplash_404 = 'https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200';
 		$redirectUrls = array();
-		foreach( $urls as $url ) {
-			$response = wp_safe_remote_head( esc_url_raw( $url ), array(
-				'timeout'     => 5,
-				'redirection' => 5,
-			) );
-			$headers = is_array( $response ) && ! empty( $response['headers'] ) ? $response['headers']->getAll() : array();
-			$redirectUrl = ! empty( $headers['location'] ) ? $headers['location'] : false;
-			$redirectUrl = ( $redirectUrl !== $unsplash_404 ) ? $redirectUrl : false;
-			$redirectUrls[ $url ] = $redirectUrl;
+
+		foreach ( $urls as $raw_url ) {
+			if ( ! is_string( $raw_url ) || '' === trim( $raw_url ) ) {
+				continue;
+			}
+
+			$key = trim( $raw_url );
+			$url = esc_url_raw( $key );
+			if ( empty( $url ) || ! Boldgrid_Editor_Url::is_public_host( $url ) ) {
+				$redirectUrls[ $key ] = false;
+				continue;
+			}
+
+			$response = wp_safe_remote_head(
+				$url,
+				array(
+					'timeout'     => 5,
+					'redirection' => 0,
+				)
+			);
+
+			$redirectUrl = false;
+			if ( ! is_wp_error( $response ) && ! empty( $response['headers']['location'] ) ) {
+				$candidate = $response['headers']['location'];
+				if ( is_array( $candidate ) ) {
+					$candidate = reset( $candidate );
+				}
+
+				$candidate = Boldgrid_Editor_Url::sanitize_redirect_location( $candidate );
+				if ( $candidate && $candidate !== $unsplash_404 ) {
+					$redirectUrl = $candidate;
+				}
+			}
+
+			$redirectUrls[ $key ] = $redirectUrl;
 		}
 
 		if ( ! empty( $redirectUrls ) ) {
 			wp_send_json_success( $redirectUrls );
-		} else {
-			wp_send_json_error( null, 400 );
 		}
+
+		wp_send_json_error( null, 400 );
 	}
 
 	/**
@@ -487,16 +518,11 @@ class Boldgrid_Editor_Ajax {
 	public function upload_url( $image_data ) {
 		global $post;
 
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-
-		$url = Boldgrid_Editor_Upload::sanitize_remote_image_url( $image_data );
-		if ( false === $url ) {
+		if ( ! is_string( $image_data ) || '' === trim( $image_data ) ) {
 			return array( 'success' => false );
 		}
 
-		$tmp = download_url( $url, 300 );
+		$tmp = Boldgrid_Editor_Url::fetch_public_image( $image_data );
 		if ( is_wp_error( $tmp ) ) {
 			return array( 'success' => false );
 		}
@@ -508,7 +534,8 @@ class Boldgrid_Editor_Ajax {
 		}
 
 		$post_id = ! empty( $post->ID ) ? (int) $post->ID : null;
-		$result = Boldgrid_Editor_Upload::create_attachment_from_temp_file( $tmp, $validation, $post_id );
+		$result  = Boldgrid_Editor_Upload::create_attachment_from_temp_file( $tmp, $validation, $post_id );
+
 		@unlink( $tmp );
 
 		return $result;
