@@ -71,7 +71,12 @@ module.exports = {
 				resolve: {
 					extensions: [".js", ".jsx"]
 				},
-				include: [ srcDir ],
+				// Include @boldgrid sources even when node_modules is a symlink
+				// into a sibling install (realpath leaves {srcDir}).
+				include: [
+					srcDir,
+					/[\\/]node_modules[\\/]@boldgrid[\\/]/,
+				],
 			},
 			{
 				test: /\.(scss|css)$/,

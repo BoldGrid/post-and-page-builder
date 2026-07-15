@@ -24,6 +24,11 @@ class Boldgrid_Editor_Crop {
 	 * @param int $attachment_id Attachment ID.
 	 */
 	private function validate_crop_request( $attachment_id ) {
+		Boldgrid_Editor_Nonce::verify_ajax_or_die(
+			'boldgrid_gridblock_image_ajax_nonce',
+			'boldgrid_gridblock_image_ajax_nonce'
+		);
+
 		Boldgrid_Editor_Capability::require_cap( 'upload_files' );
 
 		$attachment_id = (int) $attachment_id;

@@ -83,7 +83,17 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	public function test_get_post_url_post_not_found() {
 		$testClass = new Boldgrid_Editor_Assets( array() );
 		$get_post_url = $testClass->get_post_url();
-		$expected = Boldgrid_Editor_Assets::remove_url_protocal( get_site_url() . '?bg_preview_page=1' );
+		$expected = Boldgrid_Editor_Assets::remove_url_protocal(
+			add_query_arg(
+				array(
+					'bg_preview_page'  => 1,
+					'bg_post_id'       => null,
+					'bg_is_post'       => false,
+					'bg_preview_nonce' => wp_create_nonce( 'boldgrid_preview_posttype' ),
+				),
+				get_site_url()
+			)
+		);
 		$this->assertEquals( $expected, $get_post_url );
 	}
 

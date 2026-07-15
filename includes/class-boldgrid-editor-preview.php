@@ -249,15 +249,31 @@ class Boldgrid_Editor_Preview {
 	 * @since 1.6
 	 */
 	public function preload() {
-		if ( ! is_admin() ) {
-
-			$post_id = ! empty( $_GET['bg_post_id'] ) ? intval( $_GET['bg_post_id'] ) : false;
-			$post = get_post( $post_id );
-
-			if ( $post && $post->ID === $this->preview_page_id ) {
-				$this->set_dynamic_posttype( $post );
-			}
+		if ( is_admin() ) {
+			return;
 		}
+
+		if ( ! isset( $_GET['bg_is_post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		$post_id = ! empty( $_GET['bg_post_id'] ) ? intval( $_GET['bg_post_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post    = get_post( $post_id );
+
+		if ( ! $post || $post->ID !== $this->preview_page_id ) {
+			return;
+		}
+
+		$nonce = Boldgrid_Editor_Nonce::read_nonce( 'bg_preview_nonce' );
+		if ( '' === $nonce || ! wp_verify_nonce( $nonce, 'boldgrid_preview_posttype' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+			return;
+		}
+
+		$this->set_dynamic_posttype( $post );
 	}
 
 	/**

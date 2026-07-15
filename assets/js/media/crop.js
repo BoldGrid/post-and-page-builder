@@ -99,7 +99,8 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 			path: self.$selectDimensions.find( 'option:selected' ).val(),
 			originalWidth: $( self.oldImage )[0].naturalWidth,
 			originalHeight: $( self.oldImage )[0].naturalHeight,
-			id: self.$selectDimensions.attr( 'data-id' )
+			id: self.$selectDimensions.attr( 'data-id' ),
+			boldgrid_gridblock_image_ajax_nonce: BoldgridEditor.grid_block_nonce
 		};
 
 		$.post( ajaxurl, data, function( response ) {
@@ -219,7 +220,8 @@ BOLDGRID.EDITOR.Crop = function( $ ) {
 				action: 'suggest_crop_get_dimensions',
 				attachment_id: imageData.attachment_id,
 				originalWidth: imageData.customWidth,
-				originalHeight: imageData.customHeight
+				originalHeight: imageData.customHeight,
+				boldgrid_gridblock_image_ajax_nonce: BoldgridEditor.grid_block_nonce
 			};
 
 		jQuery.post( ajaxurl, data, function( response ) {

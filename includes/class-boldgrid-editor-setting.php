@@ -28,11 +28,44 @@ class Boldgrid_Editor_Setting {
 	 * @param  integer $post_id Current Post ID.
 	 */
 	public function init( $post_id ) {
-		add_action( 'admin_init', function () use ( $post_id ) {
-			Boldgrid_Editor_Service::get( 'settings' )->save_meta_editor( $post_id );
-		} );
-
+		add_action( 'admin_init', array( $this, 'maybe_save_editor_override_from_post' ) );
 		add_action( 'save_post', array( $this, 'save_meta_editor' ), 10, 2 );
+	}
+
+	/**
+	 * Save per-post editor override from a dedicated POST (editor switcher).
+	 *
+	 * @since 1.9.0
+	 */
+	public function maybe_save_editor_override_from_post() {
+		if ( empty( $_POST['bgppb_default_editor_post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return;
+		}
+
+		// Normal post saves are handled by save_post with WordPress core nonces.
+		if ( ! empty( $_POST['action'] ) && 'editpost' === $_POST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return;
+		}
+
+		// Require an explicit post ID from the dedicated override POST — do not fall back
+		// to front-page/get_post_id() (would write onto the home page from post-new.php).
+		$post_id = ! empty( $_POST['bgppb_editor_override_post_id'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			? absint( $_POST['bgppb_editor_override_post_id'] )
+			: 0;
+
+		if ( ! $post_id ) {
+			return;
+		}
+
+		if ( ! Boldgrid_Editor_Nonce::verify_admin_request( 'bgppb_editor_override_' . $post_id, 'bgppb_editor_override_nonce' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$this->save_meta_editor( $post_id );
 	}
 
 	/**
@@ -69,17 +102,36 @@ class Boldgrid_Editor_Setting {
 	 *
 	 * @param  WP_Post $post_id Post Object.
 	 */
-	public function save_meta_editor( $post_id ) {
-		$post = get_post( $post_id );
+	public function save_meta_editor( $post_id, $post = null ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
 		$default_editor = self::get_editor_override();
 
-		if ( $default_editor && $post ) {
-			update_post_meta(
-				$post->ID,
-				'_bgppb_default_editor',
-				$default_editor
-			);
+		if ( ! $default_editor ) {
+			return;
 		}
+
+		$post = $post ? $post : get_post( $post_id );
+		if ( ! $post || (int) $post->ID !== (int) $post_id ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$valid_editors = Boldgrid_Editor_Service::get( 'config' )['valid_editors'];
+		if ( ! in_array( $default_editor, $valid_editors, true ) ) {
+			return;
+		}
+
+		update_post_meta(
+			$post->ID,
+			'_bgppb_default_editor',
+			$default_editor
+		);
 	}
 
 	/**
