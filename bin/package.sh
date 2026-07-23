@@ -1,7 +1,7 @@
 echo "Copying to Build Directory"
 rm -Rf build
 mkdir -p build/post-and-page-builder
-rsync -azPq --exclude "bin/" --exclude ".git/" --exclude ".github/" --exclude "node_modules/" --exclude "build/" . build/post-and-page-builder
+rsync -azPq --exclude "bin/" --exclude ".git/" --exclude ".github/" --exclude "node_modules/" --exclude "build/" --exclude "tmp/" . build/post-and-page-builder
 cd build/post-and-page-builder
 echo "Removing unwanted files"
 
@@ -11,6 +11,7 @@ rm -Rf coverage
 rm -Rf node_modules
 rm -Rf bin
 rm -Rf tools
+rm -Rf tmp
 rm -Rf bower_components
 rm -f .gitattributes
 rm -f .gitignore

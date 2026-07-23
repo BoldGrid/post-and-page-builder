@@ -30,15 +30,16 @@ class Boldgrid_Editor_Capability {
 	}
 
 	/**
-	 * Grant bg_block capabilities to the administrator role.
+	 * Grant bg_block capabilities to roles that previously managed blocks.
+	 *
+	 * Dedicated CPT caps replace the prior post-type defaults (edit_posts).
+	 * Administrators and Editors retain access; Contributors and below do not.
+	 *
+	 * @since 1.27.12
 	 */
 	public static function assign_bg_block_caps() {
-		if ( get_option( 'boldgrid_editor_bg_block_caps_assigned' ) ) {
-			return;
-		}
-
-		$role = get_role( 'administrator' );
-		if ( ! $role ) {
+		// Versioned so upgrades can re-run when the role set changes.
+		if ( '1.27.12' === get_option( 'boldgrid_editor_bg_block_caps_assigned' ) ) {
 			return;
 		}
 
@@ -59,10 +60,17 @@ class Boldgrid_Editor_Capability {
 			'create_bg_blocks',
 		);
 
-		foreach ( $caps as $cap ) {
-			$role->add_cap( $cap );
+		foreach ( array( 'administrator', 'editor' ) as $role_name ) {
+			$role = get_role( $role_name );
+			if ( ! $role ) {
+				continue;
+			}
+
+			foreach ( $caps as $cap ) {
+				$role->add_cap( $cap );
+			}
 		}
 
-		update_option( 'boldgrid_editor_bg_block_caps_assigned', true );
+		update_option( 'boldgrid_editor_bg_block_caps_assigned', '1.27.12' );
 	}
 }

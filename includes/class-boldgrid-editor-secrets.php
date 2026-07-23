@@ -13,7 +13,7 @@ class Boldgrid_Editor_Secrets {
 	/**
 	 * Register security hooks.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 */
 	public static function init() {
 		add_action( 'wp_ajax_addKey', array( __CLASS__, 'gate_add_key_ajax' ), 1 );

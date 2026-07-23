@@ -23,7 +23,7 @@ class Boldgrid_Editor_Ajax {
 	/**
 	 * Whether Gridblock KSES filters have been registered.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @var bool
 	 */
@@ -69,7 +69,7 @@ class Boldgrid_Editor_Ajax {
 	public function sanitize_gridblock_html( $html ) {
 		$this->register_gridblock_kses_filters();
 
-		$pattern = $pattern = [
+		$pattern = [
 			'/\s*:\s*/',     // Matches and removes spaces around colons
 			'/\s*;\s*/',     // Matches and removes spaces around semicolons
 			'/;\s*(["\>])/'  // Matches semicolons followed by space and either a quote or a closing tag and removes the semicolon
@@ -86,7 +86,7 @@ class Boldgrid_Editor_Ajax {
 	/**
 	 * Register Gridblock KSES filters once to avoid stacking duplicates.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 */
 	private function register_gridblock_kses_filters() {
 		if ( self::$gridblock_kses_filters_registered ) {
@@ -102,7 +102,7 @@ class Boldgrid_Editor_Ajax {
 	/**
 	 * Allow additional HTML tags/attributes for Gridblock content.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @param array  $tags    Allowed HTML tags.
 	 * @param string $context KSES context.
@@ -138,7 +138,7 @@ class Boldgrid_Editor_Ajax {
 	/**
 	 * Disable safe style CSS checks for Gridblock content.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @param array $styles Allowed CSS properties.
 	 * @return array
@@ -150,7 +150,7 @@ class Boldgrid_Editor_Ajax {
 	/**
 	 * Parse and allowlist License-Types from an upstream BoldGrid API response.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @param array|WP_Error $api_response Remote HTTP response.
 	 * @return array Allowed license type slugs.

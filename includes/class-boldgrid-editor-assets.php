@@ -560,7 +560,7 @@ class Boldgrid_Editor_Assets {
 	 *
 	 * Used for per-post editor override saves so post-new.php cannot target the site front page.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @return integer Post ID, or 0 when creating a new post.
 	 */

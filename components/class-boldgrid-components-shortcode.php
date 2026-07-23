@@ -205,7 +205,7 @@ class Boldgrid_Components_Shortcode {
 	 *
 	 * Must stay in sync with assets/js/builder/component/shortcode/component.js defaultShortcodes.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @return array
 	 */
@@ -226,7 +226,7 @@ class Boldgrid_Components_Shortcode {
 	/**
 	 * Verify user-supplied shortcode text targets the expected tag.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @param string $text         Shortcode text from the request.
 	 * @param string $expected_tag AJAX action shortcode tag.
@@ -247,7 +247,7 @@ class Boldgrid_Components_Shortcode {
 	/**
 	 * Expand shortcode text with only explicitly allowed tags registered.
 	 *
-	 * @since 1.27.11
+	 * @since 1.27.12
 	 *
 	 * @param string $text         Shortcode text.
 	 * @param array  $allowed_tags Allowed shortcode tag names.
