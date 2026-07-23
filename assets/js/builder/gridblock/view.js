@@ -122,18 +122,27 @@ import { Industry } from './industry';
 			fetchTypes() {
 				self.finishedTypeFetch = false;
 
+				const requestData = {
+					// eslint-disable-next-line
+					release_channel: BoldgridEditor.boldgrid_settings.theme_release_channel,
+					version: BoldgridEditor.version
+				};
+
+				if (
+					BoldgridEditor.boldgrid_settings &&
+					BoldgridEditor.boldgrid_settings.api_key
+				) {
+					// eslint-disable-next-line
+					requestData.key = BoldgridEditor.boldgrid_settings.api_key;
+				}
+
 				return $.ajax( {
 					url:
 						BoldgridEditor.plugin_configs.asset_server +
 						BoldgridEditor.plugin_configs.ajax_calls.gridblock_types,
 					dataType: 'json',
 					timeout: 20000,
-					data: {
-						// eslint-disable-next-line
-						release_channel: BoldgridEditor.boldgrid_settings.theme_release_channel,
-						key: BoldgridEditor.boldgrid_settings.api_key,
-						version: BoldgridEditor.version
-					}
+					data: requestData
 				} )
 					.done( data => {
 						this.setFilterOptions( data );

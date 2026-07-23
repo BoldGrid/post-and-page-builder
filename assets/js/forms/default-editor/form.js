@@ -48,7 +48,7 @@ export class Form {
 		return `
 			<form method="POST" class="bgppb-default-editor">
 				<input type="hidden" name="bgppb-form-action" value="default_editor">
-				<input type="hidden" name="bgppb-form-action-nonce" value="${BoldgridEditor.bgppb_form_action_nonce}">
+				<input type="hidden" name="bgppb-form-action-nonce" value="${BoldgridEditor.bgppb_form_nonces.default_editor}">
 				<h2>Preferred Editor</h2>
 				<p>
 					Choose the preferred way to edit your content.

@@ -20,6 +20,11 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	protected $testClass;
 
 	/**
+	 * Class property $configClass
+	 */
+	protected $configClass;
+
+	/**
 	 * Class property $settings
 	 */
 	protected $settings = array(
@@ -29,7 +34,8 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	/**
 	 * Setup the test env
 	 */
-	public function setUp() {
+	public function setUp(): void {
+		parent::setUp();
 
 		$this->testClass = new Boldgrid_Editor( $this->settings );
 		$this->configClass = new Boldgrid_Editor_Config();
@@ -44,7 +50,7 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 
 		$testClass = new Boldgrid_Editor_MCE( $this->configClass );
 		$allow_empty_tags = $testClass->allow_empty_tags( array() );
-		$this->assertEquals( 'div[*],i[*]', $allow_empty_tags['extended_valid_elements'] );
+		$this->assertEquals( 'div[*],i[*],svg[*],path[*]', $allow_empty_tags['extended_valid_elements'] );
 
 	}
 
@@ -77,7 +83,17 @@ class Test_Boldgrid_Editor extends WP_UnitTestCase {
 	public function test_get_post_url_post_not_found() {
 		$testClass = new Boldgrid_Editor_Assets( array() );
 		$get_post_url = $testClass->get_post_url();
-		$expected = Boldgrid_Editor_Assets::remove_url_protocal( get_site_url() . '?bg_preview_page=1' );
+		$expected = Boldgrid_Editor_Assets::remove_url_protocal(
+			add_query_arg(
+				array(
+					'bg_preview_page'  => 1,
+					'bg_post_id'       => null,
+					'bg_is_post'       => false,
+					'bg_preview_nonce' => wp_create_nonce( 'boldgrid_preview_posttype' ),
+				),
+				get_site_url()
+			)
+		);
 		$this->assertEquals( $expected, $get_post_url );
 	}
 

@@ -44,7 +44,8 @@ export class ConnectKey {
 			}
 		};
 
-		this.apiKey = BoldgridEditor.boldgrid_settings.api_key;
+		this.apiKey = BoldgridEditor.boldgrid_settings.api_key || false;
+		this.hasConnectKey = !! BoldgridEditor.boldgrid_settings.has_connect_key;
 	}
 
 	/**
@@ -188,6 +189,7 @@ export class ConnectKey {
 		this.$form = $content.find( 'form' );
 		this.$tos = this.$form.find( '[name="tos"]' );
 		this.$keyEntry = this.$form.find( '[name="boldgrid-connect-key"]' );
+		this.$passwordEntry = this.$form.find( '[name="admin-password"]' );
 		this.$formError = this.$form.find( '.error' );
 		this.$formSuccess = $content.find( '.success' );
 		this.$upgradeKey = $content.find( '.existing-key .upgrade-key' );
@@ -230,15 +232,21 @@ export class ConnectKey {
 		this.$content.find( '.upgrade-key-section .button' ).on( 'click', () => {
 			BG.Panel.showLoading();
 
-			this._saveKey( this.apiKey )
+			const password = this.$content.find( '.upgrade-admin-password' ).val();
+			this._saveKey( this.apiKey, password )
 				.done( result => {
 					this.licenseTypes = result.data.licenses;
-					this.apiKey = result.data.key;
+					this.hasConnectKey = true;
 					this.postLicenseCheck( this.licenseTypes );
+					BG.Panel.closePanel();
+				} )
+				.fail( () => {
+					this._displayError( `
+						We were unable to confirm your Connect Key, please check your entry and try again.
+					` );
 				} )
 				.always( () => {
 					BG.Panel.hideLoading();
-					BG.Panel.closePanel();
 				} );
 		} );
 	}
@@ -265,11 +273,11 @@ export class ConnectKey {
 			if ( this._validate() ) {
 				BG.Panel.showLoading();
 
-				this._saveKey( this.sanitizeKey( this.$keyEntry.val() ) )
+				this._saveKey( this.sanitizeKey( this.$keyEntry.val() ), this.$passwordEntry.val() )
 					.done( result => {
 						this.licenseTypes = result.data.licenses;
 						this.$formSuccess.attr( 'data-key-type', this.getLicenseType( this.licenseTypes ) );
-						this.apiKey = result.data.key;
+						this.hasConnectKey = true;
 						this.$formPrompt.hide();
 						this.$formSuccess.addClass( 'animated zoomIn' ).show();
 						this.postLicenseCheck( this.licenseTypes );
@@ -291,7 +299,7 @@ export class ConnectKey {
 	 *
 	 * @since 1.7.0
 	 */
-	_saveKey( key ) {
+	_saveKey( key, password ) {
 		return $.ajax( {
 			type: 'post',
 			url: ajaxurl,
@@ -304,7 +312,10 @@ export class ConnectKey {
 				boldgrid_editor_gridblock_save: BoldgridEditor.nonce_gridblock_save,
 
 				// eslint-disable-next-line
-				connectKey: key
+				connectKey: key,
+
+				// eslint-disable-next-line
+				password: password || ''
 			}
 		} );
 	}
@@ -371,7 +382,7 @@ export class ConnectKey {
 	_validate() {
 		let error = '';
 
-		if ( ! this.$tos.val() || ! this.$keyEntry.val() ) {
+		if ( ! this.$tos.val() || ! this.$keyEntry.val() || ! this.$passwordEntry.val() ) {
 			error = 'Please complete all fields to continue';
 		} else if ( this.validateKey( this.$keyEntry.val() ) ) {
 			error = 'Please enter a BoldGrid Connect Key in the correct format';

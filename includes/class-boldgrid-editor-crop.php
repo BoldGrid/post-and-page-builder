@@ -19,6 +19,25 @@
 class Boldgrid_Editor_Crop {
 
 	/**
+	 * Validate crop AJAX requests.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 */
+	private function validate_crop_request( $attachment_id ) {
+		Boldgrid_Editor_Nonce::verify_ajax_or_die(
+			'boldgrid_gridblock_image_ajax_nonce',
+			'boldgrid_gridblock_image_ajax_nonce'
+		);
+
+		Boldgrid_Editor_Capability::require_cap( 'upload_files' );
+
+		$attachment_id = (int) $attachment_id;
+		if ( ! $attachment_id || ! current_user_can( 'edit_post', $attachment_id ) ) {
+			wp_die( 0 );
+		}
+	}
+
+	/**
 	 * Admin footer.
 	 *
 	 * @since 1.0.8
@@ -40,7 +59,8 @@ class Boldgrid_Editor_Crop {
 			wp_die( 0 );
 		}
 
-		$attachment_id = $_POST['attachment_id'];
+		$attachment_id = (int) $_POST['attachment_id'];
+		$this->validate_crop_request( $attachment_id );
 
 		// Validate our original image's width and height.
 		if ( empty( $_POST['originalWidth'] ) || empty( $_POST['originalHeight'] ) ||
@@ -179,9 +199,15 @@ class Boldgrid_Editor_Crop {
 		if ( empty( $_POST['id'] ) || ! is_numeric( $_POST['id'] ) ) {
 			echo 'Error: Invalid attachment id.';
 			wp_die();
-		} else {
-			$attachment_id = $_POST['id'];
 		}
+
+		$attachment_id = absint( $_POST['id'] );
+		if ( ! $attachment_id ) {
+			echo 'Error: Invalid attachment id.';
+			wp_die();
+		}
+
+		$this->validate_crop_request( $attachment_id );
 
 		// Validate $_POST['cropDetails'].
 		if ( ! isset( $_POST['cropDetails'] ) || ! is_array( $_POST['cropDetails'] ) ) {
@@ -189,16 +215,63 @@ class Boldgrid_Editor_Crop {
 			wp_die();
 		}
 
-		// Validate $_POST['cropDetails'], again. Make sure all the values are numbers and positive.
-		foreach ( $_POST['cropDetails'] as $int ) {
-			if ( ! is_numeric( $int ) || $int < 0 ) {
+		$required_crop_keys = array( 'x1', 'y1', 'x2', 'y2' );
+		foreach ( $required_crop_keys as $crop_key ) {
+			if ( ! isset( $_POST['cropDetails'][ $crop_key ] ) ) {
+				echo 'Error: Invalid cropDetails.';
+				wp_die();
+			}
+		}
+
+		// Get and validate our original image sizes before dimension checks.
+		if ( empty( $_POST['originalWidth'] ) || empty( $_POST['originalHeight'] ) ||
+			! is_numeric( $_POST['originalWidth'] ) || ! is_numeric( $_POST['originalHeight'] ) ) {
+			echo 'Error: Missing original sizes.';
+			wp_die();
+		}
+
+		$original_width  = absint( $_POST['originalWidth'] );
+		$original_height = absint( $_POST['originalHeight'] );
+		if ( ! $original_width || ! $original_height ) {
+			echo 'Error: Missing original sizes.';
+			wp_die();
+		}
+
+		$orientation = $original_width / $original_height;
+
+		$max_width  = $original_width;
+		$max_height = $original_height;
+		$attachment_meta = wp_get_attachment_metadata( $attachment_id );
+		if ( ! empty( $attachment_meta['width'] ) && ! empty( $attachment_meta['height'] ) ) {
+			$max_width  = min( $max_width, absint( $attachment_meta['width'] ) );
+			$max_height = min( $max_height, absint( $attachment_meta['height'] ) );
+		}
+
+		$max_absolute_dimension = 8192;
+		$max_x                  = min( $max_width, $max_absolute_dimension );
+		$max_y                  = min( $max_height, $max_absolute_dimension );
+
+		// Validate crop coordinates are numeric, non-negative, and within source bounds.
+		$crop_key_bounds = array(
+			'x1' => $max_x,
+			'x2' => $max_x,
+			'y1' => $max_y,
+			'y2' => $max_y,
+		);
+		foreach ( $required_crop_keys as $crop_key ) {
+			$int = $_POST['cropDetails'][ $crop_key ];
+			if ( ! is_numeric( $int ) || $int < 0 || (int) $int > $crop_key_bounds[ $crop_key ] ) {
 				echo 'Error: Invalid cropDetail values.';
 				wp_die();
 			}
 		}
 
-		// Example $crop_details: http://pastebin.com/yfkg9XCJ.
-		$crop_details = $_POST['cropDetails'];
+		$crop_details = array(
+			'x1' => absint( $_POST['cropDetails']['x1'] ),
+			'y1' => absint( $_POST['cropDetails']['y1'] ),
+			'x2' => absint( $_POST['cropDetails']['x2'] ),
+			'y2' => absint( $_POST['cropDetails']['y2'] ),
+		);
 
 		// Validate $_POST['path'].
 		if ( ! isset( $_POST['path'] ) ) {
@@ -207,16 +280,6 @@ class Boldgrid_Editor_Crop {
 		} else {
 			// Example $path: https://domain.com/wp-content/uploads/2016/01/image.jpg.
 			$path = $_POST['path'];
-		}
-
-		// Get and validate our original image sizes.
-		if ( empty( $_POST['originalWidth'] ) || empty( $_POST['originalHeight'] ) ) {
-			echo 'Error: Missing original sizes.';
-			wp_die();
-		} else {
-			$original_width = $_POST['originalWidth'];
-			$original_height = $_POST['originalHeight'];
-			$orientation = $original_width / $original_height;
 		}
 
 		$path_to_image = $this->url_to_path( $path );
@@ -228,8 +291,15 @@ class Boldgrid_Editor_Crop {
 		$new_image = wp_get_image_editor( $path_to_image );
 
 		// Calculate new width / height based on coordinates.
-		$new_width = $crop_details['x2'] - $crop_details['x1'];
+		$new_width  = $crop_details['x2'] - $crop_details['x1'];
 		$new_height = $crop_details['y2'] - $crop_details['y1'];
+
+		if ( $new_width <= 0 || $new_height <= 0 ||
+			$new_width > $max_width || $new_height > $max_height ||
+			$new_width > $max_absolute_dimension || $new_height > $max_absolute_dimension ) {
+			echo 'Error: Invalid cropDetail values.';
+			wp_die();
+		}
 
 		// Crop the image.
 		$successful_crop = $new_image->crop( $crop_details['x1'], $crop_details['y1'], $new_width,

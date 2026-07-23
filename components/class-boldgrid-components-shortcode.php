@@ -201,7 +201,76 @@ class Boldgrid_Components_Shortcode {
 	}
 
 	/**
-	 * Bind all generic shortcode api calls to a do shortcode event.
+	 * Shortcodes the editor may preview via AJAX.
+	 *
+	 * Must stay in sync with assets/js/builder/component/shortcode/component.js defaultShortcodes.
+	 *
+	 * @since 1.27.12
+	 *
+	 * @return array
+	 */
+	protected function get_editor_shortcode_allowlist() {
+		return array(
+			'boldgrid_component',
+			'wp_caption',
+			'caption',
+			'gallery',
+			'playlist',
+			'audio',
+			'video',
+			'embed',
+			'weforms',
+		);
+	}
+
+	/**
+	 * Verify user-supplied shortcode text targets the expected tag.
+	 *
+	 * @since 1.27.12
+	 *
+	 * @param string $text         Shortcode text from the request.
+	 * @param string $expected_tag AJAX action shortcode tag.
+	 * @return bool
+	 */
+	protected function shortcode_text_matches_tag( $text, $expected_tag ) {
+		if ( ! is_string( $text ) || '' === $text || ! is_string( $expected_tag ) || '' === $expected_tag ) {
+			return false;
+		}
+
+		if ( ! preg_match( '/^\s*\[(?:\/)?([a-zA-Z0-9_-]+)/', $text, $matches ) ) {
+			return false;
+		}
+
+		return $expected_tag === $matches[1];
+	}
+
+	/**
+	 * Expand shortcode text with only explicitly allowed tags registered.
+	 *
+	 * @since 1.27.12
+	 *
+	 * @param string $text         Shortcode text.
+	 * @param array  $allowed_tags Allowed shortcode tag names.
+	 * @return string
+	 */
+	protected function render_allowlisted_shortcode( $text, array $allowed_tags ) {
+		global $shortcode_tags;
+
+		$backup         = $shortcode_tags;
+		$shortcode_tags = array_intersect_key(
+			$shortcode_tags,
+			array_flip( $allowed_tags )
+		);
+
+		$html = do_shortcode( $text );
+
+		$shortcode_tags = $backup;
+
+		return $html;
+	}
+
+	/**
+	 * Bind editor shortcode preview handlers for an explicit allowlist.
 	 *
 	 * @since 1.11.0
 	 *
@@ -210,19 +279,33 @@ class Boldgrid_Components_Shortcode {
 	public function register_shortcodes() {
 		global $shortcode_tags;
 
-		$tags = ! empty( $shortcode_tags ) && is_array( $shortcode_tags ) ? $shortcode_tags : [];
+		$tags = ! empty( $shortcode_tags ) && is_array( $shortcode_tags ) ? $shortcode_tags : array();
+		$allowed = $this->get_editor_shortcode_allowlist();
 
-		foreach ( array_keys( $tags ) as $tag ) {
-			add_action( 'wp_ajax_boldgrid_shortcode_' . $tag , function () {
-				Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
+		foreach ( $allowed as $tag ) {
+			if ( ! isset( $tags[ $tag ] ) ) {
+				continue;
+			}
 
-				$text = isset( $_POST['text'] ) ? stripslashes( $_POST['text'] ) : '';
-				$html = do_shortcode( $text );
+			add_action(
+				'wp_ajax_boldgrid_shortcode_' . $tag,
+				function () use ( $tag ) {
+					Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
 
-				wp_send_json( array(
-					'content' => $html
-				) );
-			} );
+					$text = isset( $_POST['text'] ) ? wp_unslash( $_POST['text'] ) : '';
+					if ( ! $this->shortcode_text_matches_tag( $text, $tag ) ) {
+						wp_send_json_error( null, 400 );
+					}
+
+					$html = $this->render_allowlisted_shortcode( $text, array( $tag ) );
+
+					wp_send_json(
+						array(
+							'content' => wp_kses_post( $html ),
+						)
+					);
+				}
+			);
 		}
 	}
 
@@ -235,14 +318,25 @@ class Boldgrid_Components_Shortcode {
 	 * @return string           Shortcode output.
 	 */
 	public function get_shortcode_options( $attrs ) {
-		$attrs = ! empty( $attrs['opts'] ) ? $attrs['opts'] : '';
-		$attrs = json_decode( urldecode( $attrs ), true ) ?: array();
+		$opts = ! empty( $attrs['opts'] ) ? $attrs['opts'] : '';
+		$opts = json_decode( urldecode( $opts ), true );
+		$opts = is_array( $opts ) ? $opts : array();
 
 		$output = array();
-		foreach( $attrs as $name => $val ) {
-			$results = array();
-			parse_str( $name . '=' . $val, $results );
-			$output[ key( $results ) ][] = reset( $results )[0];
+		foreach ( $opts as $name => $val ) {
+			if ( ! is_string( $name ) || ( ! is_string( $val ) && ! is_numeric( $val ) ) ) {
+				continue;
+			}
+
+			if ( ! preg_match( '/^widget-([a-z0-9_]+)\[\]\[([a-z0-9_]+)\]$/i', $name, $matches ) ) {
+				continue;
+			}
+
+			$widget_key = $matches[1];
+			$field_key  = sanitize_key( $matches[2] );
+			$output[ $widget_key ][] = array(
+				$field_key => sanitize_text_field( wp_unslash( (string) $val ) ),
+			);
 		}
 
 		return $this->parse_attrs( $output );

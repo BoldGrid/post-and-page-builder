@@ -43,7 +43,22 @@ export class Control {
 	 */
 	changeType( editorType ) {
 		this.loading.show();
-		new Utility().postForm( { 'bgppb_default_editor_post': editorType }, false );
+
+		// Keep the hidden form field in sync (used on save for new posts).
+		$( 'form#post input[name="bgppb_default_editor_post"]' ).val( editorType );
+
+		const params = {
+			'bgppb_default_editor_post': editorType
+		};
+
+		// Only post a dedicated override for an existing post — never the front-page fallback.
+		const overridePostId = parseInt( BoldgridEditor.editor_override_post_id, 10 ) || 0;
+		if ( ! BoldgridEditor.is_add_new && overridePostId && BoldgridEditor.editor_override_nonce ) {
+			params.bgppb_editor_override_nonce = BoldgridEditor.editor_override_nonce;
+			params.bgppb_editor_override_post_id = overridePostId;
+		}
+
+		new Utility().postForm( params, false );
 		setTimeout( () => this.loading.hide(), 3000 );
 	}
 

@@ -158,20 +158,24 @@ class Settings {
 		}
 
 		// Only handle ppb form actions
-		if ( empty( $_REQUEST['bgppb-form-action'] ) ) {
+		if ( empty( $_REQUEST['bgppb-form-action'] ) || ! is_scalar( $_REQUEST['bgppb-form-action'] ) ) {
 			return;
 		}
 
-		// Only accept forms with a nonce
-		if ( empty( $_REQUEST['bgppb-form-action-nonce'] ) ) {
+		$action = sanitize_text_field( wp_unslash( $_REQUEST['bgppb-form-action'] ) );
+
+		$allowed_actions = array( 'default_editor' );
+		if ( ! in_array( $action, $allowed_actions, true ) ) {
 			return;
 		}
 
-		// Validate the nonce
-		if ( wp_verify_nonce( $_REQUEST['bgppb-form-action-nonce'], 'bgppb_form_action_nonce' ) ) {
-			$action = sanitize_text_field( $_REQUEST['bgppb-form-action'] );
-			do_action( 'bgppb_form_' . $action );
+		$nonce_action = 'bgppb_form_' . $action;
+		$nonce        = \Boldgrid_Editor_Nonce::read_nonce( 'bgppb-form-action-nonce' );
+		if ( '' === $nonce || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+			return;
 		}
+
+		do_action( 'bgppb_form_' . $action );
 	}
 
 	/**

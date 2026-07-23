@@ -105,9 +105,10 @@ class Boldgrid_Editor_Assets {
 		$permalink = ( $permalink ? $permalink : get_site_url() );
 
 		$permalink = add_query_arg( array(
-			'bg_preview_page' => 1,
-			'bg_post_id' => $post_id,
-			'bg_is_post' => $is_post,
+			'bg_preview_page'  => 1,
+			'bg_post_id'       => $post_id,
+			'bg_is_post'       => $is_post,
+			'bg_preview_nonce' => wp_create_nonce( 'boldgrid_preview_posttype' ),
 		), $permalink );
 
 		// Remove protocal.
@@ -383,7 +384,7 @@ class Boldgrid_Editor_Assets {
 		$config = Boldgrid_Editor_Service::get( 'config' );
 		$boldgrid_settings = Boldgrid_Editor_Config::get_mixed_option( 'boldgrid_settings' );
 		$boldgrid_settings = $boldgrid_settings ? $boldgrid_settings : array();
-		$boldgrid_settings['api_key'] = $config['api_key'];
+		$boldgrid_settings = Boldgrid_Editor_Secrets::get_public_boldgrid_settings( $boldgrid_settings, $config );
 
 		$current_theme = wp_get_theme();
 		$theme_version = $current_theme->get( 'Version' );
@@ -432,6 +433,11 @@ class Boldgrid_Editor_Assets {
 			'body_class'             => Boldgrid_Editor_Theme::theme_body_class(),
 			'post'                   => (array) $post,
 			'post_id'                => $this->get_post_id(),
+			// Only mint an override nonce for a real editing post — never the front-page fallback.
+			'editor_override_post_id' => $this->get_editing_post_id(),
+			'editor_override_nonce'   => $this->get_editing_post_id()
+				? wp_create_nonce( 'bgppb_editor_override_' . $this->get_editing_post_id() )
+				: '',
 			'post_type'              => $post_type,
 			'is_boldgrid_template'   => Boldgrid_Editor_Service::get( 'templater' )->is_custom_template( $post->page_template ),
 			'site_url'               => $this->get_post_url(),
@@ -478,7 +484,7 @@ class Boldgrid_Editor_Assets {
 			'control_styles' => ! $is_bg_theme ? Boldgrid_Editor_Builder_Styles::get_option() : array(),
 			'admin-url' => get_admin_url(),
 			'inspiration' => get_option( 'boldgrid_install_options' ),
-			'grid_block_nonce' => wp_create_nonce( 'boldgrid_gridblock_image_ajax_nonce' ),
+			'grid_block_nonce'       => wp_create_nonce( 'boldgrid_gridblock_image_ajax_nonce' ),
 			'nonce_gridblock_save' => wp_create_nonce( 'boldgrid_editor_gridblock_save' ),
 			'components' => [
 				'buttons' =>  Boldgrid_Editor_Option::get( 'components_buttons', true ),
@@ -516,11 +522,15 @@ class Boldgrid_Editor_Assets {
 	 */
 	public function get_shared_vars() {
 		return array(
-			'bgppb_form_action_nonce' => wp_create_nonce( 'bgppb_form_action_nonce' ),
+			'bgppb_form_nonces'       => array(
+				'default_editor' => wp_create_nonce( 'bgppb_form_default_editor' ),
+			),
 			'plugin_url'              => plugins_url( '', BOLDGRID_EDITOR_ENTRY ),
 			'onb_videos'              => apply_filters( 'ppb_get_onboarding_videos', array() ),
 			'onb_videos_nonce'        => wp_create_nonce( 'boldgrid_editor_dismiss_onb_videos' ),
-			'plugin_configs'          => Boldgrid_Editor_Service::get( 'config' ),
+			'plugin_configs'          => Boldgrid_Editor_Secrets::get_public_plugin_configs(
+				Boldgrid_Editor_Service::get( 'config' )
+			),
 			'globalSettings'          => Boldgrid_Editor_Service::get( 'settings' )->get_all(),
 			'customPostTypes'         => Boldgrid_Editor_Service::get( 'settings' )->get_custom_post_types(),
 			'pluginVersion'           => BOLDGRID_EDITOR_VERSION,
@@ -543,6 +553,19 @@ class Boldgrid_Editor_Assets {
 		}
 
 		return $post_id;
+	}
+
+	/**
+	 * Post ID currently being edited in the request, with no front-page fallback.
+	 *
+	 * Used for per-post editor override saves so post-new.php cannot target the site front page.
+	 *
+	 * @since 1.27.12
+	 *
+	 * @return integer Post ID, or 0 when creating a new post.
+	 */
+	public function get_editing_post_id() {
+		return ! empty( $_REQUEST['post'] ) ? absint( $_REQUEST['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**
