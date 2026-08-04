@@ -183,13 +183,17 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
-	 * Generate gridblocks.
+	 * Build sanitized params for the upstream gridblock generate request.
 	 *
-	 * @since 1.7.0
+	 * Always attaches the site-stored Connect key when present so Editors and
+	 * other non-admin roles with edit capability receive License-Types for a
+	 * valid saved key. The key is never taken from the browser POST body.
+	 *
+	 * @since 1.27.13
+	 *
+	 * @return array
 	 */
-	public function generate_blocks() {
-		self::validate_nonce( 'gridblock_save' );
-
+	public function build_generate_blocks_params() {
 		$params = array(
 			'category' => ! empty( $_POST['category'] ) && is_scalar( $_POST['category'] )
 				? sanitize_key( wp_unslash( $_POST['category'] ) ) : '',
@@ -197,12 +201,30 @@ class Boldgrid_Editor_Ajax {
 				? sanitize_text_field( wp_unslash( $_POST['color'] ) ) : null,
 		);
 
-		set_time_limit ( 45 );
-
 		$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
 
-		// If the user has not yet reqyested gridblocks, return from our preset collection.
+		// If the user has not yet requested gridblocks, return from our preset collection.
 		$params['collection'] = ! $times_requested ? 1 : false;
+
+		$connect_key = Boldgrid_Editor_Secrets::get_stored_connect_key();
+		if ( '' !== $connect_key ) {
+			$params['key'] = sanitize_text_field( $connect_key );
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Generate gridblocks.
+	 *
+	 * @since 1.7.0
+	 */
+	public function generate_blocks() {
+		self::validate_nonce( 'gridblock_save' );
+
+		$params = $this->build_generate_blocks_params();
+
+		set_time_limit ( 45 );
 
 		// Dont put the parameters in the body breaks wp version < 4.6.
 		$endpoint = self::get_end_point( 'gridblock_generate' );
@@ -231,6 +253,7 @@ class Boldgrid_Editor_Ajax {
 				}
 
 				// Count how many times blocks have been generated.
+				$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
 				Boldgrid_Editor_Option::update( 'count_usage_blocks', $times_requested + 1 );
 				if ( current_user_can( 'manage_options' ) && '' !== $params['category'] ) {
 					Boldgrid_Editor_Option::update( 'block_default_industry', $params['category'] );

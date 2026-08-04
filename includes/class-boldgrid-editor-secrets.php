@@ -97,6 +97,23 @@ class Boldgrid_Editor_Secrets {
 	}
 
 	/**
+	 * Get the site Connect key for trusted server-side outbound calls.
+	 *
+	 * Non-administrators must not receive this value in browser-localized
+	 * config, but editor AJAX handlers still need it to unlock premium
+	 * features against the BoldGrid asset API.
+	 *
+	 * @since 1.27.13
+	 *
+	 * @return string Stored Connect key, or empty string when none is saved.
+	 */
+	public static function get_stored_connect_key() {
+		$key = Boldgrid_Editor_Config::get_mixed_option( 'boldgrid_api_key' );
+
+		return is_string( $key ) ? $key : '';
+	}
+
+	/**
 	 * Return plugin config safe for the current user's JS context.
 	 *
 	 * @param array $config Plugin config array.
