@@ -36,6 +36,13 @@ class Test_Boldgrid_Editor_License_Non_Admin extends WP_UnitTestCase {
 
 		update_option( 'boldgrid_api_key', $this->connect_key );
 		$this->assertSame( $this->connect_key, Boldgrid_Editor_Secrets::get_stored_connect_key() );
+
+		// Clear the blog option so get_mixed_option() can fall back to site/network storage.
+		delete_option( 'boldgrid_api_key' );
+		$this->assertSame( '', Boldgrid_Editor_Secrets::get_stored_connect_key() );
+
+		update_site_option( 'boldgrid_api_key', $this->connect_key );
+		$this->assertSame( $this->connect_key, Boldgrid_Editor_Secrets::get_stored_connect_key() );
 	}
 
 	/**
