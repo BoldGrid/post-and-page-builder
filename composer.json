@@ -1,6 +1,16 @@
 {
+    "name": "boldgrid/post-and-page-builder",
+    "description": "Post and Page Builder is a standalone plugin which adds functionality to the existing TinyMCE Editor.",
+    "license": "GPL-2.0-or-later",
     "require": {
+        "php": ">=7.4",
         "boldgrid/library": "^2.13.13"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        },
+        "platform-check": true
     },
     "scripts": {
         "post-autoload-dump": [
