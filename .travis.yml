@@ -6,26 +6,51 @@ notifications:
     on_failure: change
   slack:
     secure: U0C7obTxqgI1blt1RIhIY+M3mU94CgSVMCP3oWtPyVaXrDwYdlSZvqXGCdezJXqVzFOcMEytDlKMJxo1zM6fnXlpqvUllBGm2IJkpQj6ijUr+uQy6bVqMWQiIWDho8XRKH3GoYa812XSsNJOROX+let9JiXiO5qz0DWSs3FQ4gl+Ti+E/Znck9yE32AfY5rHEhtkbN2ih/Agx7o+8PkdGG2BGr6hqfn/Gf1sHiUA6KifdoD6lZRR/nym/1osEMlkuavbY4tOf+RBvUTpSpyBDthPXmgXCPJZ8iGGTKySic7KF367AXITWNWdZxX0ChzNB6WcmJWvdvghbxRnIZXN3nML+gtXclmNnH8GOO4iLyXtUbyh7JpoZh/5KVnqP2hmgjPzBGNm84JBmZuqB7jIKHAZwWh66u9k03uteM5wrYNxQBYvDHvTaeeP7TnOBDWhUkjvEacx61TpxmUCb6VGHahSv/MuqaAEpvolcj83BPBC4fjrLA3dj6u+WjYxTqRZeA9A35eW6qT3182beKHCj+GfN1PfsMRGCyqebxcj6CMLgGti0UMgFUBBp1w30z54vKq/lpIRCgMYXQWbETJPLhez76u9MqVCc1j9JoxD6o7we3BsvYtOhngnCbKLcpDzsQK8q/TTtVB/etfQcYdir6lkJn4wAQbvoM5US8uPQ7w=
-php:
-- 7.4
+cache:
+  yarn: true
+  directories:
+    - $HOME/.composer/cache
+matrix:
+  include:
+    # PHP 7.4 on Focal: phpenv still provides 7.4 here. Tag build + deploy runs only on this job.
+    - php: 7.4
+      dist: focal
+      before_deploy:
+        - yes | gem update --system --force
+        - gem install bundler
+        - gem install uri
+        - gem install faraday-net_http -v '3.3.0'
+        - gem install logger
+    # Travis phpenv does not ship PHP 8.5 (jammy tops out at 8.4). Bypass language: php
+    # and install 8.5 from ppa:ondrej/php. TRAVIS_PHP_VERSION is unset, so deploy
+    # (gated on php: '7.4') skips this job.
+    - name: "PHP: 8.5"
+      language: ruby
+      dist: jammy
+      before_install:
+        - sudo add-apt-repository -y ppa:ondrej/php
+        - sudo apt-get update -q
+        - sudo apt-get install -y php8.5-cli php8.5-common php8.5-mbstring php8.5-xml php8.5-curl php8.5-zip
+        - sudo update-alternatives --set php /usr/bin/php8.5
+        - php -v
+        - curl -sS https://getcomposer.org/installer | php
+        - sudo mv composer.phar /usr/local/bin/composer
+        - composer --version
 before_script:
 - nvm install 22.22.3
 - nvm use 22.22.3
 - npm install -g gulp-cli
-- composer self-update --1
+- composer self-update --2
+- composer validate --strict
 - composer install
+- composer check-platform-reqs
 - yarn install
 script:
 - npm run build
-before_deploy:
-  - yes | gem update --system --force
-  - gem install bundler
-  - gem install uri
-  - gem install faraday-net_http -v '3.3.0'
-  - gem install logger
 deploy:
 - provider: script
   script: chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh && ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
+  # dpl v1 still stashes the working tree unless this is set; the zip is built in-job.
   skip_cleanup: true
   on:
     tags: true

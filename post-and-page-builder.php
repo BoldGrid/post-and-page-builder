@@ -3,11 +3,12 @@
  * Plugin Name: Post and Page Builder
  * Plugin URI: https://www.boldgrid.com/boldgrid-editor/?utm_source=ppb-wp-repo&utm_medium=plugin-uri&utm_campaign=ppb
  * Description: Customized drag and drop editing for posts and pages. The Post and Page Builder adds functionality to the existing TinyMCE Editor to give you easier control over your content.
- * Version: 1.27.13
+ * Version: 1.27.14
  * Author: BoldGrid <support@boldgrid.com>
  * Author URI: https://www.boldgrid.com/?utm_source=ppb-wp-repo&utm_medium=author-uri&utm_campaign=ppb
  * Text Domain: boldgrid-editor
  * Domain Path: /languages
+ * Requires PHP: 7.4
  * License: GPLv2 or later
  */
 
@@ -55,7 +56,7 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 	require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-compatibility.php';
 	$compatibility = new Boldgrid_Editor_Compatibility( array(
 		'wp' => '4.7',
-		'php' => '5.4',
+		'php' => '7.4',
 	) );
 
 	if ( ! $compatibility->checkVersions() ) {
@@ -93,50 +94,63 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 
 	/**
 	 * Register BoldGrid Library version before Load (Composer 2 installed.json format).
-	 *
-	 * @param string $plugin_file Plugin basename.
 	 */
-	$boldgrid_editor_register_library_version = function( $plugin_file ) {
-		\Boldgrid\Library\Util\Option::init();
-		$libraries = \Boldgrid\Library\Util\Option::get( 'library' );
-		if ( ! empty( $libraries[ $plugin_file ] ) ) {
-			return;
-		}
-
+	$plugin_file = plugin_basename( __FILE__ );
+	\Boldgrid\Library\Util\Option::init();
+	$libraries = \Boldgrid\Library\Util\Option::get( 'library' );
+	if ( empty( $libraries[ $plugin_file ] ) ) {
 		$installed_file = plugin_dir_path( __FILE__ ) . 'vendor/composer/installed.json';
-		if ( ! is_readable( $installed_file ) ) {
-			return;
-		}
-
-		$installed = json_decode( file_get_contents( $installed_file ), true );
-		if ( ! is_array( $installed ) ) {
-			return;
-		}
-
-		$packages = isset( $installed['packages'] ) ? $installed['packages'] : $installed;
-		foreach ( $packages as $package ) {
-			if (
-				! empty( $package['name'] ) &&
-				'boldgrid/library' === $package['name'] &&
-				! empty( $package['version_normalized'] )
-			) {
-				\Boldgrid\Library\Util\Option::set( $plugin_file, $package['version_normalized'] );
-				break;
+		if ( is_readable( $installed_file ) ) {
+			$installed = json_decode( file_get_contents( $installed_file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			if ( is_array( $installed ) ) {
+				$packages = isset( $installed['packages'] ) ? $installed['packages'] : $installed;
+				foreach ( $packages as $package ) {
+					if (
+						! empty( $package['name'] ) &&
+						'boldgrid/library' === $package['name'] &&
+						! empty( $package['version_normalized'] )
+					) {
+						\Boldgrid\Library\Util\Option::set( $plugin_file, $package['version_normalized'] );
+						break;
+					}
+				}
 			}
 		}
-	};
-	$boldgrid_editor_register_library_version( plugin_basename( __FILE__ ) );
+	}
 
 	// Load Library.
 	new \Boldgrid\Library\Util\Load(
 		array(
 			'type'            => 'plugin',
-			'file'            => plugin_basename( __FILE__ ),
+			'file'            => $plugin_file,
 			'loader'          => $autoload,
 			'keyValidate'     => true,
 			'licenseActivate' => false,
 		)
 	);
+
+	/**
+	 * Drop Library's activation register callback.
+	 *
+	 * The callback only supports Composer 1's installed.json format and would
+	 * overwrite the Composer 2 library version registered above with null.
+	 */
+	$activate_hook = 'activate_' . $plugin_file;
+	global $wp_filter;
+	if ( isset( $wp_filter[ $activate_hook ] ) ) {
+		foreach ( $wp_filter[ $activate_hook ]->callbacks as $priority => $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				if (
+					is_array( $callback['function'] ) &&
+					isset( $callback['function'][0], $callback['function'][1] ) &&
+					$callback['function'][0] instanceof \Boldgrid\Library\Util\Registration\Plugin &&
+					'register' === $callback['function'][1]
+				) {
+					remove_action( $activate_hook, $callback['function'], $priority );
+				}
+			}
+		}
+	}
 
 	function boldgrid_editor_deactivate() {
 		deactivate_plugins( array( 'boldgrid-editor/boldgrid-editor.php' ), true );

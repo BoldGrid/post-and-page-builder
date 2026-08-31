@@ -202,7 +202,7 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 				headingLabel = $this.val() ? $this.val() : '',
 				$heading = $targetHeadings.eq( headingIndex );
 
-			$heading.attr( 'data-label', headingLabel );
+			self._setHeadingLabel( $heading, headingLabel );
 
 			$target
 				.find( 'tbody' )
@@ -211,8 +211,20 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 					var $row = $( this ),
 						$columnCell = $row.find( 'td' ).eq( headingIndex );
 
-					$columnCell.attr( 'data-label', headingLabel );
+					self._setHeadingLabel( $columnCell, headingLabel );
 				} );
+		},
+
+		/**
+		 * Set a heading label attribute without constructing markup.
+		 *
+		 * @since 1.27.14
+		 *
+		 * @param {jQuery} $cell        Table cell.
+		 * @param {string} headingLabel Heading label.
+		 */
+		_setHeadingLabel: function( $cell, headingLabel ) {
+			$cell.attr( 'data-label', String( headingLabel || '' ) );
 		},
 
 		/**
@@ -414,17 +426,18 @@ BOLDGRID.EDITOR.CONTROLS = BOLDGRID.EDITOR.CONTROLS || {};
 			$targetHeadings.each( function() {
 				var $heading     = $( this ),
 					headingLabel = $heading.attr( 'data-label' ) ? $heading.attr( 'data-label' ) : '',
-					headingIndex = $heading.index();
+					headingIndex = $heading.index(),
+					$paragraph   = $( '<p>', { class: 'hide-header' } ),
+					$label       = $( '<label>' ).text( `Heading ${headingIndex + 1} Label ` ),
+					$input       = $( '<input>', {
+						type: 'text',
+						name: `heading-label-${headingIndex}`,
+						'data-heading-index': headingIndex
+					} ).val( headingLabel );
 
-				$headingLabelsSection.append(
-					`<p class="hide-header">
-						<label>Heading ${headingIndex + 1} Label
-							<input type="text" 
-								name="heading-label-${headingIndex}"
-								data-heading-index="${headingIndex}"  
-								value="${headingLabel}"></label>
-					</p>`
-				);
+				$label.append( $input );
+				$paragraph.append( $label );
+				$headingLabelsSection.append( $paragraph );
 			} );
 
 			$headingLabelsSection.find( 'input' ).each( self._bindHeadingLabels );
