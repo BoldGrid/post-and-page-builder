@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/BoldGrid/post-and-page-builder.svg?branch=master)](https://travis-ci.org/BoldGrid/post-and-page-builder)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-orange.svg)](https://raw.githubusercontent.com/BoldGrid/boldgrid-editor/master/LICENSE)
-[![PHP Version](https://img.shields.io/badge/PHP-5.4%2B-blue.svg)](https://php.net)
+[![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://php.net)
 [![Greenkeeper badge](https://badges.greenkeeper.io/BoldGrid/post-and-page-builder.svg)](https://greenkeeper.io/)
 
 Plugin Page:
@@ -17,7 +17,7 @@ Official Download Link:
 
 **Requires at least:** 4.7
 
-**Tested up to:** 6.7
+**Tested up to:** 7.1
 
 **License:** GPLv2 or later
 
@@ -30,7 +30,7 @@ used in the WordPress page and post editor.
 
 ## Requirements
 
-* PHP 5.4 or higher.
+* PHP 7.4 or higher.
 
 ## Installation
 

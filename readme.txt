@@ -111,7 +111,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = Minimum Requirements =
 
-* PHP version 5.4 or greater
+* PHP version 7.4 or greater
 * WordPress 4.7 or greater
 
 = From within WordPress =
