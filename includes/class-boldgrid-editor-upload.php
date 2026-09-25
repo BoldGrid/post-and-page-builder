@@ -140,7 +140,7 @@ class Boldgrid_Editor_Upload {
 		if ( false === $bytes ) {
 			return new WP_Error( 'read_failed', 'Unable to read upload file.' );
 		}
-		if ( preg_match( '#<\?php|<\s*script|<\s*svg|<!ENTITY#i', $bytes ) ) {
+		if ( preg_match( '#<\?php|<\?=|<\s*script|<\s*svg|<!ENTITY#i', $bytes ) ) {
 			return new WP_Error( 'polyglot', 'Image contains disallowed embedded content.' );
 		}
 
@@ -222,20 +222,49 @@ class Boldgrid_Editor_Upload {
 			return array( 'success' => false );
 		}
 
-		$filename = self::generate_secure_filename( $validation['ext'] );
-		$contents = file_get_contents( $file );
-		if ( false === $contents ) {
+		$persisted_validation = self::validate_image_file( $file );
+		if ( is_wp_error( $persisted_validation ) ||
+			$persisted_validation['mime'] !== $validation['mime'] ||
+			$persisted_validation['ext'] !== $validation['ext']
+		) {
 			return array( 'success' => false );
 		}
 
-		$uploaded = wp_upload_bits( $filename, null, $contents );
+		$filename = self::generate_secure_filename( $validation['ext'] );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$file_array = array(
+			'name'     => $filename,
+			'type'     => $validation['mime'],
+			'tmp_name' => $file,
+			'error'    => 0,
+			'size'     => filesize( $file ),
+		);
+		$uploaded   = wp_handle_sideload(
+			$file_array,
+			array(
+				'test_form' => false,
+				'mimes'     => array(
+					'png'  => 'image/png',
+					'jpg'  => 'image/jpeg',
+					'gif'  => 'image/gif',
+					'webp' => 'image/webp',
+				),
+			)
+		);
 		if ( ! empty( $uploaded['error'] ) ) {
+			return array( 'success' => false );
+		}
+
+		if ( $uploaded['type'] !== $validation['mime'] ) {
+			wp_delete_file( $uploaded['file'] );
 			return array( 'success' => false );
 		}
 
 		$attachment_id = wp_insert_attachment(
 			array(
-				'post_mime_type' => $validation['mime'],
+				'post_mime_type' => $uploaded['type'],
 				'post_title'     => sanitize_file_name( pathinfo( $filename, PATHINFO_FILENAME ) ),
 				'post_content'   => '',
 				'post_status'    => 'inherit',
@@ -246,6 +275,7 @@ class Boldgrid_Editor_Upload {
 		);
 
 		if ( ! $attachment_id || is_wp_error( $attachment_id ) ) {
+			wp_delete_file( $uploaded['file'] );
 			return array( 'success' => false );
 		}
 

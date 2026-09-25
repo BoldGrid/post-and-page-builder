@@ -239,8 +239,14 @@ class Boldgrid_Editor_Templater {
 		$post_meta = get_page_template_slug( $post_id );
 
 		if ( ! empty( $_GET['preview'] ) && 'true' === $_GET['preview'] ) {
-			$preview_meta = Boldgrid_Editor_Option::get( 'preview_meta' );
-			$post_meta = isset( $preview_meta['template'] ) ? $preview_meta['template'] : false;
+			$preview_meta = get_post_meta(
+				$post_id,
+				'_boldgrid_editor_preview_meta',
+				true
+			);
+			if ( is_array( $preview_meta ) && array_key_exists( 'template', $preview_meta ) ) {
+				$post_meta = $preview_meta['template'];
+			}
 		}
 
 		// If this template passed in by the hook is one of our templates, override post meta.

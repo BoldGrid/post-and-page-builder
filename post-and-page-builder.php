@@ -3,13 +3,15 @@
  * Plugin Name: Post and Page Builder
  * Plugin URI: https://www.boldgrid.com/boldgrid-editor/?utm_source=ppb-wp-repo&utm_medium=plugin-uri&utm_campaign=ppb
  * Description: Customized drag and drop editing for posts and pages. The Post and Page Builder adds functionality to the existing TinyMCE Editor to give you easier control over your content.
- * Version: 1.27.14
+ * Version: 1.27.15
  * Author: BoldGrid <support@boldgrid.com>
  * Author URI: https://www.boldgrid.com/?utm_source=ppb-wp-repo&utm_medium=author-uri&utm_campaign=ppb
  * Text Domain: boldgrid-editor
  * Domain Path: /languages
  * Requires PHP: 7.4
  * License: GPLv2 or later
+ *
+ * @package Boldgrid_Editor
  */
 
 // Prevent direct calls.
@@ -29,12 +31,12 @@ if ( ! defined( 'BOLDGRID_EDITOR_KEY' ) ) {
 
 // Define Editor path.
 if ( ! defined( 'BOLDGRID_EDITOR_PATH' ) ) {
-	define( 'BOLDGRID_EDITOR_PATH', dirname( __FILE__ ) );
+	define( 'BOLDGRID_EDITOR_PATH', __DIR__ );
 }
 
 // Define temporary path for migration.
 if ( ! defined( 'BOLDGRID_PPB_PATH' ) ) {
-	define( 'BOLDGRID_PPB_PATH', dirname( __FILE__ ) );
+	define( 'BOLDGRID_PPB_PATH', __DIR__ );
 }
 
 // Define Editor entry.
@@ -54,10 +56,12 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 
 	// BEFORE LOADING CHECK - WP & PHP Versions.
 	require_once BOLDGRID_EDITOR_PATH . '/includes/class-boldgrid-editor-compatibility.php';
-	$compatibility = new Boldgrid_Editor_Compatibility( array(
-		'wp' => '4.7',
-		'php' => '7.4',
-	) );
+	$compatibility = new Boldgrid_Editor_Compatibility(
+		array(
+			'wp' => '4.7',
+			'php' => '7.4',
+		)
+	);
 
 	if ( ! $compatibility->checkVersions() ) {
 		return;
@@ -76,12 +80,21 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 	register_activation_hook( __FILE__, array( 'Boldgrid_Editor_Activate', 'on_activate' ) );
 	register_activation_hook( __FILE__, 'boldgrid_editor_deactivate' );
 
-	register_deactivation_hook( __FILE__,  array( 'Boldgrid_Editor_Activate', 'on_deactivate' ) );
+	register_deactivation_hook( __FILE__, array( 'Boldgrid_Editor_Activate', 'on_deactivate' ) );
 
-	add_action( 'activate_boldgrid-editor/boldgrid-editor.php',
-		array( 'Boldgrid_Editor_Activate', 'block_activate' ) );
+	add_action(
+		'activate_boldgrid-editor/boldgrid-editor.php',
+		array( 'Boldgrid_Editor_Activate', 'block_activate' )
+	);
 
-	function boldgrid_editor_setup () {
+	/**
+	 * Instantiate and run the Post and Page Builder plugin.
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
+	function boldgrid_editor_setup() {
 		Boldgrid_Editor_Service::register(
 			'main',
 			new Boldgrid_Editor()
@@ -152,6 +165,13 @@ if ( ! function_exists( 'boldgrid_editor_setup' ) && false === strpos( BOLDGRID_
 		}
 	}
 
+	/**
+	 * Deactivate the legacy BoldGrid Editor plugin if it is still installed.
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
 	function boldgrid_editor_deactivate() {
 		deactivate_plugins( array( 'boldgrid-editor/boldgrid-editor.php' ), true );
 	}

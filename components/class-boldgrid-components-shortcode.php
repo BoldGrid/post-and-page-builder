@@ -352,12 +352,327 @@ class Boldgrid_Components_Shortcode {
 	protected function ajax_shortcode( $component, $type ) {
 		Boldgrid_Editor_Ajax::validate_nonce( 'gridblock_save' );
 
-		$attrs = $this->parse_attrs( $_POST );
-		$method = 'get_' . $type;
+		if ( ! in_array( $type, array( 'content', 'form' ), true ) ) {
+			wp_send_json_error( null, 400 );
+		}
 
-		wp_send_json( array(
-			'content' => $this->$method( $component, $attrs )
-		) );
+		$method = 'get_' . $type;
+		if ( ! is_callable( array( $this, $method ) ) ) {
+			wp_send_json_error( null, 400 );
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above.
+		$attrs = $this->sanitize_request_widget_attrs( $component, wp_unslash( $_POST ) );
+		$html  = $this->$method( $component, $attrs );
+
+		wp_send_json(
+			array(
+				'content' => $this->sanitize_ajax_output( $html, $type ),
+			)
+		);
+	}
+
+	/**
+	 * Sanitize rendered AJAX markup for the render type that produced it.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param mixed  $html Rendered markup.
+	 * @param string $type content|form.
+	 * @return string
+	 */
+	protected function sanitize_ajax_output( $html, $type ) {
+		if ( ! is_string( $html ) || '' === $html ) {
+			return '';
+		}
+
+		if ( 'form' !== $type ) {
+			return wp_kses_post( $html );
+		}
+
+		return wp_kses( $this->filter_form_style_blocks( $html ), $this->get_widget_form_allowed_html() );
+	}
+
+	/**
+	 * Markup a widget settings form is allowed to return.
+	 *
+	 * Post KSES drops the controls a widget form is built from, so form output
+	 * gets its own allowlist: post tags plus the controls the editor panel
+	 * serializes back into the shortcode. Event handler attributes are still
+	 * absent, so form markup cannot execute in the editor session.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @return array
+	 */
+	protected function get_widget_form_allowed_html() {
+		$global_attrs = array(
+			'aria-describedby' => true,
+			'aria-label'       => true,
+			'aria-labelledby'  => true,
+			'class'            => true,
+			'data-*'           => true,
+			'dir'              => true,
+			'hidden'           => true,
+			'id'               => true,
+			'lang'             => true,
+			'role'             => true,
+			'style'            => true,
+			'tabindex'         => true,
+			'title'            => true,
+		);
+
+		$controls = array(
+			'datalist' => array(),
+			'input'    => array(
+				'autocomplete' => true,
+				'checked'      => true,
+				'disabled'     => true,
+				'list'         => true,
+				'max'          => true,
+				'maxlength'    => true,
+				'min'          => true,
+				'multiple'     => true,
+				'name'         => true,
+				'pattern'      => true,
+				'placeholder'  => true,
+				'readonly'     => true,
+				'required'     => true,
+				'size'         => true,
+				'step'         => true,
+				'type'         => true,
+				'value'        => true,
+			),
+			'optgroup' => array(
+				'disabled' => true,
+				'label'    => true,
+			),
+			'option'   => array(
+				'disabled' => true,
+				'label'    => true,
+				'selected' => true,
+				'value'    => true,
+			),
+			'select'   => array(
+				'autocomplete' => true,
+				'disabled'     => true,
+				'multiple'     => true,
+				'name'         => true,
+				'required'     => true,
+				'size'         => true,
+			),
+			'style'    => array(),
+			'textarea' => array(
+				'cols'        => true,
+				'disabled'    => true,
+				'maxlength'   => true,
+				'name'        => true,
+				'placeholder' => true,
+				'readonly'    => true,
+				'required'    => true,
+				'rows'        => true,
+				'wrap'        => true,
+			),
+		);
+
+		foreach ( $controls as $tag => $attrs ) {
+			$controls[ $tag ] = array_merge( $attrs, $global_attrs );
+		}
+
+		return array_merge( wp_kses_allowed_html( 'post' ), $controls );
+	}
+
+	/**
+	 * Restrict the CSS a widget form may ship alongside its controls.
+	 *
+	 * KSES does not inspect element text, so style blocks are filtered before
+	 * the markup pass.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param string $html Rendered form markup.
+	 * @return string
+	 */
+	protected function filter_form_style_blocks( $html ) {
+		$html   = (string) $html;
+		$output = '';
+		$offset = 0;
+		$length = strlen( $html );
+
+		while ( $offset < $length && preg_match( '#<style\b[^>]*>#i', $html, $open, PREG_OFFSET_CAPTURE, $offset ) ) {
+			$open_start = $open[0][1];
+			$open_end    = $open_start + strlen( $open[0][0] );
+			$output    .= substr( $html, $offset, $open_start - $offset );
+
+			$has_close = preg_match( '#</style>#i', $html, $close, PREG_OFFSET_CAPTURE, $open_end );
+			$has_next  = preg_match( '#<style\b[^>]*>#i', $html, $next, PREG_OFFSET_CAPTURE, $open_end );
+
+			// A later opener before the next closer means this block never terminated.
+			if ( ! $has_close || ( $has_next && $next[0][1] < $close[0][1] ) ) {
+				$offset = $open_end;
+				continue;
+			}
+
+			$close_start = $close[0][1];
+			$close_end    = $close_start + strlen( $close[0][0] );
+			$css          = $this->sanitize_form_css( substr( $html, $open_end, $close_start - $open_end ) );
+
+			if ( '' !== $css ) {
+				$output .= '<style>' . $css . '</style>';
+			}
+
+			$offset = $close_end;
+		}
+
+		return $output . substr( $html, $offset );
+	}
+
+	/**
+	 * Keep widget form CSS to static presentation rules.
+	 *
+	 * Remote fetches, legacy script bindings and escape obfuscation drop the
+	 * whole block; widget form styling is cosmetic, so losing it cannot break
+	 * the controls.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param string $css Style block contents.
+	 * @return string
+	 */
+	protected function sanitize_form_css( $css ) {
+		$css = wp_strip_all_tags( (string) $css );
+		$css = preg_replace( '#/\*.*?\*/#s', '', $css );
+
+		if ( ! is_string( $css ) || '' === trim( $css ) ) {
+			return '';
+		}
+
+		$blocked = '#(@import|@charset|@namespace|expression\s*\(|url\s*\(|behavior\s*:|-moz-binding|javascript\s*:|\\\\)#i';
+
+		return preg_match( $blocked, $css ) ? '' : trim( $css );
+	}
+
+	/**
+	 * Widget id_base for a registered component name.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param array $component Component configuration.
+	 * @return string
+	 */
+	protected function get_widget_id_base( $component ) {
+		if ( empty( $component['name'] ) || ! is_string( $component['name'] ) ) {
+			return '';
+		}
+
+		if ( 0 === strpos( $component['name'], 'wp_' ) ) {
+			return sanitize_key( substr( $component['name'], 3 ) );
+		}
+
+		return sanitize_key( $component['name'] );
+	}
+
+	/**
+	 * Read only the widget instance for the requested component.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param array $component Component configuration.
+	 * @param array $params    Unslashed request parameters.
+	 * @return array
+	 */
+	protected function sanitize_request_widget_attrs( $component, $params ) {
+		$id_base = $this->get_widget_id_base( $component );
+		if ( '' === $id_base || ! is_array( $params ) ) {
+			return array();
+		}
+
+		$key = 'widget-' . $id_base;
+		if ( empty( $params[ $key ] ) || ! is_array( $params[ $key ] ) ) {
+			return array();
+		}
+
+		return $this->sanitize_widget_instance( $params[ $key ] );
+	}
+
+	/**
+	 * Sanitize a widget instance payload.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param array $widget_props Nested widget form values.
+	 * @return array
+	 */
+	protected function sanitize_widget_instance( $widget_props ) {
+		$attrs = array();
+
+		foreach ( (array) $widget_props as $widget_prop ) {
+			if ( ! is_array( $widget_prop ) ) {
+				continue;
+			}
+
+			foreach ( $widget_prop as $field => $value ) {
+				if ( ! is_string( $field ) && ! is_int( $field ) ) {
+					continue;
+				}
+
+				$field = sanitize_key( (string) $field );
+				if ( '' === $field ) {
+					continue;
+				}
+
+				$attrs[ $field ] = $this->sanitize_widget_field( $field, $value );
+			}
+		}
+
+		return $attrs;
+	}
+
+	/**
+	 * Sanitize one widget instance field by name.
+	 *
+	 * HTML-bearing fields are allowlisted at this boundary because the
+	 * previewing user may be an administrator rendering contributor data.
+	 *
+	 * @since 1.27.15
+	 *
+	 * @param string $field Field name.
+	 * @param mixed  $value Field value.
+	 * @return mixed
+	 */
+	protected function sanitize_widget_field( $field, $value ) {
+		if ( is_array( $value ) ) {
+			$out = array();
+			foreach ( $value as $child_key => $child_value ) {
+				if ( ! is_string( $child_key ) && ! is_int( $child_key ) ) {
+					continue;
+				}
+				$out[ sanitize_key( (string) $child_key ) ] = $this->sanitize_widget_field( $field, $child_value );
+			}
+			return $out;
+		}
+
+		if ( ! is_scalar( $value ) ) {
+			return '';
+		}
+
+		$value = (string) $value;
+
+		if ( in_array( $field, array( 'content', 'text', 'html', 'textarea' ), true ) ) {
+			return wp_kses_post( $value );
+		}
+
+		if ( in_array( $field, array( 'url', 'link', 'href', 'src' ), true ) ) {
+			$url = esc_url_raw( $value );
+			if ( $url && class_exists( 'Boldgrid_Editor_Url' ) && is_callable( array( 'Boldgrid_Editor_Url', 'is_public_host' ) )
+				&& ! Boldgrid_Editor_Url::is_public_host( $url )
+			) {
+				return '';
+			}
+			return $url;
+		}
+
+		return sanitize_text_field( $value );
 	}
 
 	/**

@@ -1,11 +1,14 @@
 echo "Copying to Build Directory"
 rm -Rf build
 mkdir -p build/post-and-page-builder
-rsync -azPq --exclude "bin/" --exclude ".git/" --exclude ".github/" --exclude "node_modules/" --exclude "build/" --exclude "tmp/" . build/post-and-page-builder
+rsync -azPq --exclude "bin/" --exclude ".git/" --exclude ".github/" --exclude "node_modules/" --exclude "build/" --exclude "tmp/" --exclude ".cursor/" --exclude ".claude/" . build/post-and-page-builder
 cd build/post-and-page-builder
 echo "Removing unwanted files"
 
 rm -Rf tests
+rm -Rf .cursor
+rm -Rf .claude
+rm -f .sec-project.yaml
 rm -Rf apigen
 rm -Rf coverage
 rm -Rf node_modules
@@ -48,3 +51,12 @@ rm -f babel.config.json
 echo "Creating Zip File"
 cd ..
 zip -rq "post-and-page-builder.zip" "post-and-page-builder"
+
+echo "Verifying no development-only paths were packaged"
+leaked=$(unzip -l "post-and-page-builder.zip" \
+	| grep -E "post-and-page-builder/(\.cursor/|\.claude/|\.sec-project\.yaml|tmp/)" || true)
+if [ -n "$leaked" ]; then
+	echo "error: development-only paths present in post-and-page-builder.zip:" >&2
+	echo "$leaked" >&2
+	exit 1
+fi

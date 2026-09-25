@@ -404,6 +404,7 @@ class Boldgrid_Editor_Builder {
 			checked='checked' name='boldgrid-in-page-containers'>
 		<input style='display:none' type='checkbox' value='<?php echo esc_js( wp_json_encode( $custom_colors ) ); ?>'
 			checked='checked' name='boldgrid-custom-colors'>
+		<?php wp_nonce_field( 'boldgrid_save_custom_colors', 'boldgrid-custom-colors-nonce' ); ?>
 		<input style='display:none' value name='boldgrid-record-feedback'>
 <?php
 
@@ -479,15 +480,37 @@ class Boldgrid_Editor_Builder {
 	 * @since 1.3
 	 */
 	public function save_colors() {
-		if ( isset( $_REQUEST['boldgrid-custom-colors'] ) ) {
-
-			$custom_colors = ! empty( $_REQUEST['boldgrid-custom-colors'] ) ?
-				sanitize_text_field( wp_unslash( $_REQUEST['boldgrid-custom-colors'] ) ) : '';
-
-			$custom_colors = json_decode( $custom_colors, true );
-			$custom_colors = is_array( $custom_colors ) ? $custom_colors : array();
-			Boldgrid_Editor_Option::update( 'custom_colors', $custom_colors );
+		// The dedicated nonce is verified before any color request value is read.
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		if ( ! current_user_can( 'manage_options' ) ||
+			! Boldgrid_Editor_Nonce::verify_admin_request(
+				'boldgrid_save_custom_colors',
+				'boldgrid-custom-colors-nonce'
+			) ||
+			! isset( $_POST['boldgrid-custom-colors'] ) ||
+			! is_scalar( $_POST['boldgrid-custom-colors'] )
+		) {
+			return;
 		}
+
+		$custom_colors_json = sanitize_text_field(
+			wp_unslash( $_POST['boldgrid-custom-colors'] )
+		);
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		if ( strlen( $custom_colors_json ) > 10000 ) {
+			return;
+		}
+
+		$custom_colors = json_decode( $custom_colors_json, true );
+		if ( ! is_array( $custom_colors ) || array_values( $custom_colors ) !== $custom_colors ) {
+			return;
+		}
+
+		$custom_colors = array_slice( $custom_colors, 0, 100 );
+		$custom_colors = Boldgrid_Editor_Service::get( 'assets' )
+			->validate_saved_colors( $custom_colors );
+
+		Boldgrid_Editor_Option::update( 'custom_colors', $custom_colors );
 	}
 
 	/**
