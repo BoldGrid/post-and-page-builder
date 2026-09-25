@@ -223,23 +223,36 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 				'post'
 			),
 			'post_status' => $status,
-			'posts_per_page' => 20
+			'posts_per_page' => 20,
+			'perm' => 'readable',
 		);
 
 		$results = new WP_Query( $args );
-		$standard_post_types = ! empty( $results->posts ) ? $results->posts : array();
+		$standard_post_types = array();
+		foreach ( $results->posts as $post ) {
+			$status_object = get_post_status_object( $post->post_status );
+			if ( ( $status_object && $status_object->public ) ||
+				current_user_can( 'read_post', $post->ID ) ) {
+				$standard_post_types[] = $post;
+			}
+		}
 
-		// Find GridBlocks.
-		$args = array (
-			'post_type' => array (
-				'bg_block'
-			),
-			'post_status' => $status,
-			'posts_per_page' => -1
-		);
+		// Find GridBlocks for roles granted access to the block library.
+		$block_post_type = array();
+		if ( current_user_can( 'edit_bg_blocks' ) ) {
+			$args = array (
+				'post_type' => array (
+					'bg_block'
+				),
+				'post_status' => $status,
+				'posts_per_page' => -1,
+				'perm' => 'readable',
+			);
 
-		$results = new WP_Query( $args );
-		$block_post_type = ! empty( $results->posts ) ? $results->posts : array();
+			$results = new WP_Query( $args );
+			$block_post_type = ! empty( $results->posts ) ? $results->posts : array();
+		}
+
 		$all_posts = array_merge( $block_post_type, $standard_post_types );
 
 		return $all_posts;

@@ -21,6 +21,33 @@
 class Boldgrid_Editor_Builder_Styles {
 
 	/**
+	 * Maximum CSS bytes allowed in one saved style entry.
+	 *
+	 * Compiled palette output (including button CSS) is stored as a single
+	 * `bg-controls-colors` rule and exceeds 70KB in the default stylesheet.
+	 *
+	 * @since 1.27.15
+	 * @var int
+	 */
+	const MAX_STYLE_CSS_BYTES = 512000;
+
+	/**
+	 * Maximum JSON bytes accepted for the shared style payload.
+	 *
+	 * @since 1.27.15
+	 * @var int
+	 */
+	const MAX_STYLES_JSON_BYTES = 1048576;
+
+	/**
+	 * Maximum number of style entries accepted in one save.
+	 *
+	 * @since 1.27.15
+	 * @var int
+	 */
+	const MAX_STYLE_ENTRIES = 100;
+
+	/**
 	 * Get the html named input for the styles values.
 	 *
 	 * @since 1.6
@@ -28,7 +55,13 @@ class Boldgrid_Editor_Builder_Styles {
 	 * @return string HTML to render.
 	 */
 	public function get_input() {
-		return "<input id='boldgrid-control-styles' style='display:none' name='boldgrid-control-styles'>";
+		return "<input id='boldgrid-control-styles' style='display:none' name='boldgrid-control-styles'>" .
+			wp_nonce_field(
+				'boldgrid_save_control_styles',
+				'boldgrid-control-styles-nonce',
+				false,
+				false
+			);
 	}
 
 	/**
@@ -169,10 +202,30 @@ class Boldgrid_Editor_Builder_Styles {
 	 */
 	public function validate( $styles ) {
 		$validated_styles = array();
-		foreach( $styles as &$style ) {
-			if ( ! preg_match( '#</?\w+#', $style['css'] ) ) {
-				$validated_styles[] = $style;
+		foreach ( $styles as $style ) {
+			if ( ! is_array( $style ) ||
+				! isset( $style['id'], $style['css'] ) ||
+				! is_scalar( $style['id'] ) ||
+				! is_scalar( $style['css'] )
+			) {
+				continue;
 			}
+
+			$id  = sanitize_key( $style['id'] );
+			$css = (string) $style['css'];
+
+			if ( '' === $id ||
+				'' === $css ||
+				false !== strpos( $css, "\0" ) ||
+				strlen( $css ) > self::MAX_STYLE_CSS_BYTES ||
+				preg_match( '#</?\w+#', $css )
+			) {
+				continue;
+			}
+
+			$style['id']        = $id;
+			$style['css']       = $css;
+			$validated_styles[] = $style;
 		}
 
 		return $validated_styles;
@@ -184,41 +237,75 @@ class Boldgrid_Editor_Builder_Styles {
 	 * @since 1.6
 	 */
 	public function save() {
-		if ( isset( $_REQUEST['boldgrid-control-styles'] ) ) {
-			$styles = ! empty( $_REQUEST['boldgrid-control-styles'] ) ?
-				sanitize_text_field( wp_unslash( $_REQUEST['boldgrid-control-styles'] ) ) : '';
+		// This writes a shared, web-served stylesheet, so require site administration.
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		if ( ! current_user_can( 'manage_options' ) ||
+			! Boldgrid_Editor_Nonce::verify_admin_request(
+				'boldgrid_save_control_styles',
+				'boldgrid-control-styles-nonce'
+			) ||
+			! isset( $_POST['boldgrid-control-styles'] ) ||
+			! is_scalar( $_POST['boldgrid-control-styles'] )
+		) {
+			return;
+		}
 
-			$styles = json_decode( $styles, true );
-			$styles = is_array( $styles ) ? $styles : array();
-			$styles = $this->validate( $styles );
+		$styles_json = wp_unslash( $_POST['boldgrid-control-styles'] );
+		$is_preview  = ! empty( $_POST['wp-preview'] );
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-			// Create stylesheet.
-			$css = $this->create_css_string( $styles );
+		if ( ! is_string( $styles_json ) ||
+			strlen( $styles_json ) > self::MAX_STYLES_JSON_BYTES
+		) {
+			return;
+		}
 
-			if ( empty( $css ) ) {
-				return;
-			}
+		$styles = json_decode( $styles_json, true );
+		if ( ! is_array( $styles ) ||
+			array_values( $styles ) !== $styles ||
+			count( $styles ) > self::MAX_STYLE_ENTRIES
+		) {
+			return;
+		}
 
-			if ( ! empty( $_POST['wp-preview'] ) ) {
-				// If previewing the page save to another option.
-				$css_file = $this->create_file( $css, '/preview-custom-styles.css' );
+		$submitted_count = count( $styles );
+		$styles          = $this->validate( $styles );
 
-				Boldgrid_Editor_Option::update( 'preview_styles', array(
+		if ( count( $styles ) !== $submitted_count ) {
+			return;
+		}
+
+		// Create stylesheet.
+		$css = $this->create_css_string( $styles );
+
+		if ( empty( $css ) ) {
+			return;
+		}
+
+		if ( $is_preview ) {
+			// If previewing the page save to another option.
+			$css_file = $this->create_file( $css, '/preview-custom-styles.css' );
+
+			Boldgrid_Editor_Option::update(
+				'preview_styles',
+				array(
 					'configuration' => $styles,
-					'css_filename' => $css_file,
-					'timestamp' => time()
-				) );
+					'css_filename'  => $css_file,
+					'timestamp'     => time(),
+				)
+			);
 
-			} else {
-				$css_file = $this->create_file( $css );
+		} else {
+			$css_file = $this->create_file( $css );
 
-				Boldgrid_Editor_Option::update( 'styles', array(
+			Boldgrid_Editor_Option::update(
+				'styles',
+				array(
 					'configuration' => $styles,
-					'css_filename' => $css_file,
-					'timestamp' => time()
-				) );
-			}
+					'css_filename'  => $css_file,
+					'timestamp'     => time(),
+				)
+			);
 		}
 	}
-
 }
