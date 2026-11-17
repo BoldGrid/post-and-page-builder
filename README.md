@@ -42,10 +42,10 @@ used in the WordPress page and post editor.
 ### Installing Dependencies
 Before you can use the development version of this plugin you must install the dependencies.
 
-First, install Node version 10 if necessary, and set the build to use it.
+First, install the Node version listed in `.nvmrc` (the same version CI uses), and set the build to use it.
 ```
-nvm install 10
-nvm use 10
+nvm install
+nvm use
 ```
 Then, proceed to install the dependencies.
 ```

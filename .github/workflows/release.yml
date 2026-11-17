@@ -17,6 +17,8 @@ permissions:
 jobs:
   release:
     name: Build and publish
+    # Forks and mirrors that sync this workflow must not publish to WordPress.org.
+    if: github.repository == 'BoldGrid/post-and-page-builder'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -49,7 +51,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version-file: .nvmrc
           cache: yarn
 
       - name: Validate composer.json
