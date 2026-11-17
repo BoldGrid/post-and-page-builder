@@ -19,7 +19,6 @@ rm -Rf bower_components
 rm -f .gitattributes
 rm -f .gitignore
 rm -f .gitmodules
-rm -f .travis.yml
 rm -f .nvmrc
 rm -f release.sh
 rm -f Gruntfile.js

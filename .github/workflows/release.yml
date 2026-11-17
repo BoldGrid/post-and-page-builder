@@ -1,0 +1,89 @@
+name: Release
+
+# Tag builds only (replaces the Travis deploy providers). Builds on PHP 7.4, syncs the tag to
+# WordPress.org SVN with @boldgrid/wordpress-tag-sync, then attaches post-and-page-builder.zip.
+on:
+  push:
+    tags:
+      - '*'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check release secrets
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          if [ -z "$SVN_USERNAME" ] || [ -z "$SVN_PASSWORD" ]; then
+            echo 'SVN_USERNAME and SVN_PASSWORD repository secrets are required to deploy.' >&2
+            exit 1
+          fi
+
+      - name: Install Subversion
+        run: sudo apt-get update -q && sudo apt-get install -y -q subversion
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Check platform requirements
+        run: composer check-platform-reqs
+
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Build
+        run: npm run build
+
+      - name: PHP syntax lint
+        run: |
+          find . \( -name vendor -o -name node_modules \) -prune -o -name '*.php' -print0 \
+            | xargs -0 -n1 php -l > /dev/null
+
+      # release.sh runs `clear` under `set -e`, which exits non-zero when TERM is unset.
+      - name: Deploy to WordPress.org
+        env:
+          WP_SVN_REPO: https://plugins.svn.wordpress.org/post-and-page-builder
+          WP_USERNAME: ${{ secrets.SVN_USERNAME }}
+          WP_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          TERM: xterm
+        run: |
+          chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
+          ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: post-and-page-builder.zip
+          fail_on_unmatched_files: true
