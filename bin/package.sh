@@ -53,7 +53,7 @@ zip -rq "post-and-page-builder.zip" "post-and-page-builder"
 
 echo "Verifying no development-only paths were packaged"
 leaked=$(unzip -l "post-and-page-builder.zip" \
-	| grep -E "post-and-page-builder/(\.cursor/|\.claude/|\.sec-project\.yaml|tmp/)" || true)
+	| grep -E "post-and-page-builder/(\.github/|\.cursor/|\.claude/|\.sec-project\.yaml|tmp/)" || true)
 if [ -n "$leaked" ]; then
 	echo "error: development-only paths present in post-and-page-builder.zip:" >&2
 	echo "$leaked" >&2

@@ -74,6 +74,13 @@ jobs:
           find . \( -name vendor -o -name node_modules \) -prune -o -name '*.php' -print0 \
             | xargs -0 -n1 php -l > /dev/null
 
+      - name: Check tag-sync still strips .github from the SVN export
+        run: |
+          if ! grep -qE '^rm -Rf \.github$' ./node_modules/@boldgrid/wordpress-tag-sync/release.sh; then
+            echo 'wordpress-tag-sync release.sh no longer removes .github; refusing to deploy.' >&2
+            exit 1
+          fi
+
       # release.sh runs `clear` under `set -e`, which exits non-zero when TERM is unset.
       - name: Deploy to WordPress.org
         env:
@@ -84,6 +91,14 @@ jobs:
         run: |
           chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
           ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
+
+      - name: Verify the release zip excludes CI files
+        run: |
+          unzip -Z1 post-and-page-builder.zip > zip-entries.txt
+          if grep -E '^post-and-page-builder/(\.github/|\.travis\.yml$)' zip-entries.txt; then
+            echo 'CI-only files found in post-and-page-builder.zip.' >&2
+            exit 1
+          fi
 
       - uses: softprops/action-gh-release@v2
         with:
