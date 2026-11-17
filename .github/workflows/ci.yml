@@ -1,6 +1,7 @@
 name: CI
 
-# Replaces Travis CI (.travis.yml removed). Same steps as the former Travis jobs on PHP 7.4 and 8.5, plus php -l.
+# Replaces Travis CI (.travis.yml removed). Same steps as the former Travis jobs on PHP 7.4 and 8.5,
+# plus php -l. Node comes from .nvmrc (24; Travis pinned 22).
 on:
   pull_request:
   push:
