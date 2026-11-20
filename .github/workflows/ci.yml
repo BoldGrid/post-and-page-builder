@@ -1,0 +1,71 @@
+name: CI
+
+# Replaces Travis CI (.travis.yml removed). Same steps as the former Travis jobs on PHP 7.4 and 8.5,
+# plus php -l. Node comes from .nvmrc (24; Travis pinned 22).
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.5']
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Check platform requirements
+        run: composer check-platform-reqs
+
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Build
+        run: npm run build
+
+      - name: PHP syntax lint
+        run: |
+          find . \( -name vendor -o -name node_modules \) -prune -o -name '*.php' -print0 \
+            | xargs -0 -n1 php -l > /dev/null
