@@ -1,7 +1,9 @@
 name: Release
 
-# Tag builds only (replaces the Travis deploy providers). Builds on PHP 7.4, syncs the tag to
-# WordPress.org SVN with @boldgrid/wordpress-tag-sync, then attaches post-and-page-builder.zip.
+# Tag builds only (replaces the Travis deploy providers). Runs the full CI workflow (PHP 7.4 to 8.6
+# PHPUnit, PHPCompatibility, PHPStan, PHPCS, lint, package, Playwright) first; only if that passes and the
+# tag matches the plugin version does it build on PHP 7.4, sync the tag to WordPress.org SVN with
+# @boldgrid/wordpress-tag-sync, and attach post-and-page-builder.zip.
 on:
   push:
     tags:
@@ -15,8 +17,17 @@ permissions:
   contents: read
 
 jobs:
+  # A tag must pass the same checks as a pull request before anything is published.
+  test:
+    name: Test
+    if: github.repository == 'BoldGrid/post-and-page-builder'
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
   release:
     name: Build and publish
+    needs: test
     # Forks and mirrors that sync this workflow must not publish to WordPress.org.
     if: github.repository == 'BoldGrid/post-and-page-builder'
     runs-on: ubuntu-latest
@@ -28,6 +39,15 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+
+      # wordpress-tag-sync publishes the checkout under the tag name, so a mismatch ships a mislabelled version.
+      - name: Check the tag matches the plugin version
+        run: |
+          version="$(sed -n 's/^ \* Version:[[:space:]]*//p' post-and-page-builder.php)"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match the plugin header Version ($version)." >&2
+            exit 1
+          fi
 
       - name: Check release secrets
         env:
@@ -49,7 +69,7 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -58,7 +78,7 @@ jobs:
         run: composer validate --strict
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist -o
 
       - name: Check platform requirements
         run: composer check-platform-reqs
@@ -70,9 +90,7 @@ jobs:
         run: npm run build
 
       - name: PHP syntax lint
-        run: |
-          find . \( -name vendor -o -name node_modules \) -prune -o -name '*.php' -print0 \
-            | xargs -0 -n1 php -l > /dev/null
+        run: bin/php-lint.sh
 
       - name: Check tag-sync still strips .github from the SVN export
         run: |
@@ -80,6 +98,34 @@ jobs:
             echo 'wordpress-tag-sync release.sh no longer removes .github; refusing to deploy.' >&2
             exit 1
           fi
+
+      # tag-sync copies the whole checkout to SVN; it does not strip these development-only paths.
+      - name: Check no development-only paths are present
+        run: |
+          leaked=''
+          for path in .sec-project.yaml tmp .cursor .claude .phpunit.result.cache test-results playwright-report; do
+            if [ -e "$path" ]; then
+              leaked="$leaked $path"
+            fi
+          done
+          if [ -n "$leaked" ]; then
+            echo "Development-only paths present in the release checkout:$leaked; refusing to deploy." >&2
+            exit 1
+          fi
+
+      # wordpress-tag-sync release.sh copies the checkout and only strips its own list of dev files.
+      # Strip remaining dev/config files and compiled JS/SCSS sources before release.sh syncs SVN and zips.
+      - name: Remove development-only files
+        run: |
+          rm -Rf docs test-results playwright-report tmp .cursor .claude
+          rm -f .sec-project.yaml .browserslistrc .codeclimate.yml .eslintignore .eslintrc.js .nvmrc .prettierrc babel.config.json package-lock.json phpcompat.xml.dist phpcs.ruleset.xml .phpunit.result.cache yarn-error.log
+          rm -f assets/js/classic.js assets/js/editor.js assets/js/gutenberg.js assets/js/public.js assets/js/settings.js
+          rm -Rf assets/js/forms assets/js/view
+          find assets/js/builder -mindepth 1 -maxdepth 1 ! -name css -exec rm -Rf {} +
+          find assets/scss -mindepth 1 -maxdepth 1 ! -name color-palette-scss -exec rm -Rf {} +
+          rm -f includes/config/.gitignore
+          rm -Rf vendor/bin vendor/boldgrid/library/bin vendor/boldgrid/library/tests
+          rm -f vendor/boldgrid/library/.editorconfig vendor/boldgrid/library/.eslintignore vendor/boldgrid/library/.eslintrc.js vendor/boldgrid/library/.gitignore vendor/boldgrid/library/.prettierrc vendor/boldgrid/library/.travis.yml vendor/boldgrid/library/README.md vendor/boldgrid/library/composer.json vendor/boldgrid/library/composer.lock vendor/boldgrid/library/package.json vendor/boldgrid/library/phpunit.xml vendor/boldgrid/library/yarn.lock
 
       # release.sh runs `clear` under `set -e`, which exits non-zero when TERM is unset.
       - name: Deploy to WordPress.org
@@ -92,15 +138,44 @@ jobs:
           chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
           ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
 
-      - name: Verify the release zip excludes CI files
+      # Same development-only set that bin/package.sh rejects.
+      - name: Verify the release zip excludes CI and development-only files
         run: |
           unzip -Z1 post-and-page-builder.zip > zip-entries.txt
-          if grep -E '^post-and-page-builder/(\.github/|\.travis\.yml$)' zip-entries.txt; then
-            echo 'CI-only files found in post-and-page-builder.zip.' >&2
+          if grep -E '^post-and-page-builder/(\.git(/|$)|\.github/|\.travis\.yml$|\.sec-project\.yaml$|\.cursor/|\.claude/|\.browserslistrc$|\.codeclimate\.yml$|\.editorconfig$|\.eslintignore$|\.eslintrc\.js$|\.gitattributes$|\.gitignore$|\.gitmodules$|\.nvmrc$|\.phpunit\.result\.cache$|\.prettierrc$|\.stylelintignore$|README\.md$|CONTRIBUTING\.md$|CHANGELOG\.txt$|babel\.config\.json$|composer\.(json|lock)$|gulpfile\.js$|package(-lock)?\.json$|phpcompat\.xml\.dist$|phpcs\.ruleset\.xml$|phpunit\.xml(\.dist)?$|stylelint\.config\.js$|webpack\.config\.js$|yarn\.lock$|bin/|docs/|playwright-report/|test-results/|tests/|tmp/|tools/|includes/config/\.gitignore$|assets/js/(classic|editor|gutenberg|public|settings)\.js$|assets/js/(forms|view)/|assets/js/builder/([^c]|c[^s]|cs[^s]|css[^/])|assets/scss/([^c]|c[^o]|co[^l])|vendor/bin/|vendor/boldgrid/library/(bin/|tests/|\.|composer\.|package\.json$|phpunit\.xml$|yarn\.lock$|README\.md$)|vendor/(phpunit|yoast|squizlabs|wp-coding-standards|phpcompatibility|phpcsstandards|dealerdirect)/)' zip-entries.txt; then
+            echo 'CI files, development-only paths or Composer dev dependencies found in post-and-page-builder.zip.' >&2
+            rm -f zip-entries.txt
             exit 1
           fi
 
-      - uses: softprops/action-gh-release@v2
+      # Same required runtime set that bin/package.sh checks.
+      - name: Verify the release zip includes required runtime files
+        run: |
+          missing=''
+          for required in post-and-page-builder.php readme.txt .htaccess vendor/autoload.php vendor/boldgrid/library/src/Util/Load.php assets/dist/editor.min.js assets/dist/editor.min.css assets/dist/public.min.js assets/js/builder/css/before-theme.css assets/js/builder/css/draggable.css assets/scss/color-palette-scss/buttons/buttons.scss support/wpforms/assets/js/shortcode.js; do
+            if ! grep -qxF "post-and-page-builder/${required}" zip-entries.txt; then
+              missing="$missing $required"
+            fi
+          done
+          rm -f zip-entries.txt
+          if [ -n "$missing" ]; then
+            echo "Required runtime files missing from post-and-page-builder.zip:$missing" >&2
+            exit 1
+          fi
+          zip_verify_dir="${RUNNER_TEMP}/verify-release-zip"
+          rm -Rf "$zip_verify_dir"
+          mkdir -p "$zip_verify_dir"
+          unzip -q post-and-page-builder.zip -d "$zip_verify_dir"
+          if ! php -r 'require $argv[1]; exit( class_exists( "Boldgrid\\Library\\Util\\Load" ) ? 0 : 1 );' "$zip_verify_dir/post-and-page-builder/vendor/autoload.php"; then
+            rm -Rf "$zip_verify_dir"
+            echo 'Packaged vendor/autoload.php failed to load Boldgrid\Library\Util\Load.' >&2
+            exit 1
+          fi
+          rm -Rf "$zip_verify_dir"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
         with:
+          token: ${{ github.token }}
           files: post-and-page-builder.zip
           fail_on_unmatched_files: true

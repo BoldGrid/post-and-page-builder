@@ -160,13 +160,13 @@ class Boldgrid_Editor_Gridblock_Post {
 			'bg_block_type',
 			'bg_block',
 			array(
-				'rewrite' => array( 'slug' => 'bg-block-types' ),
-				'label' => __( 'Block Types' ),
+				'rewrite'           => array( 'slug' => 'bg-block-types' ),
+				'label'             => __( 'Block Types', 'boldgrid-editor' ),
 				'show_admin_column' => true,
-				'show_in_menu' => false,
-				'show_in_rest' => true,
+				'show_in_menu'      => false,
+				'show_in_rest'      => true,
 				'show_in_nav_menus' => false,
-				'description' => 'Block Types'
+				'description'       => 'Block Types',
 			)
 		);
 

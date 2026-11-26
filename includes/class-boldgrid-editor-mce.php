@@ -35,7 +35,7 @@ class Boldgrid_Editor_MCE {
 	 * @since 1.4.7
 	 */
 	public function __construct( $configs ) {
-		return $this->configs = $configs;
+		$this->configs = $configs;
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Boldgrid_Editor_MCE {
 
 		// Shows keybinding in fullscreen button tooltip.
 		add_filter( 'wp_mce_translation', function( $translation, $mce_locale ) {
-			$translation['Fullscreen'] = __( 'Fullscreen (Ctrl+Shift+F)', 'boldgrid_editor' );
+			$translation['Fullscreen'] = __( 'Fullscreen (Ctrl+Shift+F)', 'boldgrid-editor' );
 			return $translation;
 		}, 10, 2 );
 

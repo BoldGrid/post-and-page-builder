@@ -138,7 +138,7 @@ class HeadingWidget extends \WP_Widget {
 		$selected_size = ! empty ( $instance['bgc_heading_type'] ) ? $instance['bgc_heading_type'] : 'h1';
 
 		?>
-		<h4><?php _e( 'Heading Type', 'boldgrid-builder' ); ?></h4>
+		<h4><?php esc_html_e( 'Heading Type', 'boldgrid-editor' ); ?></h4>
 		<div id="<?php echo $field_name ?>" class="buttonset bgc">
 
 			<input class="switch-input screen-reader-text bgc"

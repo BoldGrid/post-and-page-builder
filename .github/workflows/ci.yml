@@ -1,11 +1,28 @@
 name: CI
 
-# Replaces Travis CI (.travis.yml removed). Same steps as the former Travis jobs on PHP 7.4 and 8.5,
-# plus php -l. Node comes from .nvmrc (24; Travis pinned 22).
+# Replaces Travis CI (.travis.yml removed).
+#
+# PHP range: the plugin supports PHP 7.4 and later and is tested through PHP 8.6.
+#   - PHPUnit runs on every PHP minor from 7.4 to 8.6 (one composer.lock, config.platform.php 7.4).
+#     Deprecations, warnings and notices fail the run, including ones raised while the plugin loads.
+#   - The same minor versions are linted, and PHPCompatibility 10 scans the source for 7.4 through 8.6.
+#   - Extra PHPUnit legs vary what a PHP version alone does not: the oldest WordPress, MySQL 5.7,
+#     MariaDB, multisite, and a missing mbstring function.
+# Raise the ceiling in two places together: the php matrix below and testVersion in phpcompat.xml.dist.
+# tests/test-boldgrid-editor-php-range.php fails if the two drift.
+#
+# Static checks: PHPStan level 1 against a baseline of legacy reports (tests/phpstan), the WordPress Coding
+# Standards on changed lines only plus the text domain sniff on every file (phpcs.ruleset.xml), and the release
+# zip built by bin/package.sh, which fails on development-only paths and missing runtime files.
+# The PHP 7.4 / WordPress latest / MySQL 8.4 PHPUnit leg also reports line coverage (summary on the run page, Clover
+# XML as an artifact). It is not on a PHP 8 leg: the locked PHPUnit 8.5 refuses to collect coverage on PHP 8.
+#
+# Node comes from .nvmrc. Release builds call this workflow before they publish (see release.yml).
 on:
   pull_request:
   push:
     branches: [master]
+  workflow_call:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -15,43 +32,111 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: PHP ${{ matrix.php }}
+  phpunit:
+    name: PHPUnit (PHP ${{ matrix.php }}, WP ${{ matrix.wp }}, ${{ matrix.db }}${{ matrix.multisite == '1' && ', multisite' || '' }}${{ matrix.php_flags != '' && ', no mb_encode_numericentity' || '' }}${{ matrix.coverage && ', coverage' || '' }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.5']
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+        wp: ['latest']
+        db: ['mysql:8.4']
+        multisite: ['0']
+        php_flags: ['']
+        include:
+          # Adds coverage to the existing PHP 7.4 / WP latest / MySQL 8.4 leg rather than a new one. Report only: no
+          # threshold. It is PHP 7.4 because the locked PHPUnit 8.5 (php-code-coverage 7) cannot collect coverage on PHP 8.
+          - php: '7.4'
+            coverage: pcov
+          # Oldest stack: the oldest WordPress the PHPUnit 8 / polyfills test library runs on, MySQL 5.7.
+          - php: '7.4'
+            wp: '5.9'
+            db: 'mysql:5.7'
+            multisite: '0'
+            php_flags: ''
+          # MariaDB and multisite, on the newest PHP.
+          - php: '8.6'
+            wp: 'latest'
+            db: 'mariadb:10.11'
+            multisite: '1'
+            php_flags: ''
+          # Boldgrid_Layout::utf8_to_html() falls back to the unconverted input without mbstring's
+          # mb_encode_numericentity(); disabling the function exercises that branch on both ends.
+          - php: '7.4'
+            wp: 'latest'
+            db: 'mysql:8.4'
+            multisite: '0'
+            php_flags: '-d disable_functions=mb_encode_numericentity'
+          - php: '8.6'
+            wp: 'latest'
+            db: 'mysql:8.4'
+            multisite: '0'
+            php_flags: '-d disable_functions=mb_encode_numericentity'
+
+    services:
+      mysql:
+        image: ${{ matrix.db }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: wordpress_test
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
     steps:
       - uses: actions/checkout@v5
 
+      - name: Install SVN (WordPress test library bootstrap)
+        run: sudo apt-get update -q && sudo apt-get install -y subversion
+
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, xml, curl, zip
-          coverage: none
+          extensions: mbstring, xml, mysql, mysqli, curl, zip
+          ini-values: error_reporting=-1, display_errors=On
+          coverage: ${{ matrix.coverage || 'none' }}
           tools: composer:v2
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
 
       - name: Composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Validate composer.json
-        run: composer validate --strict
+      - name: Resolve WordPress version
+        id: wp
+        env:
+          WP_REQUESTED: ${{ matrix.wp }}
+        run: |
+          if [ "$WP_REQUESTED" != 'latest' ]; then
+            echo "version=${WP_REQUESTED}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          latest="$(curl -fsSL https://api.wordpress.org/core/version-check/1.7/ | jq -r '.offers[0].version // empty')"
+          if [ -z "$latest" ]; then
+            echo 'Could not resolve latest WordPress version' >&2
+            exit 1
+          fi
+          echo "version=${latest}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            /tmp/wordpress
+            /tmp/wordpress-tests-lib
+          key: ${{ runner.os }}-wp-tests-lib-${{ steps.wp.outputs.version }}
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
@@ -59,13 +144,267 @@ jobs:
       - name: Check platform requirements
         run: composer check-platform-reqs
 
+      - name: Install WordPress test library
+        run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 "${{ steps.wp.outputs.version }}" true
+
+      # Fails on a parse error and on compile-time deprecations, which `php -l` alone reports with exit 0.
+      - name: PHP syntax lint
+        run: bin/php-lint.sh
+
+      - name: PHPUnit
+        env:
+          WP_MULTISITE: ${{ matrix.multisite }}
+          PHP_FLAGS: ${{ matrix.php_flags }}
+          COVERAGE_DIR: ${{ matrix.coverage && format('{0}/coverage', runner.temp) || '' }}
+        run: |
+          if [ -n "$COVERAGE_DIR" ]; then
+            php $PHP_FLAGS vendor/bin/phpunit --coverage-clover "$COVERAGE_DIR/clover.xml" --coverage-text="$COVERAGE_DIR/summary.txt"
+            test -s "$COVERAGE_DIR/summary.txt" && test -s "$COVERAGE_DIR/clover.xml" || { echo '::error::PHPUnit wrote no coverage report (summary.txt, clover.xml).'; exit 1; }
+          else
+            php $PHP_FLAGS vendor/bin/phpunit --no-coverage
+          fi
+
+      # phpunit.xml excludes the ajax group from the default run (WordPress convention).
+      - name: PHPUnit (ajax group)
+        env:
+          WP_MULTISITE: ${{ matrix.multisite }}
+          PHP_FLAGS: ${{ matrix.php_flags }}
+          COVERAGE_DIR: ${{ matrix.coverage && format('{0}/coverage', runner.temp) || '' }}
+        run: |
+          if [ -n "$COVERAGE_DIR" ]; then
+            php $PHP_FLAGS vendor/bin/phpunit --group ajax --coverage-clover "$COVERAGE_DIR/clover-ajax.xml" --coverage-text="$COVERAGE_DIR/summary-ajax.txt"
+            test -s "$COVERAGE_DIR/summary-ajax.txt" && test -s "$COVERAGE_DIR/clover-ajax.xml" || { echo '::error::PHPUnit wrote no coverage report (summary-ajax.txt, clover-ajax.xml).'; exit 1; }
+          else
+            php $PHP_FLAGS vendor/bin/phpunit --no-coverage --group ajax
+          fi
+
+      - name: Coverage summary
+        if: matrix.coverage
+        env:
+          COVERAGE_DIR: ${{ runner.temp }}/coverage
+        run: |
+          {
+            echo '### PHP line coverage (PHP ${{ matrix.php }})'
+            for run in 'Default suite:summary' 'Ajax group:summary-ajax'; do
+              echo
+              echo "${run%%:*}"
+              echo '```'
+              sed -n '/Summary:/,/^$/p' "$COVERAGE_DIR/${run##*:}.txt"
+              echo '```'
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage
+        if: matrix.coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: php-coverage
+          path: ${{ runner.temp }}/coverage
+
+  phpcompat:
+    name: PHPCompatibility (PHP 7.4 to 8.6)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # PHP_CodeSniffer 4 with PHPCompatibility 10, locked in tests/phpcompat. The 9.x sniffs predate
+      # PHP 8.4, 8.5 and 8.6 and do not report their deprecations. Warnings fail the job.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-phpcompat-${{ hashFiles('tests/phpcompat/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-phpcompat-
+
+      - name: Validate tests/phpcompat/composer.json
+        run: composer validate --strict --working-dir=tests/phpcompat
+
+      - name: Install PHPCompatibility tools
+        run: composer install --no-interaction --no-progress --prefer-dist --working-dir=tests/phpcompat
+
+      - name: PHPCompatibility (testVersion 7.4-8.6)
+        run: tests/phpcompat/vendor/bin/phpcs --standard=phpcompat.xml.dist
+
+  phpstan:
+    name: PHPStan (level 1, baseline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # PHPStan 2 and the WordPress stubs, locked in tests/phpstan. phpVersion in the config covers 7.4 to 8.6.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-phpstan-${{ hashFiles('composer.lock', 'tests/phpstan/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-phpstan-
+
+      # vendor/boldgrid supplies the library classes the plugin calls.
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist
+
+      - name: Validate tests/phpstan/composer.json
+        run: composer validate --strict --working-dir=tests/phpstan
+
+      - name: Install PHPStan
+        run: composer install --no-interaction --no-progress --prefer-dist --working-dir=tests/phpstan
+
+      - name: PHPStan
+        run: tests/phpstan/vendor/bin/phpstan analyse -c tests/phpstan/phpstan.neon.dist --no-progress --memory-limit=1G
+
+  phpcs:
+    name: PHPCS (WordPress Coding Standards)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Text domain (every file)
+        run: vendor/bin/phpcs --standard=phpcs.ruleset.xml --sniffs=WordPress.WP.I18n -s
+
+      # The legacy tree does not pass WordPress-Core/Docs/Extra, so only lines this change adds or modifies are checked.
+      # A tag build (release.yml) has no base to compare with; its commits were checked on their pull requests.
+      - name: Coding standards (changed lines)
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BASE_SHA" ] || [ -z "${BASE_SHA//0/}" ]; then
+            echo "No base commit for a ${GITHUB_EVENT_NAME} on ${GITHUB_REF}; skipping the changed-lines check."
+            exit 0
+          fi
+          php bin/phpcs-changed.php "$BASE_SHA"
+
+  lint:
+    name: Lint, build, package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, xml, curl, zip
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      # Fails when composer.lock pins a package with a published security advisory.
+      - name: Audit Composer dependencies
+        run: composer audit --locked
+
       - name: Install Node dependencies
         run: yarn install --frozen-lockfile --non-interactive
+
+      - name: JavaScript lint (tests)
+        run: yarn run js-lint:tests
+
+      # The builder sources predate the current ESLint config; report without failing until they are cleaned up.
+      - name: JavaScript lint (builder sources, report only)
+        continue-on-error: true
+        run: yarn run js-lint
 
       - name: Build
         run: npm run build
 
-      - name: PHP syntax lint
-        run: |
-          find . \( -name vendor -o -name node_modules \) -prune -o -name '*.php' -print0 \
-            | xargs -0 -n1 php -l > /dev/null
+      # Builds the zip with production Composer dependencies; fails on development-only paths, missing built
+      # assets, or an autoloader that cannot load the BoldGrid library.
+      - name: Package
+        run: bash bin/package.sh
+
+  playwright:
+    name: Playwright
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      # The release workflow builds before it publishes, so the dist specs run against the same build.
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright
+        env:
+          PPB_PLAYWRIGHT_OUT: ${{ runner.temp }}/ppb-playwright
+        run: yarn test
+
+      - name: Upload Playwright results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results
+          path: ${{ runner.temp }}/ppb-playwright
+          if-no-files-found: ignore

@@ -19,3 +19,7 @@ assets/css/font-awesome.min.css
 tmp/
 .cursor/working/
 .phpunit.result.cache
+
+# Playwright output (default is ~/tmp/ppb-playwright; see tests/playwright/playwright.config.js).
+test-results/
+playwright-report/

@@ -198,11 +198,11 @@ class Boldgrid_Editor_Setup {
 		$nonce_check = check_ajax_referer( 'boldgrid_editor_dismiss_onb_videos', 'nonce', false );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-editor' ) );
 		}
 
 		if ( 1 !== $nonce_check ) {
-			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-inspirations' ) );
+			wp_die( esc_html__( 'Error: WordPress security violation.', 'boldgrid-editor' ) );
 		}
 
 		$this->check_and_dismiss( 'onb_videos' );

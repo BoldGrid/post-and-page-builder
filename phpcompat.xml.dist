@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="Post and Page Builder PHP compatibility">
+	<description>
+		PHPCompatibilityWP for the tested PHP range, 7.4 through 8.6 (Requires PHP 7.4).
+		Run it with the PHP_CodeSniffer 4 / PHPCompatibility 10 tools in tests/phpcompat (yarn phpcompat).
+		Raise the upper bound together with the CI PHP matrix; a test keeps the two in step.
+		vendor/boldgrid ships inside the plugin, so it is scanned; the other vendor packages are not.
+		Style rules live in phpcs.ruleset.xml.
+	</description>
+
+	<file>.</file>
+	<exclude-pattern type="relative">^vendor/(?!boldgrid/)</exclude-pattern>
+	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
+	<exclude-pattern type="relative">^tmp/*</exclude-pattern>
+	<exclude-pattern type="relative">^build/*</exclude-pattern>
+	<exclude-pattern type="relative">^tests/phpcompat/*</exclude-pattern>
+	<exclude-pattern type="relative">^tests/phpstan/vendor/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+	<arg name="parallel" value="8"/>
+
+	<config name="testVersion" value="7.4-8.6"/>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!--
+		boldgrid/library 2.13.15 Key/Validate.php calls trim() with the default list on an API key. The key goes
+		through sanitize_key() right after, which removes a form feed, so only an already invalid key can differ.
+		Remove this exemption when the library passes an explicit list and the locked version is updated.
+	-->
+	<rule ref="PHPCompatibility.ParameterValues.NewTrimCharactersDefault">
+		<exclude-pattern type="relative">vendor/boldgrid/library/src/Library/Key/Validate\.php$</exclude-pattern>
+	</rule>
+
+	<!-- includes/template/*.php are Underscore templates with no PHP tags. -->
+	<rule ref="Internal.NoCodeFound">
+		<severity>0</severity>
+	</rule>
+</ruleset>

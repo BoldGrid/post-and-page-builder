@@ -30,7 +30,7 @@ class Boldgrid_Editor_Assets {
 	public $configs = array();
 
 	public function __construct( $configs ) {
-		return $this->configs = $configs;
+		$this->configs = $configs;
 	}
 
 	/**
@@ -651,6 +651,7 @@ class Boldgrid_Editor_Assets {
 			wp_localize_script(
 				'wp-color-picker',
 				'wpColorPickerL10n',
+				// phpcs:disable WordPress.WP.I18n.MissingArgDomain -- Core strings, translated by WordPress.
 				array(
 					'clear'            => __( 'Clear' ),
 					'clearAriaLabel'   => __( 'Clear color' ),
@@ -658,6 +659,7 @@ class Boldgrid_Editor_Assets {
 					'defaultAriaLabel' => __( 'Select default color' ),
 					'pick'             => __( 'Select Color' ),
 					'defaultLabel'     => __( 'Color value' ),
+					// phpcs:enable WordPress.WP.I18n.MissingArgDomain
 			) );
 		}
 

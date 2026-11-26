@@ -543,13 +543,13 @@ class Boldgrid_Components_Shortcode {
 		$css = wp_strip_all_tags( (string) $css );
 		$css = preg_replace( '#/\*.*?\*/#s', '', $css );
 
-		if ( ! is_string( $css ) || '' === trim( $css ) ) {
+		if ( ! is_string( $css ) || '' === trim( $css, Boldgrid_Editor_Url::TRIM_CHARS ) ) {
 			return '';
 		}
 
 		$blocked = '#(@import|@charset|@namespace|expression\s*\(|url\s*\(|behavior\s*:|-moz-binding|javascript\s*:|\\\\)#i';
 
-		return preg_match( $blocked, $css ) ? '' : trim( $css );
+		return preg_match( $blocked, $css ) ? '' : trim( $css, Boldgrid_Editor_Url::TRIM_CHARS );
 	}
 
 	/**

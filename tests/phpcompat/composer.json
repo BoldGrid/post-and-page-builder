@@ -1,0 +1,18 @@
+{
+    "name": "boldgrid/post-and-page-builder-phpcompat",
+    "description": "PHPCompatibility 10 scan (PHP_CodeSniffer 4).",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "alpha",
+    "prefer-stable": true,
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^4.0",
+        "phpcompatibility/php-compatibility": "10.0.0-alpha3",
+        "phpcompatibility/phpcompatibility-wp": "3.0.0-alpha3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "config": {
+        "platform": { "php": "7.4.0" },
+        "allow-plugins": { "dealerdirect/phpcodesniffer-composer-installer": true }
+    }
+}

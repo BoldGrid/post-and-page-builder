@@ -321,7 +321,10 @@ class Test_Boldgrid_Component_Ajax_Boundaries extends WP_Ajax_UnitTestCase {
 		$this->assertStringContainsString( 'name="widget-test[][title]"', $form );
 		$this->assertStringContainsString( 'value="Widget title"', $form );
 		$this->assertStringContainsString( '<select', $form );
-		$this->assertStringContainsString( '<option value="left" selected="selected"', $form );
+		$this->assertMatchesRegularExpression(
+			'#<option\b(?=[^>]*\svalue="left")(?=[^>]*\sselected="selected")[^>]*>Left</option>#',
+			$form
+		);
 		$this->assertStringContainsString( '<textarea', $form );
 		$this->assertStringContainsString( 'rows="4"', $form );
 		$this->assertStringContainsString( '<label for="widget-test-title"', $form );

@@ -373,9 +373,14 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 	}
 
 	/**
-	 * Convert content encoding from "UTF-8" to "HTML-ENTITIES".
+	 * Convert non-ASCII UTF-8 characters to numeric HTML entities.
 	 *
-	 * If mbstring is not loaded in PHP then the input will be returned unconverted.
+	 * DOMDocument::loadHTML() reads input as ISO-8859-1, so non-ASCII characters are written as entities
+	 * first. ASCII, including markup, is left unchanged. If mbstring is not loaded in PHP then the input
+	 * will be returned unconverted.
+	 *
+	 * This replaces mb_convert_encoding( $input, 'HTML-ENTITIES', 'UTF-8' ), which is deprecated as of
+	 * PHP 8.2 and emits E_DEPRECATED on every call.
 	 *
 	 * @since 1.2.5
 	 *
@@ -385,10 +390,13 @@ class Boldgrid_Layout extends Boldgrid_Editor_Media_Tab {
 	 * @return string Content that may have been converted.
 	 */
 	public static function utf8_to_html( $input ) {
-		if( function_exists( 'mb_convert_encoding' ) ){
-			return mb_convert_encoding( $input, 'HTML-ENTITIES', 'UTF-8' );
-		} else {
-			return $input;
+		// Cast first: PHP 8.1 deprecates passing null to a non-nullable internal function parameter.
+		$input = (string) $input;
+
+		if ( function_exists( 'mb_encode_numericentity' ) ) {
+			return mb_encode_numericentity( $input, array( 0x80, 0x10FFFF, 0, 0x1FFFFF ), 'UTF-8' );
 		}
+
+		return $input;
 	}
 }

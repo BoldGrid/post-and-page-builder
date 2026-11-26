@@ -19,6 +19,14 @@ class Boldgrid_Editor_Url {
 	const MAX_REDIRECT_URLS = 10;
 
 	/**
+	 * Characters removed by trim() when sanitizing URLs and CSS.
+	 *
+	 * This is the default list of PHP 7.4 through 8.5. PHP 8.6 also strips a form feed by default, so
+	 * every trim() call passes this list to keep the result identical on all supported PHP versions.
+	 */
+	const TRIM_CHARS = " \n\r\t\v\x00";
+
+	/**
 	 * Validate http/https scheme.
 	 *
 	 * @param string $url URL.
@@ -130,11 +138,11 @@ class Boldgrid_Editor_Url {
 	 * @return string|false
 	 */
 	public static function sanitize_http_url( $url ) {
-		if ( ! is_string( $url ) || '' === trim( $url ) ) {
+		if ( ! is_string( $url ) || '' === trim( $url, self::TRIM_CHARS ) ) {
 			return false;
 		}
 
-		$url = esc_url_raw( trim( $url ) );
+		$url = esc_url_raw( trim( $url, self::TRIM_CHARS ) );
 		if ( empty( $url ) || ! self::is_public_host( $url ) ) {
 			return false;
 		}
@@ -149,11 +157,11 @@ class Boldgrid_Editor_Url {
 	 * @return string|false
 	 */
 	public static function sanitize_redirect_location( $location ) {
-		if ( ! is_string( $location ) || '' === trim( $location ) ) {
+		if ( ! is_string( $location ) || '' === trim( $location, self::TRIM_CHARS ) ) {
 			return false;
 		}
 
-		$location = esc_url_raw( trim( $location ) );
+		$location = esc_url_raw( trim( $location, self::TRIM_CHARS ) );
 
 		return self::is_public_host( $location ) ? $location : false;
 	}

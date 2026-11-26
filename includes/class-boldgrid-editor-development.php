@@ -61,6 +61,7 @@ class Boldgrid_Editor_Development {
 	<div class="notice notice-error"><p>
 			<?php
 			printf(
+				/* translators: 1: Opening strong tag, 2: closing strong tag, 3: download link, 4: GitHub link. */
 				esc_html__(
 					'It looks like your running an incomplete development build of %1$sPost and Page Builder%2$s. Please download the stable version from %3$s. If your a developer, please see the %4$s page for more information on contributing.',
 					'boldgrid-editor'

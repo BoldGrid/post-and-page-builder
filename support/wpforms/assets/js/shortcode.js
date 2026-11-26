@@ -1,9 +1,41 @@
 ( function( window, $ ) {
 	var postID = $( '#post_ID' ).val() || 0,
-		media, boldgrid_form;
+		media, boldgrid_form, previewMarkup;
 
     var boldgrid_edit_form = $.Event( 'boldgrid_edit_form' ),
 		pluginName = 'wpforms';
+
+	/**
+	 * Get the server rendered preview markup for a form, as a plain string.
+	 *
+	 * @param {string} formId Form ID.
+	 * @return {string|null} Markup or null if not available.
+	 */
+	var getPreviewMarkup = function( formId ) {
+		var element, parsed;
+
+		if ( ! previewMarkup ) {
+			element = document.getElementById( 'boldgrid-wpforms-preview-markup' );
+			if ( ! element ) {
+				return null;
+			}
+
+			try {
+				parsed = JSON.parse( element.textContent );
+			} catch ( e ) {
+				parsed = null;
+			}
+
+			previewMarkup = parsed && 'object' === typeof parsed ? parsed : {};
+		}
+
+		if ( Object.prototype.hasOwnProperty.call( previewMarkup, formId ) &&
+			'string' === typeof previewMarkup[ formId ] ) {
+			return previewMarkup[ formId ];
+		}
+
+		return null;
+	};
 
 	media = {
 		state: [],
@@ -39,19 +71,18 @@
 			var options = this.shortcode.attrs.named,
 				desc = 'true' == options.description ? '1' : '0',
 				title = 'true' == options.title  ? '1' : '0',
-				currentSelector = 'editor-boldgrid-form-' + options.id;
+				formId = String( options.id || '' ),
+				markup = /^\d+$/.test( formId ) ? getPreviewMarkup( formId ) : null;
 
-			if ( $( '#tmpl-' + currentSelector ).length ) {
-				this.template = wp.media.template( currentSelector );
-
+			if ( null !== markup ) {
 				this.render( '<div class="boldgrid-' + pluginName + '"' + 'data-id=\'' +
-					options.id + '\' data-description=' + desc +
-					' data-title=' + title + '>' + this.template() + '</div>' );
+					formId + '\' data-description=' + desc +
+					' data-title=' + title + '>' + markup + '</div>' );
 
 				setTimeout( function() {
 					if ( tinymce && tinymce.activeEditor && BOLDGRID.EDITOR.mce ) {
 						let $form = $( BOLDGRID.EDITOR.mce.iframeElement ).contents()
-							.find( '.boldgrid-' + pluginName + '[data-id="' + options.id + '"]' );
+							.find( '.boldgrid-' + pluginName + '[data-id="' + formId + '"]' );
 
 						$form.each( function() {
 							var $this = $( this );

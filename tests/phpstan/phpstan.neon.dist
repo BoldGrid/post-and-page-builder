@@ -1,0 +1,28 @@
+# PHPStan for the plugin's own PHP, with WordPress stubs (yarn phpstan:install, then yarn phpstan).
+# Level 1 on PHP 7.4 through 8.6 (phpVersion; a test keeps max in step with phpcompat.xml.dist). phpstan-baseline.neon lists what the legacy code already reported, so CI fails
+# only on new reports. When you fix one, regenerate the baseline (yarn phpstan:baseline) so it does not come back.
+# vendor/boldgrid is scanned for its classes but not analysed.
+parameters:
+    level: 1
+    phpVersion:
+        min: 70400
+        max: 80699
+    paths:
+        - ../../post-and-page-builder.php
+        - ../../autoload.php
+        - ../../includes
+        - ../../controls
+        - ../../components
+        - ../../pages
+        - ../../support
+    excludePaths:
+        - ../../includes/template/*
+    scanDirectories:
+        - ../../vendor/boldgrid
+    scanFiles:
+        - stubs.php
+    bootstrapFiles:
+        - bootstrap.php
+    reportUnmatchedIgnoredErrors: true
+includes:
+    - phpstan-baseline.neon

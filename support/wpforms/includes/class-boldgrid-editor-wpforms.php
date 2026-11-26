@@ -89,17 +89,29 @@ class Boldgrid_Editor_Wpforms {
 	/**
 	 * Get the url to the stylesheet of
 	 *
+	 * WPForms 1.8.1 and later load frontend styles from a per render engine directory, and 2.0
+	 * removed the old root stylesheets, so use the same path WPForms enqueues for its forms.
+	 *
 	 * @since 1.4.4
 	 *
-	 * @return string URL of the form stylehsheet.
+	 * @return string|false URL of the form stylesheet, or false when WPForms CSS is disabled.
 	 */
 	public static function get_stylesheet() {
 		$url = false;
 
 		if ( wpforms_setting( 'disable-css', '1' ) == '1' ) {
-			$url = WPFORMS_PLUGIN_URL . 'assets/css/wpforms-full.css';
+			$style_name = 'full';
 		} else if ( wpforms_setting( 'disable-css', '1' ) == '2' ) {
-			$url = WPFORMS_PLUGIN_URL . 'assets/css/wpforms-base.css';
+			$style_name = 'base';
+		} else {
+			return $url;
+		}
+
+		if ( function_exists( 'wpforms_get_render_engine' ) && function_exists( 'wpforms_get_min_suffix' ) ) {
+			$url = WPFORMS_PLUGIN_URL . 'assets/css/frontend/' . wpforms_get_render_engine() .
+				'/wpforms-' . $style_name . wpforms_get_min_suffix() . '.css';
+		} else {
+			$url = WPFORMS_PLUGIN_URL . 'assets/css/wpforms-' . $style_name . '.css';
 		}
 
 		return $url;
@@ -151,13 +163,14 @@ class Boldgrid_Editor_Wpforms {
 			$this->initiallizeConfigs();
 			$this->create_tabs();
 
-			// Print all forms as media templates
+			// Print preview markup for all forms.
 			add_action( 'print_media_templates', array ( $this, 'print_media_templates' ) );
 			add_filter( 'wpforms_display_media_button', array( $this, 'remove_media_button' ) );
 
 			// load up any css / js we need
 			add_action( 'admin_enqueue_scripts', array ( $this, 'enqueue_header_content' ), 15 );
-			add_filter( 'mce_css', array( $this, 'mce_css' ) );
+			// After Boldgrid_Editor_MCE::add_cache_busting (10), which rebuilds the list.
+			add_filter( 'mce_css', array( $this, 'mce_css' ), 11 );
 		}
 	}
 
@@ -170,8 +183,13 @@ class Boldgrid_Editor_Wpforms {
 	 * @return string               All stylsheets.
 	 */
 	public function mce_css( $stylehsheets ) {
+		$stylesheet = self::get_stylesheet();
+		if ( ! is_string( $stylesheet ) || '' === $stylesheet ) {
+			return $stylehsheets;
+		}
+
 		$stylehsheets = explode( ',', $stylehsheets );
-		$stylehsheets[] = self::get_stylesheet();
+		$stylehsheets[] = $stylesheet;
 		return implode( ',', $stylehsheets );
 	}
 
@@ -184,7 +202,7 @@ class Boldgrid_Editor_Wpforms {
 	 * @return string Markup of form.
 	 */
 	public static function get_form_markup( $form_id ) {
-		return do_shortcode( '[wpforms id="' . $form_id . '" title="true" description="true"]' );
+		return do_shortcode( '[wpforms id="' . absint( $form_id ) . '" title="true" description="true"]' );
 	}
 
 	/**
@@ -263,33 +281,38 @@ class Boldgrid_Editor_Wpforms {
 	}
 
 	/**
-	 * Get Templates for all forms and print them to the page.
+	 * Get preview markup for all forms and print it to the page.
+	 *
+	 * Markup is printed as JSON data, keyed by form id, so that the editor can insert it as a
+	 * plain string. It must never be compiled as a template.
 	 *
 	 * @since 1.4.4
 	 */
 	public function print_media_templates() {
-		$form_markup = array ();
+		$flags       = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+		$form_markup = array();
 
 		$forms = self::get_forms();
 
 		foreach ( $forms as $form ) {
-			$form_markup[$form['id']] = self::get_form_markup( $form['id'] );
+			$markup = '<div>' . self::get_form_markup( $form['id'] ) . '</div>';
+
+			if ( false !== wp_json_encode( $markup, $flags ) ) {
+				$form_markup[ (string) $form['id'] ] = $markup;
+			}
 		}
 
 		require $this->path_configs['addon_directory'] . '/templates/form-not-found.php';
 
-		// Take all form markup and create underscore templates.
-		foreach ( $form_markup as $form_id => $markup ) {
-			$markup = str_replace( '<script', '<# print("<sc" + "ript"); #>', $markup );
-			$markup = str_replace( '</script>', '<# print("</scr" + "ipt>"); #>', $markup );
+		$json = wp_json_encode( (object) $form_markup, $flags );
 
-			?>
-<script type="text/html"
-	id="tmpl-editor-boldgrid-form-<?php echo esc_attr( $form_id ); ?>">
-			<?php echo '<div>' . $markup . '</div>';  ?>
-			</script>
-<?php
+		if ( false === $json ) {
+			$json = '{}';
 		}
+
+		?>
+<script type="application/json" id="boldgrid-wpforms-preview-markup"><?php echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON with HTML-significant characters hex-escaped. ?></script>
+<?php
 	}
 
 }
