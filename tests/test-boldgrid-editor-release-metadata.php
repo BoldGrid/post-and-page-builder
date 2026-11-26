@@ -109,6 +109,59 @@ class Test_Boldgrid_Editor_Release_Metadata extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The root .htaccess is a tracked runtime file: both packaging paths require it and neither strips it.
+	 */
+	public function test_htaccess_is_packaged_and_not_stripped() {
+		$this->assertSame( 'Options -Indexes', trim( $this->read( '.htaccess' ) ) );
+
+		$package = $this->read( 'bin/package.sh' );
+		$this->assertSame( 1, preg_match( '/for required in ([^;]+); do/', $package, $required ) );
+		$this->assertContains( '.htaccess', preg_split( '/\s+/', trim( $required[1] ) ) );
+
+		$this->assertSame( 1, preg_match( '#grep -E ["\']\^post-and-page-builder/\(([^"\']+)\)["\']#', $package, $leak ) );
+		$this->assertSame( 0, preg_match( '#^(?:' . $leak[1] . ')#', 'post-and-page-builder/.htaccess' ) );
+
+		$this->assertDoesNotMatchRegularExpression( '/\brm\b[^\n]*\.htaccess/', $package );
+
+		$workflow = BOLDGRID_EDITOR_TESTS_PLUGIN_DIR . '/.github/workflows/release.yml';
+		if ( ! is_readable( $workflow ) ) {
+			$this->markTestSkipped( 'Release workflow is not part of this checkout.' );
+		}
+
+		$release = (string) file_get_contents( $workflow );
+		$this->assertSame( 1, preg_match( '/for required in ([^;]+); do/', $release, $release_required ) );
+		$this->assertSame( $required[1], $release_required[1] );
+
+		$this->assertSame( 1, preg_match( '#grep -E \'\^post-and-page-builder/\(([^\']+)\)\'#', $release, $release_leak ) );
+		$this->assertSame( $leak[1], $release_leak[1] );
+		$this->assertDoesNotMatchRegularExpression( '/\brm\b[^\n]*\.htaccess/', $release );
+	}
+
+	/**
+	 * wordpress-tag-sync release.sh copies the checkout with an extglob that skips dotfiles, so the workflow must
+	 * run it with dotglob around the copy only, and must refuse to deploy other root dotfiles.
+	 */
+	public function test_release_workflow_copies_htaccess_to_svn() {
+		$workflow = BOLDGRID_EDITOR_TESTS_PLUGIN_DIR . '/.github/workflows/release.yml';
+		if ( ! is_readable( $workflow ) ) {
+			$this->markTestSkipped( 'Release workflow is not part of this checkout.' );
+		}
+
+		$release = (string) file_get_contents( $workflow );
+
+		$this->assertStringContainsString( 's/^shopt -s extglob$/shopt -s extglob dotglob/', $release );
+		$this->assertStringContainsString( 's/^shopt -u extglob$/shopt -u extglob dotglob/', $release );
+		$this->assertStringContainsString( "grep -qxF 'shopt -s extglob dotglob'", $release );
+		$this->assertStringContainsString( "grep -qxF 'shopt -u extglob dotglob'", $release );
+		$this->assertStringNotContainsString( "\n          ./node_modules/@boldgrid/wordpress-tag-sync/release.sh\n", $release );
+
+		$this->assertStringContainsString( 'Check .htaccess is the only runtime dotfile', $release );
+		$this->assertStringContainsString( '.htaccess|.git|.github|', $release );
+		$this->assertStringNotContainsString( '.sec-project.yaml|', $release );
+		$this->assertStringNotContainsString( '.nvmrc|', $release );
+	}
+
+	/**
 	 * GitHub workflows use the built-in github.token with least-privilege permissions for releases.
 	 */
 	public function test_workflows_use_builtin_github_token() {
