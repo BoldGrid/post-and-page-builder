@@ -215,6 +215,35 @@ class Boldgrid_Editor_Ajax {
 	}
 
 	/**
+	 * Keep only well-formed Gridblocks from the upstream generate response.
+	 *
+	 * The upstream API normally returns a list of blocks, each an array with an `html` string. An error
+	 * payload (for example `{"status":500,"message":"..."}`) or a malformed entry decodes to scalars,
+	 * which must not be indexed as arrays.
+	 *
+	 * @since 1.27.16
+	 *
+	 * @param mixed $response Decoded upstream JSON.
+	 * @return array Blocks that have an `html` string. Empty when nothing usable was returned.
+	 */
+	public function filter_generated_blocks( $response ) {
+		if ( ! is_array( $response ) ) {
+			return array();
+		}
+
+		$is_list = array_keys( $response ) === range( 0, count( $response ) - 1 );
+		$blocks  = array();
+
+		foreach ( $response as $key => $block ) {
+			if ( is_array( $block ) && isset( $block['html'] ) && is_string( $block['html'] ) ) {
+				$blocks[ $key ] = $block;
+			}
+		}
+
+		return $is_list ? array_values( $blocks ) : $blocks;
+	}
+
+	/**
 	 * Generate gridblocks.
 	 *
 	 * @since 1.7.0
@@ -239,18 +268,20 @@ class Boldgrid_Editor_Ajax {
 		if ( ! is_wp_error( $api_response ) ) {
 			$response = wp_remote_retrieve_body( $api_response );
 			$response = json_decode( $response, true );
-			$response = $response ? $response : array();
+			$response = $this->filter_generated_blocks( $response );
 			if ( ! empty( $response ) ) {
 				$license_types = $this->get_allowed_license_types( $api_response );
-				header( 'License-Types: ' . wp_json_encode( $license_types ) );
+				if ( ! headers_sent() ) {
+					header( 'License-Types: ' . wp_json_encode( $license_types ) );
+				}
 
 				foreach( $response as &$block ) {
 					$block['preview_html'] = $this->sanitize_gridblock_html(
 						Boldgrid_Layout::run_shortcodes( $block['html'] )
 					);
-					$block['html'] = $block['html'];
 					$block['html'] = $this->sanitize_gridblock_html( $block['html'] );
 				}
+				unset( $block );
 
 				// Count how many times blocks have been generated.
 				$times_requested = Boldgrid_Editor_Option::get( 'count_usage_blocks', 0 );
