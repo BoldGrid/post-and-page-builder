@@ -142,9 +142,13 @@ class Boldgrid_Editor_Crop {
 		$baseurl = $uploads['baseurl'];
 
 		// 1) Make sure the URL actually lives under the uploads URL
+		if ( empty( $basedir ) || empty( $baseurl ) ) {
+			return false;
+		}
+
 		// Ensure $baseurl ends with a trailing slash for strict validation.
 		$baseurl = rtrim( $baseurl, '/' ) . '/';
-		if ( empty( $basedir ) || empty( $baseurl ) || strpos( $url, $baseurl ) !== 0 ) {
+		if ( strpos( $url, $baseurl ) !== 0 ) {
 			return false;
 		}
 

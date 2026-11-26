@@ -310,7 +310,7 @@ class Boldgrid_Editor {
 				add_action( 'admin_enqueue_scripts', array( Boldgrid_Editor_Service::get( 'assets' ), 'enqueue_scripts_action' ), 5 );
 
 				// Add ?boldgrid-editor-version=$version_number to each added file.
-				add_filter( 'mce_css', array( $boldgrid_editor_mce, 'add_cache_busting' ) );
+				add_filter( 'mce_css', array( $boldgrid_editor_mce, 'add_cache_busting' ), 10 );
 
 				if ( 'media-upload.php' !== $page_name ) {
 					add_action( 'admin_print_footer_scripts', array( $boldgrid_editor_builder, 'print_scripts' ), 25 );

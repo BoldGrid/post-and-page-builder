@@ -1,0 +1,109 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Boldgrid\\PPB\\View\\Settings\:\:getPageContent\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: ../../includes/View/Settings.php
+
+		-
+			message: '#^Method Boldgrid\\PPB\\Widget\\Menu\:\:print_form_styles\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../includes/Widget/Menu.php
+
+		-
+			message: '#^One or more @param tags has an invalid name or invalid syntax\.$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../includes/builder/class-boldgrid-editor-builder.php
+
+		-
+			message: '#^Method Boldgrid_Editor_Activate\:\:on_activate\(\) should return HTML but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: ../../includes/class-boldgrid-editor-activate.php
+
+		-
+			message: '#^@param type \$var does not accept actual type of parameter\: non\-empty\-array\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: ../../includes/class-boldgrid-editor-assets.php
+
+		-
+			message: '#^Class Boldgrid_Editor_Builder referenced with incorrect case\: BoldGrid_Editor_Builder\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: ../../includes/class-boldgrid-editor-assets.php
+
+		-
+			message: '#^Callback expects 1 parameter, \$accepted_args is set to 2\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../includes/class-boldgrid-editor-postmeta.php
+
+		-
+			message: '#^Action callback returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 2
+			path: ../../includes/class-boldgrid-editor-preview.php
+
+		-
+			message: '#^Found usage of constant STYLESHEETPATH\. Use get_stylesheet_directory\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: ../../includes/class-boldgrid-editor-preview.php
+
+		-
+			message: '#^Found usage of constant TEMPLATEPATH\. Use get_template_directory\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: ../../includes/class-boldgrid-editor-preview.php
+
+		-
+			message: '#^Action callback returns array but should not return anything\.$#'
+			identifier: return.void
+			count: 2
+			path: ../../includes/class-boldgrid-editor.php
+
+		-
+			message: '#^Action callback returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../includes/class-boldgrid-editor.php
+
+		-
+			message: '#^Callback expects 0 parameters, \$accepted_args is set to 2\.$#'
+			identifier: arguments.count
+			count: 2
+			path: ../../includes/class-boldgrid-editor.php
+
+		-
+			message: '#^Found usage of constant DOING_CRON\. Use wp_doing_cron\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: ../../includes/class-boldgrid-editor.php
+
+		-
+			message: '#^Instantiated class Boldgrid_Editor_Update not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../includes/class-boldgrid-editor.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../pages/standard-attachments.php
+
+		-
+			message: '#^Variable \$addonDir might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../support/wpforms/includes/config/layouts.php
+
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../support/wpforms/templates/form-attachments.php

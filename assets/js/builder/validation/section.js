@@ -114,8 +114,12 @@ BOLDGRID.EDITOR.VALIDATION = BOLDGRID.EDITOR.VALIDATION || {};
 			$( group ).each( ( _, el ) => {
 				$( el ).wrap( '<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12"></div>' );
 				$( el ).removeAttr( 'class' );
-				let contents = $( el ).find( 'p' ).text();
-				$( el ).html( contents );
+				let $paragraphs = $( el ).find( 'p' );
+
+				// Only unwrap inner paragraphs. Without any, keep the element's own content.
+				if ( $paragraphs.length ) {
+					$( el ).empty().append( $paragraphs.contents() );
+				}
 			} );
 			group = [];
 		};

@@ -1,0 +1,15 @@
+{
+    "name": "boldgrid/post-and-page-builder-phpstan",
+    "description": "PHPStan static analysis with WordPress stubs.",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "phpstan/extension-installer": "^1.4"
+    },
+    "config": {
+        "platform": { "php": "7.4.0" },
+        "allow-plugins": { "phpstan/extension-installer": true }
+    }
+}

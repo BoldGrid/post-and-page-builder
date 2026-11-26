@@ -31,8 +31,6 @@ class Boldgrid_Editor_Fs {
 
 	public function __construct() {
 		$this->wp_filesystem = $this->init();
-
-		return $this;
 	}
 
 	/**

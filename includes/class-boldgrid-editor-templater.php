@@ -116,7 +116,7 @@ class Boldgrid_Editor_Templater {
 	 * @return boolean       Is the passed template a custom template?
 	 */
 	public function is_custom_template( $name ) {
-		return ! empty( $this->templates[ $name ] );
+		return null !== $name && ! empty( $this->templates[ $name ] );
 	}
 
 	/**
@@ -255,7 +255,7 @@ class Boldgrid_Editor_Templater {
 		}
 
 		// Return default template if we don't have a custom one defined
-		if ( ! isset( $this->templates[ $post_meta ] ) ) {
+		if ( null === $post_meta || ! isset( $this->templates[ $post_meta ] ) ) {
 			return $template;
 		}
 

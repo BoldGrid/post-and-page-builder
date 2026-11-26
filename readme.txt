@@ -2,9 +2,9 @@
 Contributors: boldgrid, rramo012, imh_brad, joemoto, timph, bgnicolepaschen, jamesros161
 Tags: boldgrid, page builder, drag and drop, tinymce, editor, landing page
 Requires at least: 4.7
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.4
-Stable tag: 1.27.15
+Stable tag: 1.27.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,6 +137,14 @@ WordPress Editor.
 7. Adding Icons.
 
 == Changelog ==
+
+= 1.27.16 =
+* Security Update: Hardened WPForms form previews in the editor
+* Security Update: Hardened section markup validation in the editor
+* Bug Fix: WPForms form previews in the editor now load the stylesheet from WPForms 1.8.1 and later
+* Bug Fix: Standardized translation text domains across editor UI, widgets, and block taxonomy
+* Bug Fix: Escaped minimum WordPress and PHP version activation notices
+* Update: Improved PHP 8.x compatibility with null-key guards, numeric HTML entity encoding, constructor fixes, and explicit trim() character lists for URL and CSS sanitization
 
 = 1.27.15 =
 * Security Update: Hardened component widget previews in the editor
@@ -998,6 +1006,9 @@ Release Date: November 14th, 2017
 * Initial public release.
 
 == Upgrade Notice ==
+
+= 1.27.16 =
+This is a security update. All users are encouraged to update to this version.
 
 = 1.27.15 =
 This is a security update. All users are encouraged to update to this version.

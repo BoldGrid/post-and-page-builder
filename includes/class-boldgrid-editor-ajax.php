@@ -348,11 +348,11 @@ class Boldgrid_Editor_Ajax {
 		$redirectUrls = array();
 
 		foreach ( $urls as $raw_url ) {
-			if ( ! is_string( $raw_url ) || '' === trim( $raw_url ) ) {
+			if ( ! is_string( $raw_url ) || '' === trim( $raw_url, Boldgrid_Editor_Url::TRIM_CHARS ) ) {
 				continue;
 			}
 
-			$key = trim( $raw_url );
+			$key = trim( $raw_url, Boldgrid_Editor_Url::TRIM_CHARS );
 			$url = esc_url_raw( $key );
 			if ( empty( $url ) || ! Boldgrid_Editor_Url::is_public_host( $url ) ) {
 				$redirectUrls[ $key ] = false;
@@ -541,7 +541,7 @@ class Boldgrid_Editor_Ajax {
 	public function upload_url( $image_data ) {
 		global $post;
 
-		if ( ! is_string( $image_data ) || '' === trim( $image_data ) ) {
+		if ( ! is_string( $image_data ) || '' === trim( $image_data, Boldgrid_Editor_Url::TRIM_CHARS ) ) {
 			return array( 'success' => false );
 		}
 

@@ -76,7 +76,15 @@ class Boldgrid_Editor_Compatibility {
 	 */
 	public function invalidWPVersion() { ?>
 		<div class="notice notice-error">
-			<p><?php _e( 'Failed to activate the Post and Page Builder! Your WordPress version is not compatible. This plugin requires at least WordPress ' . $this->versions['wp'], 'boldgrid-editor' ); ?></p>
+			<p>
+			<?php
+			printf(
+				/* translators: %s: Minimum WordPress version. */
+				esc_html__( 'Failed to activate the Post and Page Builder! Your WordPress version is not compatible. This plugin requires at least WordPress %s', 'boldgrid-editor' ),
+				esc_html( $this->versions['wp'] )
+			);
+			?>
+			</p>
 		</div>
 		<?php
 	}
@@ -88,7 +96,15 @@ class Boldgrid_Editor_Compatibility {
 	 */
 	public function invalidPHPVersion() { ?>
 		<div class="notice notice-error">
-			<p><?php _e( 'Failed to activate the Post and Page Builder! Your PHP version is not compatible. This plugin requires at least PHP ' . $this->versions['php'], 'boldgrid-editor' ); ?></p>
+			<p>
+			<?php
+			printf(
+				/* translators: %s: Minimum PHP version. */
+				esc_html__( 'Failed to activate the Post and Page Builder! Your PHP version is not compatible. This plugin requires at least PHP %s', 'boldgrid-editor' ),
+				esc_html( $this->versions['php'] )
+			);
+			?>
+			</p>
 		</div>
 		<?php
 	}

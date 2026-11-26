@@ -3,8 +3,25 @@
 	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
 	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
 
+	<!--
+		The legacy tree does not pass this standard, so CI enforces it only on lines a change adds or modifies
+		(bin/phpcs-changed.php, yarn phpcs:changed). The text domain sniff passes on the whole tree and runs
+		on every file (yarn phpcs:i18n). Run vendor/bin/phpcs -s FILE to see every report for one file.
+	-->
+
 	<!-- Set a description for this ruleset. -->
 	<description>A custom set of code standard rules to check for WordPress themes.</description>
+
+	<file>.</file>
+	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
+	<exclude-pattern type="relative">^tmp/*</exclude-pattern>
+	<exclude-pattern type="relative">^build/*</exclude-pattern>
+	<!-- PHPStan stubs and bootstrap declare WordPress and third-party symbols, not plugin code. -->
+	<exclude-pattern>/tests/phpstan/*</exclude-pattern>
+	<exclude-pattern>/tests/phpcompat/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
 
 	<!-- Include the WordPress ruleset, with space for exclusions if necessary. -->
 	<rule ref="WordPress-Core">
@@ -32,5 +49,40 @@
 	</rule>
 
 	<rule ref="WordPress-Extra">
+	</rule>
+
+	<!-- Must match the Text Domain plugin header; a test keeps the two in step. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="boldgrid-editor"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Tests and bin/ tools run outside a web request: direct file access, error handlers and system calls are expected.
+		PHP_CodeSniffer 3 matches per-sniff patterns against the absolute path, so these cannot be anchored to the root.
+	-->
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>/(tests|bin)/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions">
+		<exclude-pattern>/(tests|bin)/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<exclude-pattern>/(tests|bin)/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.NoSilencedErrors">
+		<exclude-pattern>/tests/*</exclude-pattern>
+	</rule>
+	<!-- bin/ scripts print to a terminal, not a page. -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+
+	<!-- includes/template/*.php are Underscore templates with no PHP tags. -->
+	<rule ref="Internal.NoCodeFound">
+		<severity>0</severity>
 	</rule>
 </ruleset>
