@@ -127,7 +127,30 @@ jobs:
           rm -Rf vendor/bin vendor/boldgrid/library/bin vendor/boldgrid/library/tests
           rm -f vendor/boldgrid/library/.editorconfig vendor/boldgrid/library/.eslintignore vendor/boldgrid/library/.eslintrc.js vendor/boldgrid/library/.gitignore vendor/boldgrid/library/.prettierrc vendor/boldgrid/library/.travis.yml vendor/boldgrid/library/README.md vendor/boldgrid/library/composer.json vendor/boldgrid/library/composer.lock vendor/boldgrid/library/package.json vendor/boldgrid/library/phpunit.xml vendor/boldgrid/library/yarn.lock
 
+      # release.sh copies the checkout with an extglob that skips dotfiles, so .htaccess (the one runtime
+      # dotfile) never reaches the SVN tag or the zip unless dotglob is on. With dotglob every root dotfile is
+      # copied, so refuse to deploy if anything other than .htaccess and the files release.sh deletes remains.
+      - name: Check .htaccess is the only runtime dotfile in the release checkout
+        run: |
+          if [ ! -f .htaccess ]; then
+            echo '.htaccess is missing from the release checkout; refusing to deploy.' >&2
+            exit 1
+          fi
+          unexpected=''
+          for path in .[!.]*; do
+            case "$path" in
+              .htaccess|.git|.github|.gitignore|.gitattributes|.gitmodules|.travis.yml|.editorconfig|.scrutinizer.yml|.stylelintignore|.coveralls.yml|.jscrsrc|.jshintrc) ;;
+              *) unexpected="$unexpected $path" ;;
+            esac
+          done
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected root dotfiles in the release checkout:$unexpected; refusing to deploy." >&2
+            exit 1
+          fi
+
       # release.sh runs `clear` under `set -e`, which exits non-zero when TERM is unset.
+      # Run a copy of release.sh with dotglob around its copy step so .htaccess is packaged; the copy keeps
+      # dotglob off for the SVN steps because `svn add *` must not match .svn.
       - name: Deploy to WordPress.org
         env:
           WP_SVN_REPO: https://plugins.svn.wordpress.org/post-and-page-builder
@@ -135,8 +158,15 @@ jobs:
           WP_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           TERM: xterm
         run: |
-          chmod +x ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
-          ./node_modules/@boldgrid/wordpress-tag-sync/release.sh
+          release_script="${RUNNER_TEMP}/wordpress-tag-sync-release.sh"
+          sed -e 's/^shopt -s extglob$/shopt -s extglob dotglob/' -e 's/^shopt -u extglob$/shopt -u extglob dotglob/' ./node_modules/@boldgrid/wordpress-tag-sync/release.sh > "$release_script"
+          if ! grep -qxF 'shopt -s extglob dotglob' "$release_script" || ! grep -qxF 'shopt -u extglob dotglob' "$release_script"; then
+            echo 'wordpress-tag-sync release.sh no longer wraps its copy step in shopt extglob; refusing to deploy.' >&2
+            exit 1
+          fi
+          chmod +x "$release_script"
+          "$release_script"
+          rm -f "$release_script"
 
       # Same development-only set that bin/package.sh rejects.
       - name: Verify the release zip excludes CI and development-only files
