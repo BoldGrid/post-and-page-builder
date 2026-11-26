@@ -112,11 +112,11 @@ class Test_Boldgrid_Editor_Release_Metadata extends WP_UnitTestCase {
 	 * The root .htaccess is a tracked runtime file: both packaging paths require it and neither strips it.
 	 */
 	public function test_htaccess_is_packaged_and_not_stripped() {
-		$this->assertSame( 'Options -Indexes', trim( $this->read( '.htaccess' ) ) );
+		$this->assertSame( 'Options -Indexes', trim( $this->read( '.htaccess' ), " \t\n\r\0\x0B" ) );
 
 		$package = $this->read( 'bin/package.sh' );
 		$this->assertSame( 1, preg_match( '/for required in ([^;]+); do/', $package, $required ) );
-		$this->assertContains( '.htaccess', preg_split( '/\s+/', trim( $required[1] ) ) );
+		$this->assertContains( '.htaccess', preg_split( '/\s+/', trim( $required[1], " \t\n\r\0\x0B" ) ) );
 
 		$this->assertSame( 1, preg_match( '#grep -E ["\']\^post-and-page-builder/\(([^"\']+)\)["\']#', $package, $leak ) );
 		$this->assertSame( 0, preg_match( '#^(?:' . $leak[1] . ')#', 'post-and-page-builder/.htaccess' ) );
@@ -138,7 +138,7 @@ class Test_Boldgrid_Editor_Release_Metadata extends WP_UnitTestCase {
 	}
 
 	/**
-	 * wordpress-tag-sync release.sh copies the checkout with an extglob that skips dotfiles, so the workflow must
+	 * The wordpress-tag-sync release.sh copies the checkout with an extglob that skips dotfiles, so the workflow must
 	 * run it with dotglob around the copy only, and must refuse to deploy other root dotfiles.
 	 */
 	public function test_release_workflow_copies_htaccess_to_svn() {
